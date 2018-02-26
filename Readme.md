@@ -21,6 +21,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**The Definitive Red Hat Enterprise Linux 7 Hands-On Lab**](rhsummitlabs/The_Definitive_Red_Hat_Enterprise_Linux_7_Hands_On_Lab/README.md)
 
+ - [**Implementing Proactive Security and Compliance Automation**](rhsummitlabs/Implementing_Proactive_Security_and_Compliance_Automation/README.md)
+
 
 Releases
 --------
