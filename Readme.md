@@ -11,6 +11,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**First time hands-on with Red Hat OpenStack Platform**](rhsummitlabs/First_time_hands_on_with_Red_Hat_OpenStack_Platform/README.md)
 
+ - [**Getting Started with Cloud Native Apps**](rhsummitlabs/Getting_Started_with_Cloud_Native_Apps/README.md)
+
 
 Releases
 --------
