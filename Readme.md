@@ -29,4 +29,6 @@ each lab for your usage beyond just Red Hat Summit.
  
  - [**Linux Container Internals: Part 2**](rhsummitlabs/Linux_Container_Internals:_Part_2/README.md)
 
+ - [**Up and Running with Red Hat Identity Management**](rhsummitlabs/Up_and_Running_with_Red_Hat_Identity_Management/README.md)
+
 
