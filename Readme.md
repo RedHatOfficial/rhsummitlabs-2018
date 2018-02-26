@@ -19,6 +19,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Hands on with Satellite 6**](rhsummitlabs/Hands_on_with_Satellite_6/README.md)
 
+ - [**The Definitive Red Hat Enterprise Linux 7 Hands-On Lab**](rhsummitlabs/The_Definitive_Red_Hat_Enterprise_Linux_7_Hands_On_Lab/README.md)
+
 
 Releases
 --------
