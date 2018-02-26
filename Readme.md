@@ -26,6 +26,3 @@ each lab for your usage beyond just Red Hat Summit.
  - [**Defend Yourself Using Built-in RHEL Security Technologies**](rhsummitlabs/Defend_Yourself_Using_Built_in_RHEL_Security_Technologies/README.md)
 
 
-Releases
---------
-- v1.0 - Red Hat Summit 2018 Labs documenation added for all labs.
