@@ -23,6 +23,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Implementing Proactive Security and Compliance Automation**](rhsummitlabs/Implementing_Proactive_Security_and_Compliance_Automation/README.md)
 
+ - [**Defend Yourself Using Built-in RHEL Security Technologies**](rhsummitlabs/Defend_Yourself_Using_Built_in_RHEL_Security_Technologies/README.md)
+
 
 Releases
 --------
