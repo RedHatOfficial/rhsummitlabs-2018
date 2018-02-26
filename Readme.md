@@ -11,7 +11,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**A Practical Introduction to Container Security (3rd Ed.)**](rhsummitlabs/A_Practical_Introduction_to_Container_Security/README.md)
 
- - [**First_time_hands_on_with_Red_Hat_OpenStack_Platform**](rhsummitlabs/First_time_hands_on_with_Red_Hat_OpenStack_Platform/README.md)
+ - [**First time hands-on with Red Hat OpenStack Platform**](rhsummitlabs/First_time_hands_on_with_Red_Hat_OpenStack_Platform/README.md)
 
 
 Releases
