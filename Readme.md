@@ -17,6 +17,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**From source to RPM in 120 minutes**](rhsummitlabs/From_Source_to_RPM_in_120_Minutes/README.md)
 
+ - [**Hands on with Satellite 6**](rhsummitlabs/Hands_on_with_Satellite_6/README.md)
+
 
 Releases
 --------
