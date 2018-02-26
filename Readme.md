@@ -9,7 +9,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**An Example**](rhsummitlabs/01_Example/example.adoc)
 
- - [**A Practical Introduction to Container Security (3rd Ed.)**](rhsummitlabs/A_Practical_Introduction_to_Container_Security/README.adoc)
+ - [**A Practical Introduction to Container Security (3rd Ed.)**](rhsummitlabs/A_Practical_Introduction_to_Container_Security/README.md)
 
 
 Releases
