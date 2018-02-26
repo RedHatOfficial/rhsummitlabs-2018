@@ -15,6 +15,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**OpenShift for Operators**](rhsummitlabs/OpenShift_for_Operators/README.md)
 
+ - [**From source to RPM in 120 minutes**](rhsummitlabs/From_Source_to_RPM_in_120_Minutes/README.md)
+
 
 Releases
 --------
