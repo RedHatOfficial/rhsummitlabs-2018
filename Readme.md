@@ -31,4 +31,5 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Up and Running with Red Hat Identity Management**](rhsummitlabs/Up_and_Running_with_Red_Hat_Identity_Management/README.md)
 
+ - [**Optimize your IT. VM migration made easy with Red Hat**](rhsummitlabs/Optimize_your_IT_VM_migration_made_easy_with_Red_Hat/README.md)
 
