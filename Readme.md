@@ -34,3 +34,6 @@ each lab for your usage beyond just Red Hat Summit.
  - [**Optimize your IT. VM migration made easy with Red Hat**](rhsummitlabs/Optimize_your_IT_VM_migration_made_easy_with_Red_Hat/README.md)
 
  - [**Managing your OpenShift cluster from installation and beyond**](rhsummitlabs/Managing_your_OpenShift_cluster_from_installation_and_beyond/README.md)
+
+ - [**Building a Self-Service Portal with CloudForms**](rhsummitlabs/Building_a_Self_Service_Portal_with_CloudForms/README.md)
+
