@@ -69,4 +69,6 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Building a RHEL gold image for Azure**](rhsummitlabs/Building_a_RHEL_gold_image_for_Azure/README.md)
 
+ - [**OpenShift Container Platform on Microsoft Azure**](rhsummitlabs/OpenShift_Container_Platform_on_Microsoft_Azure/README.md)
+
 
