@@ -61,3 +61,6 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Red Hat Integrated Management Technologies Lab**](rhsummitlabs/Red_Hat_Integrated_Management_Technologies_Lab/README.md)
 
+ - [**CloudForms with Ansible - Better together!**](rhsummitlabs/CloudForms_with_Ansible_Better_together/README.md)
+
+
