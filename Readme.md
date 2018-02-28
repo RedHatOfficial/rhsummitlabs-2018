@@ -63,4 +63,6 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**CloudForms with Ansible - Better together!**](rhsummitlabs/CloudForms_with_Ansible_Better_together/README.md)
 
+ - [**Hands-on introduction to Red Hat CloudForms**](rhsummitlabs/Hands_on_intro_to_Red_Hat_CloudForms/README.md)
+
 
