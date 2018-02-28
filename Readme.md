@@ -49,3 +49,5 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Hands on with Red Hat OpenStack Platform director**](rhsummitlabs/Hands_on_with_Red_Hat_OpenStack_Platform_director/README.md)
 
+ - [**The Ceph Data Show**](rhsummitlabs/The_Ceph_Data_Show/README.md)
+
