@@ -56,3 +56,6 @@ each lab for your usage beyond just Red Hat Summit.
  - [**Develop IoT solutions with containers & serverless patterns**](rhsummitlabs/Develop_IoT_solutions_with_containers_serverless_patterns/README.md)
 
  - [**Running data streaming applications with Kafka on OpenShift**](rhsummitlabs/Running_data_streaming_apps_with_Kafka_on_OpenShift/README.md)
+
+ - [**Unleash the Power of BPM With Mobile and APIs**](rhsummitlabs/Unleash_the_Power_of_BPM_With_Mobile_and_APIs/README.md)
+
