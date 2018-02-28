@@ -39,4 +39,6 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Lego Labs (Experience an Open Innovation Labs Residency)**](rhsummitlabs/Lego_Labs/README.md)
 
+ - [**Getting Started with Ansible**](rhsummitlabs/Getting_Started_with_Ansible/README.md)
+
 
