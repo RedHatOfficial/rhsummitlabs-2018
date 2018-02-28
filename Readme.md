@@ -54,3 +54,5 @@ each lab for your usage beyond just Red Hat Summit.
  - [**iPaaS hack-a-thon: Build a cool integrated app**](rhsummitlabs/iPaaS_hack_a_thon/README.md)
 
  - [**Develop IoT solutions with containers & serverless patterns**](rhsummitlabs/Develop_IoT_solutions_with_containers_serverless_patterns/README.md)
+
+ - [**Running data streaming applications with Kafka on OpenShift**](rhsummitlabs/Running_data_streaming_apps_with_Kafka_on_OpenShift/README.md)
