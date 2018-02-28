@@ -43,4 +43,8 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Getting Started with Red Hat Ansible Tower**](rhsummitlabs/Getting_Started_with_Red_Hat_Ansible_Tower/README.md)
 
+ - [**Practical OpenSCAP**](rhsummitlabs/Practical_OpenSCAP/README.md)
+
+
+
 
