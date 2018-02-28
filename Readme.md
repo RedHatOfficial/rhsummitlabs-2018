@@ -45,7 +45,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Practical OpenSCAP**](rhsummitlabs/Practical_OpenSCAP/README.md)
 
- - [**Containerizing applications—existing and new**](rhsummitlabs/Containerizing_applications_existing_and_new/README.md)
+ - [**Containerizing applications — existing and new**](rhsummitlabs/Containerizing_applications_existing_and_new/README.md)
 
  - [**Hands on with Red Hat OpenStack Platform director**](rhsummitlabs/Hands_on_with_Red_Hat_OpenStack_Platform_director/README.md)
 
