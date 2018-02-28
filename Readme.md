@@ -59,3 +59,5 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Unleash the Power of BPM With Mobile and APIs**](rhsummitlabs/Unleash_the_Power_of_BPM_With_Mobile_and_APIs/README.md)
 
+ - [**Red Hat Integrated Management Technologies Lab**](rhsummitlabs/Red_Hat_Integrated_Management_Technologies_Lab/README.md)
+
