@@ -65,4 +65,5 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Hands-on introduction to Red Hat CloudForms**](rhsummitlabs/Hands_on_intro_to_Red_Hat_CloudForms/README.md)
 
+ - [**DevOps with OpenShift and Ansible**](rhsummitlabs/DevOps_with_OpenShift_and_Ansible/README.md)
 
