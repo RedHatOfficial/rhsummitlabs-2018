@@ -41,4 +41,6 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Getting Started with Ansible**](rhsummitlabs/Getting_Started_with_Ansible/README.md)
 
+ - [**Getting Started with Red Hat Ansible Tower**](rhsummit/Getting_Started_with_Red_Hat_Ansible_Tower/README.md)
+
 
