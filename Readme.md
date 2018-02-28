@@ -37,3 +37,6 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Building a Self-Service Portal with CloudForms**](rhsummitlabs/Building_a_Self_Service_Portal_with_CloudForms/README.md)
 
+ - [**Lego Labs (Experience an Open Innovation Labs Residency)**](rhsummitlabs/Lego_Labs/README.md)
+
+
