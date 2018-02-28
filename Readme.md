@@ -71,4 +71,23 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**OpenShift Container Platform on Microsoft Azure**](rhsummitlabs/OpenShift_Container_Platform_on_Microsoft_Azure/README.md)
 
+ - [**Understanding Containerized Red Hat OpenStack Platform**](rhsummitlabs/Understanding_Containerized_Red_Hat_OpenStack_Platform/README.md)
+
+ - [**OpenShift + RHSSO = happy security teams and happy users**](rhsummitlabs/OpenShift_RHSSO/README.md)
+
+ - [**Effectively monitor and troubleshoot your OCP Cluster**](rhsummitlabs/Effectively_monitor_and_troubleshoot_your_OCP_Cluster/README.md)
+
+ - [**Hands on with OpenStack and OpenDaylight SDN**](rhsummitlabs/Hands_on_with_OpenStack_and_OpenDaylight_SDN/README.md)
+
+ - [**Custom Broker for your Service Catalog**](rhsummitlabs/Custom_Broker_for_your_Service_Catalog/README.md)
+
+ - [**Deploy a containerized HCI IaaS with OpenStack and Ceph**](rhsummitlabs/Deploy_containerized_HCI_IaaS_with_OpenStack_and_Ceph/README.md)
+
+ - [**Hands-on with Istio on OpenShift**](rhsummitlabs/Hands_on_with_Istio_on_OpenShift/README.md)
+
+ - [**Adding Intelligence to Event Processing Apps**](rhsummitlabs/Adding_Intelligence_to_Event_Processing_Apps/README.md)
+
+ - [**Upgrade your developer powers with Kubernetes and OpenShift**](rhsummitlabs/Upgrade_dev_powers_with_Kubernetes_and_OpenShift/README.md)
+
+ - [**Mastering Serverless PaaS with OpenShift**](rhsummitlabs/Mastering_Serverless_PaaS_with_OpenShift/README.md)
 
