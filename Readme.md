@@ -51,3 +51,4 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**The Ceph Data Show**](rhsummitlabs/The_Ceph_Data_Show/README.md)
 
+ - [**iPaaS hack-a-thon: Build a cool integrated app**](rhsummitlabs/iPaaS_hack_a_thon/README.md)
