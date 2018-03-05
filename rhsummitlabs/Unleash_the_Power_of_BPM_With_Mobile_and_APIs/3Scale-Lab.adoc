@@ -17,8 +17,12 @@ Mention security:
 
 
 [square]
-* item 1
-* item 2
+* *Define API Service 1*
+* *Define Application Plan*
+* *Define Accounts and Users*
+* *Create Application*
+* Create Mappings and Methods for BPMS service integration
+* Create Public & Private API's for BPMS service
 
 Here's how you say "`Hello, World!`" in Prawn:
 
@@ -31,3 +35,8 @@ Prawn::Document.generate 'example.pdf' do
   text 'Hello, World!'
 end
 ----
+
+Addtional Steps:
+
+Rate Limiting
+
