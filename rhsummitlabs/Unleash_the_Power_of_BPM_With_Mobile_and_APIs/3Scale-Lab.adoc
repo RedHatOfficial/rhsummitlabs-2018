@@ -11,7 +11,10 @@ Doc Writer <doc@example.com>
 
 == Introduction
 
-A paragraph followed by a simple list with square bullets.
+In this lab you will expose the BPMS Create Process service via 3Scale.
+
+Mention security:
+
 
 [square]
 * item 1
