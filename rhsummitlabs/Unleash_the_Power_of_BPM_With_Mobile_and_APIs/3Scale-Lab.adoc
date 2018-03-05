@@ -1,4 +1,4 @@
-= Document Title
+= Creating and Exposing a Basic 3Scale API
 Doc Writer <doc@example.com>
 :doctype: book
 :reproducible:
