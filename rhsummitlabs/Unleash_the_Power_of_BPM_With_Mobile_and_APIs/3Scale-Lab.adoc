@@ -17,26 +17,141 @@ Mention security:
 
 
 [square]
-* *Define API Service 1*
+* *Login into 3Scale SaaS Application*
+* *Define API Service*
 * *Define Application Plan*
 * *Define Accounts and Users*
 * *Create Application*
 * Create Mappings and Methods for BPMS service integration
-* Create Public & Private API's for BPMS service
 
-Here's how you say "`Hello, World!`" in Prawn:
+== Step 1: Login to the 3Scale SAAS Application:
+["arabic"]
+. Open a browser and access the following URL: https://redhat-bpms-admin.3scale.net
+. Enter your username and password
 
-.Create a basic PDF document using Prawn
-[source,ruby]
+== Step 2: Define API Service:
+["arabic"]
+. Having successfully logged into the 3Scale SAAS application you should be presented with a list of menu options.
+. Select the "API" menu option 
+. In the top right corner just below the main menu options you should now see and be able to click the "Create Service" option.
+. The create service name should now be openned
+. Enter the following information:
+    * Name: <UserName>_CreateApplication
+    * System Name:
+    * Description:
+. Ensure the Production Deployment Option is set to "NGiNX APIcast"
+. In the Authentication section select the API Key option.
+. For now we will leave the "Signup & Use" and "Application Plan Changing" settings with the standard default.
+. Finally, click the "create service" button thats located in the bottom right corner of the page .
+
+== Step 3: Define API APIcast Configuration:
+["arabic"]
+. The newly created API should now be visible within the API'S section.
+. Click on the integration link that is just below the title of your newly create service
+. Within the Integration page select the "edit APICast Configuration" link
+. The Integration Configuration page should now be open. Enter the following information into the API and API Gateway sections.
+    * API Section Section
+    ** Private Base URL: http://ec2-54-187-196-222.us-west-2.compute.amazonaws.com:8080
+    * API Gateway Section
+    ** Staging Public Base URL: This should already be defaulted.
+    ** Production Public Base URL: This should already be defaulted.
+    * Mapping Rules Section
+    ** On the right hand side next to the "Metric or Method" label click the "Define" option
+    ** Under verb option select "POST"
+    ** In the pattern section enter the following: /kie-server/services/rest/server/containers/demoContain1.0/processes/project1.sample-process/instances
+    * Authentication Settings:
+    ** Host Header: leave blank
+    ** Sectret Token: leave default
+    * Credentials Location
+    ** Ensure "As HTTP Headers" is selected
+    ** For the Auth User Key enter any random string value
+    * Error Code Mapping
+    ** This section can be left with the default settings
+. Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
+    
+== Step 4: Define API Application Plan:
 ----
-require 'prawn'
-
-Prawn::Document.generate 'example.pdf' do
-  text 'Hello, World!'
-end
+Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target differenct audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
 ----
+["arabic"]
+. Go back to the list of available API's by selecting the "APIs" menu option
+. Click on the "Application Plan" link that is situated just below the title of your newly create service 
+. Once in the "Application Plans" screen click on the "Create Application Plan" which is located of the right hand side of the page next to the plus icon.
+. The "Create Application Plan" screen should now appear. Enter the following information 
+    * Name : <Enter Any Name>
+    * System Name : <Username>_createLoanApplication
+    * Leave the "Applications require approval?" option unchecked
+    * Trial Period (days): Leave blank
+    * Setup Fee : Leave as per defaults 0.00
+    * Cost Per Month : Leave as per defaults 0.00
+. Finally, click "Create Application Plan"
+. At this stage your service should now be ready to test.
 
-Addtional Steps:
+== Step 5: Test the Service:
 
-Rate Limiting
+.Testing your service using curl
 
+. Use the following curl command: 
+* curl "https://<Public API URL>/? user_key=USER_KEY"
+
+
+.Testing your service using Postman
+
+. Open the Postman application
+. Create a new request
+. Set the method to PUT
+. Enter the public url of your API. This can be found on the 3Scale API integration page.
+. In the Autherisation section set the following fields:
+    * Type: Basic Auth
+    * Username: kieserver
+    * Password : passworD1!
+. Set the Headers as follows:
+    * Content-Type : application/xml
+    * Accept : application/xml
+    * User_Key : User_Key  // The User_Key header value must match the user key entered on the API integration configuration page.
+    
+.The headers including the basic authorisation values are required by the BPMS Kie-Server and they will be passed straight through the proxy without being modified.
+
+.In a production environment you would configure SSO rather than providing the backend security credentials into your public api. The steps for achieving this are documented here: <Insert RH SSO Steps>.
+
+
+ 
+
+== Optional Steps:
+
+== Optional Exercise: Create Methods to Capture Metrics 
+---
+Methods are added to your API definition in order to gather data on their individual usage. Method calls trigger the built in hits metric. Usage limits and pricing rules for individual methods are defined from within each Application Plan. A method needs to be mapped to one or more URL patterns in the Mapping Rules section on the integration page so specific calls to your API increment the specific method counter.
+---
+["arabic"]
+
+== Optional Exercise: Apply Rate Limiting / Throttling
+
+== Optional Exercise: 
+
+== Useful External References:
+
+.Overview of OpenID Connect : https://connect2id.com/learn/openid-connect
+.Deep Dive into OAuth and OpenID Connect
+
+
+
+External References:
+
+The following OpenID Connect links are provided for your reference:
+
+OpenID Connect Explained
+
+Overview of OpenID Connect : https://connect2id.com/learn/openid-connect
+
+Deep Dive into OAuth and OpenID Connect
+
+How To Control User Identity Within Microservices
+
+OpenID Connect Core Specification
+
+RFC 7519: JSON Web Token
+
+Red Hat Single Sign-On: Securing Applications and Services Guide
+
+Identity Management in Red Hat Enterprise Linux
