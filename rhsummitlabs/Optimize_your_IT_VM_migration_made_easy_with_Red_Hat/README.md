@@ -1,4 +1,7 @@
-# Your labs docs placeholder, put your documentation here.
+# Optimize your IT VM migration made easy with Red Hat
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+Work in progress here:
+
+https://github.com/RedHatDemos/RHS-Optimize_IT-Infrastructure_Migration/blob/master/README.md
+
+
