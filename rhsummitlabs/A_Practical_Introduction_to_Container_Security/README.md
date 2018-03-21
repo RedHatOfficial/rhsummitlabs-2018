@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# A PRACTICAL INTRODUCTION TO CONTAINER SECURITY
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+The [lab guide](http://triad.eadbge.net:8080) is currently a work in progress. 
