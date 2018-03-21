@@ -1,3 +1,3 @@
 # A PRACTICAL INTRODUCTION TO CONTAINER SECURITY
 
-The [lab guide](http://triad.eadbge.net:8080) is currently a work in progress.
+The hosted version of the [lab guide](http://triad.eadgbe.net:8080) is currently a work in progress.
