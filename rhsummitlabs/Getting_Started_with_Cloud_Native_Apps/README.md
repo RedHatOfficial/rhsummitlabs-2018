@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# Getting Started with Cloud-Native Apps
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+The instructions for this lab are available here https://github.com/openshift-labs/rhsummit18-cloudnative-guides
