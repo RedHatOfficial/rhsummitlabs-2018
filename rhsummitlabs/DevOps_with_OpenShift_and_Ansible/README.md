@@ -1,4 +1,5 @@
-# Your labs docs placeholder, put your documentation here.
+# DevOps with OpenShift and OpenShift Ansible Broker
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+The DevOps lab provides full-stack and DevOps engineers an introduction to OpenShift, OpenShift Ansible Broker and containers and how OpenShift and Ansible can be used to build fully automated end-to-end deployment pipelines using advanced deployments techniques like rolling deploys and blue-green deployment.
+
+The instructions for this lab are available here https://github.com/openshift-labs/devops-oab-guides
