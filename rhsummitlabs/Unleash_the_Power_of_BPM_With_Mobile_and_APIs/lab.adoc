@@ -1,0 +1,76 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== Unlease the power of BPM with mobile and APIs
+
+:numbered:
+
+== Overview
+
+Short description: BPM integration with mobile and 3scale through its REST API
+
+Long description: In this workshop we will explore the BPM REST API and its use in integration with Red Hat Mobile Application Platform, 3Scale and a custom user interface. Through hands on labs you will run through a series of integrations starting with exploring the BPM REST API followed by mobile integration finishing with 3scale and SSO integration.
+
+. This demonstration showcases the following:
+
+* Deploying a multi-layered, agile integration services application on OpenShift Container Platform.
+* Deploying JBoss BRMS product with business rules project, exploring and testing business logic.
+* Using Ansible playbooks to deploy xPaaS container-based services.
+* Using Ansible playbooks to deploy web services in containers (PHP, .Net and Java).
+* Using Ansible playbook to deploy xPaaS integration service in a container.
+* Testing complete application by submitting RestAPI call to application.
+
+. Goal
+
+* Explore BPM REST api
+* Mobile integration
+* 3Scale integration
+* SSO integration
+
+Current versions of products used:
+
+[cols="1,1",options="header"]
+|=======
+|Product |Version
+|`JBoss EAP` |`6.4`
+|`JBoss BPMS` |`6.4`
+|`Mobile Platform` |`??`
+|`3Scale` |`2.1`
+|`SSO` |`7.2`
+|=======
+
+=== Environment
+
+The demo environment consists of the following systems:
+
+[cols="3",options="header"]
+|=======
+|Hostname              |Internal IP    |Description
+|`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com` |`34.251.130.28`  | BPM Server A
+|`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com`  |`52.51.30.91` | BPM Server B
+|`MOBILE URL HERE  |`MOBILE URL HERE` | Mobile Platform
+|`redhat-bpms-admin.3scale.net`  |`184.73.207.212` | 3Scale
+|`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com`  |`52.210.99.113` | SSO
+|`ec2-34-251-105-7.eu-west-1.compute.amazonaws.com`  |`34.251.105.7` | BPM Server SSO enabled
+|`ec2-52-31-199-16.eu-west-1.compute.amazonaws.com`    |`52.31.199.16` | Nexus
+|=======
+
+
+=== Environment setup
+
+. You will be given a username between a1_30 and b31_60.
+
+. All passwords are set to abc123
+
+. If you have a username beginning with a please use BPM Server A. If you have a username starting with b please use BPM Server B. This is to help distribute load.
+
+== Review the Environment
+
+. Log into BPM Business Central - using server A: `http://34.251.130.28:8080/business-central` or server B: `http://52.51.30.91:8080/business-central`
+
+. Log into Mobile -
+
+. Log into 3Scale - `https://redhat-bpms-admin.3scale.net`
+
+
