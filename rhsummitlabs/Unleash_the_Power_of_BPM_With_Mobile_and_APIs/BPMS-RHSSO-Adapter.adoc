@@ -33,10 +33,7 @@ In this lab you will configure the Redhat BPMS Single Sign On Adapter.
 ["arabic"]
 . From the command prompt navigate to the EAP_HOME/standalone/configuration in your EAP installation and edit standalone.xml to add the RH-SSO subsystem configuration.
 
-*============================================================================*
-*THIS SECTION IS MESSED UP AND NEEDS TIDYING - FOR NOW JUST READ THE RAW FILE*
-*============================================================================*
-
+----
 <subsystem xmlns="urn:jboss:domain:keycloak:1.1">
  <secure-deployment name="business-central.war">
    <realm>demo</realm>
@@ -49,21 +46,20 @@ In this lab you will configure the Redhat BPMS Single Sign On Adapter.
    <principal-attribute>preferred_username</principal-attribute>
  </secure-deployment>
 </subsystem>
+----
 
-*============================================================================*
-. *secure-deployment name*: Name of your application’s WAR file.
-. *realm*: Name of the realm that you created for the applications to use.
-. *realm-public-key*: The public key of the realm you created. You can find the key in the Keys tab in the Realm settings page of the realm you created in the RH-SSO Admin Console. If you do not provide a value for realm-public-key, the server retrieves it automatically.
-. *auth-server-url*: The URL for the RH-SSO authentication server.
-. *enable-basic-auth*: The setting to enable basic authentication mechanism, so that the clients can use both token-based and basic authentication approaches to perform the requests.
-. *resource*: The name for the client that you created.
-. *credential name*: The secret key for the client you created. You can find the key in the Credentials tab on the Clients page of the RH-SSO Admin Console.
-
+. secure-deployment name: Name of your application’s WAR file.
+. realm: Name of the realm that you created for the applications to use.
+. realm-public-key: The public key of the realm you created. You can find the key in the Keys tab in the Realm settings page of the realm you created in the RH-SSO Admin Console. If you do not provide a value for realm-public-key, the server retrieves it automatically.
+. auth-server-url: The URL for the RH-SSO authentication server.
+. enable-basic-auth: The setting to enable basic authentication mechanism, so that the clients can use both token-based and basic authentication approaches to perform the requests.
+. resource: The name for the client that you created.
+. credential name: The secret key for the client you created. You can find the key in the Credentials tab on the Clients page of the RH-SSO Admin Console.
 
 == Step 3: Secure Business Central Remote Service Using RH-SSO.
 . From the command prompt navigate to the EAP_HOME/standalone/deployments/business-central/WEB-INF directory.
 . Edit the Web.xml file and remove /comment out the following lines to remove the servlet filter and its mapping for class org.uberfire.ext.security.server.BasicAuthSecurityFilter.
-
+----
 <filter>
   <filter-name>HTTP Basic Auth Filter</filter-name>
   <filter-class>org.uberfire.ext.security.server.BasicAuthSecurityFilter</filter-class>
@@ -79,9 +75,9 @@ In this lab you will configure the Redhat BPMS Single Sign On Adapter.
   <url-pattern>/maven2/*</url-pattern>
   <url-pattern>/ws/*</url-pattern>
 </filter-mapping>
-
-. In the same Web.xml file add the following lines to add the security-constraint for the url-patterns that you have removed from the filter mapping.
-
+----
+In the same Web.xml file add the following lines to add the security-constraint for the url-patterns that you have removed from the filter mapping.
+----
 <security-constraint>
   <web-resource-collection>
     <web-resource-name>remote-services</web-resource-name>
@@ -93,7 +89,7 @@ In this lab you will configure the Redhat BPMS Single Sign On Adapter.
     <role-name>rest-all</role-name>
   </auth-constraint>
 </security-constraint>
-
+----
 . Save the changes
 . The Redhat BPMS Business Central authorisation and authentication should now be configured to use Redhat SSO.
 
