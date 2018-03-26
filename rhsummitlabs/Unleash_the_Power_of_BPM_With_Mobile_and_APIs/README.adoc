@@ -73,4 +73,14 @@ link:bpm_container_lab.adoc[BPM Container Lab]
 
 == Modify mobile lab
 
+link:mobile_lab.adoc[Mobile lab]
+
+== BPM Consume Rest service
+
+link:bpm_consume_rest.adoc[BPM Consume REST service lab]
+
+== 3Scale SSO OpenConnect lab
+
+link:3scale_openconnect.adoc[3Scale OpenConnect lab]
+
 
