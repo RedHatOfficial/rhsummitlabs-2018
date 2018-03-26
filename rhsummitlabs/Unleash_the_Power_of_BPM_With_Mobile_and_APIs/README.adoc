@@ -10,16 +10,7 @@
 
 Short description: BPM integration with mobile and 3scale through its REST API
 
-Long description: In this workshop we will explore the BPM REST API and its use in integration with Red Hat Mobile Application Platform, 3Scale and a custom user interface. Through hands on labs you will run through a series of integrations starting with exploring the BPM REST API followed by mobile integration finishing with 3scale and SSO integration.
-
-. This demonstration showcases the following:
-
-* Deploying a multi-layered, agile integration services application on OpenShift Container Platform.
-* Deploying JBoss BRMS product with business rules project, exploring and testing business logic.
-* Using Ansible playbooks to deploy xPaaS container-based services.
-* Using Ansible playbooks to deploy web services in containers (PHP, .Net and Java).
-* Using Ansible playbook to deploy xPaaS integration service in a container.
-* Testing complete application by submitting RestAPI call to application.
+Long description: In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale. *BUFF THIS OUT*
 
 . Goal
 
@@ -47,9 +38,10 @@ The demo environment consists of the following systems:
 [cols="3",options="header"]
 |=======
 |Hostname              |Internal IP    |Description
+|`BPM CUSTOM URL HERE  |`BPM CUSTOM IP HERE` | BPM Custom UI
 |`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com` |`34.251.130.28`  | BPM Server A
 |`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com`  |`52.51.30.91` | BPM Server B
-|`MOBILE URL HERE  |`MOBILE URL HERE` | Mobile Platform
+|`MOBILE URL HERE  |`MOBILE IP HERE` | Mobile Platform
 |`redhat-bpms-admin.3scale.net`  |`184.73.207.212` | 3Scale
 |`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com`  |`52.210.99.113` | SSO
 |`ec2-34-251-105-7.eu-west-1.compute.amazonaws.com`  |`34.251.105.7` | BPM Server SSO enabled
@@ -69,8 +61,16 @@ The demo environment consists of the following systems:
 
 . Log into BPM Business Central - using server A: `http://34.251.130.28:8080/business-central` or server B: `http://52.51.30.91:8080/business-central`
 
+. Log into BPM custom UI -
+
 . Log into Mobile -
 
 . Log into 3Scale - `https://redhat-bpms-admin.3scale.net`
+
+== Create new BPM container lab
+
+link:bpm_container_lab.adoc
+
+== Modify mobile lab
 
 

@@ -1,0 +1,32 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== BPM Container Lab
+
+:numbered:
+
+== Overview
+
+Long description: In this lab we explore BPM REST API and 3Scale. Through the custom interface we trigger a release of a new BPM container and update 3Scale to reflect this new deployment.
+
+. Goal
+
+* Explore user interface
+* See BPM's REST API in action
+* Update 3Scale
+
+=== Creating a new BPM container
+
+We will first create a new BPM container through the user interface.
+
+=== Update 3Scale
+
+We will now add a rule in 3Scale to route traffic to the new container
+
+=== Test API calls
+
+We will now use the user interface or postman to explore the REST API
+
+
+
