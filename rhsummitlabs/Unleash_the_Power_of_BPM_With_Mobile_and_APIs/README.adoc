@@ -69,7 +69,7 @@ The demo environment consists of the following systems:
 
 == Create new BPM container lab
 
-link:bpm_container_lab.adoc
+link:bpm_container_lab.adoc[BPM Container Lab]
 
 == Modify mobile lab
 
