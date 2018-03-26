@@ -57,15 +57,9 @@ The demo environment consists of the following systems:
 
 . If you have a username beginning with a please use BPM Server A. If you have a username starting with b please use BPM Server B. This is to help distribute load.
 
-== Review the Environment
+== Setup lab
 
-. Log into BPM Business Central - using server A: `http://34.251.130.28:8080/business-central` or server B: `http://52.51.30.91:8080/business-central`
-
-. Log into BPM custom UI -
-
-. Log into Mobile -
-
-. Log into 3Scale - `https://redhat-bpms-admin.3scale.net`
+link:setup.adoc[Setup lab]
 
 == Create new BPM container lab
 

@@ -1,0 +1,21 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== Setup lab
+
+:numbered:
+
+=== Access Environment and Setup
+
+. Log into BPM Business Central - using server A: `http://34.251.130.28:8080/business-central` or server B: `http://52.51.30.91:8080/business-central`
+
+. Log into BPM custom UI -
+
+. Log into Mobile -
+
+. Log into 3Scale - `https://redhat-bpms-admin.3scale.net`
+
+=== Test Environment and Setup
+
+=== Expose 3Scale BPMS API
