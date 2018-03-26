@@ -73,8 +73,8 @@ link:mobile_lab.adoc[Mobile lab]
 
 link:bpm_consume_rest.adoc[BPM Consume REST service lab]
 
-== 3Scale SSO OpenConnect lab
+== 3Scale SSO OpenID Connect lab
 
-link:3scale_openconnect.adoc[3Scale OpenConnect lab]
+link:3scale_openidconnect.adoc[3Scale OpenID Connect lab]
 
 
