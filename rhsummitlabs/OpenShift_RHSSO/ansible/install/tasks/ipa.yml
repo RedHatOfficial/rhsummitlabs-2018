@@ -1,0 +1,260 @@
+---
+# tasks file for install
+
+- name: see if this has been built before.  hacky idempotent for some tasks.
+  stat:
+    path: /root/builddate
+  register: not_built 
+  tags: ipa-version
+
+- name: setup hosts file
+  template: 
+    src: ipahosts.j2
+    dest: /etc/hosts
+    backup: yes
+    owner: root
+    group: root
+    mode: '0644'
+  tags: ipa-hosts
+
+- name: you need real subscriptions to download things
+  redhat_subscription:
+    state: present
+    username: "{{ rhsm_username }}"
+    password: "{{ rhsm_password }}"
+    autosubscribe: true
+    force_register: yes
+  tags: rhsm
+  when: cloud_vendor == "ravello"
+
+- name: enable other stock repos
+  ini_file:
+    dest: /etc/yum.repos.d/redhat-rhui.repo
+    section: "{{ item }}"
+    option: enabled
+    value: 1
+  with_items:
+    - rhui-REGION-rhel-server-extras    
+    - rhui-REGION-rhel-server-optional    
+    - rhui-REGION-rhel-server-supplementary   
+  tags: ipa-repos-stock
+  when: cloud_vendor == "aws"
+
+- name: enable other stock repos
+  ini_file:
+    dest: /etc/yum.repos.d/redhat.repo
+    section: "{{ item }}"
+    option: enabled
+    value: 1
+  with_items:
+    - rhel-7-server-extras-rpms
+    - rhel-7-server-optional-rpms
+    - rhel-7-server-supplementary-rpms
+  tags: repos-stock
+  when: cloud_vendor == "ravello"
+
+- name: add epel repo
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/7/$basearch/
+    enabled: yes
+    gpgkey: https://archive.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+  tags: ipa-repos-epel
+
+- name: install updates
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  tags: ipa-updates
+  when: not_built.stat.exists == False 
+
+- name: make sure our base system isn't rubish
+  yum: 
+    state: installed
+    name:
+     - net-tools
+     - bind-utils
+     - vim 
+     - lsof
+     - screen
+     - nmap-ncat
+     - nmap
+     - openssl
+     - wget
+     - curl
+     - rsync
+     - openssh-clients
+     - krb5-workstation
+     - openldap-clients
+     - bzip2
+     - sos
+     - less
+     - iputils
+     - traceroute
+     - tcpdump
+     - telnet
+     - mtr
+     - strace
+     - unzip
+     - xz
+     - mysql 
+     - git
+     - wireshark
+     - setroubleshoot
+     - info
+     - man-db
+     - mlocate
+     - findutils
+     - grep
+     - gawk
+     - pcre
+     - yum-utils
+     - readline
+     - which
+     - diffutils
+     - sudo
+     - iptables
+     - tar
+     - nss
+     - cronie
+     - net-tools
+     - bridge-utils
+     - gnupg2
+     - ncurses
+     - nano
+     - sed
+     - rsyslog
+     - python
+     - file
+     - ethtool
+     - iperf
+     - iproute
+     - acl
+     - coreutils
+     - gzip
+     - logrotate
+     - tmpwatch
+     - procps-ng
+     - bc
+     - dmidecode
+     - emacs
+     - hdparm
+     - parted
+     - lvm2
+     - make
+     - ntpdate
+     - patch
+     - policycoreutils
+     - util-linux
+     - expect
+     - python-docker-py
+     - firewalld
+     - python-firewall
+  tags: ipa-base-pkgs
+
+- name: set root password
+  user:
+    name: root
+    password: "{{ defaultpasswordenc }}"
+    update_password: always
+  tags: ipa-root-pw
+
+- name: set root ssh key
+  authorized_key:
+    user: root
+    state: present
+    exclusive: yes
+    key: "{{ lookup('file', '~/.ssh/{{ ssh_key }}.pub') }}"
+  tags: ipa-root-sshkey
+
+- name: configure ssh server
+  copy: 
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart ssh
+  tags: ipa-ssh-config
+
+- name: enable firewalld 
+  service: name=firewalld state=started enabled=yes
+  tags: ipa-firewalld
+
+- name: open up holes in the firewall
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items:
+     - 389/tcp
+     - 636/tcp
+     - 9000/tcp
+     - 22/tcp
+     - 8443/tcp
+     - 443/tcp
+     - 8080/tcp
+     - 80/tcp
+  tags: ipa-firewall
+
+- name: disable nscd if its around
+  service: name=nscd state=stopped enabled=no
+  ignore_errors: True
+  tags: ipa-disable-nscd
+
+- name: set hostname
+  hostname: name=idm.local
+  tags: ipa-hostname
+  
+- name: install ipa
+  yum: 
+    state: installed
+    name:
+     - ipa-server
+  tags: ipa-pkg-install
+
+
+- name: install ipa step one
+  shell: "ipa-server-install --unattended --ds-password='{{ defaultpassword }}' --admin-password='{{ defaultpassword }}' --domain=idm.local --hostname=idm.local --realm=IDM.LOCAL --no-ntp --no-ssh --no-sshd --no-dns-sshfp --external-ca -v"
+  args:
+    executable: /bin/bash
+    creates: /root/ipa.csr
+  tags: ipa-install1
+  
+- name: copy over ipa keystores and passwords
+  copy:
+   src: "{{ item.src }}"
+   dest: "{{ item.dst }}"
+   owner: pkiuser
+   group: pkiuser
+   mode: '0600'
+  with_items:
+   - { src: 'certs/certs/idm-pki-alias/', dst: '/etc/pki/pki-tomcat/alias/' }
+   - { src: 'idm-pki-password.conf', dst: '/etc/pki/pki-tomcat/password.conf' }
+   - { src: 'certs/certs/idm.local-chain.crt', dst: '/root/idm.local-chain.crt' }
+  tags: ipa-keystore-replacement
+  when: not_built.stat.exists == False 
+
+- name: install ipa step two
+  shell: "ipa-server-install --unattended --ds-password='{{ defaultpassword }}' --admin-password='{{ defaultpassword }}' --domain=idm.local --hostname=idm.local --realm=IDM.LOCAL --no-ntp --no-ssh --no-sshd --no-dns-sshfp --external-cert-file=/root/idm.local-chain.crt -v && touch /root/installed"
+  args:
+    executable: /bin/bash
+    creates: /root/installed
+  tags: ipa-install2
+
+- name: remove the real subscriptions for docker things
+  redhat_subscription:
+    state: absent
+  tags: rhsm-unregister
+  when: cloud_vendor == "ravello"
+
+- name: create version file
+  shell: date +"%F %T" > /root/builddate
+  args:
+    executable: /bin/bash
+    creates: /root/builddate
+  tags: ipa-version
+

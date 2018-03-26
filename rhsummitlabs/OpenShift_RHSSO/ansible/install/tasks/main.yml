@@ -1,0 +1,8 @@
+---
+# tasks file for install
+- name: run the configuration tasks for sso
+  import_tasks: sso.yml
+  when: buildtype == 'sso'
+- name: run the configuration tasks for sso
+  import_tasks: ipa.yml
+  when: buildtype == 'ipa'

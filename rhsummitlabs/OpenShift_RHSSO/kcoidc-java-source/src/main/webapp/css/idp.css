@@ -1,0 +1,265 @@
+label+br {
+    display: none
+}
+input{outline:0 !important}
+
+::-webkit-input-placeholder {
+    color: #888;
+    font-weight: 200;
+}
+
+::-moz-placeholder {
+    color: #888;
+    font-weight: 200;
+}
+
+* {
+    box-sizing: border-box
+}
+
+input,label {
+    display: inline-block
+}
+
+label {
+    color: #555;
+    cursor: pointer;
+    padding-left: 0;
+    padding-right: .5em;
+    text-align: right;
+    width: 30%; letter-spacing: .05em;
+    font-weight: 500;
+}
+
+input {
+    width: 60%;
+    border-radius: 0;
+    letter-spacing: .1em;
+    appearance: none;
+    outline: none;
+    background-color: transparent;
+    padding: .5em .25em;
+    border: .2em solid transparent;
+    border-bottom-color: #ddd;
+    border-left: none;
+    border-right: none
+}
+
+body {
+    font-family: overpass,sans-serif;
+    text-align: center;
+    max-width: 30em;
+    margin: 0 auto;
+    background-color: #f4f4f4;
+    height: 100vh;
+    line-height: 90vh;
+    background: linear-gradient(-45deg,#fff 0%,#eee 22%,#f6f6f6 22.01%,#fff 85%,#fafafa 85.01%,#fff 100%);
+    background-size: cover;
+    background-attachment: fixed
+}
+
+h1,h2,h3,label {
+    text-transform: uppercase
+}
+
+h3,h3 span {
+    font-weight: 700
+}
+
+h3 {
+    line-height: 3em;
+    font-size: 1.5em;
+    letter-spacing: .05em;
+    color: #c00;
+    padding: .666em
+}
+
+h3 span {
+    background-color: #c00;
+    color: #fff;
+    white-space: nowrap;
+    padding: .2em .5em
+}
+
+input:focus {
+    border-bottom-color: #000
+}
+
+.note {
+    font-size: .5em;
+    color: #aaa;line-height:1.3em;
+    margin-top: 4em
+}
+
+
+.note2{
+    font-size: .65em;
+    color: #aaa;
+    font-weight: bold;
+
+}
+
+input[name=submit] {
+    display: inline-block;
+    color: #c00;
+    background-color: transparent;
+    padding: .75em 2em;
+    border: .15em solid currentcolor;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 2em
+}
+
+input[name=submit]:hover {
+    background-color: #c00
+}
+
+input[name=submit] :focus {
+    background-color: #c00;
+    color: #fff
+}
+
+div#login-message {
+    position: absolute;
+    line-height: 1em;
+    animation: flashmessage 2s linear infinite;
+    top: 0;
+    display: block;
+    width: 100%;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    background-color: #c00;
+    color: #fff;
+    padding: 1em 0;
+    margin: 0 auto
+}
+
+@keyframes flashmessage {
+    50% {
+        background-color: #800
+    }
+}
+
+section {
+    z-index: 9;
+    background-color: transparent;
+    padding: 1.5em;
+    line-height: 1.5em;
+    display: inline-block;
+    vertical-align: middle
+}
+
+div,h3,p {
+    cursor: default
+}
+
+@media (max-width:25em) {
+    h3,input,label {
+        width: 100%;
+        display: block
+    }
+
+    input,label {
+        text-indent: .5em;
+        padding-left: 0;
+        text-align: left
+    }
+
+    h3 {
+        font-size: 6.5vw;
+        line-height: 1em;
+        padding: 1em 0;
+        margin-bottom: 30px
+    }
+
+    section {
+        padding: 0 3vw
+    }
+
+    input[type=submit] {
+        text-align: center;
+        margin: 1em 0;
+        text-indent: 0
+    }
+}
+
+h3,label,p {
+    user-select: none
+}
+
+input:-webkit-autofill,select:-webkit-autofill,textarea:-webkit-autofill {
+    background-color: #fff!important;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset,0 .2em .5em #ccc;
+    border-color: #fff!important;
+    animation: none!important
+}
+
+input[name=submit] {
+    border-color: #c00;
+    background: linear-gradient(-45deg,transparent 50%,#c00 50.01%,#c00 100%);
+    background-size: 250%;
+    background-position: 100% 100%;
+
+    transition: background-position .2s linear, color .2s ease-out
+    ,background-color .1s ease-out .2s
+}
+
+input[name=submit]:active,input[name=submit]:focus,input[name=submit]:hover {
+
+    background-position: 0% 0%;
+
+    color: #fff;
+}
+
+@media (min-width:90em) {
+
+    label{font-size:.6666em;}
+
+    body,section {
+        max-width: 100%;
+        font-size: 1.35em
+    }
+
+    h3{font-size:.75em} input[type=password],input[type=text]{
+                            border-width: .12em;
+                        }
+    p {
+        display: inline-block
+    }
+
+    input,label {
+        width: auto
+    }
+
+    label {
+        margin-left: 2em
+    }
+
+    input[name=submit] {
+        display: block;
+        margin: .5em auto;
+        width: 15em;
+        font-size:.6666em; margin-top:3em;
+    }
+}
+
+input[type=password]:focus,input[type=text]:focus {
+    color: #000;
+    border-bottom-color: #0aa6d9;
+    animation: pulse 2s linear infinite
+}
+
+input[type=password],input[type=text]{font-weight: 700;}
+
+@keyframes pulse {
+    50% {
+        border-bottom-color: #7cd5ee
+    }
+}
+
+
+::selection {
+    color: white;
+    background: #333;
+}

@@ -1,0 +1,60 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars.yml
+    - ~/.ansibleawscreds
+    - ~/.ansiblerhsmcreds
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/{{ ssh_key }}
+
+#create the key, sg, instance
+  roles:
+    - { role: provision, tags: ["provision"] }
+  tasks:  
+#find its IP    
+    - name: find the instance we are templating out
+      ec2_instance_facts:
+        aws_access_key: "{{aws_access_key}}"
+        aws_secret_key: "{{aws_secret_key}}"
+        region: "{{ instance_region }}"
+        filters:
+          instance-state-name: running
+          "tag:TrackingTag": "{{ tracking_tag }}"
+      register: templateinstance
+      tags: inventory
+      when: cloud_vendor == "aws"
+    - name: build out an inventory
+      add_host: 
+        hostname: "{{ item.public_ip_address }}"
+        groups: template
+      with_items: "{{ templateinstance.instances }}"
+      tags: inventory
+      when: cloud_vendor == "aws"
+
+- hosts: template
+  remote_user: ec2-user
+  become: True
+  vars_files:
+    - vars.yml
+    - ~/.ansibleawscreds
+    - ~/.ansiblerhsmcreds
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/{{ ssh_key }}
+
+  roles:
+    - { role: install, tags: ["install"] }
+
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars.yml
+    - ~/.ansibleawscreds
+    - ~/.ansiblerhsmcreds
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/{{ ssh_key }}
+  roles:
+    - { role: save, tags: ["save"] }

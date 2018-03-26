@@ -1,0 +1,16 @@
+---
+#cloud_vendor: aws
+cloud_vendor: ravello
+starting_image: ami-223f945a
+instance_type: t2.large
+instance_region: us-west-2
+vpc: vpc-NOPE
+#ssh_key: Summit2018Demo
+ssh_key: summit_lab_rsa
+tracking_tag: "Summit2018Demo-{{ buildtype }}"
+security_group: Summit2018Demo
+image_name: "Summit2018Demo-{{ buildtype }}"
+class_tag: "Summit2018DemoClass-{{ buildtype }}"
+class_count: 2
+defaultpassword: RHSummit2018IAM!
+defaultpasswordenc: $6$j4NomyPGZ8LtexUd$RB.QyhNcqK4TSHHu8pRSpEChoq41xZ4PbHtC62kpFaw.U4fqAMhgPZPJtinHVINefZqLff5DPKdirTkpJDyZK0

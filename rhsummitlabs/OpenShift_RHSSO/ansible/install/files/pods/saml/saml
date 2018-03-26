@@ -1,0 +1,141 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "saml",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "saml"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "saml",
+                    "deploymentconfig": "saml"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "saml",
+                            "deploymentconfig": "saml"
+                        },
+                        "annotations": {
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                            "serviceAccount": "sa-saml",
+                            "serviceAccountName": "sa-saml",
+                        "containers": [
+                            {
+                                "name": "saml",
+                                "image": "summitdemo/saml:latest",
+                                "imagePullPolicy": "IfNotPresent",
+                                "ports": [
+                                    {
+                                        "containerPort": 8443,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "volumeMounts": [
+                                    {   
+                                        "mountPath": "/etc/config",
+                                        "name": "config-volume",
+                                        "readOnly": true
+                                    }
+                                ],
+                                "resources": {}
+                            }
+                        ],
+                        "volumes": [
+                            {   
+                               "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "metadata"
+                                },
+                                "name": "config-volume"
+                               }
+                            ]
+                            }
+                    }
+                }
+            },
+       {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "saml",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "saml"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8443-tcp",
+                        "protocol": "TCP",
+                        "port": 8443,
+                        "targetPort": 8443
+                    }
+                ],
+                "selector": {
+                    "app": "saml",
+                    "deploymentconfig": "saml"
+                }
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+{
+    "kind": "Route",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "secure-saml",
+        "creationTimestamp": null,
+        "labels": {
+            "application": "saml"
+        },
+        "annotations": {
+            "description": "Route for application's https service.",
+            "openshift.io/host.generated": "true"
+        }
+    },
+    "spec": {
+        "host": "saml-demo.paas.local",
+        "to": {
+            "kind": "Service",
+            "name": "saml",
+            "weight": 100
+        },
+        "tls": {
+            "termination": "passthrough"
+        },
+        "wildcardPolicy": "None"
+    }
+}
+]
+}

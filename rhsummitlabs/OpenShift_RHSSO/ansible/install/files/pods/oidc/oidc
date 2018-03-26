@@ -1,0 +1,126 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "oidc",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "oidc"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "oidc",
+                    "deploymentconfig": "oidc"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "oidc",
+                            "deploymentconfig": "oidc"
+                        },
+                        "annotations": {
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+			    "dnsPolicy": "Default",
+                            "serviceAccount": "sa-oidc",
+                            "serviceAccountName": "sa-oidc",
+                        "containers": [
+                            {
+                                "name": "oidc",
+                                "image": "summitdemo/oidc:latest",
+                                "imagePullPolicy": "IfNotPresent",
+                                "ports": [
+                                    {
+                                        "containerPort": 8443,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {}
+                            }
+                        ]
+                            }
+                    }
+                }
+            },
+       {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "oidc",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "oidc"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8443-tcp",
+                        "protocol": "TCP",
+                        "port": 8443,
+                        "targetPort": 8443
+                    }
+                ],
+                "selector": {
+                    "app": "oidc",
+                    "deploymentconfig": "oidc"
+                }
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+{
+    "kind": "Route",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "secure-oidc",
+        "creationTimestamp": null,
+        "labels": {
+            "application": "oidc"
+        },
+        "annotations": {
+            "description": "Route for application's https service.",
+            "openshift.io/host.generated": "true"
+        }
+    },
+    "spec": {
+        "host": "oidc-demo.paas.local",
+        "to": {
+            "kind": "Service",
+            "name": "oidc",
+            "weight": 100
+        },
+        "tls": {
+            "termination": "passthrough"
+        },
+        "wildcardPolicy": "None"
+    }
+}
+]
+}

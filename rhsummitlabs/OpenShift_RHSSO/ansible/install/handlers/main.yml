@@ -1,0 +1,12 @@
+---
+# handlers file for install
+- name: Restart ssh
+  service: name=sshd state=restarted enabled=yes
+- name: Restart dnsmasq
+  service: name=dnsmasq state=restarted enabled=yes
+- name: start vnc
+  systemd: name=vncserver@:1.service state=restarted enabled=yes daemon_reload=yes
+- name: start novnc
+  systemd: name=novnc.service state=restarted enabled=yes daemon_reload=yes
+- name: start docker
+  systemd: name=docker state=restarted enabled=yes daemon_reload=yes

@@ -1,0 +1,426 @@
+---
+# tasks file for install
+
+- name: see if this has been built before.  hacky idempotent for some tasks.
+  stat:
+    path: /root/builddate
+  register: built 
+  tags: version
+
+- name: setup hosts file
+  template: 
+    src: hosts.j2
+    dest: /etc/hosts
+    backup: yes
+    owner: root
+    group: root
+    mode: '0644'
+  tags: hosts
+
+- name: you need real subscriptions to download things
+  redhat_subscription:
+    state: present
+    username: "{{ rhsm_username }}"
+    password: "{{ rhsm_password }}"
+    autosubscribe: true
+    force_register: yes
+  tags: rhsm
+  when: cloud_vendor == "ravello"
+
+- name: enable other stock repos
+  ini_file:
+    dest: /etc/yum.repos.d/redhat-rhui.repo
+    section: "{{ item }}"
+    option: enabled
+    value: 1
+  with_items:
+    - rhui-REGION-rhel-server-extras    
+    - rhui-REGION-rhel-server-optional    
+    - rhui-REGION-rhel-server-supplementary   
+  tags: repos-stock
+  when: cloud_vendor == "aws"
+
+- name: enable other stock repos
+  ini_file:
+    dest: /etc/yum.repos.d/redhat.repo
+    section: "{{ item }}"
+    option: enabled
+    value: 1
+  with_items:
+    - rhel-7-server-extras-rpms   
+    - rhel-7-server-optional-rpms 
+    - rhel-7-server-supplementary-rpms
+  tags: repos-stock
+  when: cloud_vendor == "ravello"
+
+- name: add epel repo
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/7/$basearch/
+    enabled: yes
+    gpgkey: https://archive.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+  tags: repos-epel
+
+- name: install updates
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  tags: updates
+  when: built.stat.exists == False 
+
+- name: make sure our base system isn't rubish
+  yum: 
+    state: installed
+    name: 
+     - net-tools
+     - bind-utils
+     - vim 
+     - lsof
+     - screen
+     - nmap-ncat
+     - nmap
+     - openssl
+     - wget
+     - curl
+     - rsync
+     - openssh-clients
+     - krb5-workstation
+     - openldap-clients
+     - bzip2
+     - sos
+     - less
+     - iputils
+     - traceroute
+     - tcpdump
+     - telnet
+     - mtr
+     - strace
+     - unzip
+     - xz
+     - mysql 
+     - git
+     - wireshark
+     - setroubleshoot
+     - info
+     - man-db
+     - mlocate
+     - findutils
+     - grep
+     - gawk
+     - pcre
+     - yum-utils
+     - readline
+     - which
+     - diffutils
+     - sudo
+     - iptables
+     - tar
+     - nss
+     - cronie
+     - net-tools
+     - bridge-utils
+     - gnupg2
+     - ncurses
+     - nano
+     - sed
+     - rsyslog
+     - python
+     - file
+     - ethtool
+     - iperf
+     - iproute
+     - acl
+     - coreutils
+     - gzip
+     - logrotate
+     - tmpwatch
+     - procps-ng
+     - bc
+     - dmidecode
+     - emacs
+     - hdparm
+     - parted
+     - lvm2
+     - make
+     - ntpdate
+     - patch
+     - policycoreutils
+     - util-linux
+     - expect
+     - python-docker-py
+     - firewalld
+     - python-firewall
+  tags: base-pkgs
+
+- name: enable firewalld
+  service: name=firewalld state=started enabled=yes
+  tags: firewalld
+
+- name: install that beautiful GUI
+  yum: 
+    state: installed
+    name:
+     - "@^graphical-server-environment"
+     - firefox
+  tags: gui-pkgs
+
+- name: create student user
+  user:
+    name: student
+    comment: "student account"
+    shell: /bin/bash
+    createhome: yes
+    uid: 1111
+    password: "{{ defaultpasswordenc }}"
+  tags: user
+
+- name: set root password
+  user:
+    name: root
+    password: "{{ defaultpasswordenc }}"
+    update_password: always
+  tags: root-pw
+
+- name: set root ssh key
+  authorized_key:
+    user: root
+    state: present
+    exclusive: yes
+    key: "{{ lookup('file', '~/.ssh/{{ ssh_key }}.pub') }}"
+  tags: root-sshkey
+
+- name: configure ssh server
+  copy: 
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart ssh
+  tags: ssh-config
+
+- name: open up holes in the firewall
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  with_items:
+     - 8080/tcp
+     - 8443/tcp
+     - 9000/tcp
+     - 53/udp
+     - 53/tcp
+     - 8053/tcp
+     - 8053/udp
+     - 22/tcp
+     - 5901/tcp
+     - 80/tcp
+     - 443/tcp
+  tags: firewall
+
+- name: copy over openshift scripts, templates, certs, other files.
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: '0755'
+  with_items:
+   - { src: 'openshift-start.sh', dst: '/root/openshift-start.sh' }
+   - { src: 'openshift-stop.sh', dst: '/root/openshift-stop.sh' }
+   - { src: 'images/', dst: '/root/images/' }
+   - { src: 'pods/', dst: '/root/pods/' }
+   - { src: 'diag/', dst: '/root/diag/' }
+   - { src: 'certs/', dst: '/etc/certs/' }
+   - { src: 'certs/certs/mellon-signing.crt', dst: '/root/pods/saml/' }
+   - { src: 'certs/private/mellon-signing.key', dst: '/root/pods/saml/' }
+   - { src: 'certs/certs/saml-demo.paas.local.crt', dst: '/root/pods/saml/' }
+   - { src: 'certs/private/saml-demo.paas.local.key', dst: '/root/pods/saml/' }
+   - { src: 'certs/certs/oidc-demo.paas.local.jks', dst: '/root/pods/oidc/oidc.jks' }
+  tags: files
+
+- name: install novnc
+  yum: 
+    state: installed
+    name:
+     - novnc
+     - python-websockify
+     - numpy
+     - tigervnc-server
+     - tigervnc
+  tags: novnc-pkgs
+
+- name: set vnc password for student user
+  shell: printf "{{ defaultpassword }}\n{{ defaultpassword }}\n\n" | vncpasswd
+  args:
+    executable: /bin/bash
+    creates: /home/student/.vnc/passwd
+  become: true
+  become_user: student
+  tags: vnc-password
+
+- name: lay down vncserver systemd unit
+  copy: 
+    src: 'vncserver@:1.service'
+    dest: /etc/systemd/system/vncserver@:1.service
+    owner: root
+    group: root
+    mode: '0755'
+  notify: start vnc
+  tags: vnc-service
+
+- name: lay down novnc systemd unit
+  copy: 
+    src: 'novnc.service'
+    dest: /etc/systemd/system/novnc.service
+    owner: root
+    group: root
+    mode: '0755'
+  notify: start novnc
+  tags: novnc-service
+
+- name: install docker
+  yum: 
+    state: installed
+    name:
+     - docker
+  tags: docker-install
+  register: dockerinstall
+
+- name: configure insecure registry for docker
+  ini_file:
+    dest: /etc/containers/registries.conf
+    section: registries.insecure
+    option: registries
+    value: "['172.30.0.0/16']"
+    backup: yes
+  tags: docker-config
+  notify: start docker
+
+- name: restart docker for this playbook
+  service: name=docker state=restarted enabled=yes
+  tags: docker-start
+  when: dockerinstall.changed
+ 
+- name: copy over openshift binaries.  not stored in git.  waiting to figure out how entitlements will work for demos to do this better. 
+  copy: 
+    src: ../tmp/oc-3.7.23-linux.tar.gz
+    dest: /root/oc-3.7.23-linux.tar.gz
+    owner: root
+    group: root
+    mode: '0644'
+  tags: openshift-download
+
+- name: install openshift binary.  again, this should be replaced by yum. 
+  shell: tar -xzf /root/oc-3.7.23-linux.tar.gz -C /usr/bin/
+  args:
+    executable: /bin/bash
+    creates: /usr/bin/oc
+  tags: openshift-install
+
+- name: create openshift data directory 
+  file:
+    path: /opt/openshift_data
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  tags: openshift-dir
+ 
+- name: see if openshift is up
+  shell: oc status
+  args:
+    executable: /bin/bash
+  tags: openshift-status
+  register: openshift_status
+  ignore_errors: True
+  changed_when: False
+
+- name: you need real subscriptions for docker things
+  redhat_subscription:
+    state: present
+    username: "{{ rhsm_username }}"
+    password: "{{ rhsm_password }}"
+    autosubscribe: true
+    force_register: yes
+  tags: rhsm
+  when: built.stat.exists == False 
+
+- name: see if this OS has been initialized before.  hacky idempotent for some task
+  stat:
+    path: /root/openshift.init
+  register: osinit 
+  tags: openshift-version
+
+- name: bring up and the openshift cluster for the intialization phase
+  shell: /root/diag/openshift-init.sh
+  args:
+    executable: /bin/bash
+  tags: openshift-up
+  when: openshift_status|failed and osinit.stat.exists == False 
+  register: openshiftup
+ 
+- name: bring openshift down 
+  shell: /root/openshift-stop.sh
+  args:
+    executable: /bin/bash
+  tags: openshift-down
+  when: openshiftup.changed
+
+- name: remove the real subscriptions for docker things
+  redhat_subscription:
+    state: absent
+  tags: rhsm-unregister
+ 
+- name: copy over openshift config.
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+   - { src: 'master-config.yaml', dst: '/var/lib/origin/openshift.local.config/master/master-config.yaml' }
+   - { src: 'certs/certs/openshift.local.crt', dst: '/var/lib/origin/openshift.local.config/master/' }
+   - { src: 'certs/private/openshift.local.key', dst: '/var/lib/origin/openshift.local.config/master/' }
+  tags: openshift-config
+
+- name: install dnsmasq
+  yum: 
+    state: installed
+    name:
+     - dnsmasq
+  tags: dnsmasq-install
+
+- name: configure dnsmasq server
+  template: 
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+  notify: Restart dnsmasq
+  tags: dnsmasq
+
+- name: setup /etc/reslov.conf
+  template: 
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    backup: yes
+    owner: root
+    group: root
+    mode: '0644'
+    attributes: 'i'
+  tags: resolv.conf
+
+- name: create version file
+  shell: date +"%F %T" > /root/builddate
+  args:
+    executable: /bin/bash
+    creates: /root/builddate
+  tags: version
+
