@@ -23,7 +23,7 @@ check_and_do "docker inspect registry.access.redhat.com/openshift3/ose:v3.7.23-3
 check_and_do "docker inspect registry.access.redhat.com/openshift3/ose-pod:v3.7.23-3" "docker pull registry.access.redhat.com/openshift3/ose-pod:v3.7.23-3" "error pulling docker image"
 check_and_do "docker inspect registry.access.redhat.com/redhat-sso-7/sso71-openshift:1.0" "docker pull registry.access.redhat.com/redhat-sso-7/sso71-openshift:1.0" "error pulling docker image"
 check_and_do "docker inspect registry.access.redhat.com/rhel:7.4-164" "docker pull registry.access.redhat.com/rhel:7.4-164" "error pulling docker image"
-check_and_do "docker inspect registry.access.redhat.com/jboss-eap-7/eap70-openshift:1.7-3" "docker pull registry.access.redhat.com/jboss-eap-7/eap70-openshift:1.7-3" "error pulling docker image"
+check_and_do "docker inspect registry.access.redhat.com/jboss-eap-7/eap71-openshift:1.2-7" "docker pull registry.access.redhat.com/jboss-eap-7/eap71-openshift:1.2-7" "error pulling docker image"
 check_and_do "docker inspect summitdemo/saml:latest" "cd /root/pods/saml/ && docker build --rm --no-cache --force-rm -t summitdemo/saml:latest ." "error building docker image"
 check_and_do "docker inspect summitdemo/oidc:latest" "cd /root/pods/oidc/ && docker build --rm --no-cache --force-rm -t summitdemo/oidc:latest ." "error building docker image"
 

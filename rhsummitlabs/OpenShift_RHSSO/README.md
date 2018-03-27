@@ -49,7 +49,7 @@ Day to day care and feeding is also awesome.  Should your application crash or a
 
 Lets dig in:
 
-    ssh root@IP
+    ssh root@rhsso-GUID.rhpds.opentlc.com
     /root/openshift-start.sh
 
 This script will bring up OpenShift in a prototyping like environment by running Docker containers of all of its components locally on your machine.  Your developers can do the same thing on their laptops and use an OpenShift setup that should behave similar to what you offer them on much beefier high-availability and supported OpenShift installs you have in production.  It is truly an amazing feat that something so complex can be ran locally with so little effort.  
@@ -191,29 +191,29 @@ Before we setup and SSO enable some clients, lets add a user:
  1.  In firefox in your VM go to https://secure-tmpsso-demo.paas.local/auth/admin/
  2.  Login with admin and the shared password
  3. Users > Add User
-	 4. Username: testlocal
-	 5. email: testlocal@example.com
-	 6. First Name: Test
-	 7. Last Name: Local
-	 8. Enabled
-	 9. Email verified off
-	 10. No actions
-	 11. Save  
+     1. Username: testlocal
+     2. email: testlocal@example.com
+     3. First Name: Test
+     4. Last Name: Local
+     5. Enabled
+     6. Email verified off
+     7. No actions
+     8. Save  
  4. Users > View all users > testlocal > edit
-	 5. Credentials
-	 6. New Password: test1234
-	 7. Password Confirmation: test1234
-	 8. Temporary off
-	 9. Reset Password
-	 10. Change  Password
+     1. Credentials
+     2. New Password: test1234
+     3. Password Confirmation: test1234
+     4. Temporary off
+     5. Reset Password
+     6. Change  Password
  5. Roles > Add Role 
-	 6. Role name: authenticated
-	 7. Description: empty
-	 8. Scope Param required: off
-	 9. Save
+     1. Role name: authenticated
+     2. Description: empty
+     3. Scope Param required: off
+     4. Save
  6. Users > View all users > testlocal > edit
-	 7. Role Mappings
-	 8. Add authenticated to assigned roles 
+     1. Role Mappings
+     2. Add authenticated to assigned roles 
 
 
 
@@ -248,19 +248,19 @@ There are two main SAML web flows.  SP-initiated and IDP-initiated.  SP-initiate
  source: [wikipedia](https://www.wikipedia.org/)
  
  1. End user attempts to access protected content from a vendor
-	 2. End user does not have an existing session with the vendor
-	 3. End user did not come over with a SAML Assertion POST to an AssertionConsumerService URL
+     1. End user does not have an existing session with the vendor
+     2. End user did not come over with a SAML Assertion POST to an AssertionConsumerService URL
  2. End user is directed to the RHSSO IDP SingleSignOnService endpoint with a AuthnStatement. This is usually base64 encoded and stuck onto a URL as a URI parameter but it could also be POSTed by a javascript form. 
-	 3. RHSSO makes sure its a valid vendor and checks signatures
-	 4. End user does not have an existing RHSSO session
-	 5. End user logs in
+     1. RHSSO makes sure its a valid vendor and checks signatures
+     2. End user does not have an existing RHSSO session
+     3. End user logs in
  3. End user is sent to the vendors AssertionConsumerService endpoint with an Assertion that contains several pieces of personal data in its Attributes.  This is sent by javascript form POSTing of base64 data.  
  4. Vendor establishes a session for the end user and sends them back to the RelayState where they started
 
 
 Lets build it:
 
-    ssh root@IP
+    ssh root@rhsso-GUID.rhpds.opentlc.com
     cd /root/pods/saml/
     oc login -u developer
     oc project demo
@@ -288,18 +288,18 @@ Lets SSO enable it:
  1.  In firefox in your VM go to https://secure-tmpsso-demo.paas.local/auth/admin/
  2.  Login with admin and the shared password
  3. Clients > Create
-	 4. ClientID: https://saml-demo.paas.local/secret/endpoint/metadata
-	 5. Client Protocol: SAML
-	 6. Client Template: empty
-	 7. Client SAML Endpoint: https://saml-demo.paas.local/secret/endpoint/postResponse
-	 8. Save
+     1. ClientID: https://saml-demo.paas.local/secret/endpoint/metadata
+     2. Client Protocol: SAML
+     3. Client Template: empty
+     4. Client SAML Endpoint: https://saml-demo.paas.local/secret/endpoint/postResponse
+     5. Save
  4. The general settings screen loads
-	 5. Client Signature Required: Off
-	 6. Force Name ID Format: On
-	 7. Name ID Format: username
-	 8. Valid Redirect URIs: https://saml-demo.paas.local/*  
-	 9. Leave everything else the same
-	 10. Save
+     1. Client Signature Required: Off
+     2. Force Name ID Format: On
+     3. Name ID Format: username
+     4. Valid Redirect URIs: https://saml-demo.paas.local/*  
+     5. Leave everything else the same
+     6. Save
 
 Let try out the SSO:
  1. In firefox in your VM do a google search for `SSO Tracer Firefox`
@@ -308,9 +308,9 @@ Let try out the SSO:
  4. Tools > SSO Tracer
  5. Go to https://saml-demo.paas.local/  You will see a splash screen.
  6. Go to https://saml-demo.paas.local/secret/ while watching SSO Tracer
-	 4. You will be bounced to https://secure-tmpsso-demo.paas.local
-	 5. login as testlocal/test1234
-	 6. Watch SSO Tracer as you go back to https://saml-demo.paas.local/secret/
+     1. You will be bounced to https://secure-tmpsso-demo.paas.local
+     2. login as testlocal/test1234
+     3. Watch SSO Tracer as you go back to https://saml-demo.paas.local/secret/
  7. You will see a php page that shows a bunch of stuff including some environmental variables like "MELLON_Role" that were set based on your users information. 
  8. Click on the "SAML" flagged bits in SSO Tracer to see what this SP-initiated  SSO flow actually looked like on the wire. 
 
@@ -356,24 +356,24 @@ Finally, the Resource Owner Grant flow is where you enter your credentials into 
 source: [forgerock](https://backstage.forgerock.com/docs/am/5/oidc1-guide/)
 
  1. End user accesses a client
-	 2. Has no current session
-	 3. Didn't come over with an OIDC code as a URI parameter
+     1. Has no current session
+     2. Didn't come over with an OIDC code as a URI parameter
  2. Client redirects end user to the OpenID Providers authorization_endpoint from its well-known configuration 
-	 3. End user doesn't have a session
+     1. End user doesn't have a session
  3. End user authenticates and optionally consents to sharing data with the client
  4. End user is redirected back to the clients redirect_uri with a code URL  parameter.  This code is non-human readable and is an Authorization Code.  
  5. The client front end hands the code snippet from the URL to the client backend. 
-	 6. The client front end should establish a local session for the end user at this point. 
+     1. The client front end should establish a local session for the end user at this point. 
  6. The client backend POSTS the code to the OpenID Provider token endpoint with its client_id and password (if required).  
  7. The OpenID Provider returns an access_token, id_token, and refresh_token in a JSON document.  Each are base64 encoded and signed JWTs. 
-	 8. The client backend is now responsible for keeping access tokens fresh by resubmitting refresh tokens so long as the clients front end session is still valid.  
+     1. The client backend is now responsible for keeping access tokens fresh by resubmitting refresh tokens so long as the clients front end session is still valid.  
  8. The end user interacts with the client front end and calls an action that requires the client backend to use an access token to access a protected resource on an entirely different Resource Server. 
  9. The resource server validates the identity and session of the access token in or out of band.  It isn't necessarily required for this server to know anything about the OpenID provider other than its signing key. 
  10. The resource server grants access to the data and returns it to the client backend which is then shown to the end user through the client frontend.  
 
 Lets build it:
 
-    ssh root@IP
+    ssh root@rhsso-GUID.rhpds.opentlc.com
     cd /root/pods/oidc/
     oc login -u developer
     oc project demo
@@ -394,29 +394,29 @@ Above we:
  - Watched for the pod to come up. 
 
 Lets SSO enable it:
-1.  In firefox in your VM go to https://secure-tmpsso-demo.paas.local/auth/admin/
+ 1.  In firefox in your VM go to https://secure-tmpsso-demo.paas.local/auth/admin/
  2.  Login with admin and the shared password
  3. Clients > Create
-	 4. ClientID: oidc-test
-	 5. Client Protocol: openid-connect
-	 6. Client Template: empty
-	 7. Root URL: empty
-	 8. Save
+     1. ClientID: oidc-test
+     2. Client Protocol: openid-connect
+     3. Client Template: empty
+     4. Root URL: empty
+     5. Save
  4. The general settings screen loads
-	 5. Direct Access Grants Enabled: Off
-	 6. Valid Redirect URIs: https://oidc-demo.paas.local/*  
-	 7. Web Origins: +
-	 8. Leave everything else the same
-	 9. Save
+     1. Direct Access Grants Enabled: Off
+     2. Valid Redirect URIs: https://oidc-demo.paas.local/*  
+     3. Web Origins: +
+     4. Leave everything else the same
+     5. Save
  
  
 
 Let try out the SSO:
  1. In firefox in your VM open up a private session (File > New Private Window) and launch Developer Tools (Tools > Web Developer > Toggle Tools > Network)
  2. Go to https://oidc-demo.paas.local/oidc-app/ while watching Network Developer Tools
-	 4. You will be bounced to https://secure-tmpsso-demo.paas.local
-	 5. login as testlocal/test1234
-	 6. Watch Developer Tools as you go back to https://saml-demo.paas.local/oidc-app/
+     1. You will be bounced to https://secure-tmpsso-demo.paas.local
+     2. login as testlocal/test1234
+     3. Watch Developer Tools as you go back to https://saml-demo.paas.local/oidc-app/
  4. You will see a page showing information about the user that logged in.  
  5. Click on the lines that have "code" entries in Developer Tools.  Note how this isn't a useful piece of information.  The EAP backend itself then exchanges that code for a token that has more of your personal data.  You can't see that in the browsers Developer Tools and that is a good thing for security. Your test users information is printed on this page because our front-end JSP then queries the backend EAP and fishes out the data to display it.  
 
@@ -428,30 +428,30 @@ In short, you can think of IDM as "AD for Linux".
 
 
 Lets explore a bit and create a user.  On your SSO host
- 1. ssh root@IP   
+ 1. ssh root@rhsso-GUID.rhpds.opentlc.com
  2. vim /etc/hosts 
- 3. IDM_IP idm.local
+ 3. 10.0.0.11 idm.local
  4. In firefox in your VM go to https://idm.local
  5. Login with the shared admin credentials 
  6. Click around and see the below while we explain it in class
  7. Now lets create a user
-	 8. Identity > Users > Add
-	 9. User login: testldap
-	 10. First Name: Test
-	 11. Last Name:  LDAP
-	 12. Class: empty
-	 13. No private group: unchecked
-	 14. GID: empty
-	 15. New Password: password
-	 16. Verify Password: password
-	 17. Add
-	 18. Logout (drop down at top right)
-	 19. Login with testldap/password
-		 20. Current password: password
-		 21. OTP: empty
-		 22. New Password: RHSummit2018IAM!
-		 23. Verify Password: RHSummit2018IAM!
-		 24. Reset password and login
+     1. Identity > Users > Add
+     2. User login: testldap
+     3. First Name: Test
+     4. Last Name:  LDAP
+     5. Class: empty
+     6. No private group: unchecked
+     7. GID: empty
+     8. New Password: password
+     9. Verify Password: password
+     10. Add
+ 8. Logout (drop down at top right)
+ 9. Login with testldap/password
+     1. Current password: password
+     2. OTP: empty
+     3. New Password: RHSummit2018IAM!
+     4. Verify Password: RHSummit2018IAM!
+     5. Reset password and login
 
 
 `Users` and `Groups` are what you would expect.  IDM does support groups of groups and it supports life-cycle stages of user accounts.  
@@ -475,40 +475,40 @@ Now lets configure RHSSO to read users from IDM:
  1.  In firefox in your VM go to https://secure-tmpsso-demo.paas.local/auth/admin/
  2.  Login with admin and the shared password
  3. User Federation
-	 4. Add LDAP
-	 5. Console Display Name: ldap
-	 6. Priority: 0
-	 7. Edit mode: READ_ONLY
-	 8. Sync Registrations: off
-	 9. Vendor: Red Hat Directory Server
-	 10. Username LDAP Attribute: uid
-	 11. RDN LDAP Attribute: uid
-	 12. UUID LDAP Attribute: uid
-	 13. User Object Classes: inetOrgPerson, organizationalPerson
-	 14. connection url: ldaps://IDM_IP
-	 15. users dn: cn=users,cn=accounts,dc=idm,dc=local
-	 16. Authentication Type: simple
-	 17. Bind DN: uid=testldap,cn=users,cn=accounts,dc=idm,dc=local
-	 18. Bind Credential: RHSummit2018IAM!
-	 19. Test Connection, Test Authentication 
-	 20. Cusotm User LDAP Filter: empty
-	 21. Search scope: One Level
-	 22. Use truststore SPI: Only for ldaps
-	 23. Connection Pooling: on
-	 24. Connection timeout: empty
-	 25. Read timeout: emtpy
-	 26. Pagination: on
-	 27. Allow Kerberos: off
-	 28. User Kerberos for password authentication: off
-	 29. Batch Size: 1000
-	 30. Periodic full sync: off
-	 31. Periodic changed users sync: off
-	 32. Cache Policy: default
-	 33. Save
+     1. Add LDAP
+     2. Console Display Name: ldap
+     3. Priority: 0
+     4. Edit mode: READ_ONLY
+     5. Sync Registrations: off
+     6. Vendor: Red Hat Directory Server
+     7. Username LDAP Attribute: uid
+     8. RDN LDAP Attribute: uid
+     9. UUID LDAP Attribute: uid
+     10. User Object Classes: inetOrgPerson, organizationalPerson
+     11. connection url: ldaps://IDM_IP
+     12. users dn: cn=users,cn=accounts,dc=idm,dc=local
+     13. Authentication Type: simple
+     14. Bind DN: uid=testldap,cn=users,cn=accounts,dc=idm,dc=local
+     15. Bind Credential: RHSummit2018IAM!
+     16. Test Connection, Test Authentication 
+     17. Cusotm User LDAP Filter: empty
+     18. Search scope: One Level
+     19. Use truststore SPI: Only for ldaps
+     20. Connection Pooling: on
+     21. Connection timeout: empty
+     22. Read timeout: emtpy
+     23. Pagination: on
+     24. Allow Kerberos: off
+     25. User Kerberos for password authentication: off
+     26. Batch Size: 1000
+     27. Periodic full sync: off
+     28. Periodic changed users sync: off
+     29. Cache Policy: default
+     30. Save
  4. File > new private window go to https://saml-demo.paas.local/secret/
-	 5. You will be redirected back to RHSSO
-	 6. Login with testldap/RHSummit2018IAM!
-	 7. You will go back to https://saml-demo.paas.local/secret/ and see a PHP page. 
+     1. You will be redirected back to RHSSO
+     2. Login with testldap/RHSummit2018IAM!
+     3. You will go back to https://saml-demo.paas.local/secret/ and see a PHP page. 
  5. You just logged in using an account from an centralized identity store!
 
 

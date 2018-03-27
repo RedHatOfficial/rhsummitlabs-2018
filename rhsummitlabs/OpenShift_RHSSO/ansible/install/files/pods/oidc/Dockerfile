@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/jboss-eap-7/eap70-openshift:1.7-3
+FROM registry.access.redhat.com/jboss-eap-7/eap71-openshift:1.2-7
 MAINTAINER Dustin Minnich <dminnich@redhat.com>
 USER root
 RUN yum clean all && \
