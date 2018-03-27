@@ -49,7 +49,9 @@ Day to day care and feeding is also awesome.  Should your application crash or a
 
 Lets dig in:
 
-    ssh root@rhsso-GUID.rhpds.opentlc.com
+    chmod 600 /home/lab-user/.ssh/id_rsa
+    ssh rhsso-GUID.rhpds.opentlc.com
+    sudo su -
     /root/openshift-start.sh
 
 This script will bring up OpenShift in a prototyping like environment by running Docker containers of all of its components locally on your machine.  Your developers can do the same thing on their laptops and use an OpenShift setup that should behave similar to what you offer them on much beefier high-availability and supported OpenShift installs you have in production.  It is truly an amazing feat that something so complex can be ran locally with so little effort.  
@@ -78,7 +80,7 @@ Lets explore a bit:
 
     
     
- `docker ps` will show us that all of the OpenShift services are running as docker pods on this machine.  
+`docker ps` will show us that all of the OpenShift services are running as docker pods on this machine.  
 
 ` oc login -u system:admin`  logs us in as the default root like account inside of OpenShift.  Once you login OpenShift will list all the projects (collection of resources that can have access and quota controls applied to them) that you have access to.  
 
@@ -112,18 +114,25 @@ This is barely scratching the surface of what OpenShift can do but it should be 
 
 Before we jump onto the next part though, lets take a quick peak at the OpenShift web GUI.  
 
- 1. https://IP:9000
- 2. Accept any cert warnings
- 3. Click computer screen top right
- 4. Enter password and click Connect
- 5. You now see the VM in your browser
- 6. Go through the new user screens
- 7. Open firefox in the VM
- 8. Edit > Preferences > Advanced > Certificates > View Certificates > Authorities > Import > /etc/certs/myca.crt 
- 9. Click all the boxes in the trust pop-up. And click ok.  
- 10. https://openshift.local:8443  in the now nested browser
- 11. Login as developer/developer
- 12. Click around and explore a bit
+ 1. ssh rhsso-GUID.rhpds.opentlc.com
+ 2. sudo su -
+ 3. su - student
+ 4. /usr/bin/vncserver :1 -geometry 1024x768 -localhost
+ 5. exit
+ 6. /bin/websockify --web=/usr/share/novnc/ --cert=/etc/certs/certs/novnc.crt --key=/etc/certs/private/novnc.key 9000 localhost:5901 &
+ 7. Enter
+ 8. https://rhsso-GUID.rhpds.opentlc.com:9000
+ 9. Accept any cert warnings
+ 10. Click computer screen top right
+ 11. Enter password and click Connect
+ 12. You now see the VM in your browser
+ 13. Go through the new user screens
+ 14. Open firefox in the VM
+ 15. Edit > Preferences > Advanced > Certificates > View Certificates > Authorities > Import > /etc/certs/myca.crt 
+ 16. Click all the boxes in the trust pop-up. And click ok.  
+ 17. https://openshift.local:8443  in the now nested browser
+ 18. Login as developer/developer
+ 19. Click around and explore a bit
 
 Some of the other stuff you see in the GUI like `builds`, `pipelines`, `images`, `quotas`, etc do what you would expect.  We won't be exploring any of these during this lab though.  
 
@@ -137,6 +146,7 @@ In short, if you already have all your employee information in a central place l
 
 Lets bring it up using an OpenShift template:
 
+    as root on rhsso box
     cd /root/pods/sso/
     oc login -u system:admin
     oc project openshift
@@ -207,13 +217,13 @@ Before we setup and SSO enable some clients, lets add a user:
      5. Reset Password
      6. Change  Password
  5. Roles > Add Role 
-     1. Role name: authenticated
+     1. Role name: user
      2. Description: empty
      3. Scope Param required: off
      4. Save
  6. Users > View all users > testlocal > edit
      1. Role Mappings
-     2. Add authenticated to assigned roles 
+     2. Add user to assigned roles
 
 
 
@@ -260,7 +270,7 @@ There are two main SAML web flows.  SP-initiated and IDP-initiated.  SP-initiate
 
 Lets build it:
 
-    ssh root@rhsso-GUID.rhpds.opentlc.com
+    as root on rhsso box
     cd /root/pods/saml/
     oc login -u developer
     oc project demo
@@ -373,7 +383,7 @@ source: [forgerock](https://backstage.forgerock.com/docs/am/5/oidc1-guide/)
 
 Lets build it:
 
-    ssh root@rhsso-GUID.rhpds.opentlc.com
+    as root on rhsso box
     cd /root/pods/oidc/
     oc login -u developer
     oc project demo
@@ -413,10 +423,10 @@ Lets SSO enable it:
 
 Let try out the SSO:
  1. In firefox in your VM open up a private session (File > New Private Window) and launch Developer Tools (Tools > Web Developer > Toggle Tools > Network)
- 2. Go to https://oidc-demo.paas.local/oidc-app/ while watching Network Developer Tools
+ 2. Go to https://oidc-demo.paas.local/sample/secret/ while watching Network Developer Tools
      1. You will be bounced to https://secure-tmpsso-demo.paas.local
      2. login as testlocal/test1234
-     3. Watch Developer Tools as you go back to https://saml-demo.paas.local/oidc-app/
+     3. Watch Developer Tools as you go back to https://oidc-demo.paas.local/sample/secret/
  4. You will see a page showing information about the user that logged in.  
  5. Click on the lines that have "code" entries in Developer Tools.  Note how this isn't a useful piece of information.  The EAP backend itself then exchanges that code for a token that has more of your personal data.  You can't see that in the browsers Developer Tools and that is a good thing for security. Your test users information is printed on this page because our front-end JSP then queries the backend EAP and fishes out the data to display it.  
 
@@ -428,13 +438,14 @@ In short, you can think of IDM as "AD for Linux".
 
 
 Lets explore a bit and create a user.  On your SSO host
- 1. ssh root@rhsso-GUID.rhpds.opentlc.com
- 2. vim /etc/hosts 
- 3. 10.0.0.11 idm.local
- 4. In firefox in your VM go to https://idm.local
- 5. Login with the shared admin credentials 
- 6. Click around and see the below while we explain it in class
- 7. Now lets create a user
+ 1. ssh rhsso-GUID.rhpds.opentlc.com
+ 2. sudo su -
+ 3. vim /etc/hosts 
+ 4. 10.0.0.11 idm.local
+ 5. In firefox in your VM go to https://idm.local
+ 6. Login with the shared admin credentials 
+ 7. Click around and see the below while we explain it in class
+ 8. Now lets create a user
      1. Identity > Users > Add
      2. User login: testldap
      3. First Name: Test
@@ -445,8 +456,8 @@ Lets explore a bit and create a user.  On your SSO host
      8. New Password: password
      9. Verify Password: password
      10. Add
- 8. Logout (drop down at top right)
- 9. Login with testldap/password
+ 9. Logout (drop down at top right)
+ 10. Login with testldap/password
      1. Current password: password
      2. OTP: empty
      3. New Password: RHSummit2018IAM!
@@ -485,7 +496,7 @@ Now lets configure RHSSO to read users from IDM:
      8. RDN LDAP Attribute: uid
      9. UUID LDAP Attribute: uid
      10. User Object Classes: inetOrgPerson, organizationalPerson
-     11. connection url: ldaps://IDM_IP
+     11. connection url: ldaps://10.0.0.11
      12. users dn: cn=users,cn=accounts,dc=idm,dc=local
      13. Authentication Type: simple
      14. Bind DN: uid=testldap,cn=users,cn=accounts,dc=idm,dc=local
