@@ -8,6 +8,8 @@
 
 === Access Environment and Setup
 
+Check access of your account by logging into the following servers:
+
 . Log into BPM Business Central - using server A: `http://34.251.130.28:8080/business-central` or server B: `http://52.51.30.91:8080/business-central`
 
 . Log into BPM custom UI -
@@ -19,3 +21,82 @@
 === Test Environment and Setup
 
 === Expose 3Scale BPMS API
+
+In this section we expose the BPMS API through 3Scale.
+
+==== Step 1: Configure the API Service
+. Log into 3scale - `https://redhat-bpms-admin.3scale.net`
+
+. On the homepage you will see 2 Service's username_default and username_custom for example `a_1_default` and `a_1_custom`
+
+. Click and expand username_default
+
+. Click Integration to bring up the configuraiton page for your service
+
+. Click "add the base URL of your API and save the configuration"
+
+. Enter the following information into the API and API Gateway sections.
+    * API Section Section
+    ** Private Base URL: `http://BPMSERVER:8080`
+NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.51.30.91:8080` based on your username
+    * API Gateway Section
+    ** Staging Public Base URL: This should already be defaulted.
+    ** Production Public Base URL: This should already be defaulted.
+    * Mapping Rules Section
+    ** On the right hand side next to the "Metric or Method" label click the "Define" option
+    ** Under verb option select "POST"
+    ** In the pattern section enter the following: /kie-server/services/rest/server/containers/XXXX/processes/org.jbpm.demo.NewApplication/instances
+    * Authentication Settings:
+    ** Host Header: leave blank
+    ** Sectret Token: leave default
+    * Credentials Location
+    ** Ensure "As HTTP Headers" is selected
+    ** For the Auth User Key enter any random string value
+    * Error Code Mapping
+    ** This section can be left with the default settings
+. Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
+
+==== Step 2: Define API Application Plan:
+----
+Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target differenct audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
+----
+["arabic"]
+. Go back to the list of available API's by selecting the "APIs" menu option
+. Click on the "Application Plan" link that is situated just below the title of your newly create service
+. Once in the "Application Plans" screen click on the "Create Application Plan" which is located of the right hand side of the page next to the plus icon.
+. The "Create Application Plan" screen should now appear. Enter the following information
+    * Name : <Enter Any Name>
+    * System Name : <Username>_createLoanApplication
+    * Leave the "Applications require approval?" option unchecked
+    * Trial Period (days): Leave blank
+    * Setup Fee : Leave as per defaults 0.00
+    * Cost Per Month : Leave as per defaults 0.00
+. Finally, click "Create Application Plan"
+. At this stage your service should now be ready to test.
+
+==== Step 3: Test the Service:
+
+.Testing your service using curl
+
+. Use the following curl command:
+* curl "https://<Public API URL>/? user_key=USER_KEY"
+
+
+.Testing your service using Postman
+
+. Open the Postman application
+. Create a new request
+. Set the method to PUT
+. Enter the public url of your API. This can be found on the 3Scale API integration page.
+. In the Autherisation section set the following fields:
+    * Type: Basic Auth
+    * Username: jboss
+    * Password : bpmsuite1!
+. Set the Headers as follows:
+    * Content-Type : application/xml
+    * Accept : application/xml
+    * User_Key : User_Key  // The User_Key header value must match the user key entered on the API integration configuration page.
+
+.The headers including the basic authorisation values are required by the BPMS Kie-Server and they will be passed straight through the proxy without being modified.
+
+.In a production environment you would configure SSO rather than providing the backend security credentials into your public api which we cover in a later lab.
