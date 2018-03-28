@@ -183,7 +183,7 @@
     update_password: always
   tags: root-pw
 
-- name: set root ssh key
+- name: set root ssh key. ravello overwrites.
   authorized_key:
     user: root
     state: present
@@ -191,7 +191,7 @@
     key: "{{ lookup('file', '~/.ssh/{{ ssh_key }}.pub') }}"
   tags: root-sshkey
 
-- name: configure ssh server
+- name: configure ssh server. ravello overwrites.
   copy: 
     src: sshd_config
     dest: /etc/ssh/sshd_config

@@ -18,12 +18,13 @@ import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.security.Principal;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 
-@Path("/authenticated")
+@Path("/")
 public class AuthenticatedEndpoint {
 	private final Logger logger = LoggerFactory.getLogger(AuthenticatedEndpoint.class);
 
@@ -42,7 +43,7 @@ public class AuthenticatedEndpoint {
 
 		final Template indexTemplate;
 		try {
-			indexTemplate = configuration.getTemplate("authenticated.html");
+			indexTemplate = configuration.getTemplate("authenticated.ftl");
 		} catch (IOException e) {
 			logger.error("Unable to retrieve authenticated Freemarker template for render", e);
 			throw new WebApplicationException("An error occurred attempting to render the authenticated page");
@@ -58,7 +59,13 @@ public class AuthenticatedEndpoint {
 
 		final KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) userPrincipal;
 		final String accessTokenString = keycloakPrincipal.getKeycloakSecurityContext().getTokenString();
-		userInfo.put("jwt", accessTokenString);
+		try {
+			final String prettyString = new TokenPrinter().apply(accessTokenString);
+			userInfo.put("jwt", prettyString);
+		} catch (Exception e) {
+			logger.error("error attempting to pretty-print JSON String: ", e);
+			userInfo.put("jwt", "Error attempting to decode token.  Base 64'd string: " + accessTokenString);
+		}
 
 		try {
 			indexTemplate.process(userInfo, writer);

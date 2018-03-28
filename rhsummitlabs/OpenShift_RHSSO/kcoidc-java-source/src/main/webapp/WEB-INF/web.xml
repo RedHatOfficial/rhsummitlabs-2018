@@ -9,7 +9,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Test OIDC App</web-resource-name>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/authenticated/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>authenticated</role-name>
@@ -19,7 +19,7 @@
     <!-- Define the Login Configuration for this Application -->
     <login-config>
         <auth-method>KEYCLOAK</auth-method>
-        <realm-name>Keycloak Test OIDC Application</realm-name>
+        <realm-name>master</realm-name>
     </login-config>
 
     <!-- Security roles referenced by this web application -->
@@ -28,4 +28,7 @@
         <role-name>authenticated</role-name>
     </security-role>
 
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

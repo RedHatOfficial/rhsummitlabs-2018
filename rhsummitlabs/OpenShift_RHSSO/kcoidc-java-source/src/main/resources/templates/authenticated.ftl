@@ -9,9 +9,9 @@
 <section>
     <h3>Red Hat Labs <span>OIDC App</span></h3>
 
-    <code>
+	<pre><code>
 ${jwt}
-    </code>
+	</code></pre>
 
     <br />
 

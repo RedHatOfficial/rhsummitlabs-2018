@@ -16,6 +16,7 @@ public final class ConfigProducer {
 		final Configuration configuration = new Configuration(Configuration.VERSION_2_3_25);
 		configuration.setClassForTemplateLoading(ConfigProducer.class, "/templates");
 		configuration.setDefaultEncoding("UTF-8");
+		configuration.setWhitespaceStripping(false);
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
 		return configuration;

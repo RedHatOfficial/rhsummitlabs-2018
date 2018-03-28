@@ -17,6 +17,10 @@ input{outline:0 !important}
     box-sizing: border-box
 }
 
+pre {
+	text-align: left
+}
+
 input,label {
     display: inline-block
 }

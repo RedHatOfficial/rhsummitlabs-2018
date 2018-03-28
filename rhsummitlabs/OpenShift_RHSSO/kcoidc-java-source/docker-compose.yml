@@ -1,0 +1,21 @@
+version: '3'
+services:
+  oidc-app:
+    image: "jboss/keycloak-adapter-wildfly:3.4.3.Final"
+    ports:
+     - "8081:8080"
+    links:
+     - "keycloak:secure-tmpsso-demo.paas.local"
+    volumes:
+     - "./target/oidc-app.war:/opt/jboss/wildfly/standalone/deployments/oidc-app.war:ro"
+  keycloak:
+    image: "jboss/keycloak:3.4.3.Final"
+    ports:
+     - "8080:8080"
+    volumes:
+     - "./src/test/resources/master-realm.json:/opt/jboss/wildfly/master-realm.json:ro"
+    environment:
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "test1234"
+    command: ["-b", "0.0.0.0", "-Dkeycloak.migration.action=import", "-Dkeycloak.migration.provider=singleFile", "-Dkeycloak.migration.file=/opt/jboss/wildfly/master-realm.json", "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"]
+

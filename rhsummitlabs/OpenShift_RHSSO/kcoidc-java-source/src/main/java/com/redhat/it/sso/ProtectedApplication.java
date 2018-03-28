@@ -5,7 +5,7 @@ import javax.ws.rs.core.Application;
 import java.util.Collections;
 import java.util.Set;
 
-@ApplicationPath("/")
+@ApplicationPath("/authenticated")
 public class ProtectedApplication extends Application {
 
 	@Override

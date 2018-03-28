@@ -114,25 +114,18 @@ This is barely scratching the surface of what OpenShift can do but it should be 
 
 Before we jump onto the next part though, lets take a quick peak at the OpenShift web GUI.  
 
- 1. ssh rhsso-GUID.rhpds.opentlc.com
- 2. sudo su -
- 3. su - student
- 4. /usr/bin/vncserver :1 -geometry 1024x768 -localhost
- 5. exit
- 6. /bin/websockify --web=/usr/share/novnc/ --cert=/etc/certs/certs/novnc.crt --key=/etc/certs/private/novnc.key 9000 localhost:5901 &
- 7. Enter
- 8. https://rhsso-GUID.rhpds.opentlc.com:9000
- 9. Accept any cert warnings
- 10. Click computer screen top right
- 11. Enter password and click Connect
- 12. You now see the VM in your browser
- 13. Go through the new user screens
- 14. Open firefox in the VM
- 15. Edit > Preferences > Advanced > Certificates > View Certificates > Authorities > Import > /etc/certs/myca.crt 
- 16. Click all the boxes in the trust pop-up. And click ok.  
- 17. https://openshift.local:8443  in the now nested browser
- 18. Login as developer/developer
- 19. Click around and explore a bit
+ 1. https://rhsso-GUID.rhpds.opentlc.com:9000
+ 2. Accept any cert warnings
+ 3. Click computer screen top right
+ 4. Enter password and click Connect
+ 5. You now see the VM in your browser
+ 6. Go through the new user screens
+ 7. Open firefox in the VM
+ 8. Edit > Preferences > Advanced > Certificates > View Certificates > Authorities > Import > /etc/certs/myca.crt 
+ 9. Click all the boxes in the trust pop-up. And click ok.  
+ 10. https://openshift.local:8443  in the now nested browser
+ 11. Login as developer/developer
+ 12. Click around and explore a bit
 
 Some of the other stuff you see in the GUI like `builds`, `pipelines`, `images`, `quotas`, etc do what you would expect.  We won't be exploring any of these during this lab though.  
 
@@ -217,13 +210,13 @@ Before we setup and SSO enable some clients, lets add a user:
      5. Reset Password
      6. Change  Password
  5. Roles > Add Role 
-     1. Role name: user
+     1. Role name: authenticated 
      2. Description: empty
      3. Scope Param required: off
      4. Save
  6. Users > View all users > testlocal > edit
      1. Role Mappings
-     2. Add user to assigned roles
+     2. Add authenticated to assigned roles
 
 
 
@@ -423,12 +416,12 @@ Lets SSO enable it:
 
 Let try out the SSO:
  1. In firefox in your VM open up a private session (File > New Private Window) and launch Developer Tools (Tools > Web Developer > Toggle Tools > Network)
- 2. Go to https://oidc-demo.paas.local/sample/secret/ while watching Network Developer Tools
+ 2. Go to https://oidc-demo.paas.local/oidc-app/ while watching Network Developer Tools. Click login. 
      1. You will be bounced to https://secure-tmpsso-demo.paas.local
      2. login as testlocal/test1234
-     3. Watch Developer Tools as you go back to https://oidc-demo.paas.local/sample/secret/
+     3. Watch Developer Tools as you go back to https://oidc-demo.paas.local/oidc-app/authenticated?...
  4. You will see a page showing information about the user that logged in.  
- 5. Click on the lines that have "code" entries in Developer Tools.  Note how this isn't a useful piece of information.  The EAP backend itself then exchanges that code for a token that has more of your personal data.  You can't see that in the browsers Developer Tools and that is a good thing for security. Your test users information is printed on this page because our front-end JSP then queries the backend EAP and fishes out the data to display it.  
+ 5. Click on the lines that have "code" entries in Developer Tools.  Note how this isn't a useful piece of information.  The EAP backend itself then exchanges that code for a token that has more of your personal data.  You can't see that in the browsers Developer Tools and that is a good thing for security. Your test users information is printed on this page because our front-end code then queries the backend EAP and fishes out the data to display it.  
 
 ## IDM
 
