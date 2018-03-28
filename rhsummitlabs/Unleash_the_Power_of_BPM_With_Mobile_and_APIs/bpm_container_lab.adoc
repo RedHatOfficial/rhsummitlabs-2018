@@ -22,7 +22,31 @@ We will first create a new BPM container through the user interface.
 
 === Update 3Scale
 
-We will now add a rule in 3Scale to route traffic to the new container
+We will now add a mapping rule in 3Scale to route traffic to the new container. This requires adding a new method, creating a url/method mapping rule for this method and then saving/promoting the change.
+
+. Log into 3Scale - `https://redhat-bpms-admin.3scale.net`
+
+. On the homepage you will see 2 Service's username_default and username_custom for example `a_1_default` and `a_1_custom`
+
+. Click and expand username_default
+
+. Click Definition
+
+. Under Methods click + New method
+
+. Enter a Name and System Name such as UpdatedContainer or ContainerV2 etc and click Create Method
+
+. In the table with your newly created method click Add a mapping rule
+
+. Setup a mapping rule, updating the text CHANGEME to match your new container:
+    * Under verb option select "POST"
+    * In the pattern section enter the following: /kie-server/services/rest/server/containers/CHANGEME/processes/org.jbpm.demo.NewApplication/instances
+
+. Scroll to the bottom of the page and click Update & test in staging Environment
+
+. On the Integration screen click Promote
+
+
 
 === Test API calls
 
