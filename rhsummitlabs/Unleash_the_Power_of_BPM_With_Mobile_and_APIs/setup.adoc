@@ -24,7 +24,7 @@ Check access of your account by logging into the following servers:
 
 In this section we expose the BPMS API through 3Scale.
 
-==== Step 1: Configure the API Service
+==== Configure the API Service
 . Log into 3scale - `https://redhat-bpms-admin.3scale.net`
 
 . On the homepage you will see 2 Service's username_default and username_custom for example `a_1_default` and `a_1_custom`
@@ -56,7 +56,7 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     ** This section can be left with the default settings
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
 
-==== Step 2: Define API Application Plan:
+==== Define API Application Plan:
 ----
 Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target differenct audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
 ----
@@ -74,7 +74,7 @@ Application plans allow you to define the rules (limits, pricing, features) for 
 . Finally, click "Create Application Plan"
 . At this stage your service should now be ready to test.
 
-==== Step 3: Test the Service:
+==== Test the Service:
 
 .Testing your service using curl
 
