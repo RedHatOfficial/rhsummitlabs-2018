@@ -114,18 +114,22 @@ This is barely scratching the surface of what OpenShift can do but it should be 
 
 Before we jump onto the next part though, lets take a quick peak at the OpenShift web GUI.  
 
- 1. https://rhsso-GUID.rhpds.opentlc.com:9000
- 2. Accept any cert warnings
- 3. Click computer screen top right
- 4. Enter password and click Connect
- 5. You now see the VM in your browser
- 6. Go through the new user screens
- 7. Open firefox in the VM
- 8. Edit > Preferences > Advanced > Certificates > View Certificates > Authorities > Import > /etc/certs/myca.crt 
- 9. Click all the boxes in the trust pop-up. And click ok.  
- 10. https://openshift.local:8443  in the now nested browser
- 11. Login as developer/developer
- 12. Click around and explore a bit
+ 1. ssh rhsso-GUID.rhpds.opentlc.com
+ 2. sudo su -
+ 3. /root/start-vnc.sh
+ 4. https://rhsso-GUID.rhpds.opentlc.com:9000
+ 5. Accept any cert warnings
+ 6. Click computer screen top right
+ 7. Enter password and click Connect
+ 8. You now see the VM in your browser
+ 9. Go through the new user screens
+ 10. Open firefox in the VM
+ 11. Edit > Preferences > Advanced > Certificates > View Certificates > Authorities > Import > /etc/certs/myca.crt 
+ 12. Click all the boxes in the trust pop-up. And click ok.  
+ 13. https://openshift.local:8443  in the now nested browser
+ 14. Login as developer/developer
+ 15. Click around and explore a bit
+
 
 Some of the other stuff you see in the GUI like `builds`, `pipelines`, `images`, `quotas`, etc do what you would expect.  We won't be exploring any of these during this lab though.  
 
@@ -144,7 +148,7 @@ Lets bring it up using an OpenShift template:
     oc login -u system:admin
     oc project openshift
     cat Dockerfile| oc new-build -D - --name=summitdemo-sso
-    oc login -u developer
+    oc login -u developer https://openshift.local:8443
     oc new-project demo
     oc project demo
     oc create serviceaccount sso-service-account
@@ -265,7 +269,7 @@ Lets build it:
 
     as root on rhsso box
     cd /root/pods/saml/
-    oc login -u developer
+    oc login -u developer https://openshift.local:8443
     oc project demo
     curl -L -v -k  https://secure-tmpsso-demo.paas.local/auth/realms/master/protocol/saml/descriptor -o /tmp/metadata.xml
     cat /tmp/metadata.xml 
@@ -273,7 +277,7 @@ Lets build it:
     oc create serviceaccount sa-saml
     oc login -u system:admin
     oc adm policy add-scc-to-user anyuid -z sa-saml
-    oc login -u developer
+    oc login -u developer https://openshift.local:8443
     oc project demo
     oc apply -f saml
     oc get pods -w
@@ -378,13 +382,13 @@ Lets build it:
 
     as root on rhsso box
     cd /root/pods/oidc/
-    oc login -u developer
+    oc login -u developer https://openshift.local:8443
     oc project demo
     oc create serviceaccount sa-oidc
     oc policy add-role-to-user view system:serviceaccount:demo:sa-oidc
     oc login -u system:admin
     oc adm policy add-scc-to-user anyuid -z sa-oidc
-    oc login -u developer
+    oc login -u developer https://openshift.local:8443
     oc project demo
     oc apply -f oidc
     oc get pods -w

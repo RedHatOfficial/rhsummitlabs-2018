@@ -231,6 +231,7 @@
   with_items:
    - { src: 'openshift-start.sh', dst: '/root/openshift-start.sh' }
    - { src: 'openshift-stop.sh', dst: '/root/openshift-stop.sh' }
+   - { src: 'start-vnc.sh', dst: '/root/start-vnc.sh' }
    - { src: 'images/', dst: '/root/images/' }
    - { src: 'pods/', dst: '/root/pods/' }
    - { src: 'diag/', dst: '/root/diag/' }
@@ -262,7 +263,7 @@
   become_user: student
   tags: vnc-password
 
-- name: lay down vncserver systemd unit
+- name: lay down vncserver systemd unit. doesn't work in ravello
   copy: 
     src: 'vncserver@:1.service'
     dest: /etc/systemd/system/vncserver@:1.service
@@ -271,8 +272,9 @@
     mode: '0755'
   notify: start vnc
   tags: vnc-service
+  when: cloud_vendor == "aws"
 
-- name: lay down novnc systemd unit
+- name: lay down novnc systemd unit. doesn't work in ravello.
   copy: 
     src: 'novnc.service'
     dest: /etc/systemd/system/novnc.service
@@ -281,6 +283,7 @@
     mode: '0755'
   notify: start novnc
   tags: novnc-service
+  when: cloud_vendor == "aws"
 
 - name: install docker
   yum: 
