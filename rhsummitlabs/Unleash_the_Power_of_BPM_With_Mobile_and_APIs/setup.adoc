@@ -64,7 +64,7 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     * Client
     ** For the API test GET Request enter "/business-central/kie-wb.jsp"
 
-NOTE: When configuring for the first time a failure will be expected until we generate a user_key to use.
+NOTE: When configuring for the first time a failure will be expected until we generate a user_key in step 1.3.3
 
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
 
