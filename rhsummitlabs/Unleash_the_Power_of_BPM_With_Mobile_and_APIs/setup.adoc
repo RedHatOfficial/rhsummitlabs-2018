@@ -112,10 +112,12 @@ NOTE: 3Scale uses the first user-key it finds for the Service in its request che
 
 ----
 3Scale provides a staging and production url. We will now push our staging configuration into production.
+----
 
 . Click APIs -> username_default -> Integration
 . Click Promote v.X to Production
 . You will now see a production environment url. Make a note of either the staging or production envrionment url which we will use to test the service now.
+
 
 ==== Testing your service using curl and postman
 
