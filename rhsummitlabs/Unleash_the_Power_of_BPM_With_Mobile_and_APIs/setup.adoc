@@ -4,6 +4,8 @@
 
 == Setup lab
 
+In this lab we test access to the environment and configure 3Scale.
+
 :numbered:
 
 === Access Environment and Setup
@@ -31,7 +33,7 @@ In this section we expose the BPMS API through 3Scale.
 
 . Click and expand username_default
 
-. Click Integration to bring up the configuraiton page for your service
+. Click Integration to bring up the configuration page for your service
 
 . Click "add the base URL of your API and save the configuration"
 
@@ -44,8 +46,13 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     ** Production Public Base URL: This should already be defaulted.
     * Mapping Rules Section
     ** On the right hand side next to the "Metric or Method" label click the "Define" option
+    ** Click + New Method next under Methods
+    ** Set a Friendly such as "Create a process" and System name such as "create_process"
+    ** Click Create Method
+    ** Click "Add a mapping rule", this will take you back to the Integration page
+    ** Click "+ Add Mapping Rule" again
     ** Under verb option select "POST"
-    ** In the pattern section enter the following: /kie-server/services/rest/server/containers/XXXX/processes/org.jbpm.demo.NewApplication/instances
+    ** In the pattern section enter the following: /kie-server/services/rest/server/containers/bpm-mobile-workflows/processes/org.jbpm.demo.NewApplication/instances
     * Authentication Settings:
     ** Host Header: leave blank
     ** Sectret Token: leave default
@@ -54,6 +61,9 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     ** For the Auth User Key enter any random string value
     * Error Code Mapping
     ** This section can be left with the default settings
+    * Client
+    ** For the API test GET Request enter "/business-central/kie-wb.jsp"
+NOTE: When testing this it will fail until we have setup a application key which is the next steps.
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
 
 ==== Define API Application Plan:
@@ -62,8 +72,8 @@ Application plans allow you to define the rules (limits, pricing, features) for 
 ----
 ["arabic"]
 . Go back to the list of available API's by selecting the "APIs" menu option
-. Click on the "Application Plan" link that is situated just below the title of your newly create service
-. Once in the "Application Plans" screen click on the "Create Application Plan" which is located of the right hand side of the page next to the plus icon.
+. Expand username_default
+. Click on the "+ Create Application Plan" link that is situated just below the title of your newly create service
 . The "Create Application Plan" screen should now appear. Enter the following information
     * Name : <Enter Any Name>
     * System Name : <Username>_createLoanApplication
@@ -71,23 +81,57 @@ Application plans allow you to define the rules (limits, pricing, features) for 
     * Trial Period (days): Leave blank
     * Setup Fee : Leave as per defaults 0.00
     * Cost Per Month : Leave as per defaults 0.00
-. Finally, click "Create Application Plan"
+. Click "Create Application Plan"
+. Finally click Publish, this will enable your application plan
 . At this stage your service should now be ready to test.
 
-==== Test the Service:
+==== Define Application:
+----
+Now we have a Service and a application plan we need a Application who can use this service. In this section we setup a Organisation, add a Application.
+----
 
-.Testing your service using curl
+. Click Developers from the main menu
+. Click "Redhat-BPMS"
+. Click "X_Applications" from the sub menu. X will be be a number depending on the number of applications created.
+. Click "+Create Application"
+. Choose your Application plan from the drop down menu
+. Enter a name such as username_default
+. Click Create Application
+. Copy the User Key under Credentials - you will need this to authenticate against the service
 
-. Use the following curl command:
-* curl "https://<Public API URL>/? user_key=USER_KEY"
+==== Test the Service using 3Scale Client:
 
+.Testing your service using the 3scale Client
+** Click back to APIs -> username_default -> Integration
+** Click edit APIcast configuration
+** Notice how the side is now green
+** The curl request now uses your user-key.
+NOTE: 3Scale uses the first user-key it finds for the Service in its request check
+
+==== Promoting the Service to Production
+
+----
+3Scale provides a staging and production url. We will now push our staging configuration into production.
+
+. Click APIs -> username_default -> Integration
+. Click Promote v.X to Production
+. You will now see a production environment url. Make a note of either the staging or production envrionment url which we will use to test the service now.
+
+==== Testing your service using curl and postman
+
+. Retrieve the Public API URL for either staging or production from the UI.
+
+. Use the following curl command, changing USER_KEY to the Applications User Key you created earlier:
+* curl "https://<Public API URL>/kie-server/services/rest/server/containers" -H'user-key: 623c19b73e3a87089ea2cdd16952f0b5' -H "Authorization: Basic amJvc3M6YnBtc3VpdGUxIQ==".
+
+NOTE: As we have not configured 3scale to perform single sign on we still need to provide a basic authorization header to talk to the BPM service. In a production environment you would configure SSO rather than providing the backend security credentials into your public api which we cover in a later lab.
 
 .Testing your service using Postman
 
 . Open the Postman application
 . Create a new request
-. Set the method to PUT
-. Enter the public url of your API. This can be found on the 3Scale API integration page.
+. Set the method to GET
+. Enter the public url of your API - https://<Public API URL>/kie-server/services/rest/server/containers.
 . In the Autherisation section set the following fields:
     * Type: Basic Auth
     * Username: jboss
@@ -97,6 +141,5 @@ Application plans allow you to define the rules (limits, pricing, features) for 
     * Accept : application/xml
     * User_Key : User_Key  // The User_Key header value must match the user key entered on the API integration configuration page.
 
-.The headers including the basic authorisation values are required by the BPMS Kie-Server and they will be passed straight through the proxy without being modified.
 
-.In a production environment you would configure SSO rather than providing the backend security credentials into your public api which we cover in a later lab.
+
