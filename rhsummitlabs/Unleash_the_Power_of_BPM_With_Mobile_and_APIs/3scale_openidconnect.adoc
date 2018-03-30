@@ -1,0 +1,94 @@
+= 3Scale API with Open ID Connect and Redhat SSO
+Doc Writer <pbrown@redhat.com>
+:doctype: book
+:reproducible:
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+//:pdf-page-size: Letter
+
+== Introduction
+
+In this lab you will expose the BPMS Create Process service via 3Scale using Open ID Connect to Authentication and Authorisation.
+
+Open ID Connect <TO DO> Describe the three flows with diagrams
+
+[square]
+* Authentication Flow
+* Implicit Flow
+* Custom Flow
+
+OAuth <TO DO> Describe the four flows
+
+==== Pre-Requisites
+[square]
+* Set-up Redhat BPMS and Redhat SSO
+* Craeted a security realm in Redhat SSO
+* Created a user within the Redhat SSO realm that can access the Redhat BPMS Kie-Server Api via Redhat SSO. Kie Server url is <BPMS Host>/kie-server/services/rest/server
+
+==== Lab Summary 
+. Step 1: Create a service account in the Redhat SSO realm that can be used by 3Scale to sync 3Scale Application Credentials.
+. Step 2: Configure the 3Scale api to use the OpenID Connect Authentication method.
+. Step 3: Edit the 3Scale api APIcast Configuration and set the OpenID Connect Issuer.
+. Step 4: Set the Application API Credentials Redirect URL
+. Step 5: Test using postman
+
+== Step 1: Create 3Scale service account in the RH SSO realm. 
+
+This account will be used by 3Scale to perform client synchronisation.
+["arabic"]
+. Open a browser and access the Redhat SSO Admin user inteface 
+. Select the relevant realm
+. Create a new client by selecting the Clients menu item from the left side and click the Create button.
+. Set the following values and click save:
+    * Client Id : 3scale-admin
+    * Client Protocol : OpenId-Connect
+. On the client settings tab set the following values and click save:
+    * Standard Flow Enabled = OFF
+    * Direct Access Grants = Enabled
+    * Service Accounts Enabled = On
+. Click the Service Accounts tab that now should be visible. If it's not visible you may need to refresh the page.
+. Click on the Client Roles drop down and select Realm Management from the list. A list of Available Roles should now appear. 
+. Select manage-clients and click Add Selected to move the role accross to the Assign Roles section. The role should also appear in the Effective Roles section.
+. Click on the credentials tab and take a copy of the secret as this will be required shortly.
+. Check that a user with the kieserver role exists within the realm. If one doesn't exist then you will need to follow the labs on how to configure Redhat SSO and Redhat BPMS.
+
+
+//Need to add the curl command to automatically sync the user.
+
+== Step 2: Configure the 3Scale api to use the OpenID Connect Authentication method. 
+
+. Open a browser and access the following URL: https://redhat-bpms-admin.3scale.net
+. Enter your username and password.
+. Select the relevant API from the list and click the Integration link.
+. Click "edit integration settings" from the right hand corner.
+. Scroll down the page until you get to the "Authentication" section.
+. Select the OpenID Connect option.
+. Click "Update Service"
+
+== Step 3: Edit the 3Scale api APIcast Configuration and set the OpenID Connect Issuer.
+
+. Select the relevant API from the list and click the Integration link.
+. Click "edit integration settings" from the right hand corner.
+. Click "edit APIcast configuration".
+. Scroll down the page and enter the "OpenID Connect Issuer" url. This is the url of your Redhat SSO realm. Also, ensure the service account details are added.
+ * https: <service account user id>:<client secret>@<RH SSO Hostname>/auth/realms/<realm-name>
+. Finally, click "Promote to Production".
+
+. Step 4: Set the Application API Credentials Redirect URL
+
+. Open a browser and access the following URL: https://redhat-bpms-admin.3scale.net
+. Enter your username and password.
+. Click on the "Developers" link and select the relevant developer.
+. Click on the Applications link.
+. Click "Create Application".
+. Select the relevant "Application Plan" from the drop down list.
+. Click "Create Application"
+. The new application should now be displayed. Scrol down the page to the "API Credentials" section and set the "Redirect URL" value to "https://www.getpostman.com/oauth2/callback".
+
+
+The 3scale sync didn't work for me so I need to use a curl command.
+
+. Step 5: Test the configuration using Postman
+
