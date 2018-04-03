@@ -9,16 +9,22 @@
 - vars.yml filled in. specifically set vpc and cloud_vendor
 - ~/.ansibleawscreds exists like so
 
-> aws_access_key: "--REMOVED--" 
-> aws_secret_key: "--REMOVED--"
+```
+aws_access_key: "--REMOVED--" 
+aws_secret_key: "--REMOVED--"
+```
 
 - ~/.ansiblerhsmcreds exists like so
 
->rhsm_username: "--REMOVED--"
->rhsm_password: "--REMOVED--"
+```
+rhsm_username: "--REMOVED--"
+rhsm_password: "--REMOVED--"
+```
 
 ## Usage
 See the general ansible usage notes.  All of the commands there work for AWS. 
+
+NOTE: The student README.md was written specifically for Summit. It should mostly work for things you build in AWS but expect inconsistencies with hostnames, IPs and possibly a few other things. Don't expect it to be completely turn-key. 
 
 
 # Using Ravello
@@ -28,9 +34,10 @@ See the general ansible usage notes.  All of the commands there work for AWS.
 - vars.yml filled in. specifically set cloud_vendor
  - ~/.ansiblerhsmcreds exists like so
 
->rhsm_username: "--REMOVED--"
->rhsm_password: "--REMOVED--"
-
+```
+rhsm_username: "--REMOVED--"
+rhsm_password: "--REMOVED--"
+```
 
 ## Usage
  - build using custom canvas and pre-built RHEL images 
@@ -76,7 +83,7 @@ chpasswd:
 - Wait for VMs to come up. 
 - Run just the "direct_build_tasks.yml" against the up VMs from the Ansible usage below. The rest won't work. 
 - publish the blueprint (saves the images)
-- Kill the instances through approved processes when done 
+- Spawn and Kill the instances through approved processes
 
 
 
