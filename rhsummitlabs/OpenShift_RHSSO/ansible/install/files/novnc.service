@@ -1,0 +1,13 @@
+[Unit]
+Description=Remote desktop service (noVNC)
+Requires=vncserver@:1.service
+After=vncserver@:1.service
+
+
+[Service]
+Type=simple
+User=root
+ExecStart=/bin/websockify --web=/usr/share/novnc/ --cert=/etc/certs/certs/novnc.crt --key=/etc/certs/private/novnc.key 9000 localhost:5901
+
+[Install]
+WantedBy=multi-user.target

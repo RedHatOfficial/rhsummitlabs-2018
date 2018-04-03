@@ -1,0 +1,9 @@
+**/tmp/**
+**.retry
+
+## Java + Maven + IntelliJ
+**/target/**
+*.class
+*.idea
+*.iml
+*.ipr

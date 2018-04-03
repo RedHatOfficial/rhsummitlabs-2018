@@ -1,0 +1,28 @@
+---
+# tasks file for kill
+#
+- name: find the class instances 
+  ec2_instance_facts:
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    region: "{{ instance_region }}"
+    filters:
+      instance-state-name: running
+      "tag:TrackingTag": "{{ class_tag }}"
+  register: classinstances
+  tags: classinventory
+  when: cloud_vendor == "aws"
+
+
+- name: shutdown class instances
+  ec2:
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    region: "{{ instance_region }}"
+    wait: yes
+    instance_ids: "{{ item.instance_id }}"
+    state: absent
+  with_items: "{{ classinstances.instances }}"
+  tags: stopinstances
+  when: cloud_vendor == "aws"
+

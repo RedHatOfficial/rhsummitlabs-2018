@@ -1,0 +1,68 @@
+---
+# tasks file for save
+#
+- name: find the existing class ami
+  ec2_ami_find:
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    region: "{{ instance_region }}"
+    owner: self
+    ami_tags:
+      TrackingTag: "{{ tracking_tag }}"
+  register: oldtemplateami
+  tags: templateami
+  no_result_action: success
+  when: cloud_vendor == "aws"
+
+- name: find the instance we are templating out
+  ec2_instance_facts:
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    region: "{{ instance_region }}"
+    filters:
+      instance-state-name: running
+      "tag:TrackingTag": "{{ tracking_tag }}"
+  register: templateinstance
+  tags: amiinventory
+  when: cloud_vendor == "aws"
+
+- set_fact: mydate="{{lookup('pipe','date +%Y%m%d%H%M%S')}}"
+  tags: date
+
+- name: create ami
+  ec2_ami:
+    region: "{{ instance_region }}"
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    name: "{{ image_name }}-{{ mydate }}"
+    wait: yes
+    instance_id: "{{ item.instance_id }}"
+    tags:
+        TrackingTag: "{{ tracking_tag }}"
+  with_items: "{{ templateinstance.instances }}"
+  tags: ami
+  register: ami
+  when: cloud_vendor == "aws"
+
+- name: shutdown template instance
+  ec2:
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    region: "{{ instance_region }}"
+    wait: yes
+    instance_ids: "{{ item.instance_id }}"
+    state: absent
+  with_items: "{{ templateinstance.instances }}"
+  tags: stopinstance
+  when: cloud_vendor == "aws"
+
+- name: delete the old class ami
+  ec2_ami:
+    region: "{{ instance_region }}"
+    aws_access_key: "{{aws_access_key}}"
+    aws_secret_key: "{{aws_secret_key}}"
+    image_id: "{{ oldtemplateami.results[0].ami_id }}"
+    state: absent
+  tags: ami
+  when: cloud_vendor == "aws" and oldtemplateami.results
+

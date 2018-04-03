@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars.yml
+    - ~/.ansibleawscreds
+    - ~/.ansiblerhsmcreds
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/{{ ssh_key }}
+
+  roles:
+    - { role: spawn, tags: ["spawn"] }

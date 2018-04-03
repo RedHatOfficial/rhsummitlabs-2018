@@ -1,0 +1,9 @@
+{
+  "realm": "master",
+  "auth-server-url": "https://secure-tmpsso-demo.paas.local/auth",
+  "ssl-required": "external",
+  "resource": "oidc-test",
+  "public-client": true,
+  "truststore": "/opt/eap/standalone/configuration/oidc.jks",
+  "truststore-password": "test1234"
+}
