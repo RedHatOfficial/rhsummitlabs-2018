@@ -1,0 +1,299 @@
+= BPM API : Managing Containers, Processes and Tasks
+Doc Writer <ajarrett@redhat.com>
+:doctype: book
+:reproducible:
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+//:pdf-page-size: Letter
+
+== Introduction
+
+In this lab you will obtain an understanding of JBoss BPM's Container deployment model, Process and Task management API's. 
+
+==== Lab Components 
+- Step 0: Pre Amble
+. AWS ec2 Instance 1
+. AWS ec2 Instance 2
+
+- Username: <INSERT BPM EC2 USER>
+- Password: <INSERT BPM EC2 PWD>
+
+==== Lab Summary
+. Step 0: Pre Amble
+. Step 1: Container Deployment
+. Step 2: Creating and querying a Process Instance 
+. Step 3: Interacting with the Task Management API
+. Step 4: Test using postman
+
+== Step 0: Pre-Amble
+
+As discussed BPM has separated its Design time and Runtime operations into 2 distinct binaries; Business Central for Deign Time and the Intelligent Process Server (KIE Server) for Runtime. 
+
+If you would like to know how this was done, refer to Appendix.
+
+== Step 1: Enable KIE Server UI Extension
+
+In this section, you make a configuration change to the Business Central application to enable the process image feature. You save the process image in the project KJAR as an SVG file.
+
+- Open a terminal shell and edit the jbpm.xml workbench configuration file:
+
+[source,sh]
+----
+vi ~/<JBOSS_HOME_DEPLOYMENTS>/business-central.war/org.kie.workbench.KIEWebapp/profiles
+----
+
+- Enable the #<storesvgonsave># element (near line 55 of the file).
+
+[source,sh]
+----
+<storesvgonsave enabled="true"/>
+----
+
+- Commit and start Business Central.
+- When saving the BPM Process Model, Business Central will automatically persist the Process Model for use with the KIE API. 
+
+== Step 1: Complile and Deploy a new BPM Container
+
+A BPM/KIE Container is deployed KJar. A KJar is a simple maven build JAR file containing some additional XML files for runtime configuration. 
+
+- First we need to build compile our KJar
+[source,sh]
+----
+mvn clean package 
+....
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] BPM FIS Mobile Demo Project ........................ SUCCESS [  0.162 s]
+[INFO] bpm-mobile-models .................................. SUCCESS [  1.291 s]
+[INFO] bpm-mobile-utils ................................... SUCCESS [  7.405 s]
+[INFO] bpm-mobile-workflows ............................... SUCCESS [  3.054 s]
+[INFO] bpm-mobile-testsuite ............................... SUCCESS [  6.442 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 19.732 s
+[INFO] Finished at: 2018-04-03T22:51:53+01:00
+[INFO] Final Memory: 108M/797M
+[INFO] ------------------------------------------------------------------------
+----
+
+- Deploy the compiled KJar to Nexus
+[source,sh]
+----
+mvn deploy
+....
+
+<INSERT MAVEN DEPLOY RESPONSE > 
+
+....
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] BPM FIS Mobile Demo Project ........................ SUCCESS [  0.162 s]
+[INFO] bpm-mobile-models .................................. SUCCESS [  1.291 s]
+[INFO] bpm-mobile-utils ................................... SUCCESS [  7.405 s]
+[INFO] bpm-mobile-workflows ............................... SUCCESS [  3.054 s]
+[INFO] bpm-mobile-testsuite ............................... SUCCESS [  6.442 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 19.732 s
+[INFO] Finished at: 2018-04-03T22:51:53+01:00
+[INFO] Final Memory: 108M/797M
+[INFO] ------------------------------------------------------------------------
+----
+
+- Firstly we can check to see if our KIE Server is alive and available: 
+
+REQUEST
+[source,sh]
+----
+curl -X GET --user jboss:bpmsuite1! http://localhost:8080/kie-server/services/rest/server 
+----
+
+RESPONSE HTTP 200 (OK):
+
+[source,sh]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response type="SUCCESS" msg="Kie Server info">
+    <kie-server-info>
+        <capabilities>KieServer</capabilities>
+        <capabilities>BRM</capabilities>
+        <capabilities>BPM</capabilities>
+        <capabilities>BPM-UI</capabilities>
+        <capabilities>BRP</capabilities>
+        <location>http://localhost:8230/kie-server/services/rest/server</location>
+        <messages>
+            <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='http://localhost:8230/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
+            <severity>INFO</severity>
+            <timestamp>2018-04-03T22:41:15.847+01:00</timestamp>
+        </messages>
+        <name>KieServer@/kie-server</name>
+        <id>15ad5bfa-7532-3eea-940a-abbbbc89f1e8</id>
+        <version>6.5.0.Final-redhat-16</version>
+    </kie-server-info>
+</response>
+----
+
+// TODO: ADD DESCRIPTION OF KIE SERVER CONFIG
+
+- Create a new container Using the following Maven GAV coordinates:
+
+Name: org.jbpm.demo.bpm-mobile-workflows-1.0 +
+Group ID: org.jbpm.demo +
+Artifact Id: bpm-mobile-workflows +
+Version: 0.0.1-SNAPSHOT 
+
+[source,sh]
+----
+curl -X PUT \
+  --user jboss:bpmsuite1! http://localhost:8080/kie-server/services/rest/server/containers \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/xml' \
+  -d '<kie-container>
+  <release-id>
+    <artifact-id>bpm-mobile-workflows</artifact-id>
+    <group-id>org.jbpm.demo</group-id>
+    <version>0.0.1-SNAPSHOT</version>
+  </release-id>
+</kie-container>'
+----
+- After a few seconds you should recieve a HTTP:201 to say the opertion successfully created the new container. +
+Please note it may take a few seconds to execute this request as the KIE Server retrieves the KIE KJar Binary from the Hosted Maven Nexus repository. + 
+
+Once successfully deployed, the app-server logging side should look like so: 
+
+[source,sh]
+----
+23:03:05,760 INFO  [org.kie.server.services.impl.KieServerImpl] (http-127.0.0.1:8080-3) Container org.jbpm.demo:bpm-mobile-workflows:TEST (for release id org.jbpm.demo:bpm-mobile-workflows:0.0.1-SNAPSHOT) successfully started
+----
+
+- Next, view the current deployed containers on the KIE Server +
+REQUEST:
+[source,sh]
+----
+curl -X GET \
+  --user jboss:bpmsuite1! http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers
+----
+
+- RESPONSE : HTTP 200 (OK)
+[source,sh]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response type="SUCCESS" msg="List of created containers">
+    <kie-containers>
+        <kie-container container-id="org.jbpm.demo:bpm-mobile-workflows:TEST" status="STARTED">
+            <release-id>
+                <artifact-id>bpm-mobile-workflows</artifact-id>
+                <group-id>org.jbpm.demo</group-id>
+                <version>0.0.1-SNAPSHOT</version>
+            </release-id>
+            <resolved-release-id>
+                <artifact-id>bpm-mobile-workflows</artifact-id>
+                <group-id>org.jbpm.demo</group-id>
+                <version>0.0.1-SNAPSHOT</version>
+            </resolved-release-id>
+            <scanner status="DISPOSED"/>
+        </kie-container>
+    </kie-containers>
+</response>
+----
+
+NOTE: The whole KIE REST API can be reviewed at: http://<HOST>:<PORT>/kie-server/docs/index.html
+
+
+
+== Step 2: Create a new BPM Process Instance
+
+- This demo is part of a larger Financial Onboarding demo, which has been simplified to show a wider array of product functionality. As a side affect, we are required to provide the object model upfront rather than letting the BPM process hit various services. Using this payload we will create a new process instance, which will return a Process Instance Id. 
+
+[source,sh]
+----
+curl -X POST --user jboss:bpmsuite1! \
+  http://localhost:8080/kie-server/services/rest/server/containers/kbc-test-container/processes/org.jbpm.demo.NewApplication/instances \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+	"application": {
+        "org.demo.jbpm.mobile.models.Application": { 
+        	"personalDetails": {
+    			"name" :{
+					"salutation": "Mr",
+                    "givenName": "Matthew",
+                    "middleName": "Du",
+                    "surname": "Hayden"
+                },
+				"demographics": {
+					"gender": "MALE",
+					"dateOfBirth": "1972-09-15",
+					"birthPlace": "Sydney",
+					"countryOfBirth": "AU",
+					"nationality": "AU"
+				},
+				"address": [{
+					"addressType": "HOME_ADDRESS",
+					"addressLine1": "40A Orchard Road",
+					"addressLine2": "#99-99 Macdonald House",
+					"addressLine3": "Orchard Avenue 2",
+					"addressLine4": "Street 65"
+				}],
+				"email": {
+					"emailAddress": "matt.hayden@gmail.com",
+					"okToEmail": true
+				},
+				"phone": {
+					"phoneNumber": "64042321",
+					"okToSms": true,
+					"okToCall": true
+				}
+            }, 
+    		"financialInformation": {
+				"hasForeseeableFinancialChanges": true,
+				"nonBankDebtObligationFlag": true,
+				"expenseDetails": [{
+					"expenseType": "COSTS_OF_LIVING",
+					"expenseAmount": 590.25,
+					"frequency": "MONTHLY"
+				}],
+				"incomeDetails": [{
+					"incomeType": "DECLARED_FIXED",
+					"fixedAmount": 7590.25,
+					"variableAmount": 1590.25,
+					"frequency": "MONTHLY",
+					"otherIncomeDescription": "Rent"
+				}],
+				"existingLoanDetails": [{
+					"loanType": "STUDENT_LOAN",
+					"otherDebtObligationType": "Free text",
+					"monthlyInstallmentAmount": 250.25,
+					"outstandingBalanceAmount": 5000.25,
+					"loanAmount": 15000.89,
+					"debtOwnership": "JOINT",
+					"lenderName": "KINROS CORPORATION"
+				}]
+			},
+			"employmentDetails": [{
+				"employerName": "Citi Bank",
+				"jobTitle": "ACCOUNTANT",
+				"employmentDurationInYears": 5,
+				"employmentStatus": "EMPLOYED"
+			}],
+			"creditDetails": {
+				"creditAmount": 23000.25,
+				"loanTakenIndicator": true,
+				"monthlyRepaymentForAllExtLoans": 5000.25
+			},
+			"companyDetails": {
+				"companyName": "RedHat",
+				"tradingYears": "5",
+				"dunsNumber": "123123123"
+			}
+        }
+	}
+}
+----
+
+
