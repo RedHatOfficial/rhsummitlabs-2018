@@ -143,7 +143,7 @@ In short, if you already have all your employee information in a central place l
 
 Lets bring it up using an OpenShift template:
 
-    as root on rhsso box
+    ## as root on rhsso box
     cd /root/pods/sso/
     oc login -u system:admin
     oc project openshift
@@ -267,7 +267,7 @@ There are two main SAML web flows.  SP-initiated and IDP-initiated.  SP-initiate
 
 Lets build it:
 
-    as root on rhsso box
+    ## as root on rhsso box
     cd /root/pods/saml/
     oc login -u developer https://openshift.local:8443
     oc project demo
@@ -378,7 +378,7 @@ source: [forgerock](https://backstage.forgerock.com/docs/am/5/oidc1-guide/)
 
 Lets build it:
 
-    as root on rhsso box
+    ## as root on rhsso box
     cd /root/pods/oidc/
     oc login -u developer https://openshift.local:8443
     oc project demo
@@ -426,13 +426,18 @@ Let try out the SSO:
  5. Click on the lines that have "code" entries in Developer Tools.  Note how this isn't a useful piece of information.  The EAP backend itself then exchanges that code for a token that has more of your personal data.  You can't see that in the browsers Developer Tools and that is a good thing for security. Your test users information is printed on this page because our front-end code then queries the backend EAP and fishes out the data to display it.  
 
 #### Debugging OIDC (*Optional*)
-If you want to take a more hands-on approach to inspecting token issuance, the following bash command can be used to view the access token.  Note that this particular command makes use of a direct access grant, which is highly discouraged for browser-based flows in production.  However, it can be highly useful for debugging purposes in lower environments.
+If you want to take a more hands-on approach to inspecting token issuance, the following bash command can be used to view the access token.  Note that this particular command makes use of a direct access grant, which is highly discouraged for browser-based flows in production.  However, it can be highly useful for debugging and testing purposes in lower environments.
 
-  curl -XPOST --data="username=testlocal&password=test1234&grant_type=password&client_id=oidc-test" https://secure-tmpsso-demo.paas.local/auth/realms/master/protocol/openid-connect/token
+```
+curl -XPOST --data="username=testlocal&password=test1234&grant_type=password&client_id=oidc-test" https://secure-tmpsso-demo.paas.local/auth/realms/master/protocol/openid-connect/token
+```
 
-And if you're interested in the content of the access token:
+And if you're interested in the contents of the access token:
 
-  curl -XPOST --data="username=testlocal&password=test1234&grant_type=password&client_id=oidc-test" https://secure-tmpsso-demo.paas.local/auth/realms/master/protocol/openid-connect/token | grep -Po '"access_token":.*?[^\\]",' | cut -d \" -f 4 | cut -d . -f 2 | base64 --decode 2> /dev/null
+```
+curl -XPOST --data="username=testlocal&password=test1234&grant_type=password&client_id=oidc-test" https://secure-tmpsso-demo.paas.local/auth/realms/master/protocol/openid-connect/token | grep -Po '"access_token":.*?[^\\]",' | cut -d \" -f 4 | cut -d . -f 2 | base64 --decode 2> /dev/null
+```
+
 
 ## IDM
 
