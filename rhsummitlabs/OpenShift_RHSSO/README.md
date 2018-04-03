@@ -8,6 +8,7 @@
  - Slides: [https://bit.ly/2ISTZAX](https://bit.ly/2ISTZAX)
  - Code: [https://bit.ly/2pCZpYP](https://bit.ly/2pCZpYP)
  - Homepage on laptop has useful info
+ - We will do as much of this as we can in 1.5 hours. We do not want to interfere with after parties and dinner cruises some of you may have signed up for.
 
 
 ## Intro
@@ -424,6 +425,7 @@ And if you're interested in the contents of the access token:
 curl -XPOST --data="username=testlocal&password=test1234&grant_type=password&client_id=oidc-test" https://secure-tmpsso-demo.paas.local/auth/realms/master/protocol/openid-connect/token | grep -Po '"access_token":.*?[^\\]",' | cut -d \" -f 4 | cut -d . -f 2 | base64 --decode 2> /dev/null
 ```
 
+We will now take a 10 minute break and let you explore RHSSO, SAML and OIDC further on your own. If you have any questions, feel free to raise your hand and somebody will swing by and provide more info. Got more detailed questions?  Catch us in the hall sometime and we will be glad to chat further.
 
 ## IDM
 
@@ -516,6 +518,8 @@ Now lets configure RHSSO to read users from IDM:
      3. You will go back to https://saml-demo.paas.local/secret/ and see a PHP page.
  5. You just logged in using an account from an centralized identity store!
 
+
+We will now take a 10 minute break and let you explore IDM further on your own. If you have any questions, feel free to raise your hand and somebody will swing by and provide more info. Got more detailed questions?  Catch us in the hall sometime and we will be glad to chat further.
 
 ## Some Final Housekeeping
 
