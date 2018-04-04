@@ -48,7 +48,7 @@ If you would like to know how this was done, refer to Appendix.
  * https://3scale_sync:38cd5c45-fee4-4735-ae89-33dfcfad480d@auth-summit.tk:8443/auth/realms/summit
 . Finally, click "Promote to Production".
 
-== Step 4: Set the Application API Credentials Redirect URL
+== Step 3: Set the Application API Credentials Redirect URL
 
 :NOTE At this stage any new Applications created for a Application plan linked to the OpenID backed API service will be synced into Red Hat SSO as a Client.
 
