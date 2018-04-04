@@ -4,7 +4,7 @@
 
 == Setup lab
 
-In this lab we test access to the environment and configure 3Scale.
+In this lab we test access to the environment
 
 :numbered:
 
