@@ -61,6 +61,10 @@ The demo environment consists of the following systems:
 
 link:setup.adoc[Setup lab]
 
+== 3Scale lab
+
+link:3scale-lab.adoc[3Scale lab]
+
 == Create new BPM container lab
 
 link:bpm_container_lab.adoc[BPM Container lab]
