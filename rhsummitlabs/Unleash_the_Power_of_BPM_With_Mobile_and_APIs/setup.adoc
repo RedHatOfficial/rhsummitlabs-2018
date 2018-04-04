@@ -12,8 +12,6 @@ In this lab we test access to the environment
 
 Check access of your account by logging into the following servers:
 
-. Log into BPM Business Central - using server A: `http://34.251.130.28:8080/business-central` or server B: `http://52.51.30.91:8080/business-central`
-
 . Log into BPM custom UI -
 
 . Log into Mobile -
