@@ -57,6 +57,8 @@ The demo environment consists of the following systems:
 
 . If you have a username beginning with a please use BPM Server A. If you have a username starting with b please use BPM Server B. This is to help distribute load.
 
+. The username and password will also log you into 3Scale. A end user is also created in Red Hat SSO which is used in the 3Scale SSO lab as a end user.
+
 == Setup lab
 
 link:setup.adoc[Setup lab]
