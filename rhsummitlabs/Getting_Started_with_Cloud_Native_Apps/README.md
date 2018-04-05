@@ -1,3 +1,3 @@
 # Getting Started with Cloud-Native Apps
 
-The instructions for this lab are available here https://github.com/openshift-labs/rhsummit18-cloudnative-guides
+The instructions for this lab are available at https://bit.ly/rhsummit18-cloudnative-labs
