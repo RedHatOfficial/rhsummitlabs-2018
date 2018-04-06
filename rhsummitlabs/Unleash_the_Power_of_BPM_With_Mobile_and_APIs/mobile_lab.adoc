@@ -35,9 +35,9 @@ The project contains the following:
 
 === Explore the Bank Admin Portal
 
-.  Click on the dropdown on the left that currently says Cloud App FSI and choose *Bank Admin Portal* from the list. image:mobile-01.png[]
+.  Click on the dropdown on the left that currently says Cloud App FSI and choose *Bank Admin Portal* from the list. image::mobile-01.png[]
 . You will see the App Details page for this client and it will also load inside the App Preview on the right.
-. As this is a web portal it is best viewed inside a full browser tab. You can do this by clicking the *Open container in a new tab* icon on the top right of the App Preview. image:mobile-02.png[]
+. As this is a web portal it is best viewed inside a full browser tab. You can do this by clicking the *Open container in a new tab* icon on the top right of the App Preview. image::mobile-02.png[]
 . Enter any username and click *Login*
 . Have a look at the Dashboard, Case List and Task List pages to get an idea of what can be built using the BPM REST API.
 . When you start playing with the customer mobile app and go through the process of ordering products you will see the new Cases and Tasks appear automatically in this portal.
