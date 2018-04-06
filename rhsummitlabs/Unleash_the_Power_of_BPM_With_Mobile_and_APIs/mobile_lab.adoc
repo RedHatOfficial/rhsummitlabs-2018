@@ -36,5 +36,6 @@ The project contains the following:
 === Explore the Bank Admin Portal
 
 .  Click on the dropdown on the left that currently says Cloud App FSI and choose *Bank Admin Portal* from the list
+
 image::mobile-01.png[]
 
