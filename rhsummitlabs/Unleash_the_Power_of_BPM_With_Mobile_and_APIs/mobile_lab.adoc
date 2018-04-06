@@ -1,0 +1,40 @@
+:imagesdir: /images
+
+== Mobile frontend to the BPM processes
+
+In this lab we will explore a project in Red Hat Mobile Application Platform that contains a hybrid mobile client and a web portal that interact with the BPM API via some cloud code.
+
+
+. Browse to https://gpte.us.training.redhatmobile.com[https://gpte.us.training.redhatmobile.com]
+. Enter your allocated username i.e. summit-student-01
+. The password is FeedHenry#2018
+. Click on *Projects*
+. You should see one project called *FSI-Demo-Summit*. Click on this project.
+
+The project contains the following:
+
+* *Cloud App FSI* - this is a server-side component written in NodeJs that calls the BPM API and also provides data synchronisation.
+* *Bank Admin Portal* - this is a back-office web portal that demonstrates how a UI can be built on top of BPM Suite for managing live Tasks and Cases.
+* *Consumer App xx* - this is a consumer facing mobile app that demonstrates how a customer can order products, which instantiate BPM processes.
+
+=== Explore the Cloud App
+
+. Click on the *Cloud App FSI*
+. The App Details page shows that this component is deployed and running.
+. Click on *Editor* on the left hand side
+. You can now see the directory structure and files that make up this NodeJS service
+. Open the file */lib/bpm/bpmCalls.js* and have a look at the API calls that are being made
+. Click on *Environment Variables* on the left hand side
+. Note the various BPM connection variables that have been specified. These can change per environment you deploy to.
+. Click on *Data Browser* on the left hand side
+. This gives you a view of the data that the cloud app has cached. Have a look at some of the data stored in the Cases and Tasks.
+. Click on *Deploy* on the left hand side.
+. This is where you can deploy new versions of the cloud app. Each time you do this a history record is generated.
+. Click on *Logs* on the left hand side.
+. Here you can view live logs from the running cloud app to help in debugging issues.
+
+=== Explore the Bank Admin Portal
+
+.  Click on the dropdown on the left that currently says Cloud App FSI and choose *Bank Admin Portal* from the list
+image::mobile-01.png[]
+
