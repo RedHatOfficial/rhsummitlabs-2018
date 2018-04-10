@@ -8,6 +8,7 @@ Doc Writer <ajarrett@redhat.com>
 :listing-caption: Listing
 // Uncomment next line to set page size (default is A4)
 //:pdf-page-size: Letter
+:icons: font
 
 == Introduction
 
