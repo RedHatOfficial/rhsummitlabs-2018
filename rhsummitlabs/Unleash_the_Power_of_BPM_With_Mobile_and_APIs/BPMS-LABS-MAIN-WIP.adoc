@@ -1,6 +1,7 @@
 = BPM API : Managing Containers, Processes and Tasks
 Doc Writer <ajarrett@redhat.com>
 :doctype: book
+:imagesdir: assets/images
 :reproducible:
 //:source-highlighter: coderay
 :source-highlighter: rouge
@@ -109,7 +110,7 @@ mvn deploy
 REQUEST
 [source,sh]
 ----
-curl -X GET --user jboss:bpmsuite1! http://localhost:8080/kie-server/services/rest/server 
+curl -X GET --user <USER_ID>:<USER_PWD> http://<HOST>:<PORT>/kie-server/services/rest/server 
 ----
 
 RESPONSE HTTP 200 (OK):
@@ -124,9 +125,9 @@ RESPONSE HTTP 200 (OK):
         <capabilities>BPM</capabilities>
         <capabilities>BPM-UI</capabilities>
         <capabilities>BRP</capabilities>
-        <location>http://localhost:8230/kie-server/services/rest/server</location>
+        <location>http://<HOST>:<PORT>/kie-server/services/rest/server</location>
         <messages>
-            <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='http://localhost:8230/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
+            <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='http://<HOST>:<PORT>/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
             <severity>INFO</severity>
             <timestamp>2018-04-03T22:41:15.847+01:00</timestamp>
         </messages>
@@ -149,7 +150,7 @@ Version: 0.0.1-SNAPSHOT
 [source,sh]
 ----
 curl -X PUT \
-  --user jboss:bpmsuite1! http://localhost:8080/kie-server/services/rest/server/containers \
+  --user <USER_ID>:<USER_PWD> http://<HOST>:<PORT>/kie-server/services/rest/server/containers \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/xml' \
   -d '<kie-container>
@@ -175,7 +176,7 @@ REQUEST:
 [source,sh]
 ----
 curl -X GET \
-  --user jboss:bpmsuite1! http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers
+  --user <USER_ID>:<USER_PWD> http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers
 ----
 
 - RESPONSE : HTTP 200 (OK)
@@ -203,97 +204,431 @@ curl -X GET \
 
 NOTE: The whole KIE REST API can be reviewed at: http://<HOST>:<PORT>/kie-server/docs/index.html
 
+Before moving on to creating a new Process Instance we can query for the available process definitions available for a particular contaienr and inspect the BPM Process model that we are going to invoke.
 
+To view the available process definitions hit the following url or execute the curl command : 
 
-== Step 2: Create a new BPM Process Instance
-
-- This demo is part of a larger Financial Onboarding demo, which has been simplified to show a wider array of product functionality. As a side affect, we are required to provide the object model upfront rather than letting the BPM process hit various services. Using this payload we will create a new process instance, which will return a Process Instance Id. 
-
+REQUEST:
 [source,sh]
 ----
-curl -X POST --user jboss:bpmsuite1! \
-  http://localhost:8080/kie-server/services/rest/server/containers/kbc-test-container/processes/org.jbpm.demo.NewApplication/instances \
+// Return all Process Definitions deployed on the KIE Server
+curl -X GET \
+  http://<HOST>:<PORT>/kie-server/services/rest/server/queries/processes/definitions  \
   -H 'accept: application/json' \
-  -H 'cache-control: no-cache' \
-  -H 'content-type: application/json' \
-  -d '{
-	"application": {
-        "org.demo.jbpm.mobile.models.Application": { 
-        	"personalDetails": {
-    			"name" :{
-					"salutation": "Mr",
-                    "givenName": "Matthew",
-                    "middleName": "Du",
-                    "surname": "Hayden"
-                },
-				"demographics": {
-					"gender": "MALE",
-					"dateOfBirth": "1972-09-15",
-					"birthPlace": "Sydney",
-					"countryOfBirth": "AU",
-					"nationality": "AU"
-				},
-				"address": [{
-					"addressType": "HOME_ADDRESS",
-					"addressLine1": "40A Orchard Road",
-					"addressLine2": "#99-99 Macdonald House",
-					"addressLine3": "Orchard Avenue 2",
-					"addressLine4": "Street 65"
-				}],
-				"email": {
-					"emailAddress": "matt.hayden@gmail.com",
-					"okToEmail": true
-				},
-				"phone": {
-					"phoneNumber": "64042321",
-					"okToSms": true,
-					"okToCall": true
-				}
-            }, 
-    		"financialInformation": {
-				"hasForeseeableFinancialChanges": true,
-				"nonBankDebtObligationFlag": true,
-				"expenseDetails": [{
-					"expenseType": "COSTS_OF_LIVING",
-					"expenseAmount": 590.25,
-					"frequency": "MONTHLY"
-				}],
-				"incomeDetails": [{
-					"incomeType": "DECLARED_FIXED",
-					"fixedAmount": 7590.25,
-					"variableAmount": 1590.25,
-					"frequency": "MONTHLY",
-					"otherIncomeDescription": "Rent"
-				}],
-				"existingLoanDetails": [{
-					"loanType": "STUDENT_LOAN",
-					"otherDebtObligationType": "Free text",
-					"monthlyInstallmentAmount": 250.25,
-					"outstandingBalanceAmount": 5000.25,
-					"loanAmount": 15000.89,
-					"debtOwnership": "JOINT",
-					"lenderName": "KINROS CORPORATION"
-				}]
-			},
-			"employmentDetails": [{
-				"employerName": "Citi Bank",
-				"jobTitle": "ACCOUNTANT",
-				"employmentDurationInYears": 5,
-				"employmentStatus": "EMPLOYED"
-			}],
-			"creditDetails": {
-				"creditAmount": 23000.25,
-				"loanTakenIndicator": true,
-				"monthlyRepaymentForAllExtLoans": 5000.25
-			},
-			"companyDetails": {
-				"companyName": "RedHat",
-				"tradingYears": "5",
-				"dunsNumber": "123123123"
-			}
+  -H 'authorization: Basic YnBtc0FkbWluOnBhc3N3b3JkMSE=' \
+  
+  or
+
+// Return all Process Definitions deployed on the KIE Container
+curl -X GET \
+  http://<HOST>:<PORT>/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/processes/definitions  \
+  -H 'accept: application/json' \
+  -H 'authorization: Basic YnBtc0FkbWluOnBhc3N3b3JkMSE=' \
+----
+
+RESPONSE - HTTP 200 (OK):
+[source,sh]
+----
+{
+    "processes": [
+        {
+            "process-id": "org.jbpm.demo.NewApplication",
+            "process-name": "NewApplication",
+            "process-version": "1.0",
+            "package": "org.jbpm.demo",
+            "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST"
+        },
+        {
+            "process-id": "bpm-mobile-workflows.NewApplicationComplete",
+            "process-name": "NewApplication",
+            "process-version": "1.0",
+            "package": "org.jbpm.demo",
+            "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST"
+        },
+        {
+            "process-id": "org.jbpm.demo.mobile.TestProcess",
+            "process-name": "TestProcess",
+            "process-version": "1.0",
+            "package": "org.jbpm.demo",
+            "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST"
         }
-	}
+    ]
 }
 ----
 
+You can also obtain the Process Definition Image or Process Model using the Processes API: 
+
+[source,sh]
+----
+http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/org.jbpm.demo.NewApplication
+----
+
+This will return an SVG of the current process model. It should look something similar to: 
+
+image::new-application-process.png[New Application Process Model]
+
+== Step 2: Create a new BPM Process Instance
+
+- This demo is part of a larger Financial Onboarding demo, which has been simplified to show a wider array of product functionality. As a side effect, we are required to provide the object model upfront rather than letting the BPM process hit various services. Using this payload we will create a new process instance, which will return a Process Instance Id. 
+
+ 1. First lets create a new BPM Process Instance 
+ Process URL Requirements:
+ . CONTAINER_ID - summit-test-container
+ . PROCESS_DEFINITIONS_ID - org.jbpm.demo.NewApplication
+ . Full URL Structure: http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/processes/<PROCESS_DEFINITION_ID>/instances
+ 
+REQUEST: 
+[source,sh]
+----
+curl -X POST --user <USER_ID>:<USER_PWD> \
+  http://<HOST>:<PORT>/kie-server/services/rest/server/containers/summit-test-container/processes/org.jbpm.demo.NewApplication/instances \
+  -H 'cache-control: no-cache' \
+  -H 'accept: application/json' \
+  -H 'content-type: application/json' \
+  -d '{
+  "applicationType": "PERSONAL",
+  "taskOwner": "Bank",
+  "userAlias": "user1",
+  "pushAlias": "user1",
+  "Application": {
+    "personalDetails": {
+      "name": {
+        "salutation": "Mr",
+        "givenName": "Bill",
+        "middleName": "",
+        "surname": "Basket"
+      },
+      "demographics": {
+        "gender": "MALE",
+        "dateOfBirth": "1972-09-15",
+        "birthPlace": "Sydney",
+        "countryOfBirth": "AU",
+        "nationality": "AU"
+      },
+      "address": [
+        {
+          "addressType": "HOME_ADDRESS",
+          "addressLine1": "40A Orchard Road",
+          "addressLine2": "#99-99 Macdonald House",
+          "addressLine3": "Orchard Avenue 2",
+          "addressLine4": "Street 65"
+        }
+      ],
+      "email": {
+        "emailAddress": "user1@gmail.com",
+        "okToEmail": true
+      },
+      "phone": {
+        "phoneNumber": "64042321",
+        "okToSms": true,
+        "okToCall": true
+      }
+    },
+    "financialInformation": {
+      "hasForeseeableFinancialChanges": true,
+      "nonBankDebtObligationFlag": true,
+      "expenseDetails": [
+        {
+          "expenseType": "COSTS_OF_LIVING",
+          "expenseAmount": 590.25,
+          "frequency": "MONTHLY"
+        }
+      ],
+      "incomeDetails": [
+        {
+          "incomeType": "DECLARED_FIXED",
+          "fixedAmount": 7590.25,
+          "variableAmount": 1590.25,
+          "frequency": "MONTHLY",
+          "otherIncomeDescription": "Rent"
+        }
+      ],
+      "existingLoanDetails": [
+        {
+          "loanType": "STUDENT_LOAN",
+          "otherDebtObligationType": "Free text",
+          "monthlyInstallmentAmount": 250.25,
+          "outstandingBalanceAmount": 5000.25,
+          "loanAmount": 15000.89,
+          "debtOwnership": "JOINT",
+          "lenderName": "KINROS CORPORATION"
+        }
+      ]
+    },
+    "employmentDetails": [
+      {
+        "employerName": "Citi Bank",
+        "jobTitle": "ACCOUNTANT",
+        "employmentDurationInYears": 5,
+        "employmentStatus": "EMPLOYED"
+      }
+    ],
+    "creditDetails": {
+      "creditAmount": 23000.25,
+      "loanTakenIndicator": true,
+      "monthlyRepaymentForAllExtLoans": 5000.25
+    },
+    "companyDetails": {
+      "companyName": "RedHat",
+      "tradingYears": "5",
+      "dunsNumber": "123123123"
+    },
+    "mortgageDetails": {
+      "type": "firstTime",
+      "location": "Sydney",
+      "propertyValue": 2222222.22,
+      "amount": 999999.99,
+      "deposit": 99999.95,
+      "term": 25
+    },
+    "productId": 1
+  },
+  "additionalDocsRequired": true,
+  "assignedTo": "Unassigned",
+  "bpmDetails": {
+    "auth": "Basic amJvc3M6YnBtc3VpdGUxIQ==",
+    "container": "org.jbpm.demo:bpm-mobile-workflows:TEST",
+    "processName": "org.jbpm.demo.NewApplication",
+    "host": "http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080"
+  }
+}'
+----
+
+REPONSE: HTTP 201 Created +
+- Returns: Integer (Process Instance ID) e.g.
+[source,sh]
+----
+1 
+----
+
+ - Using the REST API, start an instance of the org.jbpm.demo.NewApplication process.
+ 
+  .. Make sure you use the <CONTAINER_ID>. + 
+  .. In a browser, navigate to http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. + 
+ 
+  .. Expect to see a graphical representation of the process instance. The nodes in grey indicate that they have executed
+  
+
+image::new-application-process-started.png[New Application Process Model] +
+ 
+ - Now we can list out the live processes on our container, skip to step three to pull back the Process Instance directly. 
+ Process URL Requirements:
+ .. HTTP Request Method: GET
+ .. CONTAINER_ID - summit-test-container
+ .. Parms: 
+ ... page : traverse through the returned records
+ ... pageSize : alter number of records returned, default it 10
+ ... status : return only process which have a specific status:
+ .... Reference: https://docs.jboss.org/jbpm/v6.4/javadocs/constant-values.html
+ .... 	 STATE_ABORTED = 3
+ ....    STATE_ACTIVE = 1
+ ....    STATE_COMPLETED = 2  
+ ....    STATE_PENDING = 0
+ ....    STATE_SUSPENDED = 4
+
+Full URL Structure: http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/process/instances?<PARAMS> +
+ 
+* REQUEST: 
+[source,sh]
+----
+curl -X POST --user <USER_ID>:<USER_PWD> \
+  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/process/instances?status=1&page=0&pageSize=25' \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'accept: application/json' \
+----
+
+* RESPONSE: (HTTP 200 - ok)
+[source,sh]
+----
+{
+    "process-instance": [
+        {
+            "initiator": "bpmsAdmin",
+            "process-instance-id": 1,
+            "process-id": "org.jbpm.demo.NewApplication",
+            "process-name": "NewApplication",
+            "process-version": "1.0",
+            "process-instance-state": 1,
+            "container-id": "<CONTAINER_ID>",
+            "start-date": 1523283354565,
+            "process-instance-desc": "NewApplication",
+            "correlation-key": "",
+            "parent-instance-id": -1
+        }
+    ]
+}
+----
+
+== Step 3: Manipulate BPM Task Instances
+
+An important aspect of business processes is human task management. While some work in a process can be executed automatically, some tasks need to be executed by human actors.
+
+BPM also includes a human task service, a back-end service that manages the life cycle of these tasks at runtime. The BPM implementation is based on the WS-HumanTask specification. 
+
+NOTE: The Human Task Service is fully pluggable, meaning that users can integrate their own human task solutions if necessary.
+
+The various stages of the Task Management Lifecycle can be reviewed here: http://docs.jboss.org/jbpm/v6.4/userguide/ch07.html#jBPMTaskLifecycle
+
+BPMS has the concept of a Potential Task Owner. As it sounds, a 'Potential Task Owner' is a user whom has the correct security context to act upon a Human Task i.e. they user belongs to a given LDAP group. 
+
+ - First lets query the API for available Human Tasks. Regardless of what user you are imitating, this API call will return the tasks for a given Process Intance ID: 
+ 
+ * REQUEST: 
+ 
+[source,sh]
+----
+curl -X POST --user <USER_ID>:<USER_PWD> \
+  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/process/<pInstanceId> ' \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'accept: application/json' \
+----
+ 
+ * RESPONSE: (HTTP 200 - ok)
+ 
+[source,sh]
+----
+{
+    "task-summary": [
+        {
+            "task-id": 1,
+            "task-name": "Assign Internal Owner",
+            "task-subject": "",
+            "task-description": "",
+            "task-status": "Ready",
+            "task-priority": 1,
+            "task-is-skipable": true,
+            "task-created-on": 1523283354638,
+            "task-activation-time": 1523283354638,
+            "task-proc-inst-id": 1,
+            "task-proc-def-id": "org.jbpm.demo.NewApplication",
+            "task-container-id": "<CONTAINER_ID>",
+            "task-parent-id": -1
+        }
+    ]
+}
+----
+
+- Now we can query to Potential-Owners endoint to see if we are eligble to work on the above or any other tasks. This API call enforces the underlying BPM security model inline with the human tasks specified group/user assignment requirements; returning only tasks that the authenticated user is eligble to work on.  
+
+ * REQUEST: 
+ 
+[source,sh]
+----
+curl -X POST --user <USER_ID>:<USER_PWD> \
+  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'accept: application/json' \
+----
+ 
+ * RESPONSE: (HTTP 200 - ok)
+ 
+[source,sh]
+----
+{
+    "task-summary": [
+        {
+            "task-id": 1,
+            "task-name": "Assign Internal Owner",
+            "task-subject": "",
+            "task-description": "",
+            "task-status": "Ready",
+            "task-priority": 1,
+            "task-is-skipable": true,
+            "task-created-on": 1523283354638,
+            "task-activation-time": 1523283354638,
+            "task-proc-inst-id": 1,
+            "task-proc-def-id": "org.jbpm.demo.NewApplication",
+            "task-container-id": "<CONTAINER_ID>",
+            "task-parent-id": -1
+        }
+    ]
+}
+----
+ - Running the following request should provide an empty response since the user is not eligble to work on this particular task: 
+ 
+  * REQUEST: 
+ 
+[source,sh]
+----
+curl -X POST --user <USER_ID>:<USER_PWD> \
+  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'accept: application/json' \
+----
+
+ * RESPONSE: (HTTP 200 - ok)
+ 
+[source,sh]
+----
+{
+    "task-summary": []
+}
+----
+
+ - Using the Process Instance ID from the process created above we can start interacting with the Human Task Instances.
+ * There are multiple states a tasks can occupy in accordance with the lifecycle diagram linked above, however in this lab we'll simply investigte the happy path process of claiming, starting and completing a task. 
+ 
+ NOTE: Its worth noting that task states provide measurable audit trails of work/effort undertaken into fulfilling its purpose. i.e. How long a task sits in a group or individual queue, How long a task is worked upon, total lifespan of that task etc..
+ 
+  * Claim Task Instance REQUEST:
+// Claim Task
+[source,sh]
+----
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/claimed"
+----
+
+  * Task Owned By REQUEST:
+// List Tasks owned By Authenticated User
+[source,sh]
+----
+ curl -X GET -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/owners"
+----
+
+* RESPONSE (HTTP 200) - Task is now in a reserved state and non claimable by other users. Only a manager can delegate to other users or move the task back into a claimable state :
+[source,sh]
+----
+{
+  "task-summary" : [ {
+    "task-id" : 1,
+    "task-name" : "Assign Internal Owner",
+    "task-subject" : "",
+    "task-description" : "",
+    "task-status" : "Reserved",
+    "task-priority" : 1,
+    "task-is-skipable" : true,
+    "task-actual-owner" : "<USER_ID>",
+    "task-created-on" : 1523361110474,
+    "task-activation-time" : 1523361110474,
+    "task-proc-inst-id" : 1,
+    "task-proc-def-id" : "org.jbpm.demo.NewApplication",
+    "task-container-id" : "<CONTAINER_ID>",
+    "task-parent-id" : -1
+  } ]
+----
+
+  * Start Task Instance REQUEST:
+// Start Task
+[source,sh]
+----
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/started"
+----
+ 
+ - Verify that the status of the task moved to InProgress, use the Tasks Owned By user REST call.
+
+  * Complete Task Instance REQUEST:
+// Complete Task
+[source,sh]
+----
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/completed"
+----
+ 
+* In a browser, navigate to http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. + 
+
+You should now see the process has progressed to the next Human Task instance. 
+
+image::new-application-process-task-complete.png[New Application Process Model Progressed]
 
