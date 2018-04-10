@@ -161,8 +161,9 @@ curl -X PUT \
   </release-id>
 </kie-container>'
 ----
-- After a few seconds you should recieve a HTTP:201 to say the opertion successfully created the new container. +
-Please note it may take a few seconds to execute this request as the KIE Server retrieves the KIE KJar Binary from the Hosted Maven Nexus repository. + 
+- After a few seconds you should recieve a HTTP:201 to say the opertion successfully created the new container. 
+
+IMPORTANT: it may take a few seconds to execute this request as the KIE Server retrieves the KIE KJar Binary from the Hosted Maven Nexus repository. + 
 
 Once successfully deployed, the app-server logging side should look like so: 
 
@@ -202,7 +203,10 @@ curl -X GET \
 </response>
 ----
 
-NOTE: The whole KIE REST API can be reviewed at: http://<HOST>:<PORT>/kie-server/docs/index.html
+[NOTE]
+====
+The whole KIE REST API can be reviewed at: http://<HOST>:<PORT>/kie-server/docs/index.html
+====
 
 Before moving on to creating a new Process Instance we can query for the available process definitions available for a particular contaienr and inspect the BPM Process model that we are going to invoke.
 
@@ -465,7 +469,10 @@ An important aspect of business processes is human task management. While some w
 
 BPM also includes a human task service, a back-end service that manages the life cycle of these tasks at runtime. The BPM implementation is based on the WS-HumanTask specification. 
 
-NOTE: The Human Task Service is fully pluggable, meaning that users can integrate their own human task solutions if necessary.
+[NOTE]
+====
+The Human Task Service is fully pluggable, meaning that users can integrate their own human task solutions if necessary.
+====
 
 The various stages of the Task Management Lifecycle can be reviewed here: http://docs.jboss.org/jbpm/v6.4/userguide/ch07.html#jBPMTaskLifecycle
 
@@ -571,7 +578,10 @@ curl -X POST --user <USER_ID>:<USER_PWD> \
  - Using the Process Instance ID from the process created above we can start interacting with the Human Task Instances.
  * There are multiple states a tasks can occupy in accordance with the lifecycle diagram linked above, however in this lab we'll simply investigte the happy path process of claiming, starting and completing a task. 
  
- NOTE: Its worth noting that task states provide measurable audit trails of work/effort undertaken into fulfilling its purpose. i.e. How long a task sits in a group or individual queue, How long a task is worked upon, total lifespan of that task etc..
+[NOTE]
+====
+ Its worth noting that task states provide measurable audit trails of work/effort undertaken into fulfilling its purpose. i.e. How long a task sits in a group or individual queue, How long a task is worked upon, total lifespan of that task etc..
+====
  
   * Claim Task Instance REQUEST:
 // Claim Task
