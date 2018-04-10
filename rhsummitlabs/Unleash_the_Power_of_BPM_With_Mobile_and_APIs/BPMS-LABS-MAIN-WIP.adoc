@@ -408,8 +408,7 @@ REPONSE: HTTP 201 Created +
  
   .. Expect to see a graphical representation of the process instance. The nodes in grey indicate that they have executed
   
-
-image::new-application-process-started.png[New Application Process Model] +
+image::new-application-process-started.png[New Application Process Model]
  
  - Now we can list out the live processes on our container, skip to step three to pull back the Process Instance directly. 
  Process URL Requirements:
