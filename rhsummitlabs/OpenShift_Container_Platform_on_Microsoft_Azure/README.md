@@ -1,5 +1,14 @@
-# Your labs docs placeholder, put your documentation here.
+# Deploying OpenShift Origin on Microsoft Azure
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Or start with the example as a template to design your own lab documentation. 
+## Part 0: Prework and starting with Microsoft Azure
+**Goal:** Get access to an Azure subscription
 
+### 0.1: Redeem Azure Pass
+
+### 0.2: "Purchase" an Azure Subscription using your Azure Pass
+
+### 0.3: Start Cloud Shell for the first time
+
+### 0.4: Provision a RHEL VM through the Portal UI
+
+### 0.5: Clean up resources
