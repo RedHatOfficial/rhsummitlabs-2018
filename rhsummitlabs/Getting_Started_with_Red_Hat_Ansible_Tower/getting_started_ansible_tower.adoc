@@ -39,7 +39,7 @@ In this lab you work in a pre-configured lab environment. You will have access t
 
 |===
 
-TIP: You will be able to SSH into control.example.com using the external hostname, from here you need to SSH into the other hosts to run tasks on the commandline. 
+TIP: You will be able to SSH into `control.example.com` using the external hostname, from here you need to SSH into the other hosts to run tasks on the commandline. 
 
 TIP: Ansible Tower's web UI will be reachable over HTTP/HTTPS.
 
@@ -152,7 +152,7 @@ A job is basically an instance of Tower launching an Ansible playbook against an
 
 Okay, let's get started. The first thing we need is an inventory of your managed hosts. This is the equivalent of an inventory file in Ansible Engine. There is a lot more to it (like dynamic inventories) but let's start with the basics.
 
-* You should already have the web UI open, if not: Point your browser to *\https://tower-GUID.rhpds.opentlc.com*, accept the certificate and log in as `admin`
+* You should already have the web UI open, if not: Point your browser to *\https://tower-<GUID>.rhpds.opentlc.com* (replace "<GUID>"), accept the certificate and log in as `admin`
 
 Create the inventory:
 
@@ -220,7 +220,7 @@ TIP: Whenever you see a magnifiying glass icon next to an input field, clicking 
 
 ** *CREDENTIAL TYPE:* Machine
 ** *USERNAME:* ansible
-** *PRIVILEGE ESCALATION METHOD:* Sudo
+** *PRIVILEGE ESCALATION METHOD:* sudo
 
 As we are using SSH key authentication, you have to provide an SSH private key that can be used to access the hosts. You could also configure password authentication here.
 
@@ -247,11 +247,11 @@ As you've probably done with Ansible before you can run ad hoc commands from Tow
 ** For *MACHINE CREDENTIAL* click the magnifying glass icon and select *Example Credentials*.
 ** Click *LAUNCH*, lean back and enjoy the show... 
 
-TIP: After choosing the module to run, Tower will provide a link to the docs page of the module when clicking the question mark next to "Arguments". This is handy, give it a try.
-
 Try other modules in ad hoc commands, as well:
 
 TIP: Don't forget the Credentials!
+
+TIP: After choosing the module to run, Tower will provide a link to the docs page for the module when clicking the question mark next to "Arguments". This is handy, give it a try.
 
 * Find the userid of the executing user using an ad hoc command.
 ** *MODULE:* command 
@@ -262,6 +262,8 @@ TIP: The simple *Ping* module doesn't need options. For the command module you n
 * Print out _/etc/shadow_.
 ** *MODULE:* command
 ** *ARGUMENTS:* cat /etc/shadow
+
+WARNING: Expect an error!
 
 Oops, the last one didn't went well, all red. 
 
@@ -282,6 +284,8 @@ WARNING: *Solution below!*
 * *MODULE:* yum
 * *ARGUMENTS:* name=screen
 * Tick *ENABLE PRIVILEGE ESCALATION*
+
+TIP: The yellow output of the command indicates Ansible has actually done something (here it needed to install the package). If you run the ad hoc command a second time, the output will be green and inform you that the package was already installed. So yellow in Ansible doesn't mean "be careful"... ;-).
 
 == Using Variables
 
@@ -307,7 +311,7 @@ You should definitely keep your Playbooks under version control. In this lab we'
 
 === Setup Git Repository
 
-For this lab you will use a pre-configured Git repository on control.example.com that can be accessed via SSH. A Playbook to install the Apache webserver has already been commited to the repository:
+For this lab you will use a pre-configured Git repository on `control.example.com` that can be accessed via SSH. A Playbook to install the Apache webserver has already been commited to the repository:
 
 ----
 ---
@@ -349,9 +353,9 @@ To configure and use this repository as a *Source Control Management (SCM)* syst
 
 === Create Credentials
 
-First we have to create credentials again, this time to access the Git repository over SSH. You will need the private key of user git (the repo owner) from control.example.com for the credentials:
+First we have to create credentials again, this time to access the Git repository over SSH. You will need the private key of user `git` (the repo owner) from `control.example.com` for the credentials:
 
-* In a terminal log in to control.example.com as root. Then become user git and `cat` the SSH private key:
+* In a terminal log in to `control.example.com` as root. Then become user git and `cat` the SSH private key:
 ----
 [root@control ~]# su - git
 [git@control ~]$ cat .ssh/id_rsa
@@ -362,10 +366,13 @@ First we have to create credentials again, this time to access the Git repositor
 In the Tower web UI click the gear-icon for *Settings*. From the settings choose the *CREDENTIALS* box. 
 
 * Click the *+ADD* button to add new credentials
-* *NAME*: control git
+* *NAME*: Control Git
 * *CREDENTIAL TYPE*: *Source Control*
+
+TIP: You will have to change the page in the *SELECT CREDENTIAL TYPE* window.
+
 * *USERNAME*: git
-* Paste the SSH private key for the git user from control.example.com into the *SCM PRIVATE KEY* field
+* Paste the SSH private key for the git user from `control.example.com` into the *SCM PRIVATE KEY* field
 * Click *SAVE*
 
 === Create the Project
@@ -439,13 +446,13 @@ WARNING: *Solution Below*
 
 Here is another challenge:
 
-* Create a new inventory called `Webserver` and make only host1.example.com member of it.
+* Create a new inventory called `Webserver` and make only `host1.example.com` member of it.
 * Copy the `Apache` template to `Apache Ask` using the copy icon in the *TEMPLATES* view
 ** Change the *INVENTORY* setting of the Project so it will ask for the inventory on launch
 ** *SAVE*
 * Go to the *TEMPLATES* view and launch the `Apache Ask` template.
 * It will now ask for the inventory to use, choose the `Webserver` inventory and click *LAUNCH*
-* Wait until the Job has finished and make sure it run only on host1.example.com
+* Wait until the Job has finished and make sure it run only on `host1.example.com`
 
 TIP: The Job didn't change anything because Apache was already installed in the latest version.
 
@@ -463,7 +470,10 @@ You have installed Apache on both hosts in the job you just run. Now we're going
 
 === Create the index.html Jinja Template
 
-In the SSH console on host control.example.com as user `git` create a template as _/home/git/git-work/index.j2_ with the following content: 
+In the SSH console on host `control.example.com` as user `git` create a template as _/home/git/git-work/index.j2_ with the following content: 
+
+WARNING: Make sure you are adding the files to Git as user `git`, e.g. you might have to run `su - git` as `root` on the control host!
+
 ----
 <body>
 <h1>Apache is running fine</h1>
@@ -472,7 +482,7 @@ In the SSH console on host control.example.com as user `git` create a template a
 </body>
 ----
 
-TIP: Note the two variables used in the template!
+TIP: Note the two variables marked by `{{...}}` used in the template!
 
 === Create the Playbook
 
@@ -491,9 +501,13 @@ Again as user `git` create the playbook _/home/git/git-work/index_html_create.ym
       mode: 0644
 ----
 
+What is this Playbook doing?
+
+* It creates a file ("dest") on the managed hosts from the template you created ("src")
+
 === Add the Files to Git
 
-Now add the files to Git, commit and push to origin:
+Now run the following commands to add the files to the Git repository, commit and push to origin:
 ----
 [git@control ~]$ cd /home/git/git-work
 [git@control git-work]$ git add index_html_create.yml
@@ -595,7 +609,7 @@ Let's create a user:
 * Fill in the values for the new user:
 ** *FIRST NAME:* Werner
 ** *LAST NAME:* Web
-** *EMAIL:* wweb@example.com
+** *EMAIL:* \wweb@example.com
 ** *USERNAME:* wweb
 ** *USER TYPE:* Normal User
 ** *PASSWORD:* <as provided>
@@ -630,6 +644,8 @@ Permissions allow to read, modify, and administer projects, inventories, and oth
 
 To allow users or teams to actually do something, you have to set permissions. The user *wweb* should only be allowed to modify content of the assigned webservers.
 
+Add the permission to use the template:
+
 * In the Permissions view of the Team `Web Content` click the *+ ADD PERMISSIONS* button.
 * A new window opens. You can choose to set permissions for a number of resources.
 ** Select the resource type *JOB TEMPLATES*
@@ -648,7 +664,7 @@ Now log out of Tower's web UI and in again as the *wweb* user.
 
 Check the result:
 
-* In the SSH console on control.example.com check the web page:
+* In the SSH console on `control.example.com` check the web page:
 ----
 [root@control ~]# curl http://host1.example.com
 ----
@@ -718,7 +734,7 @@ WARNING: *Solution Below*
 * Create the project for the application developers. In the Projects view click *+Add*
 ** *NAME:* Webdev Git Repo
 ** *ORGANIZATION:* Default
-** *SCM TYSPE:* Git
+** *SCM TYPE:* Git
 ** *SCM URL:* control.example.com:/home/git/git-webdev
 ** *SCM CREDENTIAL:* Control Git
 ** *SCM UPDATE OPTIONS:* Tick all three boxes.
@@ -750,7 +766,7 @@ Now you have to create Job Templates like you would for "normal" Jobs.
 
 If you want to know what the Playbooks look like:
 
-* Log in via SSH to control.example.com as root
+* Log in via SSH to `control.example.com` as root
 * Have a look at the files in _/home/git/git-webops-work/_ and _/home/git/git-webdev-work/_
 
 === Set up the Workflow
@@ -763,7 +779,7 @@ And now you finally set up the workflow. Workflows are configured in the *TEMPLA
 * Click *SAVE*
 * Now the *WORKFLOW EDITOR* button becomes active, click it to start the graphical editor.
 * Click on the *START* button, a new node opens. To the right you can assign an action to the node, you can choose between *JOBS*, *PROJECT SYNC* and *INVENTORY SYNC*. 
-* In this lab we'll link Jobs together, so select the *Tomcat Deploy* job and click *Select*.
+* In this lab we'll link Jobs together, so select the *Tomcat Deploy* job and click *SELECT*.
 * The node gets annotated with the name of the job. Hover the mouse pointer over the node, you'll see a red *x* and a green *+* signs appear.
 
 TIP: Using the red plus allows you to remove the node, the green plus lets you add the next node.
@@ -784,15 +800,17 @@ Your workflow is ready to go, launch it.
 * In the *TEMPLATES* view launch the *Deploy Webapp Server* workflow by clicking the rocket icon.
 * Wait until the job has finished. 
 
-TIP: Note how the workflow run is shown in the job view and you can choose the workflow nodes to get more information.  
+TIP: Note how the workflow run is shown in the job view and how you can get more information about the Jobs by clicking "DETAILS".  
 
-* To check everything worked fine, log into host1.example.com and host2.example.com from control.example.com and run:
+* To check everything worked fine, log into host1.example.com and host2.example.com from `control.example.com` and run:
 
 ----
 [root@host1 ~]# curl http://localhost:8080/coolapp/
 ----
 
-== Final Lab or Putting it all Together
+TIP: You might have to wait a couple of minutes until Tomcat answers requests.
+
+== Final Challenge or Putting it all Together
 
 This is the final challenge where we try to put most of what you have learned together. 
 
@@ -810,16 +828,16 @@ Your operations team and your application development team like what they see in
 
 === The Git Repository
 
-As a prerequsite you need a Git repo containing the needed files on control.example.com. This has been done for you already, it's a lab about Tower and not Git, after all... but as Git is important when working with Tower the process is described in the Appendix.
+As a prerequsite you need a Git repo containing the needed files on control.example.com. This has been done for you already, it's a lab about Tower and not Git, after all...
 
-Login via SSH to control.example.com, become user `git` and review what you have got there:
+Login via SSH to `control.example.com`, become user `git` and review what you have got there:
 ----
 [root@control-<GUID> ~]# su - git
 ----
 
 * There are a number of files in the work repository _/home/git/git-webserver-work/_:
 ** a Playbook 
-** two versions of index.html files 
+** two versions of index.html template files 
 
 ----
 [git@control ~]$ cd git-webserver-work/
@@ -829,13 +847,17 @@ Login via SSH to control.example.com, become user `git` and review what you have
 <h1>This is a development webserver, have fun!</h1>
 {{ dev_content }}
 </body>
+----
 
+----
 [git@control git-webserver-work]$ cat prod_index.html.j2 
 <body>
 <h1>This is a production webserver, take care!</h1>
 {{ prod_content }}
 </body>
+----
 
+----
 [git@control git-webserver-work]$ cat stage_content.yml 
 ---
 - name: Deploy index.html
@@ -852,9 +874,11 @@ Login via SSH to control.example.com, become user `git` and review what you have
 
 There is of course more then one way to accomplish this, but here is what you should do:
 
-* Put both hosts in the inventory group `Webserver`
+* Make sure both hosts are in the inventory group `Webserver` (add `host2.example.com`)
 * Add a variable `stage: dev` to the inventory `Webserver`
-* Add a variable `stage: prod` to host2.example.com that overrides the inventory variable.
+* Add a variable `stage: prod` to `host2.example.com` that overrides the inventory variable.
+
+TIP: Make sure to keep the three dashes that mark the YAML start! 
 
 === Create the Project
 
@@ -867,7 +891,7 @@ There is of course more then one way to accomplish this, but here is what you sh
 * Create a new *Job Template* named `Create Web Content` that 
 ** targets the `Webserver` inventory 
 ** uses the Playbook `stage_content.yml` from the new `Webcontent` Project
-** Defines two variables: `dev_content: default dev content` and `prod_content: default prod content`
+** Defines two variables: `dev_content: default dev content` and `prod_content: default prod content` in the *EXTRA VARIABLES FILED*
 ** Uses `Example Credentials` and runs with privilege escalation
 * Save and run the template
 
@@ -890,7 +914,8 @@ default prod content
 
 === Add Survey
 
-* Add a survey to the Template to allow changing the variables `dev_content` and `prod_content` and make it available to user `wweb`.
+* Add a survey to the Template to allow changing the variables `dev_content` and `prod_content`
+* Add permissions to the Team `Web Content` so it can be execute the Template " by `wweb`.
 * Run the survey as user `wweb`
 * Check the results:
 ----
@@ -913,6 +938,12 @@ This is my nice Prod Content
 WARNING: *Solution Not Below*
 
 You have done all the required configuration steps in the lab already. If unsure, just refer back to the respective chapters. 
+
+== The End
+
+Congratulations, you finished your labs! We hope you enjoyed your first encounter with Ansible Tower as much as we enjoyed creating the labs.
+
+But it doesn't have to end here. We prepared some optional labs which cover more operational and system administration tasks when working with Ansible Tower. If you still have time, just go ahead!
 
 == Optional: Ansible Tower Administration
 
@@ -984,6 +1015,8 @@ Password (again):
 Password changed successfully for user 'admin'
 ----
 
+TIP: Check by log out of the web UI and then login again. 
+
 * Remove old jobs, project and inventory updates from the database.
 ----
 [root@tower ~]# tower-manage cleanup_jobs -h # get help
@@ -1026,8 +1059,6 @@ Then you can install whatever you need using pip:
 ----
 
 TIP: This package has already been installed, just to show an example. 
-
-TIP: I'm not 100% sure if this has to be run as user `awx` but as all site-packages files for the virtualenv belong to user `awx` I'm reasonably sure... ;-) 
 
 == Optional: Tower Client
 
@@ -1082,22 +1113,6 @@ $ tower-cli user create --username=guido --first-name=Guido \
 
 # List all non-superusers
 $ tower-cli user list --is-superuser=false
-
-# Get a user by ID.
-$ tower-cli user get <id>
-
-# Get the user with the given username.
-$ tower-cli user get --username=guido
-
-# Modify an existing user.
-# This would modify the first name of the user with the ID of <id> to "Gregor".
-$ tower-cli user modify <guido id> --first-name=Gregor
-
-# Modify an existing user, lookup by username.
-# This would use "username" as the lookup, and modify the first name.
-# Which fields are used as lookups vary by resource, but are generally
-# the resource's name.
-$ tower-cli user modify --username=guido --first-name=Guido
 
 # Delete a user.
 $ tower-cli user delete <id>
