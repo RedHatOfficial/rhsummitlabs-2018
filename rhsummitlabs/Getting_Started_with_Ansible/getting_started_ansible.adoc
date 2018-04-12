@@ -26,21 +26,26 @@ You will have access to the following hosts:
 
 WARNING: You will be able to SSH into the control host, from here you need to SSH into the other hosts. 
 
-=== Access your Lab Environment
+== Access your Lab Environment
 
-WARNING: Every seat has been assigned a GUID. 
+Every attendee gets her/his own lab environment. The lab environments are already started, to access your lab you need a unique *GUID* that is part of the hostnames.
 
-To find your GUID open this web page in your browser:
+The web browser of your laptop should default to https://www.opentlc.com/guidgrabber/guidgrabber.cgi. On this web page select the lab your attending and enter the activation key that will be given by the instructor. After submitting your input by clicking "Next" you will see the attendee welcome screen with the needed information:
 
-*http://people.redhat.com/grieger/lab_list.html*
+* Your unique lab *GUID*
+* A link to the lab guide 
+* The hostnames / URLs you will access
+* A link to the status page
 
-To access your control host:
+=== To access your control host:
 
-* Look up your *GUID*
+* Make sure you have your *GUID*
 * Open a terminal session
-* Log in to your control host as root using the hostname, the password will be given by the instructor.
+* Log in to your control host:
 
-TIP: The hostname is: *control-<number>.rhpds.opentlc.com* 
+----
+ssh control-<GUID>.rhpds.opentlc.com
+----
 
 WARNING: *Replace <number> with the GUID assigned to your seat!*
 
@@ -48,6 +53,21 @@ Example: If your GUID is "83d4", do this:
 ----
 ssh root@control-83d4.rhpds.opentlc.com
 ----
+
+TIP: The user will default to `lab-user` and SSH key authentication will be used automatically.
+
+Then become root:
+
+----
+[lab-user@control-<GUID> ~]$ sudo -i
+----
+
+Inside the lab environment SSH keys have already been distributed, you can now simply SSH into the managed hosts:
+
+----
+[root@control ~]# ssh host1.example.com
+----
+
 === Check the Prerequisites
 
 Most prerequisite tasks have already been done for you:
@@ -93,7 +113,7 @@ NOTE: *In all subsequent exercises you should work as the ansible user on the co
 You might have guessed by now this lab is pretty commandline-centric... :-)
 
 * Don't type everything manually, use copy & paste from the browser when appropriate. But don't stop to think and understand... ;-)
-* All labs where prepared using Vi, but feel free to install nano or even emacs.
+* All labs where prepared using Vi, but feel free to use mc (function keys can be reached via Esc-<n>) or nano.
 
 TIP: In the lab guide commands you are supposed to run are shown with or without the expected output, whatever makes more sense in the context. 
 
@@ -131,7 +151,7 @@ The most basic host pattern is the name for a single managed host listed in the 
     host1.example.com
 ----
 
-An inventory file can contain a lot more information. To organize your hosts in groups, change your inventory file so it looks like this:
+An inventory file can contain a lot more information, it can organize your hosts in groups or define variables. You will use grouping most of the times, change your inventory file to look like this:
 ----
 [webserver]
 host1.example.com
@@ -175,12 +195,10 @@ inventory=/home/ansible/ansible-files/inventory
 Your Ansible inventory was used without providing the `-i` option. To double-check, run the command again from outside `~/ansible-files/`:
 
 ----
-[ansible@control ~]$ ansible all --list-hosts
- [WARNING]: Could not match supplied host pattern, ignoring: all
-
- [WARNING]: provided hosts list is empty, only localhost is available
-
- [WARNING]: No hosts matched, nothing to do
+[ansible@control-6656 ~]$ ansible all --list-hosts
+ 
+ [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
 
   hosts (0):
 ---- 
@@ -247,6 +265,8 @@ Sometimes it's desirable to have the output for a host on one line:
 Using the `copy` module, execute an ad hoc command on control.example.com to change the contents of the `/etc/motd` file on host1.example.com. *The content is handed to the module through an option in this case*. 
 
 Run:
+
+WARNING: Expect an error!
 
 ----
 [ansible@control ansible-files]$ ansible host1.example.com -m copy -a 'content="Managed by Ansible\n" dest=/etc/motd' 
@@ -599,12 +619,12 @@ For understanding and practice let's do a lab. Following up on the theme "Let's 
 On control.example.com as user ansible create the directories to hold the variable definitions in `~/ansible-files/`:
 
 ----
-[ansible@control ansible-files]$ mkdir {host_vars,group_vars}
+[ansible@control ansible-files]$ mkdir host_vars group_vars
 ----
 
 === Create the Variable Files
 
-Now create two files containing variable definitions which point to an environment:
+Now create two files containing variable definitions. We'll define a variable named `stage` which will point to different environments, `dev` or `prod`:
 
 * `~/ansible-files/group_vars/webserver` with this content:
 ----
