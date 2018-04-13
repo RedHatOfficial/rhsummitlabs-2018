@@ -1,4 +1,3 @@
 # Your labs docs placeholder, put your documentation here.
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+link:https://github.com/RedHatDemos/SecurityDemos/blob/master/Implementing_Proactive_Security_and_Compliance_Automation/documentation/README.adoc[Implementing Proactive Security and Compliance Automation]
