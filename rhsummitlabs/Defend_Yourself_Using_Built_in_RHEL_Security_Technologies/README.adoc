@@ -1,1 +1,1 @@
-link:https://github.com/RedHatDemos/SecurityDemos/blob/master/RHELSecurityLabSummit/documentation/README.adoc[Defend Yourself Using Built in RHEL Security Technologies]
+link:https://github.com/RedHatDemos/SecurityDemos/blob/master/RHELSecurityLabSummit/documentation/README.adoc[Defend Yourself Using Built-in RHEL Security Technologies]
