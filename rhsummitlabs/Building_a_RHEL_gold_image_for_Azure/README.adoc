@@ -10,22 +10,25 @@ This process is necessary if your organisation wants to use Cloud Access, and no
 
 If you're not familiar with Cloud Access, it's a feature of most existing Red Hat subscriptions for RHEL, JBoss, CloudForms, OpenShift and Gluster that allow Enterprise subscriptions to be moved to a public cloud provider.
 
-=== Author & Support
+=== Red Hatters assisting the lab
 
-This lab was written by **James Read**, Solution Architect for Cloud & Service Providers. They made me put a picture here. Please scroll past it quickly ;) 
+This lab is being supported by several people who can help out with the lab if you any any questions problems, familiarize yourself with your happy coffee-fueled helpers right here!;
 
-image::labImages/jreadProfile.jpg[]
-
-Email: james@redhat.com
+|===
+| image:labImages/jreadProfile.jpg[]                               | image:labImages/questionProfile.jpg[] | image:labImages/questionProfile.jpg[]
+| EMEA Solution Architect for Cloud & Service Providers, Lab author | job description placeholder            | job description placeholder
+| Email: james@redhat.com                                           | email address placeholder              | email address placeholder 
+|===
 
 === Outline
 
-1. You'll start this lab by downloading a pre-built RHEL KVM guest image
-2. Create a local virtual machine and boot it up
+1. You'll start this lab by SSHing into a workstation
+2. Create a local virtual machine from the standard RHEL qcow2 image and boot it up
 3. Perform standard installation settings changes like network, bootloader and
 removes SSH keys necessary for Azure.
-4. The image is then prepared (like Windows Sysprep) so that multiple new images can be created from this template. 
-5. Review how the Azure tools work
+4. Several parts of Azure best practice are covered in this guide
+5. The image is then prepared (like Windows Sysprep) so that multiple new images can be created from this template. 
+6. Review how the Azure tools work
 
 [NOTE]
 Because this lab produces a virtual machine that is approximately 10Gb in size,
@@ -39,7 +42,7 @@ Azure tools, but you will not practically take that step during this lab.
 It's recommended that you have some basic Linux skills - Red Hat Certified
 Systems Administrator level will be absolutely fine to complete this lab.
 
-Please do ask if you have questions, Red Hatters should always be nearby to
+Please do ask if you have questions, Red Hatters are always nearby to
 help out!
 
 === After completing this lab, you should be able...
@@ -55,23 +58,21 @@ In this lab, we'll be using the lab laptop only. No connection details or
 networking details or Azure deatails are needed, no Red Hat subscriptions are
 needed either. Very simple really!
 
-
 === Errata
 
 This lab was taken from a similar excellent knowledge base article on the Red Hat
 customer portal.
 
 Small changes to those instructions to that document have been made to convert
-it to a partner confernece lab, so if you do find spelling mistakes or
-glitches, please do point them out and we'll correct them through the partner
-conference!
+it to a Red Hat Summit lab, so if you do find spelling mistakes or
+glitches, please do point them out and we'll correct them through the Red Hat Summit!
 
-Be sure to add the following article to your bookmarks **for reference after the partner conference**!
+Be sure to add the following article to your bookmarks **for reference after the Red Hat Summit**!
 
 image::labImages/article.png[]
 https://access.redhat.com/articles/uploading-rhel-image-to-azure
 
-Also, many of the best practices we talk about in this lab are well documented on the Red HAt Customer Portal, see https://access.redhat.com/articles/2758981
+Also, many of the best practices we talk about in this lab are well documented on the Red Hat Customer Portal, see https://access.redhat.com/articles/2758981
 
 === Packages used in this lab
 
@@ -85,28 +86,10 @@ using.
 |===
 | Package	| Repository | Description
 | libvirt	|rhel-7-server-rpms	|Open source API, daemon, and management tool for managing platform virtualization.
-|virt-manager	|rhel-7-server-rpms |	A command line and Gnome desktop virtual machine manager used to create and manage KVM virtual machines.
-|libguestfs	| rhel-7-server-rpms	| A library for accessing and modifying virtual machine file systems.
-|libguestfs-tools	| rhel-7-server-rpms	| System administration tools for virtual machines; includes the guestfish utility.
+| virt-manager	|rhel-7-server-rpms |	A command line and Gnome desktop virtual machine manager used to create and manage KVM virtual machines.
+| libguestfs	| rhel-7-server-rpms	| A library for accessing and modifying virtual machine file systems.
+| libguestfs-tools	| rhel-7-server-rpms	| System administration tools for virtual machines; includes the guestfish utility.
 |===
-
-== Check that the processor Virtualisation Extensions are enabled on the laptop
-
-To run virtual machines on the lab laptops, the processor Virtualisation
-Extensions need to be enabled in the BIOS/EFI. This should have been done
-before you are in the lab, but if not, please enable the Virtualisation
-Extensions. KVM is disabled if the extensions are not enabled.
-
-To check if the extensions are enabled, run the following command in your
-terminal;
-
-	dmesg | grep -i kvm
-
-You should *not* see the following... If you do, please contact a lab admin!
-
-	[164324.526483] kvm: disabled by bios
-	[164346.574009] kvm: disabled by bios
-	[164964.310827] kvm: disabled by bios
 
 == Create the RHEL VM from a RHEL KVM Guest Image
 
@@ -118,8 +101,8 @@ Microsoft Azure VMs must have the following configuration settings. Some of thes
 
 |===
 | Option | Recommendation
-|LVM	| Do not use Logical Volume Management (LVM) on the operating system disk. Instead, use regular partitions and format the disk using ext3, ext4, or xfs. LVM or RAID can be used for data disks.
-|ssh	| ssh must be enabled to provide remote access to your Azure VMs.
+| LVM	| Do not use Logical Volume Management (LVM) on the operating system disk. Instead, use regular partitions and format the disk using ext3, ext4, or xfs. LVM or RAID can be used for data disks.
+| ssh	| ssh must be enabled to provide remote access to your Azure VMs.
 | dhcp	| The primary virtual adapter should be configured for dhcp (IPv4 only).
 | Network Manager	| This service should be disabled on RHEL 6.x images.
 | Swap Space	| Do not create a dedicated swap file or swap partition. Swap space may be configured in the Azure Linux agent.
@@ -130,15 +113,15 @@ Microsoft Azure VMs must have the following configuration settings. Some of thes
 == Find the KVM Guest Image
 
 We will now find the latest KVM Guest Image that is pre-downloaded for you on
-your workstation. Normally, you can find KVM Guest Images on the Red Hat Customer Portal, but we've cached them locally to speed up download times. 
+your workstation. Normally, you can find KVM Guest Images on the Red Hat Customer Portal, but we've cached them locally to save download times. 
 
 [NOTE]
-We recommend downloading the latest minor version of each major version of RHEL. Even though we support RHEL 6.7, we prefer you use RHEL 6.9. Likewise, even though RHEL 7.1 is supported, you should use RHEL 7.3. RHEL 7.0 is not supported in Microsoft Azure.
+We recommend downloading the latest minor version of each major version of RHEL. Even though we support RHEL 6.7, we prefer you use RHEL 6.9. Likewise, even though RHEL 7.1 is supported, you should use RHEL 7.5. RHEL 7.0 is not supported in Microsoft Azure.
 
-On your lab laptop, run the following command in a terminal; 
+On your lab laptop, run the following command in a terminal to find the pre-downloaded image; 
 
-	cd Downloads
-	wget http://192.168.103.200/files/rhel-guest-image-7.3-35.x86_64.qcow2 
+	cd /opt
+    ll
 
 Copy the image to `/var/lib/libvirt/images/`; We create a copy of this image because if we break something during the install, we can just make a new copy without having to download the image again.
 
