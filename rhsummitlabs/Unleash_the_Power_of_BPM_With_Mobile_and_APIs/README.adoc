@@ -8,9 +8,7 @@
 
 == Overview
 
-Short description: BPM integration with mobile and 3scale through its REST API
-
-Long description: In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale. *BUFF THIS OUT*
+In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale.
 
 . Goal
 
