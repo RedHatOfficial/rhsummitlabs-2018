@@ -49,7 +49,7 @@ The demo environment consists of the following systems:
 
 === Environment setup
 
-. You will be given a username between summit-student-NUM such as summit-student-01
+. You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
 
 . The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
 
