@@ -21,9 +21,9 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**The Definitive Red Hat Enterprise Linux 7 Hands-On Lab**](rhsummitlabs/The_Definitive_Red_Hat_Enterprise_Linux_7_Hands_On_Lab/README.md)
 
- - [**Implementing Proactive Security and Compliance Automation**](rhsummitlabs/Implementing_Proactive_Security_and_Compliance_Automation/README.md)
+ - [**Implementing Proactive Security and Compliance Automation**](rhsummitlabs/Implementing_Proactive_Security_and_Compliance_Automation/README.adoc)
 
- - [**Defend Yourself Using Built-in RHEL Security Technologies**](rhsummitlabs/Defend_Yourself_Using_Built_in_RHEL_Security_Technologies/README.md)
+ - [**Defend Yourself Using Built-in RHEL Security Technologies**](rhsummitlabs/Defend_Yourself_Using_Built_in_RHEL_Security_Technologies/README.adoc)
 
  - [**Linux Container Internals: Part 1**](rhsummitlabs/Linux_Container_Internals:_Part_1/README.md)
  
