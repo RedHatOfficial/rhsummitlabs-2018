@@ -30,6 +30,8 @@ removes SSH keys necessary for Azure.
 5. The image is then prepared (like Windows Sysprep) so that multiple new images can be created from this template. 
 6. Review how the Azure tools work
 
+The **lab code** is: `**L1071**`.
+
 [NOTE]
 Because this lab produces a virtual machine that is approximately 10Gb in size,
 which is unpractical to upload to Azure during the Red Hat Summit, we will
