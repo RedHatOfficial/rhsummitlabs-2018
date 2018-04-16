@@ -8,7 +8,7 @@ In this lab we test access to the environment
 
 :numbered:
 
-=== Access Environment and Setup
+=== Access Environment
 
 Check access of your account by logging into the following servers:
 
@@ -17,8 +17,7 @@ Check access of your account by logging into the following servers:
 . Log into Mobile -
 
 . Log into 3Scale - `https://redhat-bpms-admin.3scale.net`
-
-=== Test Environment and Setup
+** On the default page you should see 2 APIs called summit-student-NUM_default and summit-student-NUM_custom
 
 
 

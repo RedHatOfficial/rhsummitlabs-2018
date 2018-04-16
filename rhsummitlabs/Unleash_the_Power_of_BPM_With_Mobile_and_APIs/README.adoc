@@ -61,9 +61,9 @@ The demo environment consists of the following systems:
 
 . If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
 
-== Setup lab
+== Access environment lab
 
-link:setup.adoc[Setup lab]
+link:access.adoc[Access Environment lab]
 
 == 3Scale lab
 
