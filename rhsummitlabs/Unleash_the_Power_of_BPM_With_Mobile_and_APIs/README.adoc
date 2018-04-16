@@ -65,10 +65,6 @@ The demo environment consists of the following systems:
 
 link:access.adoc[Access Environment lab]
 
-== 3Scale lab
-
-link:3scale-lab.adoc[3Scale lab]
-
 == Create new BPM container lab
 
 link:bpm_container_lab.adoc[BPM Container lab]
@@ -77,9 +73,9 @@ link:bpm_container_lab.adoc[BPM Container lab]
 
 link:mobile_lab.adoc[Mobile lab]
 
-== BPM Consume Rest service
+== 3Scale lab
 
-link:bpm_consume_rest.adoc[BPM Consume REST service lab]
+link:3scale-lab.adoc[3Scale lab]
 
 == 3Scale SSO OpenID Connect lab
 
