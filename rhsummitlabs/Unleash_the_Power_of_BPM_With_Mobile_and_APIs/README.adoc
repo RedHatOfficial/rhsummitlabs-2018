@@ -10,7 +10,7 @@
 
 In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale.
 
-. Goal
+Our aims are
 
 * Explore BPM REST api
 * Mobile integration
