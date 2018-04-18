@@ -24,7 +24,7 @@ Current versions of products used:
 |Product |Version
 |`JBoss EAP` |`6.4`
 |`JBoss BPMS` |`6.4`
-|`Mobile Platform` |`??`
+|`Mobile Platform` |`3.20.2`
 |`3Scale` |`2.1`
 |`SSO` |`7.2`
 |=======
