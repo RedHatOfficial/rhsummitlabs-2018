@@ -8,11 +8,9 @@
 
 == Overview
 
-Short description: BPM integration with mobile and 3scale through its REST API
+In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale.
 
-Long description: In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale. *BUFF THIS OUT*
-
-. Goal
+Our aims are
 
 * Explore BPM REST api
 * Mobile integration
@@ -26,7 +24,7 @@ Current versions of products used:
 |Product |Version
 |`JBoss EAP` |`6.4`
 |`JBoss BPMS` |`6.4`
-|`Mobile Platform` |`??`
+|`Mobile Platform` |`3.20.2`
 |`3Scale` |`2.1`
 |`SSO` |`7.2`
 |=======
@@ -41,7 +39,7 @@ The demo environment consists of the following systems:
 |`BPM CUSTOM URL HERE  |`BPM CUSTOM IP HERE` | BPM Custom UI
 |`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com` |`34.251.130.28`  | BPM Server A
 |`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com`  |`52.51.30.91` | BPM Server B
-|`MOBILE URL HERE  |`MOBILE IP HERE` | Mobile Platform
+|`gpte.us.training.redhatmobile.com`  | | Mobile Platform
 |`redhat-bpms-admin.3scale.net`  |`184.73.207.212` | 3Scale
 |`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com`  |`52.210.99.113` | SSO
 |`ec2-54-246-232-177.eu-west-1.compute.amazonaws.com`  |`54.246.232.177` | BPM Server SSO enabled
@@ -51,21 +49,21 @@ The demo environment consists of the following systems:
 
 === Environment setup
 
-. You will be given a username between a1_30 and b31_60.
+. You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
 
-. All passwords are set to abc123
+. The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
 
-. If you have a username beginning with a please use BPM Server A. If you have a username starting with b please use BPM Server B. This is to help distribute load.
+. Passwords for mobile FeedHenry#2018
 
-. The username and password will also log you into 3Scale. A end user is also created in Red Hat SSO which is used in the 3Scale SSO lab as a end user.
+. Password for 3Scale 3scale#2018
 
-== Setup lab
+. Password for sso sso#2018
 
-link:setup.adoc[Setup lab]
+. If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
 
-== 3Scale lab
+== Access environment lab
 
-link:3scale-lab.adoc[3Scale lab]
+link:access.adoc[Access Environment lab]
 
 == Create new BPM container lab
 
@@ -75,9 +73,9 @@ link:bpm_container_lab.adoc[BPM Container lab]
 
 link:mobile_lab.adoc[Mobile lab]
 
-== BPM Consume Rest service
+== 3Scale lab
 
-link:bpm_consume_rest.adoc[BPM Consume REST service lab]
+link:3scale-lab.adoc[3Scale lab]
 
 == 3Scale SSO OpenID Connect lab
 

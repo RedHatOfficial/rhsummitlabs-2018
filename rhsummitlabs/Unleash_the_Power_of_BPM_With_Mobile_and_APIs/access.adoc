@@ -1,0 +1,30 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== Setup lab
+
+In this lab we test access to the environment
+
+:numbered:
+
+=== Access Environment
+
+Check access of your account by logging into the following servers:
+
+. Log into BPM custom UI -
+
+. Log into Mobile
+** Browse to https://gpte.us.training.redhatmobile.com[https://gpte.us.training.redhatmobile.com]
+** Enter your allocated username i.e. summit-student-01
+** The password is FeedHenry#2018
+** Click on *Projects*
+** You should see one project called *FSI-Demo-Summit*.
+
+. Log into 3Scale
+** Browse to `https://redhat-bpms-admin.3scale.net`
+** Login using your username and password 3scale#2018
+** On the default page you should see 2 APIs called summit-student-NUM_default and summit-student-NUM_custom
+
+
+
