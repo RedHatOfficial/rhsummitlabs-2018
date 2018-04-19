@@ -6,32 +6,22 @@
 
 :numbered:
 
-== Overview
+Lab Introduction
+----------------
 
-In this workshop we will explore the BPM REST API and how to integrate with it via mobile, a user interface and 3Scale.
+As we saw in the introduction presentations, Red Hat BPM Suite has a set of capabilities that make is ideal for an API-driven, microservices, cloud-native environment.
 
-Our aims are
+In this hands on lab we will deploy a process application to an Intelligent Process Server instance. Each deployment unit is know as a container and will have a unique ID. This means that each attendee will have a unique API to work with in the following exercises.
 
-* Explore BPM REST api
-* Mobile integration
-* 3Scale integration
-* SSO integration
+We'll then go on to use the API from direct REST calls, in a mobile application and in the 3Scale API Management platform.
 
-Current versions of products used:
 
-[cols="1,1",options="header"]
-|=======
-|Product |Version
-|`JBoss EAP` |`6.4`
-|`JBoss BPMS` |`6.4`
-|`Mobile Platform` |`3.20.2`
-|`3Scale` |`2.1`
-|`SSO` |`7.2`
-|=======
+Lab Structure
+-------------
 
-=== Environment
+The structure of the lab calls for the BPM deployment to be completed first. Once this is done, the following exercises can be completed in any order, depending on your interest.
 
-The demo environment consists of the following systems:
+The lab environment consists of the following systems:
 
 [cols="3",options="header"]
 |=======
@@ -46,39 +36,79 @@ The demo environment consists of the following systems:
 |`ec2-52-31-199-16.eu-west-1.compute.amazonaws.com`    |`52.31.199.16` | Nexus
 |=======
 
+* You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
 
-=== Environment setup
+* The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
 
-. You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
+* Passwords for mobile FeedHenry#2018
 
-. The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
+* Password for 3Scale 3scale#2018
 
-. Passwords for mobile FeedHenry#2018
+* Password for sso sso#2018
 
-. Password for 3Scale 3scale#2018
-
-. Password for sso sso#2018
-
-. If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
-
-== Access environment lab
-
-link:access.adoc[Access Environment lab]
-
-== Create new BPM container lab
-
-link:bpm_container_lab.adoc[BPM Container lab]
-
-== Modify mobile lab
-
-link:mobile_lab.adoc[Mobile lab]
-
-== 3Scale lab
-
-link:3scale-lab.adoc[3Scale lab]
-
-== 3Scale SSO OpenID Connect lab
-
-link:3scale_openidconnect.adoc[3Scale OpenID Connect lab]
+* If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
 
 
+
+Lab 1: Deploy and test the Process Application to the IPS container
+-------------------------------------------------------------------
+Red Hat JBoss BPM Suite has been re-architected into two distinct binaries, Business Central for design and the Intelligent Process Server (KIE Server) for process execution. This has been done to create a flexible, scalable and lightweight execution engine that is deployed as a standalone server independent from any design or management tooling. This architecture makes the IPS suitable for API driven applications in a microservices ecosystem.
+
+The JBoss BPM Suite APIs are divided into the following sections:
+
+* Administration
+* Execution
+  - Process Management
+  - Task Management
+  - Queries
+
+In this lab we will focus on the Intelligent Process Server, performing the following actions:
+
+* Container Deployment
+* Initiating a Process Instance
+* Querying a Process Instance
+* Interacting with the Task Management API
+
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container.adoc[Start the BPM lab here]
+
+Lab 2a: Expose and test an API endpoint through 3Scale
+------------------------------------------------------
+
+3scale is Red Hat's API Management platform, built with performance, customer control and excellent time-to-value in mind.
+
+The 3Scale platform is organised around a developer portal and API management and delivery functionality.
+
+.3Scale Architecture
+image::https://www.3scale.net/wp-content/uploads/2015/03/3scale-architecture-diagram.png[3Scale Architecture, 600]
+
+3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net to expose and manage the API for your BPM Container. We will perform the following steps:
+
+* Login into 3Scale SaaS Application
+* Define API Service
+* Define Application Plan
+* Define Accounts and Users
+* Create Application
+* Create Mappings and Methods for BPMS service integration
+
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale-lab.adoc[Start the API Management lab here]
+
+
+Lab 2b: Use the API in a mobile application through the Red Hat Mobile Application Platform hosted platform
+-----------------------------------------------------------------------------------------------------------
+
+Red Hat Mobile Application Platform speeds up the development, integration, deployment, and management of mobile apps for businesses.
+
+The platform offers a suite of features that embrace collaborative app development, centralised control of security and back-end integration, and deployment in the cloud or on-premise.
+
+.Red Hat Mobile Application Platform Architecture
+image::https://static.jboss.org/rhd/images/images_products_mobileplatform_mobile_platform_overview-2.png[Red Hat Mobile Application Platform Architecture, 600]
+
+Red Hat Mobile Application Platform is available as both SaaS and on premise options. Today we will use a hosted deployment running on Red Hat Openshift to add a mobile app front end to the BPM process that you deployed in the Lab 1.
+
+* Login in to RHMAP
+* Explore the app and portal code
+* Located the API calls
+* Modify the API call
+* Optionally build an (Android) app for your phone
+
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/mobile_lab.adoc[Start the Mobile frontend lab here]
