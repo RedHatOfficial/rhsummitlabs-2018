@@ -2,7 +2,7 @@
 :data-uri:
 :toc2:
 
-== Unlease the power of BPM with mobile and APIs
+== Unleash the power of BPM with mobile and APIs
 
 :numbered:
 
