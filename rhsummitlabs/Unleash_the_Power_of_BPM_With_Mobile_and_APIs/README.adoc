@@ -104,7 +104,7 @@ Red Hat Mobile Application Platform speeds up the development, integration, depl
 The platform offers a suite of features that embrace collaborative app development, centralised control of security and back-end integration, and deployment in the cloud or on-premise.
 
 .Red Hat Mobile Application Platform Architecture
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/rhmap-architecture.png[Red Hat Mobile Application Platform Architecture, 600]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/rhmap-architecture-diagram.png[Red Hat Mobile Application Platform Architecture, 600]
 
 Red Hat Mobile Application Platform is available as both SaaS and on premise options. Today we will use a hosted deployment running on Red Hat Openshift to add a mobile app front end to the BPM process that you deployed in the Lab 1.
 
