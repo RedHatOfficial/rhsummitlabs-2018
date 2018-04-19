@@ -13,9 +13,7 @@ Lab Structure
 
 The structure of the lab calls for the BPM deployment to be completed first. Once this is done, the following exercises can be completed in any order, depending on your interest.
 
-=== Environment
-
-The demo environment consists of the following systems:
+The lab environment consists of the following systems:
 
 [cols="3",options="header"]
 |=======
@@ -30,25 +28,22 @@ The demo environment consists of the following systems:
 |`ec2-52-31-199-16.eu-west-1.compute.amazonaws.com`    |`52.31.199.16` | Nexus
 |=======
 
+* You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
 
-=== Environment setup
+* The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
 
-. You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
+* Passwords for mobile FeedHenry#2018
 
-. The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
+* Password for 3Scale 3scale#2018
 
-. Passwords for mobile FeedHenry#2018
+* Password for sso sso#2018
 
-. Password for 3Scale 3scale#2018
-
-. Password for sso sso#2018
-
-. If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
+* If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
 
 
 
 Lab 1: Deploy and test the Process Application to the IPS container
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------------------------------------------
 Red Hat JBoss BPM Suite has been re-architected into two distinct binaries, Business Central for design and the Intelligent Process Server (KIE Server) for process execution. This has been done to create a flexible, scalable and lightweight execution engine that is deployed as a standalone server independent from any design or management tooling. This architecture makes the IPS suitable for API driven applications in a microservices ecosystem.
 
 The JBoss BPM Suite APIs are divided into the following sections:
@@ -68,7 +63,7 @@ In this lab we will focus on the Intelligent Process Server, performing the foll
 link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container.adoc[Start the BPM lab here]
 
 Lab 2a: Expose and test an API endpoint through 3Scale
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------------------
 
 3scale is Red Hat's API Management platform, built with performance, customer control and excellent time-to-value in mind.
 
@@ -90,7 +85,7 @@ link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale-lab.adoc[Start the 
 
 
 Lab 2b: Use the API in a mobile application through the Red Hat Mobile Application Platform hosted platform
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------------------------------------------------------------------
 
 Red Hat Mobile Application Platform speeds up the development, integration, deployment, and management of mobile apps for businesses.
 
