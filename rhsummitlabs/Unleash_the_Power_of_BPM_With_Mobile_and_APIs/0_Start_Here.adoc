@@ -7,10 +7,44 @@ In this hands on lab we will deploy a process application to an Intelligent Proc
 
 We'll then go on to use the API from direct REST calls, in a mobile application and in the 3Scale API Management platform.
 
+
 Lab Structure
 -------------
 
 The structure of the lab calls for the BPM deployment to be completed first. Once this is done, the following exercises can be completed in any order, depending on your interest.
+
+=== Environment
+
+The demo environment consists of the following systems:
+
+[cols="3",options="header"]
+|=======
+|Hostname              |Internal IP    |Description
+|`BPM CUSTOM URL HERE  |`BPM CUSTOM IP HERE` | BPM Custom UI
+|`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com` |`34.251.130.28`  | BPM Server A
+|`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com`  |`52.51.30.91` | BPM Server B
+|`gpte.us.training.redhatmobile.com`  | | Mobile Platform
+|`redhat-bpms-admin.3scale.net`  |`184.73.207.212` | 3Scale
+|`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com`  |`52.210.99.113` | SSO
+|`ec2-54-246-232-177.eu-west-1.compute.amazonaws.com`  |`54.246.232.177` | BPM Server SSO enabled
+|`ec2-52-31-199-16.eu-west-1.compute.amazonaws.com`    |`52.31.199.16` | Nexus
+|=======
+
+
+=== Environment setup
+
+. You will be given a username between summit-student-NUM such as summit-student-01. Note the preceeding 0 to the first 9 users.
+
+. The username and password will log you into Mobile, 3Scale and used as a end user for SSO. The passwords differ for these accounts - see below.
+
+. Passwords for mobile FeedHenry#2018
+
+. Password for 3Scale 3scale#2018
+
+. Password for sso sso#2018
+
+. If you have a username 1-25 please use BPM Server A when prompoted. If you have a username 26-50 please use BPM Server B. This is to help distribute load.
+
 
 
 Lab 1: Deploy and test the Process Application to the IPS container
