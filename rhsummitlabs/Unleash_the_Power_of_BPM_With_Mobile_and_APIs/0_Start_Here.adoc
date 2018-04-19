@@ -53,7 +53,7 @@ image::https://www.3scale.net/wp-content/uploads/2015/03/3scale-architecture-dia
 * Create Application
 * Create Mappings and Methods for BPMS service integration
 
-link:../3scale-lab.adoc[Start the API Management lab here]
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale-lab.adoc[Start the API Management lab here]
 
 
 Lab 2b: Use the API in a mobile application through the Red Hat Mobile Application Platform hosted platform
