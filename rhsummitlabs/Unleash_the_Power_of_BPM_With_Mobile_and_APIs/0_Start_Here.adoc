@@ -43,7 +43,6 @@ The 3Scale platform is organised around a developer portal and API management an
 .3Scale Architecture
 image::https://www.3scale.net/wp-content/uploads/2015/03/3scale-architecture-diagram.png[3Scale Architecture, 600]
 
-
 3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net to expose and manage the API for your BPM Container. We will perform the following steps:
 
 * Login into 3Scale SaaS Application
@@ -66,10 +65,12 @@ The platform offers a suite of features that embrace collaborative app developme
 .Red Hat Mobile Application Platform Architecture
 image::https://static.jboss.org/rhd/images/images_products_mobileplatform_mobile_platform_overview-2.png[Red Hat Mobile Application Platform Architecture, 600]
 
+Red Hat Mobile Application Platform is available as both SaaS and on premise options. Today we will use a hosted deployment running on Red Hat Openshift to add a mobile app front end to the BPM process that you deployed in the Lab 1.
+
 * Login in to RHMAP
-* Review the code
+* Explore the app and portal code
 * Located the API calls
 * Modify the API call
 * Optionally build an (Android) app for your phone
 
-[link]
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/mobile_lab.adoc[Start the Mobile frontend lab here]
