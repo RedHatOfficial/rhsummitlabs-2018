@@ -43,15 +43,18 @@ The 3Scale platform is organised around a developer portal and API management an
 .3Scale Architecture
 image::https://www.3scale.net/wp-content/uploads/2015/03/3scale-architecture-diagram.png[3Scale Architecture, 600]
 
-3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net.
 
-In this lab we will be using the
+3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net to expose and manage the API for your BPM Container. We will perform the following steps:
 
-* Login to 3Scale SaaS platform
-* werwe
-* werwr
+* Login into 3Scale SaaS Application
+* Define API Service
+* Define Application Plan
+* Define Accounts and Users
+* Create Application
+* Create Mappings and Methods for BPMS service integration
 
-[link]
+link:../3scale-lab.adoc[Start the API Management lab here]
+
 
 Lab 2b: Use the API in a mobile application through the Red Hat Mobile Application Platform hosted platform
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
