@@ -54,7 +54,6 @@ Lab 1: Deploy and test the Process Application to the IPS container
 -------------------------------------------------------------------
 Red Hat JBoss BPM Suite has been re-architected into two distinct binaries, Business Central for design and the Intelligent Process Server (KIE Server) for process execution. This has been done to create a flexible, scalable and lightweight execution engine that is deployed as a standalone server independent from any design or management tooling. This architecture makes the IPS suitable for API driven applications in a microservices ecosystem.
 
-.JBoss BPM Suite Architecture
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/bpm-suite-architecture-diagram.png[JBoss BPM Suite Architecture, 900]
 
 The JBoss BPM Suite APIs are divided into the following sections:
@@ -81,7 +80,6 @@ Lab 2a: Expose and test an API endpoint through 3Scale
 
 The 3Scale platform is organised around a developer portal and API management and delivery functionality.
 
-.3Scale Architecture
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-architecture-diagram.png[3Scale Architecture, 600]
 
 3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net to expose and manage the API for your BPM Container. We will perform the following steps:
@@ -103,8 +101,7 @@ Red Hat Mobile Application Platform speeds up the development, integration, depl
 
 The platform offers a suite of features that embrace collaborative app development, centralised control of security and back-end integration, and deployment in the cloud or on-premise.
 
-.Red Hat Mobile Application Platform Architecture
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/rhmap-architecture-diagram.png[Red Hat Mobile Application Platform Architecture, 600]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/rhmap-architecture-diagram.png[Red Hat Mobile Application Platform Architecture, 800]
 
 Red Hat Mobile Application Platform is available as both SaaS and on premise options. Today we will use a hosted deployment running on Red Hat Openshift to add a mobile app front end to the BPM process that you deployed in the Lab 1.
 
