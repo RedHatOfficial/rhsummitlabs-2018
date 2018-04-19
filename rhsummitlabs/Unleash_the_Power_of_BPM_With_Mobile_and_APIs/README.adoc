@@ -6,8 +6,8 @@
 
 //:numbered:
 
-Lab Introduction
-----------------
+//Lab Introduction
+//----------------
 
 As we saw in the introduction presentations, Red Hat BPM Suite has a set of capabilities that make is ideal for an API-driven, microservices, cloud-native environment.
 
