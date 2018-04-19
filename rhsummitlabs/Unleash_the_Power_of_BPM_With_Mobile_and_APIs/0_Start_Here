@@ -1,0 +1,60 @@
+Lab Introduction
+----------------
+
+As we saw in the introduction presentations, Red Hat BPM Suite has a set of capabilities that make is ideal for an API-driven, microservices, cloud-native environment.
+
+In this hands on lab we will deploy a process application to an Intelligent Process Server instance. Each deployment unit is know as a container and will have a unique ID. This means that each attendee will have a unique API to work with in the following exercises.
+
+We'll then go on to use the API from direct REST calls, in a mobile application and in the 3Scale API Management platform.
+
+Lab Structure
+-------------
+
+The structure of the lab calls for the BPM deployment to be completed first. Once this is done, the following exercises can be completed in any order, depending on your interest.
+
+
+Lab 1: Deploy and test the Process Application to the IPS container
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Deploy
+* Get Container ID
+* Test API
+
+[link]
+
+Lab 2a: Expose and test an API endpoint through 3Scale
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3scale is Red Hat's API Management platform, built with performance, customer control and excellent time-to-value in mind.
+
+The 3Scale platform is organised around a developer portal and API management and delivery functionality.
+
+.3Scale Architecture
+image::https://www.3scale.net/wp-content/uploads/2015/03/3scale-architecture-diagram.png[3Scale Architecture, 600]
+
+3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net.
+
+In this lab we will be using the
+
+* Login to 3Scale SaaS platform
+* werwe
+* werwr
+
+[link]
+
+Lab 2b: Use the API in a mobile application through the Red Hat Mobile Application Platform hosted platform
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Red Hat Mobile Application Platform speeds up the development, integration, deployment, and management of mobile apps for businesses.
+
+The platform offers a suite of features that embrace collaborative app development, centralised control of security and back-end integration, and deployment in the cloud or on-premise.
+
+.Red Hat Mobile Application Platform Architecture
+image::https://static.jboss.org/rhd/images/images_products_mobileplatform_mobile_platform_overview-2.png[Red Hat Mobile Application Platform Architecture, 600]
+
+* Login in to RHMAP
+* Review the code
+* Located the API calls
+* Modify the API call
+* Optionally build an (Android) app for your phone
+
+[link]
