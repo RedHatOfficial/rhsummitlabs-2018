@@ -1,6 +1,6 @@
 :scrollbar:
 :data-uri:
-://toc2:
+//:toc2:
 
 == Unleash the power of BPM with mobile and APIs
 
