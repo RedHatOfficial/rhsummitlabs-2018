@@ -55,7 +55,7 @@ Lab 1: Deploy and test the Process Application to the IPS container
 Red Hat JBoss BPM Suite has been re-architected into two distinct binaries, Business Central for design and the Intelligent Process Server (KIE Server) for process execution. This has been done to create a flexible, scalable and lightweight execution engine that is deployed as a standalone server independent from any design or management tooling. This architecture makes the IPS suitable for API driven applications in a microservices ecosystem.
 
 .JBoss BPM Suite Architecture
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/bpm-suite-architecture-diagram.png[JBoss BPM Suite Architecture, 600]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/bpm-suite-architecture-diagram.png[JBoss BPM Suite Architecture, 900]
 
 The JBoss BPM Suite APIs are divided into the following sections:
 
