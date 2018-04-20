@@ -205,7 +205,7 @@ image::new-application-process.png[New Application Process Model]
 
  1. First lets create a new BPM Process Instance
  Process URL Requirements:
- . CONTAINER_ID - summit-test-container
+ . CONTAINER_ID - This is your custom container ID which was exported as the environemnt variable ALIAS
  . PROCESS_DEFINITIONS_ID - org.jbpm.demo.NewApplication
  . Full URL Structure: http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/processes/<PROCESS_DEFINITION_ID>/instances
 
@@ -213,7 +213,7 @@ REQUEST:
 [source,sh]
 ----
 curl -X POST --user <USER_ID>:'<USER_PWD>' \
-  http://<HOST>:<PORT>/kie-server/services/rest/server/containers/summit-test-container/processes/org.jbpm.demo.NewApplication/instances \
+  http://<HOST>:<PORT>/kie-server/services/rest/server/containers/$ALIAS/processes/org.jbpm.demo.NewApplication/instances \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
   -H 'content-type: application/json' \
@@ -331,7 +331,7 @@ image::new-application-process-started.png[New Application Process Model]
  - Now we can list out the live processes on our container, skip to step three to pull back the Process Instance directly.
  Process URL Requirements:
  .. HTTP Request Method: GET
- .. CONTAINER_ID - summit-test-container
+ .. CONTAINER_ID - $ALIAS
  .. Parms:
  ... page : traverse through the returned records
  ... pageSize : alter number of records returned, default it 10
