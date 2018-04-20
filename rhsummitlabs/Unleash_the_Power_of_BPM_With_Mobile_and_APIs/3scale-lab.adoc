@@ -66,9 +66,10 @@ NOTE: When configuring for the first time a failure will be expected until we ge
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
 
 == Define API Application Plan:
-----
-Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target differenct audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
-----
+
+NOTE: Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target differenct audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
+
+
 ["arabic"]
 . Go back to the list of available API's by selecting the "APIs" menu option
 . Expand username_default
