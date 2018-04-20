@@ -434,7 +434,7 @@ curl -X POST --user <USER_ID>:'<USER_PWD>' \
 
 [source,sh]
 ----
-curl -X POST --user <USER_ID>:'<USER_PWD>' \
+curl -X GET --user <USER_ID>:'<USER_PWD>' \
   'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
@@ -468,6 +468,8 @@ curl -X POST --user <USER_ID>:'<USER_PWD>' \
  - Running the following request should provide an empty response since the user is not eligble to work on this particular task:
 
   * REQUEST:
+
+  // TODO - Update this section around LDAP Groups and Users etc..
 
 [source,sh]
 ----
