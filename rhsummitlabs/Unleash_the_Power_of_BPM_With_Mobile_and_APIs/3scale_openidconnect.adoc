@@ -61,6 +61,8 @@ If you would like to know how this was done, refer to Appendix.
 . Click "Create Application"
 . The new application should now be displayed. Scroll down the page to the "API Credentials" section and set the "Redirect URL" value to "https://www.getpostman.com/oauth2/callback".
 
+NOTE: You will need the Client ID and Client Secret for step 4, under API Credentials.
+
 == Step 4: Test the configuration using Postman
 
 In this section we test the service via Postman
