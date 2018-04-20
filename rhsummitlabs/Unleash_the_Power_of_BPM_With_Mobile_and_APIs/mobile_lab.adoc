@@ -2,7 +2,7 @@
 
 == Mobile frontend to the BPM processes
 
-In this lab we will explore a project in Red Hat Mobile Application Platform that contains a hybrid mobile client and a web portal that interact with the BPM API via some cloud code.
+In this lab we will explore a project in Red Hat Mobile Application Platform (RHMAP) that contains a hybrid mobile client and a web portal that interact with the BPM API via some cloud code.
 
 
 . Browse to https://gpte.us.training.redhatmobile.com[https://gpte.us.training.redhatmobile.com]
@@ -18,8 +18,8 @@ The project contains the following three components:
 ** data synchronisation
 ** Push Notification functionality
 ** data persistence using a mongo Database.
-* *Bank Admin Portal* - this is a back-office web admin portal, written in Ionic/AngularJS, that demonstrates how a UI can be built on top of BPM Suite for managing live Tasks and Cases.
-* *Consumer App xx* - this is a consumer facing hybrid mobile app, written in Ionic/AngularJS/Cordova, that demonstrates how a customer can order products, which instantiate BPM processes.
+* *Bank Admin Portal* - this is a back-office web admin portal, written in Ionic/AngularJS, deployed on the RHMAP platform, that demonstrates how a UI can be built on top of BPM Suite for managing live Tasks and Cases.
+* *Consumer App xx* - this is a consumer facing hybrid mobile app, written in Ionic/AngularJS/Cordova, deployed to a mobile device, that demonstrates how a customer can order products, which instantiate BPM processes.
 
 === Explore the Cloud App
 
@@ -31,7 +31,7 @@ The project contains the following three components:
 . Click on *Environment Variables* on the left hand side
 . Note the various BPM connection variables that have been specified. These can change per environment you deploy to.
 . Click on *Data Browser* on the left hand side
-. This gives you a view of the data that the cloud app has cached. Have a look at some of the data stored in the Cases and Tasks.
+. This gives you a view of the data that the cloud app has cached in a Mongo Database. Have a look at some of the data stored in the Cases and Tasks Collections which contain details of the BPM processes.  The remaining collections concern the Sync Framework
 . Click on *Deploy* on the left hand side.
 . This is where you can deploy new versions of the cloud app. Each time you do this a history record is generated.
 . Click on *Logs* on the left hand side.
@@ -47,7 +47,7 @@ The project contains the following three components:
 . When you start playing with the customer mobile app and go through the process of ordering products you will see the new Cases and Tasks appear automatically in this portal.
 
 === Explore the Consumer App
-The Consumer App is designed to be installed on a phone. There are instructions below for installing on Android.  For the purposes of the demo we can user the App Preview on the Mobile Platfrom in our browser.
+The Consumer App is designed to be installed on a phone. There are instructions below for installing on Android.  For the purposes of the demo we can user the App Preview on the Mobile Platform in our browser.
 
 . Click on the dropdown on the left again and this time select the *Consumer App*
 . This time you can use the App Preview to exercise the mobile app in a realistic view
@@ -58,17 +58,48 @@ The Consumer App is designed to be installed on a phone. There are instructions 
 . The menu also has a *My Applications* section where you view status of you applications later in the demo
 
 === Modify the Consumer App to use your BPM container
-The default BPM/container connection details are returned from the login authroisation call.  To use your own container, the Consumer App needs to be updated as follows: 
+The default BPM/container connection details are returned from the login authorisation call.  To use your own container, the Consumer App needs to be updated as follows: 
 
 . Click on *Editor* on the left hand side
 . Ignore any *Failed Request Details* message you may get
-. Open *src/services/auth.service.ts* 
-. Update the details in the *bpmTest *array on *line 19* to match your unique container
+. Open file *src/services/auth.service.ts* 
+. Update the details in the *bpmTest* object on *line 19* to match your unique container
 * change container to your own deployed container name
 * change host to `http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080` for users summit-student-01 to 25
 * change host to `http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080` for users summit-student-26 to 50
+
+----
+bpmTest = {
+    "auth": "Basic a2llc2VydmVyOnBhc3N3b3JkMSE=",
+    "container": <your container name>,
+    "processName": "org.jbpm.demo.NewApplication",
+    "host": <aws host>
+  }
+----
+
+[start=5]
 . Uncomment line 65 (remove the //)
 . Comment line 64 (add // at line start)
+----
+ public doAuth(cred: LoginModel): Promise<any> {
+    cred.username = cred.username.toLowerCase();
+    cred.password = cred.password.toLowerCase();
+    return new Promise((resolve, reject) => {
+      this.cloud.doPost('/auth/login', cred)
+        .subscribe((data: any) => {
+          console.log("doAUTH ", data)
+          this.username = cred.username;
+          // this.bpm = data.bpmDefaultCredentials;
+          this.bpm = this.bpmTest;
+          resolve(true);
+        }, (err) => {
+          console.error('Auth: ', err.toString());
+          reject(false);
+        })
+    })
+  }
+----
+[start=7]
 . Click File and Save
 . Return to *Details* section 
 . Login again in the App Preview section and your Consumer App should connect to your own container
