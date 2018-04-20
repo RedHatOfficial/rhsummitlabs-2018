@@ -34,12 +34,22 @@ A BPM/KIE Container is a deployed KJar. A KJar is a simple maven build JAR file 
 
 While we would normally have to build a new KJar and deploy it to Nexus, this has already been done. We'll start this lab by deploying that KJar as a KIE Container to the IPS.
 
-- Firstly we can check to see if our IPS/KIE Server is alive and available:
+- Firstly set the following environment variable for the BPM hostname
+[source, sh]
+----
+# IF USING BPM SERVER 1
+export HOSTNAME = ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080
+
+# IF USING BPM SERVER 2
+export HOSTNAME = ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080
+----
+
+- We can check to see if our IPS/KIE Server is alive and available:
 
 REQUEST
 [source,sh]
 ----
-curl -X GET --user <USER_ID>:<USER_PWD> http://<HOST>:<PORT>/kie-server/services/rest/server
+curl -X GET --user <USER_ID>:<USER_PWD> http://$HOSTNAME/kie-server/services/rest/server
 ----
 
 RESPONSE HTTP 200 (OK):
@@ -54,9 +64,9 @@ RESPONSE HTTP 200 (OK):
         <capabilities>BPM</capabilities>
         <capabilities>BPM-UI</capabilities>
         <capabilities>BRP</capabilities>
-        <location>http://<HOST>:<PORT>/kie-server/services/rest/server</location>
+        <location>http://$HOSTNAME/kie-server/services/rest/server</location>
         <messages>
-            <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='http://<HOST>:<PORT>/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
+            <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='http://$HOSTNAME/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
             <severity>INFO</severity>
             <timestamp>2018-04-03T22:41:15.847+01:00</timestamp>
         </messages>
@@ -81,7 +91,7 @@ Version: 0.0.1-SNAPSHOT
 export ALIAS=ENTER YOUR ALIAS
 
 curl -X PUT \
-  --user <USER_ID>:<USER_PWD> http://<HOST>:<PORT>/kie-server/services/rest/server/containers/$ALIAS \
+  --user <USER_ID>:<USER_PWD> http://$HOSTNAME/kie-server/services/rest/server/containers/$ALIAS \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/xml' \
   -d '<kie-container>
@@ -108,7 +118,7 @@ REQUEST:
 [source,sh]
 ----
 curl -X GET \
-  --user <USER_ID>:<USER_PWD> http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers
+  --user <USER_ID>:<USER_PWD> http://$HOSTNAME/kie-server/services/rest/server/containers
 ----
 
 - RESPONSE : HTTP 200 (OK)
@@ -134,7 +144,7 @@ curl -X GET \
 </response>
 ----
 
-NOTE: The whole KIE REST API can be reviewed at: http://<HOST>:<PORT>/kie-server/docs/index.html
+NOTE: The whole KIE REST API can be reviewed at: http://$HOSTNAME/kie-server/docs/index.html
 
 Before moving on to creating a new Process Instance we can query for the available process definitions available for a particular contaienr and inspect the BPM Process model that we are going to invoke.
 
@@ -145,17 +155,17 @@ REQUEST:
 ----
 // Return all Process Definitions deployed on the KIE Server
 curl -X GET \
-  http://<HOST>:<PORT>/kie-server/services/rest/server/queries/processes/definitions  \
+  http://$HOSTNAME/kie-server/services/rest/server/queries/processes/definitions  \
   -H 'accept: application/json' \
-  -H 'authorization: Basic YnBtc0FkbWluOnBhc3N3b3JkMSE=' \
+  -H 'authorization: Basic YnBtc0FkbWluOnBhc3N3b3JkMSE='
 
   or
 
 // Return all Process Definitions deployed on the KIE Container
 curl -X GET \
-  http://<HOST>:<PORT>/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/processes/definitions  \
+  http://$HOSTNAME/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/processes/definitions  \
   -H 'accept: application/json' \
-  -H 'authorization: Basic YnBtc0FkbWluOnBhc3N3b3JkMSE=' \
+  -H 'authorization: Basic YnBtc0FkbWluOnBhc3N3b3JkMSE='
 ----
 
 RESPONSE - HTTP 200 (OK):
@@ -192,7 +202,7 @@ You can also obtain the Process Definition Image or Process Model using the Proc
 
 [source,sh]
 ----
-http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/org.jbpm.demo.NewApplication
+http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/org.jbpm.demo.NewApplication
 ----
 
 This will return an SVG of the current process model. It should look something similar to:
@@ -207,13 +217,13 @@ image::new-application-process.png[New Application Process Model]
  Process URL Requirements:
  . CONTAINER_ID - summit-test-container
  . PROCESS_DEFINITIONS_ID - org.jbpm.demo.NewApplication
- . Full URL Structure: http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/processes/<PROCESS_DEFINITION_ID>/instances
+ . Full URL Structure: http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/processes/<PROCESS_DEFINITION_ID>/instances
 
 REQUEST:
 [source,sh]
 ----
 curl -X POST --user <USER_ID>:<USER_PWD> \
-  http://<HOST>:<PORT>/kie-server/services/rest/server/containers/summit-test-container/processes/org.jbpm.demo.NewApplication/instances \
+  http://$HOSTNAME/kie-server/services/rest/server/containers/summit-test-container/processes/org.jbpm.demo.NewApplication/instances \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
   -H 'content-type: application/json' \
@@ -336,7 +346,7 @@ REPONSE: HTTP 201 Created +
  - Using the REST API, start an instance of the org.jbpm.demo.NewApplication process.
 
   .. Make sure you use the <CONTAINER_ID>. +
-  .. In a browser, navigate to http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. +
+  .. In a browser, navigate to http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. +
 
   .. Expect to see a graphical representation of the process instance. The nodes in grey indicate that they have executed
 
@@ -357,13 +367,13 @@ image::new-application-process-started.png[New Application Process Model]
  ....    STATE_PENDING = 0
  ....    STATE_SUSPENDED = 4
 
-Full URL Structure: http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/process/instances?<PARAMS> +
+Full URL Structure: http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/process/instances?<PARAMS> +
 
 * REQUEST:
 [source,sh]
 ----
 curl -X POST --user <USER_ID>:<USER_PWD> \
-  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/process/instances?status=1&page=0&pageSize=25' \
+  'http://$HOSTNAME/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/process/instances?status=1&page=0&pageSize=25' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
@@ -411,7 +421,7 @@ BPMS has the concept of a Potential Task Owner. As it sounds, a 'Potential Task 
 [source,sh]
 ----
 curl -X POST --user <USER_ID>:<USER_PWD> \
-  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/process/<pInstanceId> ' \
+  'http://$HOSTNAME/kie-server/services/rest/server/queries/tasks/instances/process/<pInstanceId> ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
@@ -449,7 +459,7 @@ curl -X POST --user <USER_ID>:<USER_PWD> \
 [source,sh]
 ----
 curl -X POST --user <USER_ID>:<USER_PWD> \
-  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
+  'http://$HOSTNAME/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
@@ -486,7 +496,7 @@ curl -X POST --user <USER_ID>:<USER_PWD> \
 [source,sh]
 ----
 curl -X POST --user <USER_ID>:<USER_PWD> \
-  'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
+  'http://$HOSTNAME/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
@@ -511,14 +521,14 @@ NOTE: Its worth noting that task states provide measurable audit trails of work/
 // Claim Task
 [source,sh]
 ----
- curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/claimed"
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/claimed"
 ----
 
   * Task Owned By REQUEST:
 // List Tasks owned By Authenticated User
 [source,sh]
 ----
- curl -X GET -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/owners"
+ curl -X GET -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://$HOSTNAME/kie-server/services/rest/server/queries/tasks/instances/owners"
 ----
 
 * RESPONSE (HTTP 200) - Task is now in a reserved state and non claimable by other users. Only a manager can delegate to other users or move the task back into a claimable state :
@@ -547,7 +557,7 @@ NOTE: Its worth noting that task states provide measurable audit trails of work/
 // Start Task
 [source,sh]
 ----
- curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/started"
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/started"
 ----
 
  - Verify that the status of the task moved to InProgress, use the Tasks Owned By user REST call.
@@ -556,10 +566,10 @@ NOTE: Its worth noting that task states provide measurable audit trails of work/
 // Complete Task
 [source,sh]
 ----
- curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/completed"
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/completed"
 ----
 
-* In a browser, navigate to http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. +
+* In a browser, navigate to http://$HOSTNAME/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. +
 
 You should now see the process has progressed to the next Human Task instance.
 
