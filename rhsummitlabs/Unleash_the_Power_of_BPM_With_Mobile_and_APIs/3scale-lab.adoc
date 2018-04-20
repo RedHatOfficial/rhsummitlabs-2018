@@ -49,7 +49,7 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     ** Click "+ Add Mapping Rule" again
     ** Under verb option select "POST"
     ** In the pattern section enter the following: /kie-server/services/rest/server/containers/bpm-mobile-workflows/processes/org.jbpm.demo.NewApplication/instances
-    ** In Metric or Method select your newly created method
+    ** In Metric or Method drop down, change Hits and select your newly created method
     * Authentication Settings:
     ** Host Header: leave blank
     ** Sectret Token: leave default
