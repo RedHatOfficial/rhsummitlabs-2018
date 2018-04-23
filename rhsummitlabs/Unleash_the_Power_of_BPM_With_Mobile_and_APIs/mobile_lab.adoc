@@ -32,8 +32,7 @@ The project contains the following three components:
 . Note the various BPM connection variables that have been specified. These can change per environment you deploy to.
 . Click on *Data Browser* on the left hand side
 . This gives you a view of the data that the cloud app has cached in a Mongo Database. Have a look at some of the data stored in the Cases and Tasks Collections which contain details of the BPM processes.  The remaining collections concern the Sync Framework
-. Click on *Deploy* on the left hand side.
-. This is where you can deploy new versions of the cloud app. Each time you do this a history record is generated.
+. Click on *Deploy* on the left hand side.  You can see that the Cloud App is already built and deployed. Each time you do a build a history record is generated.
 . Click on *Logs* on the left hand side.
 . Here you can view live logs from the running cloud app to help in debugging issues.
 
@@ -51,61 +50,40 @@ The Consumer App is designed to be installed on a phone. There are instructions 
 
 . Click on the dropdown on the left again and this time select the *Consumer App*
 . This time you can use the App Preview to exercise the mobile app in a realistic view
-. Enter your allocated username i.e. summit-student-01
+. Enter your allocated username i.e. *summit-student-01*
 . The password is *password*
 . Click Login
 . You will see the list of available Bank Products that can be ordered.
-. The menu also has a *My Applications* section where you view status of you applications later in the demo
+. The menu also has a *My Applications* section where you view status of your applications later in the demo
+. In the *Settings* screen you can see connection details for the BPM instance
 
-=== Modify the Consumer App to use your BPM container
-The default BPM/container connection details are returned from the login authorisation call.  To use your own container, the Consumer App needs to be updated as follows: 
+=== Modify the Consumer App to use your BPM container (Optional)
+By default, the Consumer App connects to the BPM default container named *org.jbpm.demo:bpm-mobile-workflows:TEST*. You may continue to use the default BPM Container for the demo or, you can modify the Consumer App to use your own container as follows: 
+
+For this demo, the Consumer App BPM connection details are stored locally in a config file named *bpm-creds.json*. 
 
 . Click on *Editor* on the left hand side
 . Ignore any *Failed Request Details* message you may get
-. Open file *src/services/auth.service.ts* 
-. Update the details in the *bpmTest* object on *line 19* to match your unique container
-* change container to your own deployed container name
-* change host to `http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080` for users summit-student-01 to 25
-* change host to `http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080` for users summit-student-26 to 50
+. Open file *www/bpm-creds.json* 
+. update the container field with your own deployed container name
 
 ----
-bpmTest = {
+{
     "auth": "Basic a2llc2VydmVyOnBhc3N3b3JkMSE=",
-    "container": <your container name>,
+    "container": <your container name here>,
     "processName": "org.jbpm.demo.NewApplication",
     "host": <aws host>
   }
 ----
 
 [start=5]
-. Uncomment line 65 (remove the //)
-. Comment line 64 (add // at line start)
-----
- public doAuth(cred: LoginModel): Promise<any> {
-    cred.username = cred.username.toLowerCase();
-    cred.password = cred.password.toLowerCase();
-    return new Promise((resolve, reject) => {
-      this.cloud.doPost('/auth/login', cred)
-        .subscribe((data: any) => {
-          console.log("doAUTH ", data)
-          this.username = cred.username;
-          // this.bpm = data.bpmDefaultCredentials;
-          this.bpm = this.bpmTest;
-          resolve(true);
-        }, (err) => {
-          console.error('Auth: ', err.toString());
-          reject(false);
-        })
-    })
-  }
-----
-[start=7]
 . Click File and Save
 . Return to *Details* section 
-. Login again in the App Preview section and your Consumer App should connect to your own container
+. Login again in the App Preview section and your Consumer App should connect to your own container when you make a Product Applications
+. You can confirm that the connection details have been updated in the Settings screen.  Details can be editted here too.
 
 === Build Android version of Consumer App (Optional)
-If you have an Android device, you can build and run the Consumer App as follows:
+If you have an Android device, you can build and deploy the Consumer App as follows.   (Note:  The RHMAP platform can also build and deploy to iOS, however it is neccessary to upload your Apple credentials first and this is outside the scope of this demo)
 
 . Click on the dropdown on the left select the *Consumer App* again
 . (Optional Step) Enable Push Notifications on Android
