@@ -142,3 +142,9 @@ NOTE: As we have not configured 3scale to perform single sign on we still need t
     * Content-Type : application/xml
     * Accept : application/xml
     * User_Key : User_Key  // The User_Key header value must match the user key entered on the API integration configuration page.
+
+== Extension - OpenID Connect
+
+In the previous test you used a user_key to let you into 3scale and then basic auth to let you into the BPM api. In this extension you combine these authentication mechanisms to give you SSO via OpenID connect.
+
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale_openidconnect.adoc[Start the API Management OpenID Connect lab here]

@@ -26,7 +26,6 @@ The lab environment consists of the following systems:
 [cols="3",options="header"]
 |=======
 |Hostname              |Internal IP    |Description
-|`BPM CUSTOM URL HERE  |`BPM CUSTOM IP HERE` | BPM Custom UI
 |`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080` |`34.251.130.28`  | BPM Server A
 |`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080`  |`52.51.30.91` | BPM Server B
 |`gpte.us.training.redhatmobile.com`  | | Mobile Platform
