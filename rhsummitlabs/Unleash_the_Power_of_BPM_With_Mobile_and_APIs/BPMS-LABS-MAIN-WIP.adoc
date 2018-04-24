@@ -3,7 +3,7 @@ Doc Writer <ajarrett@redhat.com>
 :doctype: book
 :imagesdir: images
 :reproducible:
-:icons:font
+:icons:font:
 //:source-highlighter: coderay
 :source-highlighter: rouge
 :listing-caption: Listing
