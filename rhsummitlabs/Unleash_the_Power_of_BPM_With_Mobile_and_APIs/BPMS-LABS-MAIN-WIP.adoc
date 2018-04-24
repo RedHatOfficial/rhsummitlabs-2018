@@ -72,12 +72,12 @@ Once installed, please download the following files:
 .. Close any additional pop-ups about creating new Templates/Workspaces etc.
 . Import the Environment:
 .. Click the cog icon in the top right corner +
-image:postman/environment-config.png[Environment Config, width="20%"]
+image:postman/environment-config.png[Environment Config, width="100%"]
 .. Click Import, then select the downloaded 'Summit_Environment.postman_environment' file
 .. A new Environment should appear called 'Summit Environment' +
-image:postman/summit-environment.png[Environment Config, width="50%"]
+image:postman/summit-environment.png[Environment Config, width="100%"]
 .. Finally click into 'Summit Environment' and you will be presented with all the Environment Variables, which you can edit. +
-image:postman/summit-environment-config.png[Summit Environment Config, width="50%"]
+image:postman/summit-environment-config.png[Summit Environment Config, width="100%"]
 .. You will also need to update the *container_name* variable once you have completed 'Step 1: Deploy a new BPM Container'
 
 IMPORTANT: Select the URL that coincides with your User ID and deselecting http://localhost:8080. +
@@ -88,12 +88,12 @@ summit-student-[31-60] should be using: http://ec2-52-51-30-91.eu-west-1.compute
 
 . Import the PostMan API Collection
 .. Click the Import button on the top left +
-image:postman/import-collection.png[Summit Collection Import, width="20%"]
+image:postman/import-collection.png[Summit Collection Import, width="100%"]
 .. Click 'Choose File' and select the [underline]#Summit_BPM_Postman_Collection.postman_collection.json# file downloaded above
 .. A new 'Summit BPM Postman Collection' should appear under the Collections TAB +
-image:postman/postman-collection.png[BPM Postman Collection, width="30%"]
+image:postman/postman-collection.png[BPM Postman Collection, width="100%"]
 .. Click on the 'Summit BPM Postman Collection' and it should expand, click on the folder to view the underlying API Requests +
-image:postman/postman-collection-expanded.png[BPM Postman Collection Expanded, width="30%"]
+image:postman/postman-collection-expanded.png[BPM Postman Collection Expanded, width="100%"]
 . How to use the Postman BPM API Collection
 .. Throughout this lab each API request is preceded with some basic request details that relate to the corresponding Postman request.
 ... <API_SUBSET> links to the folder in which the Postman Request can be found (Process, Task, Query/Process, Query/Task and Container):
@@ -107,7 +107,7 @@ cURL xxxxxxxxxxxx
 ----
 
 Would correspond to this Postman Request: +
-image:postman/postman-request-example.png[BPM Postman Request, width="70%"]
+image:postman/postman-request-example.png[BPM Postman Request, width="100%"]
 
 NOTE: Authorisation should already be setup on the postman collection therefore most if not all calls should be ready to execute the 'SEND' button in the top right. Ask your lab instructor for any additional help with Headers/Parameters etc..
 
