@@ -72,7 +72,7 @@ Once installed, please download the following files:
 .. Close any additional pop-ups about creating new Templates/Workspaces etc.
 . Import the Environment:
 .. Click the cog icon in the top right corner +
-image:postman/environment-config.png[Environment Config, width="100%"]
+image:postman/environment-config.png[Environment Config, width="50%"]
 .. Click Import, then select the downloaded 'Summit_Environment.postman_environment' file
 .. A new Environment should appear called 'Summit Environment' +
 image:postman/summit-environment.png[Environment Config, width="100%"]
@@ -88,10 +88,10 @@ summit-student-[31-60] should be using: http://ec2-52-51-30-91.eu-west-1.compute
 
 . Import the PostMan API Collection
 .. Click the Import button on the top left +
-image:postman/import-collection.png[Summit Collection Import, width="100%"]
+image:postman/import-collection.png[Summit Collection Import, width="50%"]
 .. Click 'Choose File' and select the [underline]#Summit_BPM_Postman_Collection.postman_collection.json# file downloaded above
 .. A new 'Summit BPM Postman Collection' should appear under the Collections TAB +
-image:postman/postman-collection.png[BPM Postman Collection, width="100%"]
+image:postman/postman-collection.png[BPM Postman Collection, width="50%"]
 .. Click on the 'Summit BPM Postman Collection' and it should expand, click on the folder to view the underlying API Requests +
 image:postman/postman-collection-expanded.png[BPM Postman Collection Expanded, width="100%"]
 . How to use the Postman BPM API Collection
