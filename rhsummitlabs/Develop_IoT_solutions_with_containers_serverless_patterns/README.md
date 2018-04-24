@@ -1,7 +1,3 @@
-:scrollbar:
-:data-uri:
-:toc2:
-
 == App Dev in the Cloud - Agile Cloud Integration with Destinasia
 
 :numbered:
