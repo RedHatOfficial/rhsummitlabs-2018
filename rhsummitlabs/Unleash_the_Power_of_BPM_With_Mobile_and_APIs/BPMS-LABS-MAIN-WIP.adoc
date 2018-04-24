@@ -49,7 +49,7 @@ The additional XML Configuration files: +
 REQUEST
 [source,sh]
 ----
-curl -X GET --user <USER_ID>:<USER_PWD> http://<HOST>:<PORT>/kie-server/services/rest/server
+curl -X GET --user <USER_ID>:'<USER_PWD>' http://<HOST>:<PORT>/kie-server/services/rest/server
 ----
 
 RESPONSE HTTP 200 (OK):
@@ -89,7 +89,7 @@ Version: 0.0.1-SNAPSHOT
 [source,sh]
 ----
 curl -X PUT \
-  --user <USER_ID>:<USER_PWD> http://<HOST>:<PORT>/kie-server/services/rest/server/containers \
+  --user <USER_ID>:'<USER_PWD>' http://<HOST>:<PORT>/kie-server/services/rest/server/container/<CON> \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/xml' \
   -d '<kie-container>
@@ -116,7 +116,7 @@ REQUEST:
 [source,sh]
 ----
 curl -X GET \
-  --user <USER_ID>:<USER_PWD> http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers
+  --user <USER_ID>:'<USER_PWD>' http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers
 ----
 
 - RESPONSE : HTTP 200 (OK)
@@ -221,7 +221,7 @@ image::new-application-process.png[New Application Process Model]
 REQUEST:
 [source,sh]
 ----
-curl -X POST --user <USER_ID>:<USER_PWD> \
+curl -X POST --user <USER_ID>:'<USER_PWD>' \
   http://<HOST>:<PORT>/kie-server/services/rest/server/containers/summit-test-container/processes/org.jbpm.demo.NewApplication/instances \
   -H 'cache-control: no-cache' \
   -H 'accept: application/json' \
@@ -373,7 +373,7 @@ Full URL Structure: http://<HOST>:<PORT>/kie-server/services/rest/server/contain
 * REQUEST:
 [source,sh]
 ----
-curl -X POST --user <USER_ID>:<USER_PWD> \
+curl -X POST --user <USER_ID>:'<USER_PWD>' \
   'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/containers/<CONTAINER_ID>/process/instances?status=1&page=0&pageSize=25' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
@@ -421,7 +421,7 @@ BPMS has the concept of a Potential Task Owner. As it sounds, a 'Potential Task 
 
 [source,sh]
 ----
-curl -X POST --user <USER_ID>:<USER_PWD> \
+curl -X POST --user <USER_ID>:'<USER_PWD>' \
   'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/process/<pInstanceId> ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
@@ -459,7 +459,7 @@ curl -X POST --user <USER_ID>:<USER_PWD> \
 
 [source,sh]
 ----
-curl -X POST --user <USER_ID>:<USER_PWD> \
+curl -X POST --user <USER_ID>:'<USER_PWD>' \
   'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
@@ -496,7 +496,7 @@ curl -X POST --user <USER_ID>:<USER_PWD> \
 
 [source,sh]
 ----
-curl -X POST --user <USER_ID>:<USER_PWD> \
+curl -X POST --user <USER_ID>:'<USER_PWD>' \
   'http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
@@ -522,14 +522,14 @@ NOTE: Its worth noting that task states provide measurable audit trails of work/
 // Claim Task
 [source,sh]
 ----
- curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/claimed"
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:'<USER_PWD>' "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/claimed"
 ----
 
   * Task Owned By REQUEST:
 // List Tasks owned By Authenticated User
 [source,sh]
 ----
- curl -X GET -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/owners"
+ curl -X GET -H "Accept: application/json" --user <USER_ID>:'<USER_PWD>' "http://<HOST>:<PORT>/kie-server/services/rest/server/queries/tasks/instances/owners"
 ----
 
 * RESPONSE (HTTP 200) - Task is now in a reserved state and non claimable by other users. Only a manager can delegate to other users or move the task back into a claimable state :
@@ -558,7 +558,7 @@ NOTE: Its worth noting that task states provide measurable audit trails of work/
 // Start Task
 [source,sh]
 ----
- curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/started"
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:'<USER_PWD>' "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/started"
 ----
 
  - Verify that the status of the task moved to InProgress, use the Tasks Owned By user REST call.
@@ -567,7 +567,7 @@ NOTE: Its worth noting that task states provide measurable audit trails of work/
 // Complete Task
 [source,sh]
 ----
- curl -X PUT -H "Accept: application/json" --user <USER_ID>:<USER_PWD> "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/completed"
+ curl -X PUT -H "Accept: application/json" --user <USER_ID>:'<USER_PWD>' "http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/tasks/<TASK_ID>/states/completed"
 ----
 
 * In a browser, navigate to http://<HOST>:<PORT>/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created. +

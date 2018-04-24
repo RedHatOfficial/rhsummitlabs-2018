@@ -31,10 +31,11 @@ vi ~/<JBOSS_HOME_DEPLOYMENTS>/business-central.war/org.kie.workbench.KIEWebapp/p
 - Commit and start Business Central.
 - When saving the BPM Process Model, Business Central will automatically persist the Process Model for use with the KIE API.
 
+// TODO - Add Parts around Packaging.
 
 == Handling Exceptions on ServiceTasks
 - Add a Catching Intermediate Error Event to the Service Task Node
--- Catching Error Event will catch based off a package.
+* Catching Error Event will catch based off a package.
 
 - Set ErrorRef to: <java.package>.<ExceptionClass>
 - You can map the Exception to a process variable if required.
