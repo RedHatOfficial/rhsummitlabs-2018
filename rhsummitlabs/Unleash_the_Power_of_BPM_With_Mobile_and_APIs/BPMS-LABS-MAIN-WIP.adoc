@@ -93,7 +93,7 @@ image:postman/import-collection.png[Summit Collection Import, width="50%"]
 .. A new 'Summit BPM Postman Collection' should appear under the Collections TAB +
 image:postman/postman-collection.png[BPM Postman Collection, width="50%"]
 .. Click on the 'Summit BPM Postman Collection' and it should expand, click on the folder to view the underlying API Requests +
-image:postman/postman-collection-expanded.png[BPM Postman Collection Expanded, width="100%"]
+image:postman/postman-collection-expanded.png[BPM Postman Collection Expanded, width="50%"]
 . How to use the Postman BPM API Collection
 .. Throughout this lab each API request is preceded with some basic request details that relate to the corresponding Postman request.
 ... <API_SUBSET> links to the folder in which the Postman Request can be found (Process, Task, Query/Process, Query/Task and Container):
