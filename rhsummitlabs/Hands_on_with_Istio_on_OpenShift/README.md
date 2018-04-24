@@ -1,7 +1,7 @@
 # Red Hat Summit 2018: 
 # Getting Hands On With Istio on OpenShift
 
-![Istio Logo](instructions/images/istio-logo.png)
+![Istio Logo](imgs/istio-logo.png)
 
 ## Purpose
 
