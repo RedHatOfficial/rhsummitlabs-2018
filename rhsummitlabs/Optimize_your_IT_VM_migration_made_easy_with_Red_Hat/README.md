@@ -1,7 +1,5 @@
 # Optimize your IT VM migration made easy with Red Hat
 
-Work in progress here:
-
-https://github.com/RedHatDemos/RHS-Optimize_IT-Infrastructure_Migration/blob/master/README.md
-
+Lab instructions available here:
+https://github.com/RedHatDemos/RHS-Optimize_IT-Infrastructure_Migration/blob/master/docs/00-redhat_solutions-insfrastructure_migration_v2-lab.adoc
 
