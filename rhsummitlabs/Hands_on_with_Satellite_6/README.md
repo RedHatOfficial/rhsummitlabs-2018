@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# Hands on with Satellite 6
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+[Hands on with Satellite 6)[hands_on_with_satellite_6.adoc]
