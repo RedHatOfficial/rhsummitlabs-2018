@@ -26,13 +26,21 @@ In short:
 . Log into 3scale - `https://redhat-bpms-admin.3scale.net`
 
 . On the homepage you will see 2 Service's username_default and username_custom for example `summit-student-01_default` and `summit-student-01_custom`
-
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-homepage.png[3Scale Home Page, 900]
++
 . Click and expand username_default
-
++
+NOTE: We will only use the _default API in the lab. The _custom API can be used to have a play without affecting the lab.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-default-expanded.png[3Scale Expand Default, 900]
++
 . Click Integration to bring up the configuration page for your service
 
 . Click "add the base URL of your API and save the configuration"
-
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-integrationpage.png[3Scale Integration Page, 900]
++
 . Enter the following information into the API and API Gateway sections.
     * API Section Section
     ** Private Base URL: `http://BPMSERVER:8080`
@@ -42,7 +50,11 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     ** Production Public Base URL: This should already be defaulted.
     * Mapping Rules Section
     ** On the right hand side next to the "Metric or Method" label click the "Define" option
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-define.png[3Scale Define Tab, 300]
     ** Click + New Method next under Methods
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.png[3Scale New Method, 600]
     ** Set a Friendly such as "Create a process" and System name such as "create_process"
     ** Click Create Method
     ** Click "Add a mapping rule", this will take you back to the Integration page
@@ -61,9 +73,9 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     * Client
     ** For the API test GET Request enter "/business-central/kie-wb.jsp"
 
-NOTE: When configuring for the first time a failure will be expected until we generate a user_key in step 1.3.3
-
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
+
+NOTE: When configuring for the first time a failure will be expected until we generate a user_key in step 1.3.3
 
 == Define API Application Plan:
 
