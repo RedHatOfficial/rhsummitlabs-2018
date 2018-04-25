@@ -155,7 +155,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-promote.pn
 
 . Retrieve the Public API URL for either staging or production from the UI.
 
-. Use the following curl command, changing USER_KEY to the Applications User Key you created earlier:
+. Use the following curl command, changing USER_KEY to the Applications User Key header and value you created earlier:
 * curl "https://<Public API URL>/kie-server/services/rest/server/containers" -H'user-key: 623c19b73e3a87089ea2cdd16952f0b5' -H "Authorization: Basic amJvc3M6YnBtc3VpdGUxIQ==".
 
 NOTE: As we have not configured 3scale to perform single sign on we still need to provide a basic authorization header to talk to the BPM service. In a production environment you would configure SSO rather than providing the backend security credentials into your public api which we cover in a later lab.
@@ -177,6 +177,6 @@ NOTE: As we have not configured 3scale to perform single sign on we still need t
 
 == Extension - OpenID Connect
 
-In the previous test you used a user_key to let you into 3scale and then basic auth to let you into the BPM api. In this extension you combine these authentication mechanisms to give you SSO via OpenID connect.
+In the previous section you used 2 authentication mechanism: a user_key to let you into 3scale and then basic auth to let you into the BPM api. In this extension you combine these authentication mechanisms to give you SSO via OpenID connect.
 
 link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale_openidconnect.adoc[Start the API Management OpenID Connect lab here]
