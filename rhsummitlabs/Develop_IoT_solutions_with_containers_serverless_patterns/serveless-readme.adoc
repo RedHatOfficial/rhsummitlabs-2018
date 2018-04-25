@@ -3,7 +3,7 @@
 == Serverless Computing
 Serverless refers to the concept of building and running applications that do not require server management. Popularized by AWS Lambda, serverless allows for a finer-grained deployment model where applications, bundled as one or more functions, are uploaded to a platform and then executed, scaled, and billed in response to the exact demand needed at that moment. Developers using serverless no longer need to spend time and resources on server provisioning, maintenance, updates, scaling, and capacity planning.
 
-Keep in mind that servers are still required to run a serverless platform. The provider will be needed to manage servers (or virtual machines or containers) and deploy the serverless platform for an external or internal customers.
+NOTE: Servers are still required to run a serverless platform. The provider will be needed to manage servers (or virtual machines or containers) and deploy the serverless platform for an external or internal customers.
 
 === Serverless use cases
 Serverless approach is a good choice when the workload is:
