@@ -124,6 +124,8 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-usetoken.p
 . Note the request succeeded (Response code 200). As we are only using this BPM server for SSO we have not deployed any containers hence the empty payload.
 +
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidsuccess.png[3Scale OpenID success, 600]
+
+
 == Appendix
 
 === Create 3Scale service account in the RH SSO realm.
