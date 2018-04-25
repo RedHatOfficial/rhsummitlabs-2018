@@ -1,4 +1,4 @@
-= Serverless - How to use FaaS (Function as a Service) for IoT
+= Serverless using FaaS (Function as a Service) for IoT
 
 == Serverless Computing
 Serverless refers to the concept of building and running applications that do not require server management. Popularized by AWS Lambda, serverless allows for a finer-grained deployment model where applications, bundled as one or more functions, are uploaded to a platform and then executed, scaled, and billed in response to the exact demand needed at that moment. Developers using serverless no longer need to spend time and resources on server provisioning, maintenance, updates, scaling, and capacity planning.
