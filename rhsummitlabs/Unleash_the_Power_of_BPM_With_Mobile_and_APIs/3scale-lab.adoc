@@ -38,7 +38,9 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-default-ex
 . Click Integration to bring up the configuration page for your service
 
 . Click "add the base URL of your API and save the configuration"
-
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-integrationpage.png[3Scale Integration Page, 900]
++
 . Enter the following information into the API and API Gateway sections.
     * API Section Section
     ** Private Base URL: `http://BPMSERVER:8080`
