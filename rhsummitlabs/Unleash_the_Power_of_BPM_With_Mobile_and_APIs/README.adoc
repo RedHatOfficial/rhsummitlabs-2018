@@ -104,3 +104,9 @@ Red Hat Mobile Application Platform is available as both SaaS and on premise opt
 * Optionally build an (Android) app for your phone
 
 link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/2b_mobile_lab.adoc[Start the Mobile frontend lab here]
+
+== Troubleshooting
+
+If you're having any issues with credentials/authentication please refer to the  link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/access.adoc[Labs acces guide here] +
+
+Anything else please speak to your Lab Instructor/Assistants
