@@ -74,6 +74,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-developers
 . Click "Create Application", using your Application plan and a name of your choosing.
 . The new application should now be displayed. Scroll down the page to the "API Credentials" section and set the "Redirect URL" value to "https://www.getpostman.com/oauth2/callback".
 +
+NOTE: You may be thinking what is this odd url? Redirect URLs are part of a OAuth flow which container a token. We use this URL in postman to get the login tokens provided by SSO.
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-redirecturl.png[3Scale Redirect URL, 300]
 
 NOTE: You will need the Client ID and Client Secret for step 4, under API Credentials.
