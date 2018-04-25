@@ -58,6 +58,8 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.
     ** Set a Friendly such as "Create a process" and System name such as "create_process"
     ** Click Create Method
     ** Click "Add a mapping rule", this will take you back to the Integration page
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule.png[3scale Add Mapping Rule, 600]
     ** Click "+ Add Mapping Rule" again
     ** Under verb option select "POST"
     ** In the pattern section enter the following: /kie-server/services/rest/server/containers/bpm-mobile-workflows/processes/org.jbpm.demo.NewApplication/instances
