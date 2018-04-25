@@ -53,6 +53,8 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
 +
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-define.png[3Scale Define Tab, 300]
     ** Click + New Method next under Methods
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.png[3Scale New Method, 300]
     ** Set a Friendly such as "Create a process" and System name such as "create_process"
     ** Click Create Method
     ** Click "Add a mapping rule", this will take you back to the Integration page
