@@ -113,7 +113,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-createappp
 
 == Define Application:
 
-:NOTE Now we have a API service and a application plan we need a Application who can use this service. In this section we setup a Organisation, add a Application.
+NOTE: Now we have a API service and a application plan we need a Application who can use this service. In this section we setup a Organisation, add a Application.
 
 . Click Developers from the main menu
 . Click "Redhat-BPMS"
@@ -128,7 +128,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-applicatio
 
 == Test the Service using 3Scale Client:
 
-:NOTE We now go back to the integration page of our API and re-test the integration. 3Scale's test client uses the first user key it can find for the service.
+NOTE: We now go back to the integration page of our API and re-test the integration. 3Scale's test client uses the first user key it can find for the service.
 
 .Testing your service using the 3scale Client
 ** Click back to APIs -> username_default -> Integration
@@ -142,7 +142,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apigreen.p
 
 == Promoting the Service to Production
 
-:NOTE 3Scale provides a staging and production url. We will now push our staging configuration into production.
+NOTE: 3Scale provides a staging and production url. We will now push our staging configuration into production.
 
 . Click APIs -> username_default -> Integration
 . Click Promote v.X to Production
