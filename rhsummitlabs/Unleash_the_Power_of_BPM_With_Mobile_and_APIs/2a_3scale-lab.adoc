@@ -85,7 +85,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-clientcomp
 +
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
 
-NOTE: Failure is expected. We don't yet have a valid user_key. We generate this next.
+NOTE: Failure is expected. We don't yet have a valid user_key. We generate this next by creating a Application Plan and then a Application.
 
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-authfailure.png[3Scale Client Failure, 600]
 
@@ -95,9 +95,11 @@ NOTE: Application plans allow you to define the rules (limits, pricing, features
 
 
 ["arabic"]
-. Go back to the list of available API's by selecting the "APIs" menu option
+. Go back to the list of available API's by selecting the "APIs" menu option from the top of the screen
 . Expand username_default
 . Click on the "+ Create Application Plan" link that is situated just below the title of your newly create service
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-createappplan.png[3Scale Create App Plan, 600]
 . The "Create Application Plan" screen should now appear. Enter the following information
     * Name : <Enter Any Name>
     * System Name : <Username>_createLoanApplication
@@ -110,13 +112,14 @@ NOTE: Application plans allow you to define the rules (limits, pricing, features
 . At this stage your service should now be ready to test.
 
 == Define Application:
-----
-Now we have a Service and a application plan we need a Application who can use this service. In this section we setup a Organisation, add a Application.
-----
+
+:NOTE Now we have a API service and a application plan we need a Application who can use this service. In this section we setup a Organisation, add a Application.
 
 . Click Developers from the main menu
 . Click "Redhat-BPMS"
 . Click "X_Applications" from the sub menu. X will be be a number depending on the number of applications created.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-applications.png[3Scale Applications, 600]
 . Click "+Create Application"
 . Choose your Application plan from the drop down menu
 . Enter a name such as username_default
@@ -125,18 +128,21 @@ Now we have a Service and a application plan we need a Application who can use t
 
 == Test the Service using 3Scale Client:
 
+:NOTE We now go back to the integration page of our API and re-test the integration. 3Scale's test client uses the first user key it can find for the service.
+
 .Testing your service using the 3scale Client
 ** Click back to APIs -> username_default -> Integration
 ** Click edit APIcast configuration
-** Notice how the side is now green
-** The curl request now uses your user-key.
-NOTE: 3Scale uses the first user-key it finds for the Service in its request check
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apired.png[3Scale API Red, 600]
+** Click Update & test at the bottom of the screen
+** Notice how the side is now green and the curl request now uses your user-key
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apigreen.png[3Scale API Green, 600]
 
 == Promoting the Service to Production
 
-----
-3Scale provides a staging and production url. We will now push our staging configuration into production.
-----
+:NOTE 3Scale provides a staging and production url. We will now push our staging configuration into production.
 
 . Click APIs -> username_default -> Integration
 . Click Promote v.X to Production
