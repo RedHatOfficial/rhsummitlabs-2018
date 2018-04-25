@@ -30,6 +30,7 @@ In short:
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-homepage.png[3Scale Home Page, 900]
 +
 . Click and expand username_default
++
 NOTE: We will only use the _default API in the lab. The _custom API can be used to have a play without affecting the lab.
 +
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-default-expanded.png[3Scale Expand Default, 900]
