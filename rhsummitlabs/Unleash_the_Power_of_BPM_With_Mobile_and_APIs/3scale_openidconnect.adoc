@@ -35,6 +35,7 @@ NOTE: We assume the previous 3Scale lab has been completed.
 
 . Click and expand username_default
 . Click "edit integration settings" from the right hand corner.
+. Change your Private base url to the following server https://34.251.105.7:8443 (there is only 1 BPM SSO enabled server so everyone will use the same URL)
 . Scroll down the page until you get to the "Authentication" section.
 . Select the OpenID Connect option.
 . Click "Update Service" and confirm
@@ -79,7 +80,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apicredent
 
 In this section we test the service via Postman
 
-NOTE: We use the native Postman app not the google plugin. Steps change slightly on the google plugin but is very similar.
+NOTE: We use the google plugin Postman not the native Postman app. Steps change slightly on the google plugin but is very similar.
 
 . Open postman and create a new request
 . Click "Create Collection", give it a name and click Create.

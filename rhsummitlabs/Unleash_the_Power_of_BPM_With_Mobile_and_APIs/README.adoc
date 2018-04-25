@@ -24,7 +24,7 @@ The lab environment consists of the following systems:
 |`gpte.us.training.redhatmobile.com`  | | Mobile Platform
 |`redhat-bpms-admin.3scale.net`  |`184.73.207.212` | 3Scale
 |`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com`  |`52.210.99.113` | SSO
-|`ec2-54-246-232-177.eu-west-1.compute.amazonaws.com`  |`54.246.232.177` | BPM Server SSO enabled
+|`ec2-34-251-105-7.eu-west-1.compute.amazonaws.com`  |`34.251.105.7` | BPM Server SSO enabled
 |`ec2-52-31-199-16.eu-west-1.compute.amazonaws.com`    |`52.31.199.16` | Nexus
 |=======
 
