@@ -26,8 +26,9 @@ In short:
 . Log into 3scale - `https://redhat-bpms-admin.3scale.net`
 
 . On the homepage you will see 2 Service's username_default and username_custom for example `summit-student-01_default` and `summit-student-01_custom`
-
++
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-homepage.png[3Scale Home Page, 900]
++
 . Click and expand username_default
 
 . Click Integration to bring up the configuration page for your service
