@@ -59,31 +59,35 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.
     ** Click Create Method
     ** Click "Add a mapping rule", this will take you back to the Integration page
 +
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule.png[3scale Add Mapping Rule, 600]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule.png[3Scale Add Mapping Rule, 600]
     ** Click "+ Add Mapping Rule" again
 +
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule3.png[3scale Add Mapping Rule Again, 300]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule3.png[3Scale Add Mapping Rule Again, 300]
     ** Under verb option select "POST"
     ** In the pattern section enter the following: /kie-server/services/rest/server/containers/bpm-mobile-workflows/processes/org.jbpm.demo.NewApplication/instances
     ** In Metric or Method drop down, change Hits and select your newly created method
 +
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-mappingrulecomplete.png[3scale Mapping Rule Complete, 600]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-mappingrulecomplete.png[3Scale Mapping Rule Complete, 600]
     * Expand Authenication Settings and enter the following
 +
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale_authsettings.png[3scale Expand Authentication Settings, 300]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale_authsettings.png[3Scale Expand Authentication Settings, 300]
     ** Host Header: leave blank
     ** Sectret Token: leave default
     * Credentials Location
     ** Ensure "As HTTP Headers" is selected
-    ** For the Auth User Key enter any random string value
+    ** For the Auth User Key: leave as it (this can however be any string value)
     * Error Code Mapping
     ** This section can be left with the default settings
     * Client
     ** For the API test GET Request enter "/business-central/kie-wb.jsp"
-
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-clientcomplete.png[3Scale Client Complete, 600]
++
 . Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
 
 NOTE: When configuring for the first time a failure will be expected until we generate a user_key in step 1.3.3
+
+
 
 == Define API Application Plan:
 
