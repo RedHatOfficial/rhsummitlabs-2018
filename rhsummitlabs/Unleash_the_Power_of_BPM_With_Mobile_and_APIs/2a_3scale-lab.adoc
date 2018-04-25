@@ -147,6 +147,7 @@ NOTE: 3Scale provides a staging and production url. We will now push our staging
 . Click APIs -> username_default -> Integration
 . Click Promote v.X to Production
 . You will now see a production environment url. Make a note of either the staging or production envrionment url which we will use to test the service now.
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-promote.png[3Scale Promote, 900]
 
 
 == Testing your service using curl and postman
