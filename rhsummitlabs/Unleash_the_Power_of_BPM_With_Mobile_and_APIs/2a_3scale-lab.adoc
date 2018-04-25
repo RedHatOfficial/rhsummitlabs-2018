@@ -62,13 +62,15 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule.png[3scale Add Mapping Rule, 600]
     ** Click "+ Add Mapping Rule" again
 +
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule3.png[3scale Add Mapping Rule Again, 600]
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule3.png[3scale Add Mapping Rule Again, 300]
     ** Under verb option select "POST"
     ** In the pattern section enter the following: /kie-server/services/rest/server/containers/bpm-mobile-workflows/processes/org.jbpm.demo.NewApplication/instances
     ** In Metric or Method drop down, change Hits and select your newly created method
 +
 image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-mappingrulecomplete.png[3scale Mapping Rule Complete, 600]
-    * Authentication Settings:
+    * Expand Authenication Settings and enter the following
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale_authsettings.png[3scale Expand Authentication Settings, 300]
     ** Host Header: leave blank
     ** Sectret Token: leave default
     * Credentials Location
