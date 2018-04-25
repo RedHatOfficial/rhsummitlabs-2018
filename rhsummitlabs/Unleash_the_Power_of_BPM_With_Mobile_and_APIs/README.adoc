@@ -1,13 +1,5 @@
-:scrollbar:
-:data-uri:
-//:toc2:
-
-== Unleash the power of BPM with mobile and APIs
-
-//:numbered:
-
-//Lab Introduction
-//----------------
+Lab Introduction
+----------------
 
 As we saw in the introduction presentations, Red Hat BPM Suite has a set of capabilities that make is ideal for an API-driven, microservices, cloud-native environment.
 
@@ -26,12 +18,13 @@ The lab environment consists of the following systems:
 [cols="3",options="header"]
 |=======
 |Hostname              |Internal IP    |Description
-|`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080` |`34.251.130.28`  | BPM Server A
-|`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080`  |`52.51.30.91` | BPM Server B
+|`BPM CUSTOM URL HERE  |`BPM CUSTOM IP HERE` | BPM Custom UI
+|`ec2-34-251-130-28.eu-west-1.compute.amazonaws.com` |`34.251.130.28`  | BPM Server A
+|`ec2-52-51-30-91.eu-west-1.compute.amazonaws.com`  |`52.51.30.91` | BPM Server B
 |`gpte.us.training.redhatmobile.com`  | | Mobile Platform
 |`redhat-bpms-admin.3scale.net`  |`184.73.207.212` | 3Scale
-|`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com:8080`  |`52.210.99.113` | SSO
-|`ec2-54-246-232-177.eu-west-1.compute.amazonaws.com:8080`  |`54.246.232.177` | BPM Server SSO enabled
+|`ec2-52-210-99-113.eu-west-1.compute.amazonaws.com`  |`52.210.99.113` | SSO
+|`ec2-54-246-232-177.eu-west-1.compute.amazonaws.com`  |`54.246.232.177` | BPM Server SSO enabled
 |`ec2-52-31-199-16.eu-west-1.compute.amazonaws.com`    |`52.31.199.16` | Nexus
 |=======
 
@@ -52,8 +45,6 @@ The lab environment consists of the following systems:
 Lab 1: Deploy and test the Process Application to the IPS container
 -------------------------------------------------------------------
 Red Hat JBoss BPM Suite has been re-architected into two distinct binaries, Business Central for design and the Intelligent Process Server (KIE Server) for process execution. This has been done to create a flexible, scalable and lightweight execution engine that is deployed as a standalone server independent from any design or management tooling. This architecture makes the IPS suitable for API driven applications in a microservices ecosystem.
-
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/bpm-suite-architecture-diagram.png[JBoss BPM Suite Architecture, 900]
 
 The JBoss BPM Suite APIs are divided into the following sections:
 
@@ -79,7 +70,8 @@ Lab 2a: Expose and test an API endpoint through 3Scale
 
 The 3Scale platform is organised around a developer portal and API management and delivery functionality.
 
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-architecture-diagram.png[3Scale Architecture, 600]
+.3Scale Architecture
+image::https://www.3scale.net/wp-content/uploads/2015/03/3scale-architecture-diagram.png[3Scale Architecture, 600]
 
 3Scale is available as both SaaS and on premise options. Today we will be using an account on the SaaS platform at 3scale.net to expose and manage the API for your BPM Container. We will perform the following steps:
 
@@ -90,7 +82,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-architectu
 * Create Application
 * Create Mappings and Methods for BPMS service integration
 
-link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale-lab.adoc[Start the API Management lab here]
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/2a_3scale-lab.adoc[Start the API Management lab here]
 
 
 Lab 2b: Use the API in a mobile application through the Red Hat Mobile Application Platform hosted platform
@@ -100,7 +92,8 @@ Red Hat Mobile Application Platform speeds up the development, integration, depl
 
 The platform offers a suite of features that embrace collaborative app development, centralised control of security and back-end integration, and deployment in the cloud or on-premise.
 
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/rhmap-architecture-diagram.png[Red Hat Mobile Application Platform Architecture, 800]
+.Red Hat Mobile Application Platform Architecture
+image::https://static.jboss.org/rhd/images/images_products_mobileplatform_mobile_platform_overview-2.png[Red Hat Mobile Application Platform Architecture, 600]
 
 Red Hat Mobile Application Platform is available as both SaaS and on premise options. Today we will use a hosted deployment running on Red Hat Openshift to add a mobile app front end to the BPM process that you deployed in the Lab 1.
 
@@ -110,4 +103,4 @@ Red Hat Mobile Application Platform is available as both SaaS and on premise opt
 * Modify the API call
 * Optionally build an (Android) app for your phone
 
-link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/mobile_lab.adoc[Start the Mobile frontend lab here]
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/2b_mobile_lab.adoc[Start the Mobile frontend lab here]
