@@ -50,11 +50,7 @@ NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.
     ** Production Public Base URL: This should already be defaulted.
     * Mapping Rules Section
     ** On the right hand side next to the "Metric or Method" label click the "Define" option
-    +
-    +
-image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-define.png[3Scale Define Tab, 900]
-    +
-    +
+    image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-define.png[3Scale Define Tab, 900]
     ** Click + New Method next under Methods
     ** Set a Friendly such as "Create a process" and System name such as "create_process"
     ** Click Create Method
