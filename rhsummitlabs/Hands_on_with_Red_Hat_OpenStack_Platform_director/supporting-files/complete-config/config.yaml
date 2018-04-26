@@ -1,0 +1,14 @@
+parameter_defaults:
+  HostnameMap:
+    overcloud-controller-0: summit-controller
+    overcloud-novacompute-0: summit-compute1
+    overcloud-novacompute-1: summit-compute2
+    overcloud-networker-0: summit-networker
+  NetworkerCount: 1
+  ControllerCount: 1
+  ComputeCount: 2
+  OvercloudNetworkerFlavor: networker
+  OvercloudComputeFlavor: compute
+  OvercloudControllerFlavor: control
+  NovaReservedHostMemory: 1024
+  TimeZone: 'PDT'
