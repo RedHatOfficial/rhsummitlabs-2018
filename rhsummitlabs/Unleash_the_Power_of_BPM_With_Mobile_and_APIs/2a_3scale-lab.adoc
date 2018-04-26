@@ -64,7 +64,7 @@ image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.
     ** In Metric or Method drop down, change Hits and select your newly created method
     * Authentication Settings:
     ** Host Header: leave blank
-    ** Sectret Token: leave default
+    ** Secret Token: leave default
     * Credentials Location
     ** Ensure "As HTTP Headers" is selected
     ** For the Auth User Key enter any random string value
@@ -79,7 +79,7 @@ NOTE: When configuring for the first time a failure will be expected until we ge
 
 == Define API Application Plan:
 
-NOTE: Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target differenct audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
+NOTE: Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target different audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
 
 
 ["arabic"]
@@ -128,7 +128,7 @@ NOTE: 3Scale uses the first user-key it finds for the Service in its request che
 
 . Click APIs -> username_default -> Integration
 . Click Promote v.X to Production
-. You will now see a production environment url. Make a note of either the staging or production envrionment url which we will use to test the service now.
+. You will now see a production environment url. Make a note of either the staging or production environment url which we will use to test the service now.
 
 
 == Testing your service using curl and postman
@@ -146,7 +146,7 @@ NOTE: As we have not configured 3scale to perform single sign on we still need t
 . Create a new request
 . Set the method to GET
 . Enter the public url of your API - https://<Public API URL>/kie-server/services/rest/server/containers.
-. In the Autherisation section set the following fields:
+. In the Authorisation section set the following fields:
     * Type: Basic Auth
     * Username: jboss
     * Password : bpmsuite1!
@@ -154,6 +154,9 @@ NOTE: As we have not configured 3scale to perform single sign on we still need t
     * Content-Type : application/xml
     * Accept : application/xml
     * User_Key : User_Key  // The User_Key header value must match the user key entered on the API integration configuration page.
+
+NOTE: A postman request example can be found in this script under the 3Scale folder: link:other/Summit_BPM_Postman_Collection.postman_collection.json[Summit BPM Lab Collection] +
+Please refer to <<1_Deploy_And_Manage_BPM_Container.adoc#,Postman Setup>> if you need help importing these files.
 
 == Extension - OpenID Connect
 
