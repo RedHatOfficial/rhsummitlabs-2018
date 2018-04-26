@@ -46,7 +46,7 @@ The project contains the following three components:
 . When you start playing with the customer mobile app and go through the process of ordering products you will see the new Cases and Tasks appear automatically in this portal.
 
 === Explore the Consumer App
-The Consumer App is designed to be installed on a phone. There are instructions below for installing on Android.  For the purposes of the demo we can user the App Preview on the Mobile Platform in our browser.
+The Consumer App is designed to be installed on a phone. There are instructions below for installing on Android.  For the purposes of the workshop we can user the App Preview on the Mobile Platform in our browser.
 
 . Click on the dropdown on the left again and this time select the *Consumer App*
 . This time you can use the App Preview to exercise the mobile app in a realistic view
@@ -57,14 +57,16 @@ The Consumer App is designed to be installed on a phone. There are instructions 
 . The menu also has a *My Applications* section where you view status of your applications later in the demo
 . In the *Settings* screen you can see connection details for the BPM instance
 
-=== Modify the Consumer App to use your BPM container (Optional)
-By default, the Consumer App connects to the BPM default container named *org.jbpm.demo:bpm-mobile-workflows:TEST*. You may continue to use the default BPM Container for the demo or, you can modify the Consumer App to use your own container as follows: 
+=== Modify the Consumer App to use your own BPM container (Optional)
+By default, the Consumer App connects to the BPM default container named *org.jbpm.demo:bpm-mobile-workflows:TEST*. You may continue to use the default BPM Container for the workshop.
 
-For this demo, the Consumer App BPM connection details are stored locally in a config file named *bpm-creds.json*. 
+If you have created your own Container in the BPM part of the workshop, you can modify the Consumer App to use your own Container as follows:
+
+For this workshop, the Consumer App BPM connection details are stored locally in a config file named *bpm-creds.json*.
 
 . Click on *Editor* on the left hand side
 . Ignore any *Failed Request Details* message you may get
-. Open file *www/bpm-creds.json* 
+. Open file *www/bpm-creds.json*
 . update the container field with your own deployed container name
 
 ----
@@ -78,9 +80,9 @@ For this demo, the Consumer App BPM connection details are stored locally in a c
 
 [start=5]
 . Click File and Save
-. Return to *Details* section 
+. Return to *Details* section
 . Login again in the App Preview section and your Consumer App should connect to your own container when you make a Product Applications
-. You can confirm that the connection details have been updated in the Settings screen.  Details can be editted here too.
+. You can confirm that the connection details have been updated in the Settings screen in the App.  Details can be edited here too.
 
 === Build Android version of Consumer App (Optional)
 If you have an Android device, you can build and deploy the Consumer App as follows.   (Note:  The RHMAP platform can also build and deploy to iOS, however it is neccessary to upload your Apple credentials first and this is outside the scope of this demo)
@@ -88,11 +90,11 @@ If you have an Android device, you can build and deploy the Consumer App as foll
 . Click on the dropdown on the left select the *Consumer App* again
 . (Optional Step) Enable Push Notifications on Android
 * Click on *Push* on the left hand side
-* Click on *Enable Push* Button 
+* Click on *Enable Push* Button
 * Click on Android Checkbox
 * Enter `AAAAVyB8obo:APA91bEdrZPXpaI9wpGz_19WlLJzoxec77bANuzXcWEGcIjavG6lFkKJA77BStWvXBmtpBmfRS_-jM93scJL4xx0-BJVJuwQwEBUdFjetF697e9crqRFLQDsNYrQk7k1HCoDUCGq9THa` as Server Key
 * Enter `374207193530` as Server ID (Ignore Server returned 401: Unathorized message)
-* CLick on *Enable Push* button
+* Click on *Enable Push* button
 . Click on *Build* on the left hand side
 . Select Android
 . Scroll down and click the *Build* button
@@ -107,7 +109,7 @@ Start a new BPM process by Submitting a Product Application from the Consumer Ap
 . Swipe through the various screens and fill in what you want.  For the purpose of the demo, default values will be added to any fields not filled in but best to complete the Applicant Name fields so you can search for this later.
 . On the last screen click the *Submit* button.
 . This creates a BPM process and returns to the *My Applications* section of the App where you should see you your Application listed as being *_In Progress_*
-. Switch to the Bank Admin Portal and find your Application on the Case List and Task List screens - search by Application name if necessary.
+. Switch to the Bank Admin Portal and find your Application on the Case List and Task List screens - search by Application name or Case Id if necessary.
 . In the Task List Screen, on your application, click the *RUN TASK* arrow to run the *_Assign Internal Owner_* Task.  Select a bank owner and click *Submit*
 . Task status will change to *_pending_* while the Sync Framework, via the Cloud App,  runs the Task on BPM.
 . When Task completes, status returns to *_Ready_* and the next Task - *_Application Check_* - is available
@@ -117,5 +119,3 @@ Start a new BPM process by Submitting a Product Application from the Consumer Ap
 * on an Android Device you will  be able to take a photo or select an image stored on device
 * using App Preview in browser a dummy photo is preloaded for this demo
 . Switch back to Bank Admin Portal where you should see the next task listed as *_Final Approval_*.  Run this and you have opportunity to review the uploaded documents before clicking *CONFIRM* or *REJECT*. Click *SUBMIT* to complete the process.
-
-
