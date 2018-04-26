@@ -23,6 +23,9 @@ Check access of your account by logging into the following servers:
 ** IPS Server will use 1 basic authorised user for everyone:
 *** Username: *john*
 *** Password: *Pa$$w0rd*
+** or
+*** Username: *jboss*
+*** Password: *bpmsuite1!*
 
 . Red Hat Mobile Platform
 ** Browse to https://gpte.us.training.redhatmobile.com[https://gpte.us.training.redhatmobile.com]

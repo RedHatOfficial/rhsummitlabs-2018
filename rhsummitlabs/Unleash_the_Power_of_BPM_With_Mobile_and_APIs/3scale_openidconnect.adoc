@@ -13,78 +13,120 @@ Doc Writer <pbrown@redhat.com>
 In this lab you will integrate OpenID Connect into 3Scale. This gives you single sign on for both 3Scale and BPMS.
 
 ==== Lab Summary
-. Step 0: Read me
-. Step 1: Configure the 3Scale api to use the OpenID Connect Authentication method.
-. Step 2: Edit the 3Scale api APIcast Configuration and set the OpenID Connect Issuer.
-. Step 3: Set the Application API Credentials Redirect URL
-. Step 4: Test using postman
+. Read me
+. Configure the 3Scale api to use the OpenID Connect Authentication method.
+. Edit the 3Scale api APIcast Configuration and set the OpenID Connect Issuer.
+. Set the Application API Credentials Redirect URL
+. Test using postman
 
-== Step 0: Read me
+== Read me
 
-3Scale will push Applications into Red Hat SSO. To do this we configure 3Scale to use a service account.
+We integrate 3Scale with SSO by allowing 3Scale to push Applications into Red Hat SSO as users. To do this we provide you with a privileged service account that has access rights to perform REST calls to perform this action against our SSO instance.
 
 The credentials for this service account are:
 Client ID: 3scale_sync
 Client Secret: 38cd5c45-fee4-4735-ae89-33dfcfad480d
 
-If you would like to know how this was done, refer to Appendix.
+If you would like more details refer to Appendix or official documentation https://access.redhat.com/documentation/en-us/red_hat_3scale/2.saas/html/api_authentication/ other versions of this documentation can be found from the product home page https://access.redhat.com/documentation/en-us/red_hat_3scale/.
 
-== Step 1: Configure the 3Scale api to use the OpenID Connect Authentication method.
+The BPM Server we expose via 3Scale must also be hooked up to SSO. As such we provide a new BPM server for the SSO lab. The differences being that HTTPS is enabled, and users are authenticated by SSO instead of basic auth.
 
-. Open a browser and access the following URL: https://redhat-bpms-admin.3scale.net
-. Enter your username and password.
-. Select the relevant API from the list and click the Integration link.
+== Configure the 3Scale api to use the OpenID Connect Authentication method.
+
+NOTE: We assume the previous 3Scale lab has been completed.
+
+. Click and expand username_default
 . Click "edit integration settings" from the right hand corner.
 . Scroll down the page until you get to the "Authentication" section.
 . Select the OpenID Connect option.
-. Click "Update Service"
+. Click "Update Service" and confirm
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openid.png[3Scale OpenID, 900]
 
-== Step 2: Edit the 3Scale api APIcast Configuration and set the OpenID Connect Issuer.
+== Edit the 3Scale api APIcast Configuration and set the OpenID Connect Issuer.
 
-. Select the relevant API from the list and click the Integration link.
-. Click "edit integration settings" from the right hand corner.
+. Returning to the Integration homepage
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidhome.png[3Scale OpenID Home, 900]
 . Click "edit APIcast configuration".
-. Scroll down the page and enter the "OpenID Connect Issuer" url. This is the url of your Redhat SSO realm. Also, ensure the service account details are added.
- * https://3scale_sync:38cd5c45-fee4-4735-ae89-33dfcfad480d@auth-summit.tk:8443/auth/realms/summit
-. Finally, click "Promote to Production".
+. Change your Private base url to the following server https://34.251.105.7:8443 (there is only 1 BPM SSO enabled server so everyone will use the same URL)
+. Scroll down the page and enter the "OpenID Connect Issuer" url of https://3scale_sync:38cd5c45-fee4-4735-ae89-33dfcfad480d@auth-summit.tk:8443/auth/realms/summit
++
+NOTE: This is how 3Scale is able to push Applications into SSO. (This is explained in the readme)
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidprovider.png[3Scale OpenID Provider, 300]
+. Click Update the staging environment
+. Wait for the UI to test the OpenID Connect Issuer.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidgreen.png[3Scale OpenID Green, 300]
+. Click Integration from the left hand side returning to the integration home page and then "Promote to Production".
 
-== Step 3: Set the Application API Credentials Redirect URL
+== Set the Application API Credentials Redirect URL
 
-:NOTE At this stage any new Applications created for a Application plan linked to the OpenID backed API service will be synced into Red Hat SSO as a Client.
+NOTE: At this stage any new Applications created for a Application plan linked to the OpenID backed API service will be synced into Red Hat SSO as a Client.
 
-. Open a browser and access the following URL: https://redhat-bpms-admin.3scale.net
-. Enter your username and password.
-. Click on the "Developers" link and select the relevant developer.
+. Click on the "Developers" link from the top menu and select the Redhat-BPMS account.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-developers.png[3Scale Developers, 300]
 . Click on the Applications link.
 . Click "Create Application".
 . Select the relevant "Application Plan" from the drop down list.
-. Click "Create Application"
+. Click "Create Application", using your Application plan and a name of your choosing.
 . The new application should now be displayed. Scroll down the page to the "API Credentials" section and set the "Redirect URL" value to "https://www.getpostman.com/oauth2/callback".
++
+NOTE: You may be thinking what is this odd url? Redirect URLs are part of a OAuth flow which container a token. We use this URL in postman to get the login tokens provided by SSO. +
+image:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-redirecturl.png[3Scale Redirect URL, 300]
 
 NOTE: You will need the Client ID and Client Secret for step 4, under API Credentials.
 
-== Step 4: Test the configuration using Postman
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apicredentials.png[3Scale API Credentials, 300]
+
+== Test the configuration using Postman
 
 In this section we test the service via Postman
 
-:NOTE We use the native Postman app not the google plugin. Steps change slightly on the google plugin but is very similar.
+NOTE: We use the google plugin Postman not the native Postman app. Steps change slightly on the google plugin but is very similar.
 
 . Open postman and create a new request
-. Click "Create Collection" and save your request
-. Setup a GET request to your 3Scale staging or production url (if you have promoted to production) with the following subpath - kie-server/services/rest/server/containers
-	.. for example https://test-2445582504254.staging.gw.apicast.io:443/kie-server/services/rest/server/containers
+. Click "Create Collection", give it a name and click Create.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidpostman.png[3Scale Postman, 600]
+
+. Setup a GET request to your 3Scale staging or production url with the following subpath - kie-server/services/rest/server/containers
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidpostmanrequest.png[3Scale Postman Request, 600]
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidrequest2.png[3Scale Postman Request 2, 600]
+	** For example https://summit-student-14-default-2445582504254.staging.gw.apicast.io:443/kie-server/services/rest/server/containers
+	** You can retrieve the URLS from the Integration home page of your API
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidenvs.png[3Scale Envs, 600]
 . In Authorization select OAuth 2.0
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-postman-oauthtype.png[3Scale OAuth, 600]
 . Click Get New Access Token
 . Enter the following
-	.. Callback URL - https://www.getpostman.com/oauth2/callback
-	.. Auth URL - https://auth-summit.tk:8443/auth/realms/summit/protocol/openid-connect/auth
-	.. Access Token URL - https://auth-summit.tk:8443/auth/realms/summit/protocol/openid-connect/token
-	.. Client ID - `Application id from Step 3`
-	.. Client Secret - `Application secret from Step 3`
+	** Token Name - Anything
+	** Callback URL - https://www.getpostman.com/oauth2/callback
+	** Auth URL - https://auth-summit.tk:8443/auth/realms/summit/protocol/openid-connect/auth
+	** Access Token URL - https://auth-summit.tk:8443/auth/realms/summit/protocol/openid-connect/token
+	** Client ID - `Application id from Step 3`
+	** Client Secret - `Application secret from Step 3`
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-getaccesstoken.png[3Scale Get Access Token, 600]
 . Click Request Token
-. Login using your username and password 'abc123'
-. Click Use Token
+    ** Your now redirected to the SSO login page
+    ** Login using your username summit-student-NUM and password sso#2018
+. Click on your new token and then click Use Token
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-usetoken.png[3Scale Use Token, 600]
 . Execute the Send request
+. Note the request succeeded (Response code 200). As we are only using this BPM server for SSO we have not deployed any containers hence the empty payload.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-openidsuccess.png[3Scale OpenID success, 600]
+
+NOTE: A postman request example can be found in this script under the 3Scale folder: link:other/Summit_BPM_Postman_Collection.postman_collection.json[Summit BPM Lab Collection] +
+Please refer to <<1_Deploy_And_Manage_BPM_Container.adoc#,Postman Setup>> if you need help importing these files.
 
 == Appendix
 
@@ -92,7 +134,7 @@ In this section we test the service via Postman
 
 This account will be used by 3Scale to perform client synchronisation.
 ["arabic"]
-. Open a browser and access the Redhat SSO Admin user inteface
+. Open a browser and access the Redhat SSO Admin user interface
 . Select the relevant realm
 . Create a new client by selecting the Clients menu item from the left side and click the Create button.
 . Set the following values and click save:
@@ -104,9 +146,8 @@ This account will be used by 3Scale to perform client synchronisation.
     * Service Accounts Enabled = On
 . Click the Service Accounts tab that now should be visible. If it's not visible you may need to refresh the page.
 . Click on the Client Roles drop down and select Realm Management from the list. A list of Available Roles should now appear.
-. Select manage-clients and click Add Selected to move the role accross to the Assign Roles section. The role should also appear in the Effective Roles section.
+. Select manage-clients and click Add Selected to move the role across to the Assign Roles section. The role should also appear in the Effective Roles section.
 . Click on the credentials tab and take a copy of the secret as this will be required shortly.
 . Check that a user with the kieserver role exists within the realm. If one doesn't exist then you will need to follow the labs on how to configure Redhat SSO and Redhat BPMS.
 
-
-:NOTE Currently a http request is used because the service account option is not exposed
+NOTE: Currently a http request is used because the service account option is not exposed
