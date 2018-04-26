@@ -135,6 +135,7 @@ Please refer to <<1_Deploy_And_Manage_BPM_Container.adoc#,Postman Setup>> if you
 This account will be used by 3Scale to perform client synchronisation.
 ["arabic"]
 . Open a browser and access the Redhat SSO Admin user interface
+.. https://auth-summit.tk:8443/auth/admin/
 . Select the relevant realm
 . Create a new client by selecting the Clients menu item from the left side and click the Create button.
 . Set the following values and click save:
@@ -143,6 +144,7 @@ This account will be used by 3Scale to perform client synchronisation.
 . On the client settings tab set the following values and click save:
     * Standard Flow Enabled = OFF
     * Direct Access Grants = Enabled
+		* Access Type = confidential
     * Service Accounts Enabled = On
 . Click the Service Accounts tab that now should be visible. If it's not visible you may need to refresh the page.
 . Click on the Client Roles drop down and select Realm Management from the list. A list of Available Roles should now appear.

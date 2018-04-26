@@ -41,3 +41,9 @@ Check access of your account by logging into the following servers:
 *** Username: *summit-student-XX*
 *** Password: *3scale#2018*
 ** On the default page you should see 2 APIs called summit-student-XX_default and summit-student-XX_custom
+
+. Red Hat SSO Management Platform
+** Browse to `https://auth-summit.tk:8443/auth/realms/master`
+** Login using:
+*** Username: *admin*
+*** Password: *password1!*
