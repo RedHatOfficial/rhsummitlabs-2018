@@ -1,4 +1,1 @@
-# Your labs docs placeholder, put your documentation here.
-
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+[Building a self-service portal with Red Hat CloudForms](https://github.com/cbolz/summit-fy19/blob/master/self-service-portal-with-cloudforms/index.md)
