@@ -1,0 +1,63 @@
+heat_template_version: 2014-10-16
+
+description: >
+  Red Hat Summit 2018 - OSP Lab Post-deployment Fixes
+
+parameters:
+  servers:
+    type: json
+
+resources:
+
+  ExtraConfig:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config: |
+          #!/usr/bin/env bash
+          # Post-deployment fixes for OSP Lab
+          set -e
+          if [[ `hostname` = *"controller"* ]]
+          then
+            export EXT_IP=$(curl -s http://www.opentlc.com/getip --interface 192.168.122.100)
+            echo $EXT_IP > /tmp/ip
+            sshpass -p "redhat" scp -q -o StrictHostKeyChecking=no /tmp/ip stack@172.16.0.1:/tmp/ip
+            crudini --set /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf vnc novncproxy_base_url http://$EXT_IP:6080/vnc_auto.html
+            for i in $(docker ps -a | grep "nova_" | grep -i up | egrep -v "(scheduler|placement|conductor)" | awk '{print $1;}'); do docker restart $i; done
+            echo "losetup /dev/loop0 /var/lib/cinder/cinder-volumes" >> /etc/rc.d/rc.local
+            echo "vgscan" >> /etc/rc.d/rc.local
+            echo "sleep 360" >> /etc/rc.d/rc.local
+            echo 'export EXT_IP=$(curl -s http://www.opentlc.com/getip --interface 192.168.122.100)' >> /etc/rc.d/rc.local
+            echo 'echo $EXT_IP > /tmp/ip' >> /etc/rc.d/rc.local
+            echo 'sshpass -p "redhat" scp -q -o StrictHostKeyChecking=no /tmp/ip stack@172.16.0.1:/tmp/ip' >> /etc/rc.d/rc.local
+            echo 'crudini --set /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf vnc novncproxy_base_url http://$EXT_IP:6080/vnc_auto.html' >> /etc/rc.d/rc.local
+            echo $'for i in $(docker ps -a | grep "nova_" | grep -i up | egrep -v "(scheduler|placement|conductor)" | awk \'{print $1;}\'); do docker restart $i; done' >> /etc/rc.d/rc.local
+            chmod +x /etc/rc.d/rc.local
+            systemctl enable rc-local.service
+          fi
+          if [[ `hostname` = *"networker"* ]]
+          then
+            /usr/bin/sed -i 's/^#interface_driver.*/interface_driver = openvswitch/' /etc/neutron/lbaas_agent.ini
+            /usr/bin/systemctl enable neutron-lbaasv2-agent.service
+            /usr/bin/systemctl start neutron-lbaasv2-agent.service
+          fi
+          if [[ `hostname` = *"compute"* ]]
+          then
+            export EXT_IP=$(sshpass -p "redhat" ssh -q -o StrictHostKeyChecking=no stack@172.16.0.1 sshpass -p "redhat" ssh -q -o StrictHostKeyChecking=no root@192.168.122.100 curl -s http://www.opentlc.com/getip --interface 192.168.122.100)
+            crudini --set /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf vnc novncproxy_base_url http://$EXT_IP:6080/vnc_auto.html
+            for i in $(docker ps -a | grep nova_ | awk '{print $1;}'); do docker restart $i; done
+            echo "sleep 240" >> /etc/rc.d/rc.local          
+            echo 'export EXT_IP=$(sshpass -p "redhat" ssh -q -o StrictHostKeyChecking=no stack@172.16.0.1 sshpass -p "redhat" ssh -q -o StrictHostKeyChecking=no root@192.168.122.100 curl -s http://www.opentlc.com/getip --interface 192.168.122.100)' >> /etc/rc.d/rc.local
+            echo 'crudini --set /var/lib/config-data/puppet-generated/nova_libvirt/etc/nova/nova.conf vnc novncproxy_base_url http://$EXT_IP:6080/vnc_auto.html' >> /etc/rc.d/rc.local
+            echo $'for i in $(docker ps -a | grep nova_ | awk \'{print $1;}\'); do docker restart $i; done' >> /etc/rc.d/rc.local
+            chmod +x /etc/rc.d/rc.local
+            systemctl enable rc-local.service
+          fi
+
+  ExtraDeployments:
+    type: OS::Heat::SoftwareDeployments
+    properties:
+      name: ExtraDeployments
+      servers:  {get_param: servers}
+      config: {get_resource: ExtraConfig}
+      actions: ['CREATE'] # Only do this on CREATE
