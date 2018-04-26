@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "pm_user": "admin",
+      "mac": [
+        "2c:c2:60:01:02:02"
+      ],
+      "pm_type": "pxe_ipmitool",
+      "pm_password": "redhat",
+      "pm_addr": "172.16.0.131",
+      "name": "summit-controller1"
+    },
+    {
+      "pm_user": "admin",
+      "mac": [
+        "2c:c2:60:01:02:05"
+      ],
+      "pm_type": "pxe_ipmitool",
+      "pm_password": "redhat",
+      "pm_addr": "172.16.0.134",
+      "name": "summit-compute1"
+    },
+    {
+      "pm_user": "admin",
+      "mac": [
+        "2c:c2:60:01:02:06"
+      ],
+      "pm_type": "pxe_ipmitool",
+      "pm_password": "redhat",
+      "pm_addr": "172.16.0.135",
+      "name": "summit-compute2"
+    },
+    {
+      "pm_user": "admin",
+      "mac": [
+        "2c:c2:60:79:05:32"
+      ],
+      "pm_type": "pxe_ipmitool",
+      "pm_password": "redhat",
+      "pm_addr": "172.16.0.136",
+      "name": "summit-networker1"
+    }
+  ]
+}

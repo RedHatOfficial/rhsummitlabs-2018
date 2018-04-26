@@ -1,0 +1,36 @@
+heat_template_version: 2014-10-16
+
+description: >
+  Red Hat Summit 2018 - Director Lab Pre-deployment Fixes
+
+parameters:
+  server:
+    description: ID of the controller node to apply this config to
+    type: string
+
+resources:
+  NodeConfig:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config: |
+          #!/usr/bin/env bash
+          # Post-deployment fixes for OSP Lab
+          set -e
+          sed -i 's/.*ssh-rsa/ssh-rsa/' /root/.ssh/authorized_keys
+          sed -i 's/PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+          sed -i 's/ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
+
+          systemctl restart sshd
+          echo redhat | sudo passwd root --stdin
+
+  NodeDeployment:
+    type: OS::Heat::SoftwareDeployment
+    properties:
+      config: {get_resource: NodeConfig}
+      server: {get_param: server}
+
+outputs:
+  deploy_stdout:
+    description: Deployment reference, used to trigger post-deploy on changes
+    value: {get_attr: [NodeDeployment, deploy_stdout]}
