@@ -9,7 +9,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**A Practical Introduction to Container Security (3rd Ed.)**](rhsummitlabs/A_Practical_Introduction_to_Container_Security/README.md)
 
- - [**First time hands-on with Red Hat OpenStack Platform**](rhsummitlabs/First_time_hands_on_with_Red_Hat_OpenStack_Platform/README.md)
+ - [**First time hands-on with Red Hat OpenStack Platform**](rhsummitlabs/First_time_hands_on_with_Red_Hat_OpenStack_Platform)
 
  - [**Getting Started with Cloud Native Apps**](rhsummitlabs/Getting_Started_with_Cloud_Native_Apps/README.md)
 
@@ -47,7 +47,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Containerizing applications — existing and new**](rhsummitlabs/Containerizing_applications_existing_and_new/README.md)
 
- - [**Hands on with Red Hat OpenStack Platform director**](rhsummitlabs/Hands_on_with_Red_Hat_OpenStack_Platform_director/README.md)
+ - [**Hands on with Red Hat OpenStack Platform director**](rhsummitlabs/Hands_on_with_Red_Hat_OpenStack_Platform_director)
 
  - [**The Ceph Data Show**](rhsummitlabs/The_Ceph_Data_Show/README.md)
 
@@ -77,7 +77,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Effectively monitor and troubleshoot your OCP Cluster**](rhsummitlabs/Effectively_monitor_and_troubleshoot_your_OCP_Cluster/README.md)
 
- - [**Hands on with OpenStack and OpenDaylight SDN**](rhsummitlabs/Hands_on_with_OpenStack_and_OpenDaylight_SDN/README.md)
+ - [**Hands on with OpenStack and OpenDaylight SDN**](rhsummitlabs/Hands_on_with_OpenStack_and_OpenDaylight_SDN)
 
  - [**Custom Broker for your Service Catalog**](rhsummitlabs/Custom_Broker_for_your_Service_Catalog/README.md)
 

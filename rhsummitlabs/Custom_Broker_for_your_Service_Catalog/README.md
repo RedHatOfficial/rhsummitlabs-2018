@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# Custom Broker for your Service Catalog
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+Content is available at https://github.com/openshift-labs/custom-service-broker-workshop

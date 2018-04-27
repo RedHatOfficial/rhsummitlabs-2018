@@ -1,4 +1,10 @@
-# Your labs docs placeholder, put your documentation here.
+# OpenShift for Operators
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+The OpenShift for Operators lab uses a platform called Qwiklabs for providing
+the underlying student environments. The instructors should have already set up
+your workstation with a lab environment. Each lab environment has a custom-built
+lab guide inside it.
+
+If for some reason your station does not have a Qwiklab environment ready for
+you, or if you're reading this, you should probably raise your hand and ask for
+assistance.

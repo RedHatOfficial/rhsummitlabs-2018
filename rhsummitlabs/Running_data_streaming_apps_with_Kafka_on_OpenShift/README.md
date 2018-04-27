@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# Running data streaming application with Kafka on OpenShift
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+The instructions for this lab are available at [Strimzi-lab RH Summit 2018](https://github.com/strimzi/strimzi-lab/tree/master/rh-summit-2018).
