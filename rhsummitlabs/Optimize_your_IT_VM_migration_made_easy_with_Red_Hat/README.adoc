@@ -13,7 +13,7 @@ This Lab Environment uses Red Hat CloudForms, and the Infrastructure Migration p
  
 The provided configuration steps include:
 
-* Check the ocnfiguration of the conversion hosts in the target provider (RHV)
+* Check the configuration of the conversion hosts in the target provider (RHV)
 * Check credentials for virtualization providers and conversion hosts in CloudForms
 * Assign tags for the conversion hosts in CloudForms
 * CSV file created for the chosen VMs to be migrated
@@ -73,7 +73,7 @@ image::lab_guid_grab1.png[Lab GUID Grab 1]
 +
 image::lab_guid_grab2.png[Lab GUID Grab 2]
 
-. You will have yout *Lab GUID* and will be able to start. In this example *YOUR-GUID* is `a2ce`
+. You will have your *Lab GUID* and will be able to start. In this example *YOUR-GUID* is `a2ce`
 +
 image::lab_guid_grab3.png[Lab GUID Grab 3]
 
@@ -151,7 +151,7 @@ To check only if these ones are running, you may use the following command:
 # ansible app -m ping
 ----
 + 
-To check the infrastructure machines the followinf command can be also used:
+To check the infrastructure machines the following command can be also used:
 +
 ----
 # ansible infra -m ping
@@ -170,7 +170,7 @@ The log entries are very long, so it helps if you stretch this window as wide as
 [NOTE]
 The log entries can be also seen in the CloudForms web UI in *Automation -> Automate -> Log*.
 
-. Verify that the Ticket Monster app is running:
+. Verify the Ticket Monster app is running:
 
 * Point your browser to https://app-<YOUR-GUID>.rhpds.opentlc.com and check it is running:
 +
@@ -193,7 +193,7 @@ You must accept all of the self-signed SSL certificates.
 +
 image::rhv_login.png[RHV Login]
 
-.. Verify that the Cluster is up and Hypervisors are active
+.. Verify the Cluster is up and Hypervisors are active
 +
 [TIP]
 As this is nested virtualization, sometimes the CPU type of the hypervisor is changed. 
@@ -216,11 +216,11 @@ image::vsphere_web_client_1.png[vSphere Web Client Login]
 [WARNING]
 Use `root` as the username to log in to vCenter.
 
-* Click *Click on VMs and Templates*.
+* Click *VMs and Templates*.
 +
 image::vsphere_web_client_2.png[vCenter]
 
-.. Click *VMs and Templates* and verify that the 4 VMs `lb.example.com`, `jboss0.example.com`, `jboss0.example.com` and `db.example.com` are running. 
+.. Click *VMs and Templates* and verify the 4 VMs `lb.example.com`, `jboss0.example.com`, `jboss0.example.com` and `db.example.com` are running. 
 +
 image::vsphere_web_client_3.png[vCenter]
 
@@ -280,11 +280,11 @@ image::conversion_host_2.png[Conversion Host 2]
 +
 image::conversion_host_3.png[Conversion Host 3]
 
-. Check that *V2V - Transformation Host* has value *t* (for true) and that *V2V - Transformation Method* tag has value *VDDK*. Click *Cancel*.
+. Confirm *V2V - Transformation Host* has value *t* (for true) and *V2V - Transformation Method* tag has value *VDDK*. Click *Cancel*.
 +
 image::conversion_host_6.png[Conversion Host 6]
 +
-* This values can also be seen in the *Smart Management* box in the host description
+* These values may also be observed in the *Smart Management* box in the host description
 +
 image::conversion_host_7.png[Conversion Host 7]
 
@@ -292,7 +292,7 @@ image::conversion_host_7.png[Conversion Host 7]
 +
 image::conversion_host_8.png[Conversion Host 8]
 
-. Check that *Username* has `root` and Password is set. You can click *Validate* to verify they are OK then the message "Credential validation was successful" will appear. This is needed to be able to connect to the conversion host and initiate the conversion.
+. Confirm *Username* has `root` and Password is set. You can click *Validate* to verify they are OK then the message "Credential validation was successful" will appear. This is needed to be able to connect to the conversion host and initiate the conversion.
 +
 image::conversion_host_9.png[Conversion Host 9]
 
@@ -337,7 +337,7 @@ In these steps an *Înfrastructure Mapping* has been created in order to simplif
 +
 image::migration_plan_1.png[Migration Plan 1]
 
-. In the *step 1* of the wizard, *General*, select the *Infrastructure Mapping* to be used, `ticket-monster-mapping`, add the name `ticket-monster-plan` and click *next*.
+. In the *step 1* of the wizard, *General*, select the *Infrastructure Mapping* to be used, `ticket-monster-mapping`, add the name `Ticket Monster plan` and click *next*.
 +
 image::migration_plan_2.png[Migration Plan 2]
 +
@@ -355,20 +355,19 @@ To get the VM ids, for the CVS file, can be obtained from a web browser by acces
 +
 [TIP]
 To get the VM ids via command line, the following commands can be run in ManageIQ/CloudForms:
----- 
-# cd /var/www/miq/vmdb
-# bundle exec rails c
-irb> Vm.find_by(:name => "<VM_NAME>").id
-----
++
+        # cd /var/www/miq/vmdb
+        # bundle exec rails c
+        irb> Vm.find_by(:name => "<VM_NAME>").id
 +
 [WARNING]
-If the CloudForms environment has been reconfigured, the csv file may need ot be regenerated as the VM ids in CloudForms could have changed.
+If the CloudForms environment has been reconfigured, the csv file may need to be regenerated as the VM ids in CloudForms could have changed.
 
 . In the *step 2* of the wizard, *VMs*, select the *Browse* to select a CSV file with the names of the VMs to be migrated. Then select `ticket_monster_migration.csv` and click *Open*.
 +
 image::migration_plan_4.png[Migration Plan 4]
 
-. The list of the VMs to be migrated shall appear in on screen. Review and click *create*.
+. The list of the VMs to be migrated shall appear on screen. Review and click *create*.
 +
 image::migration_plan_5.png[Migration Plan 5]
 
@@ -408,7 +407,7 @@ image::migration_running_3.png[Migration Running 3]
 # ansible app -m ping
 ----
 
-. It's time to check the *app* running and accesible via the URL https://app-<YOUR-GUID>.rhpds.opentlc.com
+. It's time to check the *app* running and accessible via the URL https://app-<YOUR-GUID>.rhpds.opentlc.com
 +
 image::migration_running_5.png[Migration Running 5]
 
