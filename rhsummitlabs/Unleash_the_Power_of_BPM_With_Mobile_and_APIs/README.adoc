@@ -60,7 +60,8 @@ In this lab we will focus on the Intelligent Process Server, performing the foll
 * Querying a Process Instance
 * Interacting with the Task Management API
 
-link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container.adoc[Start the BPM lab here]
+Students 01-30: link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container-Students-01-to-30.adoc[Start the BPM lab here]
+Students 31-60: link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container-Students-31-to-60.adoc[Start the BPM lab here]
 
 Lab 2a: Expose and test an API endpoint through 3Scale
 ------------------------------------------------------

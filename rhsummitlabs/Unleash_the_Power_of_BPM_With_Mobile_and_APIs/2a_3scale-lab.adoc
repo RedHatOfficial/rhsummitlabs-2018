@@ -180,4 +180,4 @@ Please refer to <<1_Deploy_And_Manage_BPM_Container.adoc#,Postman Setup>> if you
 
 In the previous section you used 2 authentication mechanism: a user_key to let you into 3scale and then basic auth to let you into the BPM api. In this extension you combine these authentication mechanisms to give you SSO via OpenID connect.
 
-link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3scale_openidconnect.adoc[Start the API Management OpenID Connect lab here]
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3_3scale_openidconnect.adoc[Start the API Management OpenID Connect lab here]

@@ -14,6 +14,9 @@ Doc Writer <ajarrett@redhat.com>
 :USERNAME: john
 :PASSWORD: Pa$$w0rd
 :CONTAINER_ID: org.jbpm.demo:bpm-mobile-workflows:TEST
+:CONTAINER_PLACEHOLDER: $CONTAINER_ID
+:TASK_PLACEHOLDER: $TASK_ID
+:PROCESS_PLACEHOLDER: $PROCESS_INSTANCE_ID
 
 == Introduction
 
@@ -21,7 +24,7 @@ In this lab you will obtain an understanding of JBoss BPM's Container deployment
 
 ==== Lab Components
 - There are 2 BPM instances hosted on AWS.
-. summit-student-[01-30]
+. summit-student-[01-30] Please follow link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container-Students-01-to-30.adoc[this guide] with the correct cURL commands
 .. AWS BPM ec2 Instance 1 - IP: 34.251.130.28 PORT: 8080 - DNS: ec2-34-251-130-28.eu-west-1.compute.amazonaws.com
 . summit-student-[31-60]
 .. AWS BPM ec2 Instance 2 - IP: 52.51.30.91 PORT: 8080 - DNS: ec2-52-51-30-91.eu-west-1.compute.amazonaws.com +
@@ -32,8 +35,9 @@ In this lab you will obtain an understanding of JBoss BPM's Container deployment
 
 - Default Container ID: org.jbpm.demo:bpm-mobile-workflows:TEST
 
-NOTE: you will be deploying your own container with an ID specified by you. Requests marked <CONTAINER_ID> should be replaced
-with your newly created container.
+IMPORTANT: you will be deploying your own container with an ID specified by you as well as recieving a unique ID for both Process Instances and Tasks. +
+Requests marked $CONTAINER_ID should be replaced with your newly created container ID. +
+Requests marked $PROCESS_INSTANCE_ID and $TASK_ID should also be updated with the generated IDs.
 
 ==== Lab Summary
 . Step 0: Introduction
@@ -166,19 +170,19 @@ NOTE: Capabilities refer to the underlying libraries that have been loaded: +
 
 - Create a new container Using the following Maven GAV coordinates:
 
-Name: *<CONTAINER_ID>* +
+Name: *$CONTAINER_ID* +
 Group ID: org.jbpm.demo +
 Artifact Id: bpm-mobile-workflows +
 Version: 0.0.1-SNAPSHOT
 
-IMPORTANT: Replace *<CONTAINER_ID>* with a name of your choice. This could be anything, but its best to keep
+IMPORTANT: Replace *$CONTAINER_ID* with a name of your choice. This could be anything, but its best to keep
 it simple such as 'summit-labs-<myname>' e.g. summit-labs-steve. +
-CONTAINER_ID is then used throughout this lab to direct API calls.
+CONTAINER_ID is used throughout this lab to direct API calls.
 
 [source,sh, subs="+quotes"]
 ----
 curl -X PUT --user john:'Pa$$w0rd' \
-  http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers/ally \
+  http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers/$CONTAINER_ID \
   -H 'Content-Type: application/xml' \
   -d '<kie-container>
   <release-id>
@@ -232,7 +236,7 @@ curl -X GET \
             </resolved-release-id>
             <scanner status="DISPOSED"/>
         </kie-container>
-        <kie-container container-id="[underline]#<CONTAINER_ID>#" status="STARTED">
+        <kie-container container-id="$CONTAINER_ID" status="STARTED">
             <release-id>
                 <artifact-id>bpm-mobile-workflows</artifact-id>
                 <group-id>org.jbpm.demo</group-id>
@@ -272,7 +276,7 @@ REQUEST (Query/Process) - GET All Process Definitions by Container ID:
 ----
 // Return all Process Definitions deployed on the KIE Container
 curl -X GET --user {USERNAME}:'{PASSWORD}'\
-  {HOST}/kie-server/services/rest/server/queries/containers/*CONTAINER_ID*/processes/definitions  \
+  {HOST}/kie-server/services/rest/server/queries/containers/{CONTAINER_PLACEHOLDER}/processes/definitions  \
   -H 'accept: application/json'
 ----
 
@@ -311,7 +315,7 @@ You can also obtain the Process Definition Image or Process Model using the Proc
 In a browser, navigate to:
 [source,sh, subs="attributes"]
 ----
-{HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/images/processes/org.jbpm.demo.NewApplication
+{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/images/processes/org.jbpm.demo.NewApplication
 ----
 
 This will return an SVG of the current process model. It should look something similar to:
@@ -324,15 +328,14 @@ image::new-application-process.png[New Application Process Model]
 
  1. First lets create a new BPM Process Instance
  Process URL Requirements:
- . CONTAINER_ID - summit-test-container
  . PROCESS_DEFINITIONS_ID - org.jbpm.demo.NewApplication
- . Full URL Structure: {HOST}/kie-server/services/rest/server/containers/*<CONTAINER_ID>*/processes/org.jbpm.demo.NewApplication/instances
+ . Full URL Structure: {HOST}/kie-server/services/rest/server/containers/*$CONTAINER_ID*/processes/org.jbpm.demo.NewApplication/instances
 
 REQUEST (Process) - POST Create New Process Instance:
 [source,sh, subs="attributes"]
 ----
 curl -X POST --user {USERNAME}:'{PASSWORD}' \
-  {HOST}/kie-server/services/rest/server/containers/*CONTAINER_ID*/processes/org.jbpm.demo.NewApplication/instances \
+  {HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/org.jbpm.demo.NewApplication/instances \
   -H 'cache-control: no-cache' \
   -H 'Accept: application/json' \
   -H 'Content-Type: application/json' \
@@ -456,7 +459,7 @@ REPONSE: HTTP 201 Created +
 
  - Once a new instance of the org.jbpm.demo.NewApplication process has been started we can start querying/interacting with this process.
 
-  .. In a web browser, navigate to {HOST}/kie-server/services/rest/server/containers/<CONTAINER_ID>/images/processes/instances/1, replacing 1 with the process instance ID of the process instance you just created and <CONTAINER_ID> with your created container. +
+  .. In a web browser, navigate to {HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/images/processes/instances/{PROCESS_PLACEHOLDER}, replacing {PROCESS_PLACEHOLDER} with the process instance ID of the process instance you just created and {CONTAINER_PLACEHOLDER} with your created container. +
   .. Expect to see a graphical representation of the process instance. The nodes in grey indicate that they have executed
 
 image::new-application-process-started.png[New Application Process Model]
@@ -469,20 +472,20 @@ image::new-application-process-started.png[New Application Process Model]
  ... pageSize : alter number of records returned, default it 10
  ... status : return only process which have a specific status:
  .... Reference: https://docs.jboss.org/jbpm/v6.4/javadocs/constant-values.html
- .... 	 STATE_ABORTED = 3
+ ....    STATE_PENDING = 0
  ....    STATE_ACTIVE = 1
  ....    STATE_COMPLETED = 2
- ....    STATE_PENDING = 0
+ .... 	 STATE_ABORTED = 3
  ....    STATE_SUSPENDED = 4
 
-Full URL Structure: {HOST}/kie-server/services/rest/server/containers/<CONTAINER_ID>/process/instances?<PARAMS> +
+Full URL Structure: {HOST}/kie-server/services/rest/server/containers/$CONTAINER_ID/process/instances?<PARAMS> +
 
 * REQUEST (Query/Process) - GET All Process Instances by Container ID:
 
 [source,sh, subs="attributes"]
 ----
 curl -X GET --user {USERNAME}:'{PASSWORD}' \
-  '{HOST}/kie-server/services/rest/server/queries/containers/CONTAINER_ID/process/instances?status=1&page=0&pageSize=25' \
+  '{HOST}/kie-server/services/rest/server/queries/containers/{CONTAINER_PLACEHOLDER}/process/instances?status=1&page=0&pageSize=25' \
   -H 'Accept: application/json'
 ----
 
@@ -499,7 +502,7 @@ curl -X GET --user {USERNAME}:'{PASSWORD}' \
             "process-name": "NewApplication",
             "process-version": "1.0",
             "process-instance-state": 1,
-            "container-id": "CONTAINER_ID",
+            "container-id": "$CONTAINER_ID",
             "start-date": 1523283354565,
             "process-instance-desc": "NewApplication",
             "correlation-key": "",
@@ -516,7 +519,7 @@ or we can obtain our Process Instance Directly using the Process Management API
 [source,sh, subs="attributes"]
 ----
 curl -X GET --user {USERNAME}:'{PASSWORD}' \
-  '{HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/processes/instances/PROCESS_INSTANCE_ID?withVars=true' \
+  '{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/instances/{PROCESS_PLACEHOLDER}?withVars=true' \
   -H 'Accept: application/json'
 ----
 
@@ -557,7 +560,7 @@ BPMS has the concept of a Potential Task Owner. As it sounds, a 'Potential Task 
 [source,sh, subs="attributes"]
 ----
 curl -X GET --user {USERNAME}:'{PASSWORD}' \
-  '{HOST}/kie-server/services/rest/server/queries/tasks/instances/process/*PROCESS_INSTANCE_ID ' \
+  '{HOST}/kie-server/services/rest/server/queries/tasks/instances/process/{PROCESS_PLACEHOLDER} ' \
   -H 'Accept: application/json'
 ----
 
@@ -579,7 +582,7 @@ curl -X GET --user {USERNAME}:'{PASSWORD}' \
             "task-activation-time": 1523283354638,
             "task-proc-inst-id": 1,
             "task-proc-def-id": "org.jbpm.demo.NewApplication",
-            "task-container-id": "CONTAINER_ID",
+            "task-container-id": "$CONTAINER_ID",
             "task-parent-id": -1
         }
     ]
@@ -618,7 +621,7 @@ curl -X GET --user {USERNAME}:'{PASSWORD}' \
             "task-activation-time": 1523283354638,
             "task-proc-inst-id": 1,
             "task-proc-def-id": "org.jbpm.demo.NewApplication",
-            "task-container-id": "<CONTAINER_ID>",
+            "task-container-id": "$CONTAINER_ID",
             "task-parent-id": -1
         }
     ]
@@ -657,7 +660,7 @@ NOTE: Task states provide measurable audit trails of work/effort undertaken into
 
 [source,sh, subs="attributes"]
 ----
- curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/tasks/TASK_ID/states/claimed"
+ curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/tasks/{TASK_PLACEHOLDER}/states/claimed"
 ----
 
   * REQUEST (Query/Task) - GET All Owned Tasks Query (Authed User):
@@ -686,7 +689,7 @@ NOTE: Task states provide measurable audit trails of work/effort undertaken into
     "task-activation-time" : 1523361110474,
     "task-proc-inst-id" : 1,
     "task-proc-def-id" : "org.jbpm.demo.NewApplication",
-    "task-container-id" : "<CONTAINER_ID>",
+    "task-container-id" : "$CONTAINER_ID",
     "task-parent-id" : -1
   } ]
 }
@@ -697,7 +700,7 @@ NOTE: Task states provide measurable audit trails of work/effort undertaken into
 // Start Task
 [source,sh, subs="attributes"]
 ----
- curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/tasks/TASK_ID/states/started"
+ curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/tasks/{TASK_PLACEHOLDER}/states/started"
 ----
 
  - Verify that the status of the task moved to InProgress, use the Tasks Owned By user REST call.
@@ -707,10 +710,10 @@ NOTE: Task states provide measurable audit trails of work/effort undertaken into
 // Complete Task
 [source,sh, subs="attributes"]
 ----
- curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/tasks/TASK_ID/states/completed"
+ curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/tasks/{TASK_PLACEHOLDER}/states/completed"
 ----
 
-* In a browser, navigate to {HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/images/processes/instances/PROCESS_INSTANCE_ID, replacing <PROCESS_INSTANCE_ID> and <CONTAINER_ID> with your process and container details +
+* In a browser, navigate to {HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/images/processes/instances/{PROCESS_PLACEHOLDER}, replacing $PROCESS_INSTANCE_ID and $CONTAINER_ID with your process and container details +
 
 You should now see the process has progressed to the next Human Task instance.
 
@@ -724,5 +727,5 @@ This concludes the BPM Container Labs exercise. Feel free to complete all the ta
 // Complete Task
 [source,sh, subs="attributes"]
 ----
-curl -X DELETE --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/CONTAINER_ID/processes/instances/PROCESS_INSTANCE_ID"
+curl -X DELETE --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/instances/{PROCESS_PLACEHOLDER}"
 ----
