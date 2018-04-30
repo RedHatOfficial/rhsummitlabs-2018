@@ -10,7 +10,7 @@ Doc Writer <ajarrett@redhat.com>
 // Uncomment next line to set page size (default is A4)
 //:pdf-page-size: Letter
 
-:HOST: http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080
+:HOST: http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080
 :USERNAME: john
 :PASSWORD: Pa$$w0rd
 :CONTAINER_ID: org.jbpm.demo:bpm-mobile-workflows:TEST
@@ -149,7 +149,7 @@ RESPONSE HTTP 200 (OK):
         <capabilities>BPM</capabilities>
         <capabilities>BPM-UI</capabilities>
         <capabilities>BRP</capabilities>
-        <location>http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server</location>
+        <location>http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server</location>
         <messages>
             <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='{HOST}/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
             <severity>INFO</severity>
@@ -182,7 +182,7 @@ CONTAINER_ID is used throughout this lab to direct API calls.
 [source,sh, subs="+quotes"]
 ----
 curl -X PUT --user john:'Pa$$w0rd' \
-  http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers/$CONTAINER_ID \
+  http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers/$CONTAINER_ID \
   -H 'Content-Type: application/xml' \
   -d '<kie-container>
   <release-id>
