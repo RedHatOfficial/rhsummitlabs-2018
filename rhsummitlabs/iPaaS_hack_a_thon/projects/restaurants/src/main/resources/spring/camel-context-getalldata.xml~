@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="simple-route">
+            <from id="route-timer" uri="timer:foo?repeatCount=1"/>
+            <to id="_to1" uri="https4://maps.googleapis.com/maps/api/place/radarsearch/json?location=37.784172,-122.401558&amp;radius=5000&amp;type=restaurants&amp;key=AIzaSyC7HlUiOSju2W3n5ysuKPS6UuWqQIRC7hU&amp;httpMethodRestrict=POST"/>
+            <setBody id="_setBody1">
+                <jsonpath>$.results</jsonpath>
+            </setBody>
+            <split id="_split1">
+                <jsonpath>$</jsonpath>
+                <!--<log id="route-log1" message=">>> ${headers.placeid}"/>-->
+                <setHeader headerName="placeid" id="_setHeader1">
+                    <jsonpath>$.place_id</jsonpath>
+                </setHeader>
+                <to id="_to4" uri="direct:processDetails"/>
+            </split>
+        </route>
+        <route id="route-place" streamCache="true">
+            <from id="route-timer" uri="direct:processDetails"/>
+            <removeHeaders id="_removeHeaders1" pattern="CamelHTTP*"/>
+            <setHeader headerName="CamelHttpQuery" id="_setHeader2">
+                <simple>key=AIzaSyC7HlUiOSju2W3n5ysuKPS6UuWqQIRC7hU&amp;placeid=${headers.placeid}&amp;httpMethodRestrict=POST</simple>
+            </setHeader>
+            <setHeader headerName="CamelHttpMethod" id="_setHeader3">
+                <constant>POST</constant>
+            </setHeader>
+            <setBody id="_setBody2">
+                <constant/>
+            </setBody>
+            <to id="_to2" uri="https4://maps.googleapis.com/maps/api/place/details/json"/>
+            <to id="_to3" uri="direct:getDetail"/>
+        </route>
+        <route id="_route1" streamCache="true">
+            <from id="route-detailinfo" uri="direct:getDetail"/>
+            <when id="_when1">
+                <jsonpath>$.result[?(@.formatted_phone_number)]</jsonpath>
+                <setHeader headerName="phone" id="_setHeader5">
+                    <jsonpath>$.result.formatted_phone_number</jsonpath>
+                </setHeader>
+                <setHeader headerName="address" id="_setHeader6">
+                    <jsonpath>$.result.formatted_address</jsonpath>
+                </setHeader>
+                <setHeader headerName="lat" id="_setHeader7">
+                    <jsonpath>$.result.geometry.location.lat</jsonpath>
+                </setHeader>
+                <setHeader headerName="lng" id="_setHeader8">
+                    <jsonpath>$.result.geometry.location.lng</jsonpath>
+                </setHeader>
+                <setHeader headerName="icon" id="_setHeader9">
+                    <jsonpath>$.result.icon</jsonpath>
+                </setHeader>
+                <setHeader headerName="resturantName" id="_setHeader10">
+                    <jsonpath>$.result.name</jsonpath>
+                </setHeader>
+                <setHeader headerName="rating" id="_setHeader11">
+                    <jsonpath>$.result.rating</jsonpath>
+                </setHeader>
+                <log id="route-log3" message="INSERT INTO RESTURANT (ID, PLACENAME, PHONE, ADDRESS, LAT, LNG, PIC, RATING) VALUES ( '${headers.placeid}', '${headers.resturantName}', '${headers.phone}', '${headers.address}', ${headers.lat}, ${headers.lng}, '${headers.icon}', ${headers.rating});"/>
+            </when>
+        </route>
+    </camelContext>
+</beans>
