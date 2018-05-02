@@ -1,0 +1,7 @@
+{
+  "schemaVersion" : "v1",
+  "name" : "Parking Location Formator",
+  "extensionId" : "parking-location-format",
+  "version" : "1.0.0",
+  "tags" : [ "feature", "experimental" ]
+}

@@ -1,0 +1,80 @@
+swagger: '2.0'
+info:
+  title: San Fransisco Store Location Service
+  description: 2018 Summit Lab - Store Location Service
+  version: 1.0.0
+host: 'sfstorelocation-2445581558442.production.gw.apicast.io'
+schemes:
+  - https
+paths:
+  /sflocation/store/all/:
+    get:
+      tags:
+        - store
+      summary: All store location
+      description: All store location in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Store found
+          schema:
+            $ref: '#/definitions/storelocation'
+          examples: {}
+  '/sflocation/store/type/{storeType}':
+    get:
+      tags:
+        - store
+      summary: Store location base on type
+      description: Store location base on type in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Store Found
+          schema:
+            $ref: '#/definitions/storelocation'
+          examples: {}
+    parameters:
+      - name: storeType
+        in: path
+        description: Type of store
+        required: true
+        type: string
+definitions:
+  storelocation:
+    title: Root Type for storelocation
+    description: The root of the storelocation type's schema.
+    type: array
+    items:
+      type: object
+      properties:
+        ID:
+          type: string
+        STORENAME:
+          type: string
+        STORETYPE:
+          type: string
+        PHONE:
+          type: string
+        ADDRESS:
+          type: string
+        LAT:
+          format: double
+          type: number
+        LNG:
+          format: double
+          type: number
+        PIC:
+          type: string
+        RATING:
+          format: int32
+          type: integer
