@@ -38,14 +38,17 @@
     - name: Required packages for lab section (LVM)
       yum: name=system-storage-manager state=installed
 
-    - name: LAB Setup (LVM - create block devices)
-      shell: for i in {0..5} ; do [[ -e /var/tmp/disk${i}.img ]] || fallocate -l 100M /var/tmp/disk${i}.img ; done
+    - name: LAB Setup (LVM - fresh partition table for /dev/vdb)
+      shell: printf "o\nn\ne\n1\n\n\nw\n" | /sbin/fdisk /dev/vdb
 
-    - name: LAB Setup (LVM - create new partitions)
-      shell: for i in {0..5} ; do printf "o\nn\np\n\n\n\nt\n8e\nw\n" | fdisk /var/tmp/disk${i}.img  ; done
+    - name: LAB Setup (LVM - create 6x 1G partitions)
+      shell: for i in {1..6} ; do printf "n\nl\n\n+1G\nw\n" | /sbin/fdisk /dev/vdb ; done
 
-    - name: LAB Setup (LVM - setup kpartx loopbacks)
-      shell: for i in {0..5} ; do kpartx -av /var/tmp/disk${i}.img  ; done
+    - name: LAB Setup (LVM - create 1x 10G partition)
+      shell: printf "n\nl\n\n+10G\nw\n" | /sbin/fdisk /dev/vdb
+
+    - name: LAB Setup (LVM - running partprobe to sync changes)
+      shell: /sbin/partprobe
 
     - name: Required packages for lab section (NMCLI)
       yum: name=teamd state=installed
@@ -78,5 +81,3 @@
           EOF
       args:
         creates: /var/tmp/rear-local-conf.template
-
-
