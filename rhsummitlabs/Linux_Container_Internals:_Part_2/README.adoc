@@ -1,0 +1,29 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== Linux Container Internals - Part 2
+
+:numbered:
+
+== Overview
+
+Description:
+
+This lab is focused on understanding how container images are built, tagged, organized and leveraged to deliver software in a range of use cases.
+
+. Goal
+
+By the end of this lab you should be able to:
+
+* Understand what the Open Containers Intiative and why this standard is important for your container images
+* Internalize the difference between base images and multi-layered images
+* Understand the full URL to an image/repository
+* Command a complete understanding of what is inside of a container image
+* Use layers appropriately in your architecure and design
+
+=== Environment
+
+The demo environment is deployed using katacoda at https://katacoda.com/fatherlinux/courses/subsystems/container-internals-lab-2.
+
+== Conclusion

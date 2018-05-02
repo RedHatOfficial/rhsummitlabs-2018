@@ -1,0 +1,28 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== Linux Container Internals - Part 1
+
+:numbered:
+
+== Overview
+
+Description:
+
+In this lab you'll gain a basic understanding of the moving parts that make up the typical container architecture. This will cover container hosts, daemons, runtimes, images, orchestration, etc.
+
+. Goal
+
+By the end of this lab you should be able to:
+
+* Draw a diagram showing how the Linux kernel, services and daemons work together to create and deploy containers
+* Internalize how the architecture of the kernel and supporting services affect security and performance
+* Explain the API interactions of daemons and the host kernel to create isolated processes
+* Command the nomenclature necessary to technically discuss container repositories, image layers, tags, registry server and other components
+
+=== Environment
+
+The demo environment is deployed using katacoda at https://katacoda.com/fatherlinux/courses/subsystems/container-internals-lab-1.
+
+== Conclusion
