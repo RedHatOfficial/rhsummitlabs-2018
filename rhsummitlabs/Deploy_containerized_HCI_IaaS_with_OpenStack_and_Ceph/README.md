@@ -1,4 +1,4 @@
-# Your labs docs placeholder, put your documentation here.
+# Red Hat Summit - L1020 Hands on lab
 
 **Title**: Deploy a containerized HCI IaaS with OpenStack and Ceph (L1020)<br>
 **Date**: Tuesday, May 8th 2018<br>
