@@ -1,42 +1,50 @@
 :data-uri:
+:toc: left
 
 = Building a RHEL gold image for Azure
+
 
 == Introduction and Lab Outline
 
 This lab walks you through the process of building a RHEL "gold image" that can be used in a Microsoft Azure cloud environment. 
 
-This process is necessary if your organisation wants to use Cloud Access, and not Marketplace images, as marketplace images are only available on a Pay As You Go basis, and not via existing Cloud Access subscriptions.
+This process is necessary if your organisation wants to use Cloud Access
+("Bring your own subscription"), and not Marketplace images. It is important to
+understand that marketplace images can only be consumed with on a Pay As You Go
+basis from Azure - you cannot use existing Cloud Access subscriptions.
 
-If you're not familiar with Cloud Access, it's a feature of most existing Red Hat subscriptions for RHEL, JBoss, CloudForms, OpenShift and Gluster that allow Enterprise subscriptions to be moved to a public cloud provider.
+If you're not familiar with Cloud Access, it's a feature of most existing Red
+Hat subscriptions for RHEL, JBoss, CloudForms, OpenShift and Gluster that allow
+Enterprise subscriptions to be moved to a public cloud provider. To find out
+more about cloud access and how to convert subscriptions, please look at this
+link; FIXME
 
-=== Red Hatters assisting the lab
+=== Why would I want to learn how to build a gold image for Azure?
 
-This lab is being supported by several people who can help out with the lab if you any any questions problems, familiarize yourself with your happy coffee-fueled helpers right here!;
+- Most users of Red Hat at scale have their own gold images, with requirements
+  for standrd service configuration, security settings, and pre-installed packages.
+- Most of these users already have an existing large number of Red Hat
+  Enterprise Linux subscriptions too, and want to bring those to Azure.
 
-|===
-| image:labImages/jreadProfile.jpg[]                               | image:labImages/questionProfile.jpg[] | image:labImages/questionProfile.jpg[]
-| EMEA Solution Architect for Cloud & Service Providers, Lab author | job description placeholder            | job description placeholder
-| Email: james@redhat.com                                           | email address placeholder              | email address placeholder 
-|===
+- The Azure Marketplace images cannot be customised before they are
+  provisioned, and they also cannot be used with existing subscriptions.
+  Therefore it is necessary to learn how to build a RHEL gold image for Azure.
 
-=== Outline
+=== What will I do in this lab?
 
-1. You'll start this lab by SSHing into a workstation
-2. Create a local virtual machine from the standard RHEL qcow2 image and boot it up
-3. Perform standard installation settings changes like network, bootloader and
-removes SSH keys necessary for Azure.
-4. Several parts of Azure best practice are covered in this guide
-5. The image is then prepared (like Windows Sysprep) so that multiple new images can be created from this template. 
-6. Review how the Azure tools work
-
-The **lab code** is: `**L1071**`.
+. You'll start this lab by logging into a build-workstation running in Red
+Hat's cloud. You will have root on this workstation.
+. Create a local virtual machine on this workstation, and boot it up
+. Perform standard installation settings changes like network, bootloader and
+  removes SSH keys necessary for Azure.
+. Install the Windows Azure Live Agent (WALA) and configure
+. The image is then prepared (like Windows Sysprep) so that multiple new images can be created from this template. 
+. Review how the Azure tools work
 
 [NOTE]
 Because this lab produces a virtual machine that is approximately 10Gb in size,
-which is unpractical to upload to Azure during the Red Hat Summit, we will
-provide USB sticks to take your image with you to upload in your own time if
-you wish. This lab includes instructions on how you would upload the image using the
+which is unpractical to upload to Azure during the Red Hat Summit due to
+bandwidth limits. This lab includes instructions on how you would upload the image using the
 Azure tools, but you will not practically take that step during this lab.
 
 === What skills do I need for this lab? 
@@ -44,7 +52,7 @@ Azure tools, but you will not practically take that step during this lab.
 It's recommended that you have some basic Linux skills - Red Hat Certified
 Systems Administrator level will be absolutely fine to complete this lab.
 
-Please do ask if you have questions, Red Hatters are always nearby to
+Please do ask if you have questions, Red Hatters should always be nearby to
 help out!
 
 === After completing this lab, you should be able...
@@ -53,30 +61,69 @@ help out!
 - To understand the reasons behind some of the changes we make for Azure
 - Be able to build your own Azure image for use in Cloud Access
 
+=== Author & Support, and ackowledgements
+
+This lab was submitted by **James Read** (EMEA Solution Architect for Cloud & Service
+Providers).
+
+This lab is being supported by **Götz Riger** (Solution Architect for
+Germany), and **Dan FIXME**, (FIXME). 
+
+Here's what we look like if you want to ask for help!
+
+|===
+| image::labImages/jreadProfile.jpg[] | FIXME                  | FIXME
+| James Read                          | Götz Rieger            | Dan FIXME
+| Email: james@redhat.com             | Email: FIXME           | Email: FIXME 
+|===
+
+
+James would like to express his sincere thanks to Götz, Dan and others for
+supporting this lab... and **you** for choose to sit here! 
+
+James would also like to thank the original authors and current maintainers of
+the knowledge base article(s) from which large options this lab was based. More on this in the next section. 
+
 == Lab Orientation 
 === Environment
 
-In this lab, we'll be using the lab laptop only. No connection details or
-networking details or Azure deatails are needed, no Red Hat subscriptions are
+In this lab, we'll be using the lab laptop and remote workstation only. 
+
+No speical networking, connection Azure details are needed, no Red Hat subscriptions are
 needed either. Very simple really!
+
+You may need these details later in the lab;
+
+|===
+| Activation Key | **gold**
+| Lab ID | **L1071**
+| GUID | This is generated for you automatically - 4 characters that are unique to your lab and used in your hostname.
+|===
+
 
 === Errata
 
-This lab was taken from a similar excellent knowledge base article on the Red Hat
+This lab was based around a similar excellent knowledge base article on the Red Hat
 customer portal.
 
 Small changes to those instructions to that document have been made to convert
-it to a Red Hat Summit lab, so if you do find spelling mistakes or
-glitches, please do point them out and we'll correct them through the Red Hat Summit!
+it to a Red Hat Summit lab. This lab also includes additions not included in
+the original article about using Azure Active Directory, LVM and a bit more.
 
 Be sure to add the following article to your bookmarks **for reference after the Red Hat Summit**!
 
 image::labImages/article.png[]
 https://access.redhat.com/articles/uploading-rhel-image-to-azure
 
-Also, many of the best practices we talk about in this lab are well documented on the Red Hat Customer Portal, see https://access.redhat.com/articles/2758981
+Also, many of the best practices we talk about in this lab are well documented on the Red HAt Customer Portal, see https://access.redhat.com/articles/2758981
 
-=== Packages used in this lab
+== Connecting to your lab workstation 
+
+FIXMEEEEE
+
+== Start creating your gold image virtual machine
+
+=== Install packages needed to create Linux virtual machines
 
 The following packages are used in this lab. Below, there is a brief
 description of what the packages do, and in which repository to find them.
@@ -85,26 +132,54 @@ All of these packages are preinstalled for you, this information is provided
 just for your reference and to get you familiar with the packages that we'll be
 using.
 
+FIXME uninstall
+
 |===
 | Package	| Repository | Description
 | libvirt	|rhel-7-server-rpms	|Open source API, daemon, and management tool for managing platform virtualization.
-| virt-manager	|rhel-7-server-rpms |	A command line and Gnome desktop virtual machine manager used to create and manage KVM virtual machines.
-| libguestfs	| rhel-7-server-rpms	| A library for accessing and modifying virtual machine file systems.
-| libguestfs-tools	| rhel-7-server-rpms	| System administration tools for virtual machines; includes the guestfish utility.
+|virt-manager	|rhel-7-server-rpms |	A command line and Gnome desktop virtual machine manager used to create and manage KVM virtual machines.
+|libguestfs	| rhel-7-server-rpms	| A library for accessing and modifying virtual machine file systems.
+|libguestfs-tools	| rhel-7-server-rpms	| System administration tools for virtual machines; includes the guestfish utility.
 |===
 
-== Create the RHEL VM from a RHEL KVM Guest Image
+=== Check that the processor Virtualisation Extensions are enabled on your workstation
+
+To run virtual machines on the workstations, the processor Virtualisation
+Extensions need to be enabled in the BIOS/EFI. This will have been done for you
+automatically by the script that setup your workstation.
+
+To check if the extensions are enabled, run the following command in your
+terminal;
+
+	dmesg | grep -i kvm
+
+You should *not* see the following... If you do, something has gone terribly
+wrong, please contact a lab admin!
+
+	[164324.526483] kvm: disabled by bios
+	[164346.574009] kvm: disabled by bios
+	[164964.310827] kvm: disabled by bios
+
+=== Setup the libvirt daemon
+
+We're now going to start libvirt, which is a helper service that talks to and
+manages KVM.
+
+    service libvirtd start
+    chkconfig libvirtd on
+
+=== Create the RHEL VM from a RHEL KVM Guest Image
 
 Red Hat and the open source community optimized this image for virtualization. Once you have the image configured, you can use this image as a template for creating subsequent VMs in Microsoft Azure. Note the following configuration settings before you create the RHEL VM.
 
-=== VM Configuration Settings
+==== VM Configuration Settings
 
 Microsoft Azure VMs must have the following configuration settings. Some of these settings are enabled during the initial VM creation. Other settings are set when provisioning the VM image for Microsoft Azure. Keep these in mind as you move through the procedure and refer back to it if you need to.
 
 |===
 | Option | Recommendation
-| LVM	| Do not use Logical Volume Management (LVM) on the operating system disk. Instead, use regular partitions and format the disk using ext3, ext4, or xfs. LVM or RAID can be used for data disks.
-| ssh	| ssh must be enabled to provide remote access to your Azure VMs.
+|LVM	| Do not use Logical Volume Management (LVM) on the operating system disk. Instead, use regular partitions and format the disk using ext3, ext4, or xfs. LVM or RAID can be used for data disks.
+|ssh	| ssh must be enabled to provide remote access to your Azure VMs.
 | dhcp	| The primary virtual adapter should be configured for dhcp (IPv4 only).
 | Network Manager	| This service should be disabled on RHEL 6.x images.
 | Swap Space	| Do not create a dedicated swap file or swap partition. Swap space may be configured in the Azure Linux agent.
@@ -112,24 +187,32 @@ Microsoft Azure VMs must have the following configuration settings. Some of thes
 | encryption	| Do not use full disk encryption for the operating system disk. Data disks can be encrypted.
 |===
 
-== Find the KVM Guest Image
+=== Find the KVM Guest Image
 
 We will now find the latest KVM Guest Image that is pre-downloaded for you on
-your workstation. Normally, you can find KVM Guest Images on the Red Hat Customer Portal, but we've cached them locally to save download times. 
+your workstation. Normally, you can find KVM Guest Images on the Red Hat Customer Portal, but we've cached them locally to speed up download times. 
 
 [NOTE]
-We recommend downloading the latest minor version of each major version of RHEL. Even though we support RHEL 6.7, we prefer you use RHEL 6.9. Likewise, even though RHEL 7.1 is supported, you should use RHEL 7.5. RHEL 7.0 is not supported in Microsoft Azure.
+We recommend downloading the latest minor version of each major version of
+RHEL. Even though we support RHEL 6.7, we prefer you use RHEL 6.9. Likewise,
+even though RHEL 7.1 is supported, you should use RHEL 7.5. 
 
-On your lab laptop, run the following command in a terminal to find the pre-downloaded image; 
+RHEL 7.0 is not supported in Microsoft Azure because the driver packages for
+Azure's network cards and similar were only released in 7.1 and later.
 
-	cd /opt
+On your lab laptop, run the following command in a terminal; 
+
+	cd /opt/
     ll
+
+You should see an imagei filename that was downloaded from the customer portal
+for you; **FIXME.qcow2**
 
 Copy the image to `/var/lib/libvirt/images/`; We create a copy of this image because if we break something during the install, we can just make a new copy without having to download the image again.
 
-	cp rhel-guest-image-7.3-35.x86_64.qcow2 /var/lib/libvirt/images/
+	cp FIXME.qcow2 /var/lib/libvirt/images/
 
-== Create a Local RHEL VM from this image
+=== Create a Local RHEL VM from this image
 
 We are now going to create a new virtual machine on the laptop, based on this standard KVM guest image. We will customize this image, then prepare it to upload to Azure.
 
@@ -218,7 +301,7 @@ Verify root access by starting the RHEL VM and logging in as root from the VM ru
 
 Once you are logged in using the root account, you're ready to configure the image.
 
-== Configure and Convert the Image
+== Configure the image for Azure
 Complete the procedures in the following sections to finalize the image configuration.
 
 === Install Hyper-V Device Drivers on the RHEL VM (if needed)
@@ -244,12 +327,13 @@ You should see a list of Hyper-V drivers similar to the following drivers.
 
 image::labImages/virt-manager_5.png[]
 
-== Configure the RHEL VM Image
+=== Remove cloud-init
 The RHEL VM requires further configuration changes to serve as your gold RHEL VM image in Microsoft Azure. Complete the following steps to make these changes. 
 
 If you are unfamiliar with this service, it's used to do the initial setup of virtual machines from generic images. OpenStack, and some other cloud platforms host a metadata server, which give images their initial hostname, username, ssh keys and similar. 
 
-Azure does not support `cloud-init`, instead the Windows Azure Live Agent (WALA) does most of the tasks that `cloud-init` normally does. 
+Red Hat Enterprise Linux and Azure does not have production support
+`cloud-init` ([FIXME click here to learn why]), instead the Windows Azure Live Agent (WALA) does most of the tasks that `cloud-init` normally does. 
 
 Stop the cloud-init service (if present).
 
@@ -326,12 +410,12 @@ In a production environment, it's necessary to register RHEL instances using `su
 
 - If your subscriptions expire or change, you would need to update your gold image.
 
-== Install the Windows Azure Linux Agent (WALinuxAgent/WALA).
+=== Install the Windows Azure Linux Agent (WALinuxAgent/WALA).
 
 Enable the following repository, which contains the agent;
 
 	cd /etc/yum.repos.d/
-	wget http://192.168.103.200/files/rhel-image-azure-lab-repo/rhel-image-azure-lab-repo.conf
+	wget FIXMEgithub/files/rhel-image-azure-lab-repo/rhel-image-azure-lab-repo.conf
 
 [NOTE]
 For production environments, the `rhel-7-server-extras-rpms` includes the Windows Azure Linux Agent.
@@ -370,6 +454,41 @@ Clean the shell history and shut down the VM.
 
 	export HISTSIZE=0
 	poweroff
+
+=== FIXME Using the WALA agent for running scripts
+
+=== FIXME Configuring logs for OMS
+
+=== FIXME: Custom .bashrc
+
+=== FIXME: Storage, disk
+
+=== FIXME: Azure Active Directory
+
+=== Logical Volume Manager (LVM)
+
+If you inspect the root disk of these machines, you'll notice that Logical
+Volume Management (LVM) is not being used. LVM is very common in physical
+machines and on-premise virtual machines to configure OS and Data disks in
+software, rather than in hardware.
+
+While LVM is a useful tool still for Data disks in Azure, the Red Hat
+recommendation is **not** to use LVM for Operating System disks at this time
+(mount points like /, /bin, /usr, /var, etc). 
+
+. Azure's disk resizing capabilities have no understanding of LVM, and risk
+damaging disks if resized.
+
+. If LVM has issues during bootup, it would pause the bootup before SSH becomes
+available, rendering the machine impossible to login to. Note that some Azure
+regions have early support for serial consoles that may make this limitation
+less of an issue in the future. However, it is not yet available in all
+regions for all machine types. 
+
+=== Any more best practices. hmm?
+
+
+
 
 == Convert the RHEL VM Image to VHD
 
@@ -417,7 +536,7 @@ To verify the file is resized correctly, show the virtual-size using the followi
 
 	<virtual-size> / 1024 / 1024
 
-== RHEL 7.2 and 7.3 Direct Method
+=== RHEL 7.2 and 7.3 Direct Method
 
 By default, the RHEL 7.2 or 7.3 KVM Guest Image is already sized to an even 1 MB boundary and can be converted directly from qcow2 to vhd.
 
@@ -454,7 +573,7 @@ This completes the first part of this procedure.
 Provision the VM in Microsoft Azure
 Complete the procedures in the following sections to upload, provision, and start a RHEL VM in Microsoft Azure.
 
-== Read-Only: How it would work with Azure
+== Read-Only: How you could upload this machine to Azure
 
 [NOTE]
 We cannot actually run these commands in this lab, because 20+ people uploading 
@@ -746,10 +865,20 @@ We hope that you are now more familiar with the process, please do review the re
 Any feedback, comments about this lab guide, please email james@redhat.com ,
 and enjoy the rest of the Red Hat Summit!
 
+=== What if I want to use this lab after Summit?
+
+Sure! It's on GitHub, check out: http://github.com/FIXME . Obviously the lab
+environment you used at Red Hat Summit will not be available, but you can
+easily create your own workstation and then many of the instructions are
+similar.
+
 === Recommended Links
 
 Original lab guide document, also explains how to build images from ISOs and more; 
 https://access.redhat.com/articles/uploading-rhel-image-to-azure
 
 FAQ and Best Practices;
-https://access.redhat.com/articles/2758981
+
+* https://access.redhat.com/articles/2758981
+* FIXME RHEL on Azure region list article
+* FIXME MOAR Articles
