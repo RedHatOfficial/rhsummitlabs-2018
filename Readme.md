@@ -67,7 +67,7 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**DevOps with OpenShift and Ansible**](rhsummitlabs/DevOps_with_OpenShift_and_Ansible/README.md)
 
- - [**Building a RHEL gold image for Azure**](rhsummitlabs/Building_a_RHEL_gold_image_for_Azure/README.md)
+ - [**Building a RHEL gold image for Azure**](rhsummitlabs/Building_a_RHEL_gold_image_for_Azure/README.adoc)
 
  - [**OpenShift Container Platform on Microsoft Azure**](rhsummitlabs/OpenShift_Container_Platform_on_Microsoft_Azure/README.md)
 
