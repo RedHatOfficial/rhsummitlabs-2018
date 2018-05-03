@@ -66,45 +66,33 @@ help out!
 This lab was submitted by **James Read** (EMEA Solution Architect for Cloud & Service
 Providers).
 
-This lab is being supported by **Götz Riger** (Solution Architect for
-Germany), and **Dan FIXME**, (FIXME). 
+This lab is being supported by **Götz Riger**, **Dan Kinkead**, and **Khaled
+Elbedri**. 
 
 Here's what we look like if you want to ask for help!
 
+[cols="^,^"]
 |===
-| image::labImages/jreadProfile.jpg[] | FIXME                  | FIXME
-| James Read                          | Götz Rieger            | Dan FIXME
-| Email: james@redhat.com             | Email: FIXME           | Email: FIXME 
+| image:labImages/jreadProfile.jpg[jread, 200]          | image:labImages/goetzProfile.jpg[goetz, 200]                  
+| James Read                                            | Götz Rieger                                        
+| EMEA Senior Solution Architect for Microsoft, Red Hat | Senior Solution Architect, Germany, Red Hat
+| Email: james@redhat.com                               | Email: grieger@redhat.com                          
+|===
+[cols="^,^"]
+|===
+| image:labImages/danProfile.png[dan, 200]              | image:labImages/khaledProfile.jpg[khaled, 200]
+| Dan Kinkead                                           | Khaled Elbedri
+| Platform Technical Integrated Support Manager, Red Hat| Technical Sales Lead for Open Source, Microsoft
+| Email: dkinkead@redhat.com                            | Email: Khaled.Elbedri@microsoft.com
 |===
 
 
-James would like to express his sincere thanks to Götz, Dan and others for
+James would like to express his sincere thanks to Götz, Dan, Khaled and others for
 supporting this lab... and **you** for choose to sit here! 
 
-James would also like to thank the original authors and current maintainers of
-the knowledge base article(s) from which large options this lab was based. More on this in the next section. 
-
-== Lab Orientation 
-=== Environment
-
-In this lab, we'll be using the lab laptop and remote workstation only. 
-
-No speical networking, connection Azure details are needed, no Red Hat subscriptions are
-needed either. Very simple really!
-
-You may need these details later in the lab;
-
-|===
-| Activation Key | **gold**
-| Lab ID | **L1071**
-| GUID | This is generated for you automatically - 4 characters that are unique to your lab and used in your hostname.
-|===
-
-
-=== Errata
-
 This lab was based around a similar excellent knowledge base article on the Red Hat
-customer portal.
+customer portal. James would also like to thank the original authors and current maintainers of
+the knowledge base article(s).
 
 Small changes to those instructions to that document have been made to convert
 it to a Red Hat Summit lab. This lab also includes additions not included in
@@ -116,6 +104,23 @@ image::labImages/article.png[]
 https://access.redhat.com/articles/uploading-rhel-image-to-azure
 
 Also, many of the best practices we talk about in this lab are well documented on the Red HAt Customer Portal, see https://access.redhat.com/articles/2758981
+
+== Lab Orientation 
+=== Environment
+
+In this lab, we'll be using the lab laptop and remote workstation only. 
+
+No special networking, connection Azure details are needed, no Red Hat subscriptions are
+needed either. Very simple really!
+
+You may need these details later in the lab;
+
+|===
+| Activation Key | **gold**
+| Lab ID | **L1071**
+| GUID | This is generated for you automatically - 4 characters that are unique to your lab and used in your hostname.
+|===
+
 
 == Connecting to your lab workstation 
 
