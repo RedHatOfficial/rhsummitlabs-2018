@@ -1,4 +1,5 @@
-# Your labs docs placeholder, put your documentation here.
+# Mastering Serverless PaaS with OpenShift
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+This Lab provides a step by step instructions on how to create and publish functions with Function as a Service(FaaS) platform Apache OpenWhisk on OpenShift Container Platform PaaS. 
+
+The instructions for this lab are available here http://bit.ly/rhsummit2018-serverless-paas-lab

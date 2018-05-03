@@ -1,0 +1,18 @@
+<div ng-controller="InformationController as info">
+    <label class="label-title">Latest Comments on {{location.title}}:</label>
+    <pf-list-view items="location.comments" config="listconfig">
+        <div class="list-view-pf-left">
+            <span class="{{item.typeIcon}} list-view-pf-icon-sm"></span>
+        </div>
+        <div class="list-view-pf-body">
+            <div class="list-view-pf-description">
+                <div class="list-group-item-heading">
+                    {{item.title}}
+                </div>
+                <div class="list-group-item-text">
+                    {{item.description}}.
+                </div>
+            </div>
+        </div>
+    </pf-list-view>
+</div>

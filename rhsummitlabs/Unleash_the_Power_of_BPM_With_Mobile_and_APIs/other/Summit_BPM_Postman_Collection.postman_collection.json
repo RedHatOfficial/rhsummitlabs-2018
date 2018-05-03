@@ -1,0 +1,946 @@
+{
+	"info": {
+		"_postman_id": "9c2bf48e-b609-46a8-aac1-6d63f68f7510",
+		"name": "Summit BPM Postman Collection ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Process Operations",
+			"description": "",
+			"item": [
+				{
+					"name": "POST Create New Process Instance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"applicationType\": \"PERSONAL\",\n  \"taskOwner\": \"Bank\",\n  \"userAlias\": \"user1\",\n  \"pushAlias\": \"user1\",\n  \"Application\": {\n    \"personalDetails\": {\n      \"name\": {\n        \"salutation\": \"Mr\",\n        \"givenName\": \"Bill\",\n        \"middleName\": \"\",\n        \"surname\": \"Basket\"\n      },\n      \"demographics\": {\n        \"gender\": \"MALE\",\n        \"dateOfBirth\": \"1972-09-15\",\n        \"birthPlace\": \"Sydney\",\n        \"countryOfBirth\": \"AU\",\n        \"nationality\": \"AU\"\n      },\n      \"address\": [\n        {\n          \"addressType\": \"HOME_ADDRESS\",\n          \"addressLine1\": \"40A Orchard Road\",\n          \"addressLine2\": \"#99-99 Macdonald House\",\n          \"addressLine3\": \"Orchard Avenue 2\",\n          \"addressLine4\": \"Street 65\"\n        }\n      ],\n      \"email\": {\n        \"emailAddress\": \"user1@gmail.com\",\n        \"okToEmail\": true\n      },\n      \"phone\": {\n        \"phoneNumber\": \"64042321\",\n        \"okToSms\": true,\n        \"okToCall\": true\n      }\n    },\n    \"financialInformation\": {\n      \"hasForeseeableFinancialChanges\": true,\n      \"nonBankDebtObligationFlag\": true,\n      \"expenseDetails\": [\n        {\n          \"expenseType\": \"COSTS_OF_LIVING\",\n          \"expenseAmount\": 590.25,\n          \"frequency\": \"MONTHLY\"\n        }\n      ],\n      \"incomeDetails\": [\n        {\n          \"incomeType\": \"DECLARED_FIXED\",\n          \"fixedAmount\": 7590.25,\n          \"variableAmount\": 1590.25,\n          \"frequency\": \"MONTHLY\",\n          \"otherIncomeDescription\": \"Rent\"\n        }\n      ],\n      \"existingLoanDetails\": [\n        {\n          \"loanType\": \"STUDENT_LOAN\",\n          \"otherDebtObligationType\": \"Free text\",\n          \"monthlyInstallmentAmount\": 250.25,\n          \"outstandingBalanceAmount\": 5000.25,\n          \"loanAmount\": 15000.89,\n          \"debtOwnership\": \"JOINT\",\n          \"lenderName\": \"KINROS CORPORATION\"\n        }\n      ]\n    },\n    \"employmentDetails\": [\n      {\n        \"employerName\": \"Citi Bank\",\n        \"jobTitle\": \"ACCOUNTANT\",\n        \"employmentDurationInYears\": 5,\n        \"employmentStatus\": \"EMPLOYED\"\n      }\n    ],\n    \"creditDetails\": {\n      \"creditAmount\": 23000.25,\n      \"loanTakenIndicator\": true,\n      \"monthlyRepaymentForAllExtLoans\": 5000.25\n    },\n    \"companyDetails\": {\n      \"companyName\": \"RedHat\",\n      \"tradingYears\": \"5\",\n      \"dunsNumber\": \"123123123\"\n    },\n    \"mortgageDetails\": {\n      \"type\": \"firstTime\",\n      \"location\": \"Sydney\",\n      \"propertyValue\": 2222222.22,\n      \"amount\": 999999.99,\n      \"deposit\": 99999.95,\n      \"term\": 25\n    },\n    \"productId\": 1\n  },\n  \"additionalDocsRequired\": true,\n  \"assignedTo\": \"Unassigned\",\n  \"bpmDetails\": {\n    \"auth\": \"Basic amJvc3M6YnBtc3VpdGUxIQ==\",\n    \"container\": \"org.jbpm.demo:bpm-mobile-workflows:TEST\",\n    \"processName\": \"org.jbpm.demo.NewApplication\",\n    \"host\": \"http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/processes/{{process-id}}/instances",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"processes",
+								"{{process-id}}",
+								"instances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Process Instance By Instance ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YnBtc0FkbWluOnBhc3N3b3JkMSE="
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/processes/instances/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"processes",
+								"instances",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Process Instance Variables By Instance ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YnBtc0FkbWluOnBhc3N3b3JkMSE="
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/processes/instances/1/variables",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"processes",
+								"instances",
+								"1",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Process Instance By Container ID and Instance ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YnBtc0FkbWluOnBhc3N3b3JkMSE="
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/processes/instances/1?withVars=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"processes",
+								"instances",
+								"1"
+							],
+							"query": [
+								{
+									"key": "withVars",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Update Process Variables By Instance ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YnBtc0FkbWluOnBhc3N3b3JkMSE="
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"statusList\": {\n        \"Validated\": {\n            \"name\": \"Validated\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506791269290,\n            \"dateCompleted\": 1506791269290\n        },\n        \"Owner Assigned\": {\n            \"name\": \"Owner Assigned\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506791269304,\n            \"dateCompleted\": 1506792163441\n        },\n        \"Interview Requested\": {\n            \"name\": \"Interview Requested\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506792461774,\n            \"dateCompleted\": 1506792535493\n        },\n        \"New Product Offered\": {\n            \"name\": \"New Product Offered\",\n            \"status\": null,\n            \"dateStarted\": null,\n            \"dateCompleted\": null\n        },\n        \"Case Created\": {\n            \"name\": \"Case Created\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506791269283,\n            \"dateCompleted\": 1506791269283\n        },\n        \"Application Check OK\": {\n            \"name\": \"Application Check OK\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506792163443,\n            \"dateCompleted\": 1506792296630\n        },\n        \"Documents Requested\": {\n            \"name\": \"Documents Requested\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506792296632,\n            \"dateCompleted\": 1506792461772\n        },\n        \"Fraud Checked\": {\n            \"name\": \"Fraud Checked\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506791269303,\n            \"dateCompleted\": 1506791269303\n        },\n        \"Acknowledged\": {\n            \"name\": \"Acknowledged\",\n            \"status\": \"COMPLETED\",\n            \"dateStarted\": 1506791269302,\n            \"dateCompleted\": 1506791269302\n        },\n        \"Interview Confirmed\": {\n            \"name\": \"Interview Confirmed\",\n            \"status\": \"IN_PROGRESS\",\n            \"dateStarted\": 1506792535495,\n            \"dateCompleted\": null\n        },        \n        \"Final Approval\": {\n            \"name\": \"Final Approval\",\n            \"status\": null,\n            \"dateStarted\": null,\n            \"dateCompleted\": null\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/processes/instances/1/variables",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"processes",
+								"instances",
+								"1",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task Operations",
+			"description": "",
+			"item": [
+				{
+					"name": "PUT Claim Task by Task Instance ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/tasks/1/states/claimed",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"tasks",
+								"1",
+								"states",
+								"claimed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Start Task by Task Instance ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/tasks/1/states/started",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"tasks",
+								"1",
+								"states",
+								"started"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Release Task by Task Instance ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/tasks/1/states/released",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"tasks",
+								"1",
+								"states",
+								"released"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Complete Task by Task Instance ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"assignedTo\" : \"Joe Blogs\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}/tasks/1/states/completed",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}",
+								"tasks",
+								"1",
+								"states",
+								"completed"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Query Operations",
+			"description": "",
+			"item": [
+				{
+					"name": "Process Queries",
+					"description": "",
+					"item": [
+						{
+							"name": "GET All Process Instances Query",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/processes/instances",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"processes",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Process Instances by Container ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/containers/{{container-name}}/process/instances",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"containers",
+										"{{container-name}}",
+										"process",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Process Instances by Container ID & Process ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/containers/{{container-name}}/processes/definitions/{{process-id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"containers",
+										"{{container-name}}",
+										"processes",
+										"definitions",
+										"{{process-id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Process Instance by Container ID w/ Filters",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/containers/{{container-name}}/process/instances?status=1&page=0&pageSize=25",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"containers",
+										"{{container-name}}",
+										"process",
+										"instances"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "1"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "25"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Processes Definitions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/processes/definitions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"processes",
+										"definitions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Processes Definitions by Container ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/containers/{{container-name}}/processes/definitions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"containers",
+										"{{container-name}}",
+										"processes",
+										"definitions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Process by Instance ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/processes/instances/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"processes",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Process Nodes by Instance ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/processes/instances/1/nodes/instances",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"processes",
+										"instances",
+										"1",
+										"nodes",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Process Variables by Instance ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/processes/instances/1/variables/instances",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"processes",
+										"instances",
+										"1",
+										"variables",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Process Instances by Process ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/processes/{{process-id}}/instances",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"processes",
+										"{{process-id}}",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Task Queries",
+					"description": "",
+					"item": [
+						{
+							"name": "GET All Tasks Query (Authed User)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/tasks/instances",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"tasks",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Tasks by Process Instance ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/tasks/instances/process/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"tasks",
+										"instances",
+										"process",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Task By Task ID Query",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/tasks/instances/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"tasks",
+										"instances",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET All Tasks Pot Owners Query",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{url}}/kie-server/services/rest/server/queries/tasks/instances/pot-owners",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"kie-server",
+										"services",
+										"rest",
+										"server",
+										"queries",
+										"tasks",
+										"instances",
+										"pot-owners"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Container Operations",
+			"description": "",
+			"item": [
+				{
+					"name": "GET All BPM Containers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Create New BPM Container",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<kie-container>\n  <release-id>\n    <artifact-id>bpm-mobile-workflows</artifact-id>\n    <group-id>org.jbpm.demo</group-id>\n    <version>0.0.1-SNAPSHOT</version>\n  </release-id>\n</kie-container>"
+						},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE BPM Container",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/kie-server/services/rest/server/containers/{{container-name}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"kie-server",
+								"services",
+								"rest",
+								"server",
+								"containers",
+								"{{container-name}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET KIE Server Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/kie-server/services/rest/server",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"kie-server",
+						"services",
+						"rest",
+						"server"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "Pa$$w0rd",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "john",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "238ebb90-8eea-4e07-aec6-7cdd631a3860",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "05cd6835-3aa9-4a6c-8382-bf605bf594c2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

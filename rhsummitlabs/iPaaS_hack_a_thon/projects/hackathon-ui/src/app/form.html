@@ -1,0 +1,23 @@
+<div ng-controller="FormController as form">
+    <pf-card head-title="Submit Additional Information" show-titles-separator="false" show-top-border="false">
+        <form name="testForm">
+            <pf-form-group pf-label="Type" pf-label-class="" pf-input-class="" required>
+                <!-- <select selectpicker class="selectpicker"> -->
+                <select name="simpleSelect" ng-model="form.item.type">
+                    <option value="">---Please select---</option>
+                    <option value="announcement">Announcement</option>
+                    <option value="forLocation">Location</option>
+                </select>
+            </pf-form-group>
+            <pf-form-group pf-label="Title" pf-label-class="" pf-input-class="" required>
+                <input id="title" name="title" ng-model="form.item.title" type="text" required/>
+            </pf-form-group>
+            <pf-form-group pf-label="Text" pf-label-class="" pf-input-class="">
+                <textarea id="description" name="description" ng-model="form.item.description" rows="3">
+                      {{ item.description }}
+                    </textarea>
+            </pf-form-group>
+            <pf-form-buttons pf-on-cancel="form.cancel()" pf-on-save="form.save()" pf-working="form.working"></pf-form-buttons>
+        </form>
+    </pf-card>
+</div>

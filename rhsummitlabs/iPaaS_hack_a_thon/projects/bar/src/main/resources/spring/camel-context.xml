@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
+            component="undertow" contextPath="/sflocation"
+            enableCORS="true" port="8080">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="Summit all resturant locations"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        <rest path="/bar">
+            <get uri="all">
+                <description> All Bar Info</description>
+                <to uri="direct:getAll"/>
+            </get>
+            <get uri="rating/{rate}">
+                <description> Bar Info by rating</description>
+                <to uri="direct:getRating"/>
+            </get>
+            <get uri="music/{musictype}">
+                <description> Bar Info by music type</description>
+                <to uri="direct:getMusic"/>
+            </get>
+            <get uri="favdrink/{drinktype}">
+                <description>Bar Info by drink type offered</description>
+                <to uri="direct:getDrink"/>
+            </get>
+        </rest>
+        <route id="all-route">
+            <from id="_direct1" uri="direct:getAll"/>
+            <to id="_to1" uri="sql:select ID,BARNAME,ADDRESS,LAT,LNG,PIC from BAR?dataSource=dataSource"/>
+            <marshal id="_marshal1">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log1" message="${body}"/>
+        </route>
+        <route id="rating-route">
+            <from id="_direct2" uri="direct:getRating"/>
+            <to id="_to2" uri="sql:select ID,BARNAME,ADDRESS,LAT,LNG,PIC from BAR where rating > :#rate ?dataSource=dataSource"/>
+            <marshal id="_marshal2">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log2" message="${body}"/>
+        </route>
+        <route id="music-route">
+            <from id="_direct3" uri="direct:getMusic"/>
+            <to id="_to3" uri="sql:select ID,BARNAME,ADDRESS,LAT,LNG,PIC from BAR where music = :#musictype ?dataSource=dataSource"/>
+            <marshal id="_marshal3">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log3" message="${body}"/>
+        </route>
+        <route id="drink-route">
+            <from id="_direct4" uri="direct:getDrink"/>
+            <setHeader headerName="drinktypesql" id="_setHeader1">
+                <simple>%${headers.drinktype}%</simple>
+            </setHeader>
+            <to id="_to4" uri="sql:select ID,BARNAME,ADDRESS,LAT,LNG,PIC from BAR where DRINKSKINDS like :#drinktypesql?dataSource=dataSource"/>
+            <marshal id="_marshal4">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log4" message="${body}"/>
+        </route>
+    </camelContext>
+</beans>

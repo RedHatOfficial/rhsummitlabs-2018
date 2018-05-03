@@ -1,0 +1,101 @@
+heat_template_version: 2015-04-30
+
+description: Red Hat Summit 2017 - Lab104387
+
+parameters:
+  key_name:
+    type: string
+    description:
+      Name of an existing key pair to enable SSH access to the instance.
+    default: default
+  image:
+    type: string
+    description: ID of the image to use for the instance to be created.
+    default: rhel7
+  instance_type:
+    type: string
+    description: Type of the instance to be created.
+    default: m1.labs
+  public_net:
+    type: string
+    description: >
+      Public network for which floating IP addresses will be allocated
+    default: external
+  private_net:
+    type: string
+    description: Private network into which servers get deployed
+    default: internal
+  private_subnet:
+    type: string
+    description: Private subnet into which servers get deployed
+    default: internal_subnet
+  my_name:
+    type: string
+    description: Enter your name here
+    default: Anonymous
+
+resources:
+  summit_srv:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: key_name }
+      image: { get_param: image }
+      flavor: { get_param: instance_type }
+      networks:
+        - port: { get_resource: summit_port }
+      user_data_format: RAW
+      user_data:
+        get_resource: summit_config
+
+  summit_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: private_net }
+      fixed_ips:
+        - subnet: { get_param: private_subnet }
+      security_groups: [{ get_resource: summit_secgroup }]
+
+  summit_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_net }
+      port_id: { get_resource: summit_port }
+
+  summit_secgroup:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: Add security group rules for server
+      name: heat-stack-secgroup
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 80
+          port_range_max: 80
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  summit_config:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: ungrouped
+      config:
+        str_replace:
+          template: |
+            #!/usr/bin/env bash
+            curl -o /etc/yum.repos.d/packages.repo http://192.168.122.253/packages.repo
+            yum install httpd -y
+            systemctl enable httpd
+            systemctl start httpd
+            MY_IP=$(/sbin/ifconfig eth0 | grep 'inet ' | awk '{ print $2}')
+            echo "Hello, $my_name, I am $(hostname -s) @ $MY_IP" > /var/www/html/index.html
+          params:
+            $my_name: {get_param: my_name}
+
+outputs:
+  instance_ip:
+    description: Public IP address of the newly created Nova instance.
+    value: { get_attr: [ summit_floating_ip, floating_ip_address ] }

@@ -1,0 +1,416 @@
+:scrollbar:
+:data-uri:
+:toc2:
+:imagesdir: images
+
+== Optimize your IT, VM Migration made easy by Red Hat- Lab Guide
+
+:numbered:
+
+== Overview
+
+This Lab Environment uses Red Hat CloudForms, and the Infrastructure Migration plugin (a.k.a. v2v-plugin), as a broker to migrate VMs from VMware vSphere to Red Hat Virtualization. 
+ 
+The provided configuration steps include:
+
+* Check the configuration of the conversion hosts in the target provider (RHV)
+* Check credentials for virtualization providers and conversion hosts in CloudForms
+* Assign tags for the conversion hosts in CloudForms
+* CSV file created for the chosen VMs to be migrated
+
+The providers are:
+
+* Source - VMware vSphere
+* Target - Red Hat Virtualization
+
+After this initial step, the resource equivalence between the two providers has to be defined in an *Infrastucture Mapping* including:
+
+* Clusters
+* Storage Domains
+* Networks
+
+To perform the migration one *Conversion Host* has beeen configured. In this case RHEL hypervisors were used as conversion hosts.
+
+Finally, a *Migration Plan* has to be executed to perform the final migration.
+
+.Goal
+* Migrate several VMs from vSphere to Red Hat Virtualization, using Red Hat CloudForms as a broker, with a Red Hat Solution: Infrastructure Migration
++
+NOTE: The source VMs are still maintained post migration and are not deleted. This allows for "failback" if a migration failure occurs.
+
+Required versions of products used:
+
+[cols="1,1",options="header"]
+|=======
+|Product |Version
+|CloudForms Nightly |4.6+ 
+|Red Hat Virtualization |4.2.2+ beta
+|Red Hat Enterprise Linux (Hypervisor) |7.5 beta
+|VMware vSphere |5.5+
+|=======
+
+== Requirements to access and perform this lab
+
+=== Base requirements
+
+* A computer with access to Internet :-)
+* Adobe Flash 15 or higher must be enabled in Firefox or Chromium used for vCenter connectivity
+* SSH client (for Microsoft Windows users link:https://www.putty.org/[Putty] is recommended)
+* Firefox 17 or higher, or Chromium / Chrome
++
+[NOTE]
+Internet Explorer is not recommended.
+
+== Preparation
+
+=== Obtain access to your Lab Environment
+
+. Access the link:https://www.opentlc.com/guidgrabber/guidgrabber.cgi[Labs Web Console], and select lab *L1056 - Optimize your IT. VM Migration made easy with Red Hat*
++
+image::lab_guid_grab1.png[Lab GUID Grab 1]
+
+. Wait to have a *Lab GUID* assigned
++
+image::lab_guid_grab2.png[Lab GUID Grab 2]
+
+. You will have your *Lab GUID* and will be able to start. In this example *YOUR-GUID* is `a2ce`
++
+image::lab_guid_grab3.png[Lab GUID Grab 3]
+
+. Passwords to the services is referred as `<to_be_provided>`. The instructor will provide it to you
+
+=== Environment
+
+A full new demo environment is deployed for each student. To make the environment unique a 4 character identifier is assigned to it (i.e. `a2ce`), this identifier is referred in this documentation as *YOUR-GUID*.  
+
+The demo environment consists of the following systems:
+
+image::architecture_diagram.png[Architecture Diagram]
+
+[cols="1,1,1,2",options="header"]
+|=======
+| Hostname | Internal IP | External name | Description
+|`workstation.example.com` |`192.168.0.10` | workstation-<YOUR-GUID>.rhpds.opentlc.com |Jump host and Ansible host
+|`storage.example.com` |`192.168.0.254` | workstation-<YOUR-GUID>.rhpds.opentlc.com | NFS server
+|`cf.example.com` |`192.168.0.100` |  cf-<YOUR-GUID>.rhpds.opentlc.com |CloudForms server
+|`kvm0.example.com` |`192.168.0.40` | kvm0-<YOUR-GUID>.rhpds.opentlc.com |KVM hypervisor managed by Red Hat Virtualization
+|`kvm1.example.com` |`192.168.0.41` | kvm1-<YOUR-GUID>.rhpds.opentlc.com |KVM hypervisor managed by Red Hat Virtualization
+|`rhvm.example.com` |`192.168.0.35` | rhvm-<YOUR-GUID>.rhpds.opentlc.com |Red Hat Virtualization Manager server
+|`esx1.example.com` |`192.168.0.51` | N/A |ESXi hypervisor
+|`esx2.example.com` |`192.168.0.52` | N/A |ESXi hypervisor
+|`vcenter.example.com` |`192.168.0.50` | vcenter-<YOUR-GUID>.rhpds.opentlc.com |VMware vCenter server
+|=======
+
+.Prerequisites
+
+* Deployment of the demo environment which includes the following VMs provisioned in the vSphere environment:
+** `jboss0` - a Red Hat Enterprise Linux 7 host running JBoss EAP
+** `jboss1` - a Red Hat Enterprise Linux 7 host running JBoss EAP
+** `lb` - a Red Hat Enterprise Linux 7 host running Nginx configured to proxy traffic to `jboss0` and `jboss1`
+** `db` - a Red Hat Enterprise Linux 7 host running PostgreSQL that the `jboss0` and `jboss1` application servers connect to
+
+* An external service is configured as https://app-<YOUR-GUID>.rhpds.opentlc.com pointing to the Load Balancer to make the Ticket Monster app accesible.
+
+== Getting Started
+
+. Once the system is running, use SSH to access your demo server via SSH.
+
+* Using a Unix/Linux system:
++
+----
+$ ssh workstation-<YOUR-GUID>.rhpds.opentlc.com
+----
+
+. Become `root` using sudo:
++
+----
+$ sudo -i
+----
+
+. Check the status of the environment using ansible:
++
+----
+# ansible all -m ping
+----
++
+This command establishes a connection to all the machines in the environment (except ESXi servers). 
+In case the machines are up an running a success message, per each, will show up. 
+This is an example of a success message for the VM jboss0.example.com:
++
+----
+jboss0.example.com | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+----
++ 
+There are 4 VMs in the vCenter environment hosting an app with Nginx as loadbalancer, two JBoss EAP in domain mode, and a Postgresql database.
+To check only if these ones are running, you may use the following command:
++
+----
+# ansible app -m ping
+----
++ 
+To check the infrastructure machines the following command can be also used:
++
+----
+# ansible infra -m ping
+----
+
+. Establish an SSH connection to the CloudForms server and monitor `automation.log`:
++
+----
+# ssh cf.example.com
+# tail -f /var/www/miq/vmdb/log/automation.log
+----
++
+[TIP]
+The log entries are very long, so it helps if you stretch this window as wide as possible.
++
+[NOTE]
+The log entries can be also seen in the CloudForms web UI in *Automation -> Automate -> Log*.
+
+. Verify the Ticket Monster app is running:
+
+* Point your browser to https://app-<YOUR-GUID>.rhpds.opentlc.com and check it is running:
++
+image::app-ticketmonster-running.png[Ticket Monster app running]
+[NOTE]
+You must accept all of the self-signed SSL certificates.
++
+image::ssl_cert_warning.png[SSL Cert Warning]
+
+. Prepare to manage the environment. From a web browser, open each of the URLs below in its own window or tab, using these credentials (except when noted):
+
+* *Username*: `admin`
+* *Password*: `<to_be_provided>`
++
+[NOTE]
+You must accept all of the self-signed SSL certificates.
+
+* *Red Hat Virtualization Manager:* `https://rhvm-<YOUR-GUID>.rhpds.opentlc.com`
+.. Navigate to and click *Administration Portal* and log in using `admin`, `<to_be_provided>`, and `internal`.
++
+image::rhv_login.png[RHV Login]
+
+.. Verify the Cluster is up and Hypervisors are active
++
+[TIP]
+As this is nested virtualization, sometimes the CPU type of the hypervisor is changed. 
++
+image::rhv_hypervisors_up.png[RHV Hypervisors up]
+
+* *vCenter:* `https://vcenter-<YOUR-GUID>.rhpds.opentlc.com`
++
+image::vsphere_web_client_0.png[vCenter Login]
+
+** Flash Player is required.
++
+[TIP]
+Modern browsers have flash player disabled by default. You may need to enable it for this page. Here are the link:01-redhat_solutions-insfrastructure_migration_v2-enable_flash.adoc[instructions to enable Adobe Flash]
+
+* Click on *Log in to vSphere Web Client*
++
+image::vsphere_web_client_1.png[vSphere Web Client Login]
++
+[WARNING]
+Use `root` as the username to log in to vCenter.
+
+* Click *VMs and Templates*.
++
+image::vsphere_web_client_2.png[vCenter]
+
+.. Click *VMs and Templates* and verify the 4 VMs `lb.example.com`, `jboss0.example.com`, `jboss0.example.com` and `db.example.com` are running. 
++
+image::vsphere_web_client_3.png[vCenter]
+
+
+* *CloudForms:* `https://cf-<YOUR-GUID>.rhpds.opentlc.com`
++
+image::cloudforms_login.png[CloudForms Login]
++
+[TIP]
+You can also find these URLs in the email provided when you provisioned the demo environment.
++
+image::cloudforms_dashboard.png[CloudForms Dashboard]
+
+=== Validate the Current Infrastructure in CloudForms
+
+. On the CloudForms web interface, go to *Compute -> Infrastructure -> Providers*.
++
+image::cloudforms_infrastructure_providers_1.png[CloudForms Infrastructure Providers 1]
+
+. If you see an exclamation mark (*!*), or a cross (*x*) in a provider, check the provider's box, go to *Authentication -> Re-check Authentication Status*.
++
+image::cloudforms_infrastructure_providers_2.png[CloudForms Infrastructure Providers 2]
++
+image::cloudforms_infrastructure_providers_3.png[CloudForms Infrastructure Providers 3]
++
+[TIP]
+Take into account that vCenter may take longer to start.
+
+. Go to *Compute -> Infrastructure -> Virtual Machines -> VMs -> All VMs*.
++
+image::cloudforms_vms_1.png[CloudForms Virtual Machines 1]
+
+. All VMs, Orphaned VMs and Templates in both RHV and vSphere show as entities in CloudForms.
++
+image::cloudforms_vms_2.png[CloudForms Virtual Machines 2]
++
+[NOTE]
+If you needed to validate providers, you may have to wait a few minutes and refresh the screen before the VMs show up.
+
+. Select the pane *VMs & Templates* and, in it, the *VMware* provider.
+
+. Only the VMs and Templates in vSphere will show.
++
+image::cloudforms_vms_3.png[CloudForms Virtual Machines 3]
+
+=== Check Conversion Hosts
+
+. On the `cf` system, go to *Compute -> Infrastructure -> Hosts*.
++
+image::conversion_host_1.png[Conversion Host 1]
+
+. Click *kvm0*.
++
+image::conversion_host_2.png[Conversion Host 2]
+
+. Select *Policy -> Edit Tags*.
++
+image::conversion_host_3.png[Conversion Host 3]
+
+. Confirm *V2V - Transformation Host* has value *t* (for true) and *V2V - Transformation Method* tag has value *VDDK*. Click *Cancel*.
++
+image::conversion_host_6.png[Conversion Host 6]
++
+* These values may also be observed in the *Smart Management* box in the host description
++
+image::conversion_host_7.png[Conversion Host 7]
+
+. Select *Configuration -> Edit this item* (back in `kvm0`).
++
+image::conversion_host_8.png[Conversion Host 8]
+
+. Confirm *Username* has `root` and Password is set. You can click *Validate* to verify they are OK then the message "Credential validation was successful" will appear. This is needed to be able to connect to the conversion host and initiate the conversion.
++
+image::conversion_host_9.png[Conversion Host 9]
+
+. The conversion host is ready.
+
+
+=== Create an Infrastructure Mapping
+
+. Navigate to the *Compute -> Migration -> Overview*. Click on *Create Infrastructure Mapping*.
++
+image::infrastructure_mapping_2.png[Infrastructure Mapping 2]
+
+. In the *step 1* of the wizard, *General*, type the name `ticket-monster-mapping` and click *next*.
++
+* A description may be added to make it easy to, later on, recognize the usage of the mapping.
++
+image::infrastructure_mapping_3.png[Infrastructure Mapping 3]
+
+.  In the *step 2* of the wizard, *Clusters*, select *Source Cluster* as `Cluster01` and *Target Cluster* as `TrustedCluster` and click *Add Mapping*, then click *next*.
++
+image::infrastructure_mapping_4.png[Infrastructure Mapping 4]
+
+.  In the *step 3* of the wizard, *Datastores*, select *Source Datastore* as `Datastore` and *Target Datastore* as `vmstore00` and click *Add Mapping*, then click *next*.
++
+image::infrastructure_mapping_5.png[Infrastructure Mapping 5]
+
+.  In the *step 4* of the wizard, *Networks*, select *Source Network* as `VM Network` and *Target Network* as `ovirtmgmt` and click *Add Mapping*, then click *create*.
++
+image::infrastructure_mapping_6.png[Infrastructure Mapping 6]
+
+.  In the *step 5* of the wizard, *Results*, a message `All mappings in ticket-monster-mapping have been mapped.` shall appear. Click *close*.
++
+image::infrastructure_mapping_7.png[Infrastructure Mapping 7]
+
+In these steps an *Înfrastructure Mapping* has been created in order to simplify source and target resources using the data collected by Red hat CloudForms from both VMware vSphere and Red Hat Virtualization.
+
+=== Create an Migration Plan
+
+. Start in the CloudForms page accessed by navigating to *Compute -> Migration -> Overview*, which is the finishing page from previous step.
+
+. Click on *Create Migration Plan*.
++
+image::migration_plan_1.png[Migration Plan 1]
+
+. In the *step 1* of the wizard, *General*, select the *Infrastructure Mapping* to be used, `ticket-monster-mapping`, add the name `Ticket Monster plan` and click *next*.
++
+image::migration_plan_2.png[Migration Plan 2]
++
+* A description may be added to make it easy to, later on, recognize the usage of the plan.
+
+. In a different brower page, download the CSV file with the VMs link:https://raw.githubusercontent.com/RedHatDemos/RHS-Optimize_IT-Infrastructure_Migration/master/notes/ticket_monster_migration.csv[ticket_monster_migration.csv]
++
+image::migration_plan_3.png[Migration Plan 3]
++
+[NOTE]
+This step will be kept for massive migrations, however, a different interface to choose VMs to be migrated is expected in the near term
++
+[TIP]
+To get the VM ids, for the CVS file, can be obtained from a web browser by accessing the following CloudForms URL (remember to change the GUID):  https://cf-<YOUR-GUID>.rhpds.opentlc.com/api/vms?expand=resources
++
+[TIP]
+To get the VM ids via command line, the following commands can be run in ManageIQ/CloudForms:
++
+        # cd /var/www/miq/vmdb
+        # bundle exec rails c
+        irb> Vm.find_by(:name => "<VM_NAME>").id
++
+[WARNING]
+If the CloudForms environment has been reconfigured, the csv file may need to be regenerated as the VM ids in CloudForms could have changed.
+
+. In the *step 2* of the wizard, *VMs*, select the *Browse* to select a CSV file with the names of the VMs to be migrated. Then select `ticket_monster_migration.csv` and click *Open*.
++
+image::migration_plan_4.png[Migration Plan 4]
+
+. The list of the VMs to be migrated shall appear on screen. Review and click *create*.
++
+image::migration_plan_5.png[Migration Plan 5]
+
+. In the *step 3* of the wizard, *Results*, the message `Migration Plan: ticket-monster-plan is in progress` shall appear. Click *close*.
++
+image::migration_plan_6.png[Migration Plan 6]
+
+. Now the migration is executing. We can see the orchestration process in Cloudforms logs
++
+----
+# ssh cf.example.com
+# tail -f /var/www/miq/vmdb/log/automation.log
+----
++
+And each VM migration process in the Conversion Host:
++
+----
+# ssh kvm0.example.com
+# tail -f /var/log/vdsm/import/*
+----
+
+. CloudForms interface shows migration status too
++
+image::migration_running_1.png[Migration Running 1]
+
+. In RHV interface we can see starting to appear
++
+image::migration_running_2.png[Migration Running 2]
+
+. Migration finishes
++
+image::migration_running_3.png[Migration Running 3]
+
+. Let's check if the VMs are up and running using the following command:
++
+----
+# ansible app -m ping
+----
+
+. It's time to check the *app* running and accessible via the URL https://app-<YOUR-GUID>.rhpds.opentlc.com
++
+image::migration_running_5.png[Migration Running 5]
+
+And, with this, the Lab is done!. We hope you enjoyed it!
+
+

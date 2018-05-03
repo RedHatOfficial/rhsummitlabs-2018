@@ -1,0 +1,1 @@
+[Red Hat CloudForms with Red Hat Ansible Automation—Better together](https://github.com/cbolz/summit-fy19/blob/master/ansible-and-cloudforms-better-together/index.md)

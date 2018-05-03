@@ -1,4 +1,5 @@
-# Your labs docs placeholder, put your documentation here.
+## `Effectively monitor and troubleshoot your OCP Cluster` documentation and source code
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+GitHub Pages: https://rht-labs-events.github.io/summit-lab-2018-doc/
+Doc source: https://github.com/rht-labs-events/summit-lab-2018-doc/tree/gh-pages
+Lab source: https://github.com/rht-labs-events/summit-lab-2018-src

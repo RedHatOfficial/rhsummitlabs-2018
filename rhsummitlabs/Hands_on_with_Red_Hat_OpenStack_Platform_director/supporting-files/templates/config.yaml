@@ -1,0 +1,6 @@
+parameter_defaults:
+  HostnameMap:
+    overcloud-controller-0: summit-controller
+    overcloud-novacompute-0: summit-compute1
+    overcloud-novacompute-1: summit-compute2
+    overcloud-networker-0: summit-networker

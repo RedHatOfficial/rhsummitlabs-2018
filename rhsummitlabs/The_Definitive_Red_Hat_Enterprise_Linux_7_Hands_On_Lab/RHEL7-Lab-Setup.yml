@@ -1,0 +1,82 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Root Password (ALL)
+      user: name=root    password="$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf."
+
+    - name: Student Password (ALL)
+      user: name=student password="$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8"
+
+    - name: Required packages for lab section (ALL)
+      yum: name=bash-completion state=installed
+
+    - name: Required packages for lab section (SYSTEMD)
+      yum: name=httpd,mariadb,mariadb-server,php,php-mysql state=installed
+
+    - name: Required state for lab section (SYSTEMD mariadb)
+      service: name=mariadb state=stopped enabled=no
+
+    - name: Required state for lab section (SYSTEMD httpd)
+      service: name=httpd state=stopped enabled=no
+
+    - name: Required packages for lab section (PCP)
+      yum: name=pcp,pcp-gui state=installed
+
+    - name: Required state for lab section (PCP pmcd)
+      service: name=pmcd state=stopped enabled=no
+
+    - name: Required state for lab section (PCP pmlogger)
+      service: name=pmlogger state=stopped enabled=no
+
+    - name: Required packages for lab section (NUMA)
+      yum: name=numad,numactl state=installed
+
+    - name: Required state for lab section (NUMA)
+      service: name=numad state=stopped enabled=no
+
+    - name: Required packages for lab section (LVM)
+      yum: name=system-storage-manager state=installed
+
+    - name: LAB Setup (LVM - create block devices)
+      shell: for i in {0..5} ; do [[ -e /var/tmp/disk${i}.img ]] || fallocate -l 100M /var/tmp/disk${i}.img ; done
+
+    - name: LAB Setup (LVM - create new partitions)
+      shell: for i in {0..5} ; do printf "o\nn\np\n\n\n\nt\n8e\nw\n" | fdisk /var/tmp/disk${i}.img  ; done
+
+    - name: LAB Setup (LVM - setup kpartx loopbacks)
+      shell: for i in {0..5} ; do kpartx -av /var/tmp/disk${i}.img  ; done
+
+    - name: Required packages for lab section (NMCLI)
+      yum: name=teamd state=installed
+
+    - name: Required packages for lab section (COCKPIT)
+      yum: name=cockpit state=installed
+
+    - name: Required state for lab section (COCKPIT)
+      service: name=cockpit state=stopped enabled=no
+
+    - name: Required packages for lab section (OPENSCAP)
+      yum: name=scap-workbench,scap-security-guide state=installed
+
+    - name: Required packages for lab section (REAR)
+      yum: name=rear,genisoimage,syslinux state=installed
+
+    - name: LAB Setup (REAR - create config template)
+      shell: 
+        cmd: |
+          cat > /var/tmp/rear-local-config.template << EOF
+          OUTPUT=ISO 
+          OUTPUT_URL=nfs://server1.example.com/tmp
+          BACKUP=NETFS 
+          BACKUP_URL=nfs://server1.example.com/tmp
+          SSH_ROOT_PASSWORD="redhat" 
+          BACKUP_PROG_EXCLUDE=("${BACKUP_PROG_EXCLUDE[@]}" '/media' '/var/tmp' '/var/crash') 
+          NETFS_KEEP_OLD_BACKUP_COPY=
+          GRUB_RESCUE=y
+          GRUB_RESCUE_PASSWORD="grub.pbkdf2.sha512.10000.50F96A687B8BCFAE6090234ACB363ABD465A1DBA9E086C26D0E268354EAF7238CEA68889D7B7B0C486BF2AD30A3035C4259EBDFE8A19F4140D241386100B6AAE.C9615BDD47B42A98575DA91854E2017A71B4345F4D52AB03A54347A222C00A3D74A4987CE511DFA76E6B70C57ECE45A3106E4C53C160AFE1C2A3F61123FCFF15"
+          EOF
+      args:
+        creates: /var/tmp/rear-local-conf.template
+
+

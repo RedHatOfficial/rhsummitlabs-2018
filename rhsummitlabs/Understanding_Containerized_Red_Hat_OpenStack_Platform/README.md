@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# Understand containerized Red Hat OpenStack Platform documentation
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+[Understand containerized Red Hat OpenStack Platform](https://github.com/ipilcher/rhsummit) documentation for Red Hat Summit 2018 lab.
