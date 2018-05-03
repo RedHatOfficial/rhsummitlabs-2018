@@ -1,0 +1,72 @@
+= Integration Redhat BPMS with Redhat Single Sign On
+Doc Writer <pbrown@redhat.com>
+:doctype: book
+:reproducible:
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+//:pdf-page-size: Letter
+
+
+== Introduction
+
+In this lab you will connect Redhat BPMS with Redhat Single Sign On.
+
+*Pre-Requisites:*
+
+[square]
+* Ensure an instance of the Redhat SSO is available.
+* Ensure Redhat BPMS is installed.
+* RH-SSO client adapter for EAP is installed on the Redhat BPMS Server.
+* Note: If Redhat SSO and Redhat BPMS reside on seperate servers Two-way SSL between the servers for HTTPS trafic will need to configured.  
+
+
+[square]
+* *Create A New SSO Realm*
+* *Define API Service*
+
+
+== Step 1: Configure a new Redhat SSO Realm for the BPMS application.
+["arabic"]
+. Open the browser and access Redhat SSO Admin  URL: https://<Host Address>:8443/auth/admin
+. Enter your Redhat SSO username and password
+. Select the drop down arrow next to the realm name and click the "Add Realm" option
+. In the Realm General Tab enter the following information: 
+* Name : <Your Realm Name>
+. From the left hand side realm menu select "Clients".
+. From the "Clients" screen select the "Create" option and enter the following information.
+* Client ID: Business Central
+* Client Protocol: Openid-Connect
+* Root URL: <Your Business Central URL> i.e http://localhost:8080/business-central
+. Click "Save"
+. Once created change the "Access Type" on the Client Settings screen to "Confidential"
+
+== Step 2: Create the Redhat BPMS roles and users in the newly created Redhat SSO Realm.
+["arabic"]
+. Ensure the Redhat BPMS Realm created in the previous step is selected.
+. Select the "Roles" option from the left hand menu 
+. Click the "Add Role" option situated above the roles table on the right hand side of the page.
+. Add the following BPMS roles : 
+    * Analyst
+    * Developer
+    * Admin
+    * User
+. Under the "Manage" section in the left hand menu select the "Users" option.
+. Click the "Add User" option situated above the table of users on the right hand side of the page.
+. Enter the following information
+    * Username: BPMSAdmin 
+    * User Enabled: On
+    * Email Verified: False
+    * Required User Actions: Update Password
+. Click "Save".
+. The new user should now appear in the list of users.
+. Select the edit user option.
+. Select the "Role Mappings" tab
+. In the list of available roles you should see the BPMS roles you added previously. Select the "Admin" role and click "Add Selected"
+
+
+
+
+
+

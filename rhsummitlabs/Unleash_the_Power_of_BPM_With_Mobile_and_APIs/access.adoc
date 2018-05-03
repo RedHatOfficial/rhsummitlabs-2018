@@ -1,0 +1,49 @@
+:scrollbar:
+:data-uri:
+:toc2:
+:numbered:
+
+== Introduction
+
+This document provides login details for all the relevant environments for the labs
+
+
+== Environment Access
+
+Check access of your account by logging into the following servers:
+
+=== Environment Access
+
+. BPM Custom Management UI
+** No login credentails necessary these have been hardcoded into the app.
+** summit-student-[01-30] Navigate to : http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080/kie-management
+** summit-student-[31-60] Navigate to : http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080/kie-management
+
+. BPM Custom Management UI
+** IPS Server will use 1 basic authorised user for everyone:
+*** Username: *john*
+*** Password: *Pa$$w0rd*
+** or
+*** Username: *jboss*
+*** Password: *bpmsuite1!*
+
+. Red Hat Mobile Platform
+** Browse to https://gpte.us.training.redhatmobile.com[https://gpte.us.training.redhatmobile.com]
+** Login using:
+*** Username: *summit-student-XX*
+*** Password: *FeedHenry#2018*
+** Click on *Projects*
+** You should see one project called *FSI-Demo-Summit*.
+
+. Red Hat 3Scale API Management Platform
+** Browse to `https://redhat-bpms-admin.3scale.net`
+** Login using:
+*** Username: *summit-student-XX*
+*** Password: *3scale#2018*
+** On the default page you should see 2 APIs called summit-student-XX_default and summit-student-XX_custom
+
+. Red Hat SSO Management Platform
+** Browse to `https://auth-summit.tk:8443/auth/realms/master`
+** Login using:
+*** Username: *admin*
+*** Password: *password1!*

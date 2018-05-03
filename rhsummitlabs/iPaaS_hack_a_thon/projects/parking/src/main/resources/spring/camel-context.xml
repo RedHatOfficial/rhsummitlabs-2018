@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
+            component="undertow" contextPath="/sflocation"
+            enableCORS="true" port="8080">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="Summit all resturant locations"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        <rest path="/parking">
+            <get uri="all">
+                <description> All parking lot Info</description>
+                <to uri="direct:getAll"/>
+            </get>
+            <get uri="freelot/{freelot}">
+                <description> Parking lot with free lots</description>
+                <to uri="direct:getFreelot"/>
+            </get>
+            <get uri="hourlyrate/{maxpay}">
+                <description> Parking lot by hourly ate</description>
+                <to uri="direct:getHourlyRate"/>
+            </get>
+        </rest>
+        <route id="all-route">
+            <from id="_direct1" uri="direct:getAll"/>
+            <to id="_to1" uri="sql:select * from PARKINGLOT?dataSource=dataSource"/>
+            <marshal id="_marshal1">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log1" message="${body}"/>
+        </route>
+        <route id="freelot-route">
+            <from id="_direct2" uri="direct:getFreelot"/>
+            <to id="_to2" uri="sql:select * from PARKINGLOT where FREELOT > :#freelot?dataSource=dataSource"/>
+            <marshal id="_marshal2">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log2" message="${body}"/>
+        </route>
+        <route id="hourlyrate-route">
+            <from id="_direct3" uri="direct:getHourlyRate"/>
+            <to id="_to3" uri="sql:select * from PARKINGLOT where PRICE &lt;= :#maxpay?dataSource=dataSource"/>
+            <marshal id="_marshal3">
+                <json library="Gson"/>
+            </marshal>
+            <log id="_log3" message="${body}"/>
+        </route>
+    </camelContext>
+</beans>

@@ -1,0 +1,15 @@
+<div ng-controller="LocationDetailsController">
+    <pf-card head-title="{{site.title}}" sub-title="" show-titles-separator="true" show-top-border="false">
+        <form class="form-horizontal">
+            <pf-form-group pf-label="Type:" pf-label-class="col-sm-1" pf-input-class="col-sm-5">
+                <p class="form-control-static">{{site.type}}</p>
+            </pf-form-group>
+            <pf-form-group pf-label="Lat:" pf-label-class="col-sm-1" pf-input-class="col-sm-5">
+                <p class="form-control-static">{{site.location.lat}}</p>
+            </pf-form-group>
+            <pf-form-group pf-label="Lng:" pf-label-class="col-sm-1" pf-input-class="col-sm-5">
+                <p class="form-control-static">{{site.location.lng}}</p>
+            </pf-form-group>
+        </form>
+    </pf-card>
+</div>

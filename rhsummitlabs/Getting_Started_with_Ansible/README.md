@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# Getting Started with Ansible documentation.
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+[Getting Started with Ansible documentation](getting_started_ansible.adoc)

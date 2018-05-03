@@ -1,0 +1,19 @@
+{
+  "name": "fountain-inject",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "^1.6.2",
+    "angular-ui-router": "1.0.0-beta.3",
+    "patternfly": "^3.45.0",
+    "angular-patternfly": "^4.16.1",
+    "leaflet": "^1.3.1",
+    "angular-leaflet-directive": "angular-leaflet#^0.10.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.6.2"
+  },
+  "resolutions": {
+    "angular": "1.6.10",
+    "leaflet": "^1.3.1"
+  }
+}

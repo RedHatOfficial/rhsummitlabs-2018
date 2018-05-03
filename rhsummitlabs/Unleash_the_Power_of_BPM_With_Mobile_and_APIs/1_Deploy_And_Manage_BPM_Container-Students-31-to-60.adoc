@@ -1,0 +1,731 @@
+= BPM API : Managing Containers, Processes and Tasks
+Doc Writer <ajarrett@redhat.com>
+:doctype: book
+:imagesdir: images
+:reproducible:
+:icons:font:
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+//:pdf-page-size: Letter
+
+:HOST: http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080
+:USERNAME: john
+:PASSWORD: Pa$$w0rd
+:CONTAINER_ID: org.jbpm.demo:bpm-mobile-workflows:TEST
+:CONTAINER_PLACEHOLDER: $CONTAINER_ID
+:TASK_PLACEHOLDER: $TASK_ID
+:PROCESS_PLACEHOLDER: $PROCESS_INSTANCE_ID
+
+== Introduction
+
+In this lab you will obtain an understanding of JBoss BPM's Container deployment model, Process and Task management API's.
+
+==== Lab Components
+- There are 2 BPM instances hosted on AWS.
+. summit-student-[01-30] Please follow link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/1_Deploy_And_Manage_BPM_Container-Students-01-to-30.adoc[this guide] with the correct cURL commands
+.. AWS BPM ec2 Instance 1 - IP: 34.251.130.28 PORT: 8080 - DNS: ec2-34-251-130-28.eu-west-1.compute.amazonaws.com
+. summit-student-[31-60]
+.. AWS BPM ec2 Instance 2 - IP: 52.51.30.91 PORT: 8080 - DNS: ec2-52-51-30-91.eu-west-1.compute.amazonaws.com +
+
+. During this lab everyone will use the same authenticated user. SSO gets integrated in later exercises
+.. Username: john
+.. Password: Pa$$w0rd
+
+- Default Container ID: org.jbpm.demo:bpm-mobile-workflows:TEST
+
+IMPORTANT: you will be deploying your own container with an ID specified by you as well as recieving a unique ID for both Process Instances and Tasks. +
+Requests marked $CONTAINER_ID should be replaced with your newly created container ID. +
+Requests marked $PROCESS_INSTANCE_ID and $TASK_ID should also be updated with the generated IDs.
+
+==== Lab Summary
+. Step 0: Introduction
+. Step 1: Container Deployment
+. Step 2: Creating and querying a Process Instance
+. Step 3: Interacting with the Task Management API
+. Step 4: Test using postman
+
+== Step 0: Introduction
+
+JBoss BPM Suite has separated its Design time and Runtime operations into 2 distinct binaries; Business Central for Design Time and the Intelligent Process Server (KIE Server) for Runtime. +
+In this lab we will be focusing on the Runtime elements of BPM.
+
+=== GUI vs Non-GUI REST API Calls
+This lab provides 2 options for executing the lab REST commands. All commands are defined as cURL commands to be executed on the command line/terminal assuming the cURL utility is installed.
+If you prefer a GUI assisted method of executing the Labs REST commands then below is a quick setup guide with the necessary import Environment and API Collection files. +
+
+To monitor your progress visually, we have created a basic GUI : {HOST}/kie-management +
+ - Its a Angular2 based app that integrates with the BPMS API to demonstrate a visual representation of the API calls below.
+
+If using cURL please skip ahead to <<Step 1: Deploy a new BPM Container>>
+
+==== Postman Setup
+
+Postman can be installed and configured as either:
+
+- Standalone App: https://www.getpostman.com/apps
+- Google Chrome Extension: https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en
+
+Once installed, please download the following files:
+
+- link:other/Summit_BPM_Postman_Collection.postman_collection.json[Summit BPM Lab Collection]
+- link:other/Summit_Environment.postman_environment.json[Summit BPM Lab Environment]
+
+
+==== Import Postman Environment
+. Start Postman
+.. Sign-in if you have an account or hit the button labelled 'Take me straight to the app. I'll create an account another time.'
+.. Close any additional pop-ups about creating new Templates/Workspaces etc.
+. Import the Environment:
+.. Click the cog icon in the top right corner +
+image:postman/environment-config.png[Environment Config, width="50%"]
+.. Click Import, then select the downloaded 'Summit_Environment.postman_environment' file
+.. A new Environment should appear called 'Summit Environment' +
+image:postman/summit-environment.png[Environment Config, width="100%"]
+.. Finally click into 'Summit Environment' and you will be presented with all the Environment Variables, which you can edit. +
+image:postman/summit-environment-config.png[Summit Environment Config, width="100%"]
+.. You will also need to update the *container_name* variable once you have completed 'Step 1: Deploy a new BPM Container'
+
+IMPORTANT: Select the URL that coincides with your User ID and deselecting http://localhost:8080. +
+summit-student-[01-30] should be using: http://ec2-34-251-130-28.eu-west-1.compute.amazonaws.com:8080 +
+summit-student-[31-60] should be using: http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080
+
+==== Import Postman API Collection
+
+. Import the PostMan API Collection
+.. Click the Import button on the top left +
+image:postman/import-collection.png[Summit Collection Import, width="50%"]
+.. Click 'Choose File' and select the [underline]#Summit_BPM_Postman_Collection.postman_collection.json# file downloaded above
+.. A new 'Summit BPM Postman Collection' should appear under the Collections TAB +
+image:postman/postman-collection.png[BPM Postman Collection, width="50%"]
+.. Click on the 'Summit BPM Postman Collection' and it should expand, click on the folder to view the underlying API Requests +
+image:postman/postman-collection-expanded.png[BPM Postman Collection Expanded, width="50%"]
+. How to use the Postman BPM API Collection
+.. Throughout this lab each API request is preceded with some basic request details that relate to the corresponding Postman request.
+... <API_SUBSET> links to the folder in which the Postman Request can be found (Process, Task, Query/Process, Query/Task and Container):
+... <API_REQUEST_NAME> is as it suggest the name of the specific request within the folder i.e
+
+[source,sh]
+----
+// REQUEST (<API_SUBSET>) - <API_REQUEST_NAME>
+REQUEST (Containers) - GET All BPM Containers:
+cURL xxxxxxxxxxxx
+----
+
+Would correspond to this Postman Request: +
+image:postman/postman-request-example.png[BPM Postman Request, width="100%"]
+
+NOTE: Authorisation should already be setup on the postman collection therefore most if not all calls should be ready to execute the 'SEND' button in the top right. Ask your lab instructor for any additional help with Headers/Parameters etc..
+
+== Step 1: Deploy a new BPM Container
+
+A BPM/KIE Container is deployed KJar. A KJar is a simple maven built JAR file containing some additional XML files for runtime configuration. +
+Our Project is a multi-module maven project containing the various project artefacts, however it is the bpm-mobile-workflows project that will be compiled
+into a 'KJar' and deployed as a KIE-Container. +
+
+NOTE: The kjar build type is defined by the projects pom file: bpm-mobile-workflows/pom.xml +
+The additional XML Configuration files: +
+- bpm-mobile-workflows/src/main/resources/kmodule.xml +
+- bpm-mobile-workflows/src/main/resources/kie-deployment-descriptor.xml
+
+- Firstly we can check to see if our KIE Server is alive and available:
+
+REQUEST (root) - GET KIE Server Details:
+[source,sh, subs="attributes"]
+----
+curl -X GET --user {USERNAME}:'{PASSWORD}' {HOST}/kie-server/services/rest/server
+----
+
+RESPONSE HTTP 200 (OK):
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response type="SUCCESS" msg="Kie Server info">
+    <kie-server-info>
+        <capabilities>KieServer</capabilities>
+        <capabilities>BRM</capabilities>
+        <capabilities>BPM</capabilities>
+        <capabilities>BPM-UI</capabilities>
+        <capabilities>BRP</capabilities>
+        <location>http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server</location>
+        <messages>
+            <content>Server KieServerInfo{serverId='15ad5bfa-7532-3eea-940a-abbbbc89f1e8', version='6.5.0.Final-redhat-16', location='{HOST}/kie-server/services/rest/server'}started successfully at Tue Apr 03 22:41:15 BST 2018</content>
+            <severity>INFO</severity>
+            <timestamp>2018-04-03T22:41:15.847+01:00</timestamp>
+        </messages>
+        <name>KieServer@/kie-server</name>
+        <id>15ad5bfa-7532-3eea-940a-abbbbc89f1e8</id>
+        <version>6.5.0.Final-redhat-16</version>
+    </kie-server-info>
+</response>
+----
+
+NOTE: Capabilities refer to the underlying libraries that have been loaded: +
+- BRM : Business Rules Management +
+- BPM : Business Process Management +
+- BPM-UI : Business Process Management UI extensions +
+- BRP : Business Resource Planner
+
+- Create a new container Using the following Maven GAV coordinates:
+
+Name: *$CONTAINER_ID* +
+Group ID: org.jbpm.demo +
+Artifact Id: bpm-mobile-workflows +
+Version: 0.0.1-SNAPSHOT
+
+IMPORTANT: Replace *$CONTAINER_ID* with a name of your choice. This could be anything, but its best to keep
+it simple such as 'summit-labs-<myname>' e.g. summit-labs-steve. +
+CONTAINER_ID is used throughout this lab to direct API calls.
+
+[source,sh, subs="+quotes"]
+----
+curl -X PUT --user john:'Pa$$w0rd' \
+  http://ec2-52-51-30-91.eu-west-1.compute.amazonaws.com:8080/kie-server/services/rest/server/containers/$CONTAINER_ID \
+  -H 'Content-Type: application/xml' \
+  -d '<kie-container>
+  <release-id>
+    <artifact-id>bpm-mobile-workflows</artifact-id>
+    <group-id>org.jbpm.demo</group-id>
+    <version>0.0.1-SNAPSHOT</version>
+  </release-id>
+</kie-container>'
+----
+
+- After a few seconds you should recieve a HTTP:201 to say the opertion successfully created the new container.
+
+IMPORTANT: it may take a few seconds to execute this request as the KIE Server retrieves the KIE KJar Binary from the Hosted Maven Nexus repository. +
+
+Once successfully deployed, the app-server logging side should look like so (since this on AWS you probably wont be able to inspect this):
+
+[source,sh]
+----
+23:03:05,760 INFO  [org.kie.server.services.impl.KieServerImpl] (http-127.0.0.1:8080-3) Container org.jbpm.demo:bpm-mobile-workflows:TEST (for release id org.jbpm.demo:bpm-mobile-workflows:0.0.1-SNAPSHOT) successfully started
+----
+
+- Next, view the current deployed containers on the KIE Server +
+
+NOTE: Depending on where other people are in the labs you may see lots of different containers deployed. By default 10 containers are returned due to pagination. To increase this append the *?pageSize=50* parameter onto the end of the request URL
+
+REQUEST (Containers) - GET All BPM Containers:
+
+[source,sh, subs="attributes"]
+----
+curl -X GET \
+  --user {USERNAME}:'{PASSWORD}' {HOST}/kie-server/services/rest/server/containers
+----
+
+- RESPONSE : HTTP 200 (OK)
+
+[source,xml, subs="+quotes"]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response type="SUCCESS" msg="List of created containers">
+    <kie-containers>
+        <kie-container container-id="org.jbpm.demo:bpm-mobile-workflows:TEST" status="STARTED">
+            <release-id>
+                <artifact-id>bpm-mobile-workflows</artifact-id>
+                <group-id>org.jbpm.demo</group-id>
+                <version>0.0.1-SNAPSHOT</version>
+            </release-id>
+            <resolved-release-id>
+                <artifact-id>bpm-mobile-workflows</artifact-id>
+                <group-id>org.jbpm.demo</group-id>
+                <version>0.0.1-SNAPSHOT</version>
+            </resolved-release-id>
+            <scanner status="DISPOSED"/>
+        </kie-container>
+        <kie-container container-id="$CONTAINER_ID" status="STARTED">
+            <release-id>
+                <artifact-id>bpm-mobile-workflows</artifact-id>
+                <group-id>org.jbpm.demo</group-id>
+                <version>0.0.1-SNAPSHOT</version>
+            </release-id>
+            <resolved-release-id>
+                <artifact-id>bpm-mobile-workflows</artifact-id>
+                <group-id>org.jbpm.demo</group-id>
+                <version>0.0.1-SNAPSHOT</version>
+            </resolved-release-id>
+            <scanner status="DISPOSED"/>
+        </kie-container>
+    </kie-containers>
+</response>
+----
+
+NOTE: The whole KIE REST API can be reviewed at: {HOST}/kie-server/docs/index.html
+
+
+Before moving on to creating a new Process Instance we can query for the available process definitions available for a particular container and inspect the BPM Process model that we are going to invoke.
+
+To view the available process definitions hit the following url or execute the curl command :
+
+REQUEST (Query/Process) - GET All Process Definitions :
+[source,sh, subs="attributes"]
+----
+// Return all Process Definitions deployed on the KIE Server
+curl -X GET --user {USERNAME}:'{PASSWORD}' \
+  {HOST}/kie-server/services/rest/server/queries/processes/definitions  \
+  -H 'accept: application/json'
+----
+
+or
+
+REQUEST (Query/Process) - GET All Process Definitions by Container ID:
+[source,sh, subs="attributes"]
+----
+// Return all Process Definitions deployed on the KIE Container
+curl -X GET --user {USERNAME}:'{PASSWORD}'\
+  {HOST}/kie-server/services/rest/server/queries/containers/{CONTAINER_PLACEHOLDER}/processes/definitions  \
+  -H 'accept: application/json'
+----
+
+RESPONSE - HTTP 200 (OK):
+[source,json]
+----
+{
+    "processes": [
+        {
+            "process-id": "org.jbpm.demo.NewApplication",
+            "process-name": "NewApplication",
+            "process-version": "1.0",
+            "package": "org.jbpm.demo",
+            "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST"
+        },
+        {
+            "process-id": "bpm-mobile-workflows.NewApplicationComplete",
+            "process-name": "NewApplication",
+            "process-version": "1.0",
+            "package": "org.jbpm.demo",
+            "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST"
+        },
+        {
+            "process-id": "org.jbpm.demo.mobile.TestProcess",
+            "process-name": "TestProcess",
+            "process-version": "1.0",
+            "package": "org.jbpm.demo",
+            "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST"
+        }
+    ]
+}
+----
+
+You can also obtain the Process Definition Image or Process Model using the Processes API:
+
+In a browser, navigate to:
+[source,sh, subs="attributes"]
+----
+{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/images/processes/org.jbpm.demo.NewApplication
+----
+
+This will return an SVG of the current process model. It should look something similar to:
+
+image::new-application-process.png[New Application Process Model]
+
+== Step 2: Create a new BPM Process Instance
+
+- This demo is part of a larger Financial Onboarding demo, which has been simplified to show a wider array of product functionality. As a side effect, we are required to provide the object model upfront rather than letting the BPM process hit various services. Using this payload we will create a new process instance, which will return a Process Instance Id.
+
+ 1. First lets create a new BPM Process Instance
+ Process URL Requirements:
+ . PROCESS_DEFINITIONS_ID - org.jbpm.demo.NewApplication
+ . Full URL Structure: {HOST}/kie-server/services/rest/server/containers/*$CONTAINER_ID*/processes/org.jbpm.demo.NewApplication/instances
+
+REQUEST (Process) - POST Create New Process Instance:
+[source,sh, subs="attributes"]
+----
+curl -X POST --user {USERNAME}:'{PASSWORD}' \
+  {HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/org.jbpm.demo.NewApplication/instances \
+  -H 'cache-control: no-cache' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "applicationType": "PERSONAL",
+  "taskOwner": "Bank",
+  "userAlias": "user1",
+  "pushAlias": "user1",
+  "application" : {
+    "Application": {
+      "personalDetails": {
+        "name": {
+          "salutation": "Mr",
+          "givenName": "Bill",
+          "middleName": "",
+          "surname": "Basket"
+        },
+        "demographics": {
+          "gender": "MALE",
+          "dateOfBirth": "1972-09-15",
+          "birthPlace": "Sydney",
+          "countryOfBirth": "AU",
+          "nationality": "AU"
+        },
+        "address": [
+          {
+            "addressType": "HOME_ADDRESS",
+            "addressLine1": "40A Orchard Road",
+            "addressLine2": "#99-99 Macdonald House",
+            "addressLine3": "Orchard Avenue 2",
+            "addressLine4": "Street 65"
+          }
+        ],
+        "email": {
+          "emailAddress": "user1@gmail.com",
+          "okToEmail": true
+        },
+        "phone": {
+          "phoneNumber": "64042321",
+          "okToSms": true,
+          "okToCall": true
+        }
+      },
+      "financialInformation": {
+        "hasForeseeableFinancialChanges": true,
+        "nonBankDebtObligationFlag": true,
+        "expenseDetails": [
+          {
+            "expenseType": "COSTS_OF_LIVING",
+            "expenseAmount": 590.25,
+            "frequency": "MONTHLY"
+          }
+        ],
+        "incomeDetails": [
+          {
+            "incomeType": "DECLARED_FIXED",
+            "fixedAmount": 7590.25,
+            "variableAmount": 1590.25,
+            "frequency": "MONTHLY",
+            "otherIncomeDescription": "Rent"
+          }
+        ],
+        "existingLoanDetails": [
+          {
+            "loanType": "STUDENT_LOAN",
+            "otherDebtObligationType": "Free text",
+            "monthlyInstallmentAmount": 250.25,
+            "outstandingBalanceAmount": 5000.25,
+            "loanAmount": 15000.89,
+            "debtOwnership": "JOINT",
+            "lenderName": "KINROS CORPORATION"
+          }
+        ]
+      },
+      "employmentDetails": [
+        {
+          "employerName": "Citi Bank",
+          "jobTitle": "ACCOUNTANT",
+          "employmentDurationInYears": 5,
+          "employmentStatus": "EMPLOYED"
+        }
+      ],
+      "creditDetails": {
+        "creditAmount": 23000.25,
+        "loanTakenIndicator": true,
+        "monthlyRepaymentForAllExtLoans": 5000.25
+      },
+      "companyDetails": {
+        "companyName": "RedHat",
+        "tradingYears": "5",
+        "dunsNumber": "123123123"
+      },
+      "mortgageDetails": {
+        "type": "firstTime",
+        "location": "Sydney",
+        "propertyValue": 2222222.22,
+        "amount": 999999.99,
+        "deposit": 99999.95,
+        "term": 25
+      },
+      "productId": 1
+    }
+  },
+  "additionalDocsRequired": true,
+  "assignedTo": "Unassigned",
+  "bpmDetails": {
+    "auth": "Basic amJvc3M6YnBtc3VpdGUxIQ==",
+    "container": "org.jbpm.demo:bpm-mobile-workflows:TEST",
+    "processName": "org.jbpm.demo.NewApplication",
+    "host": "{HOST}"
+  }
+}'
+----
+
+REPONSE: HTTP 201 Created +
+- Returns: Integer (Process Instance ID) e.g.
+[source,sh, subs="attributes"]
+----
+1
+----
+
+ - Once a new instance of the org.jbpm.demo.NewApplication process has been started we can start querying/interacting with this process.
+
+  .. In a web browser, navigate to {HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/images/processes/instances/{PROCESS_PLACEHOLDER}, replacing {PROCESS_PLACEHOLDER} with the process instance ID of the process instance you just created and {CONTAINER_PLACEHOLDER} with your created container. +
+  .. Expect to see a graphical representation of the process instance. The nodes in grey indicate that they have executed
+
+image::new-application-process-started.png[New Application Process Model]
+
+ - Now we can list out the live processes on our container, skip to step three to pull back the Process Instance directly.
+ Process URL Requirements:
+ .. HTTP Request Method: GET
+ .. Params:
+ ... page : traverse through the returned records
+ ... pageSize : alter number of records returned, default it 10
+ ... status : return only process which have a specific status:
+ .... Reference: https://docs.jboss.org/jbpm/v6.4/javadocs/constant-values.html
+ ....    STATE_PENDING = 0
+ ....    STATE_ACTIVE = 1
+ ....    STATE_COMPLETED = 2
+ .... 	 STATE_ABORTED = 3
+ ....    STATE_SUSPENDED = 4
+
+Full URL Structure: {HOST}/kie-server/services/rest/server/containers/$CONTAINER_ID/process/instances?<PARAMS> +
+
+* REQUEST (Query/Process) - GET All Process Instances by Container ID:
+
+[source,sh, subs="attributes"]
+----
+curl -X GET --user {USERNAME}:'{PASSWORD}' \
+  '{HOST}/kie-server/services/rest/server/queries/containers/{CONTAINER_PLACEHOLDER}/process/instances?status=1&page=0&pageSize=25' \
+  -H 'Accept: application/json'
+----
+
+* RESPONSE: (HTTP 200 - ok)
+
+[source,json]
+----
+{
+    "process-instance": [
+        {
+            "initiator": "bpmsAdmin",
+            "process-instance-id": 1,
+            "process-id": "org.jbpm.demo.NewApplication",
+            "process-name": "NewApplication",
+            "process-version": "1.0",
+            "process-instance-state": 1,
+            "container-id": "$CONTAINER_ID",
+            "start-date": 1523283354565,
+            "process-instance-desc": "NewApplication",
+            "correlation-key": "",
+            "parent-instance-id": -1
+        }
+    ]
+}
+----
+
+or we can obtain our Process Instance Directly using the Process Management API
+
+* REQUEST (Process) - GET Process Instance By Container ID and Instance ID:
+
+[source,sh, subs="attributes"]
+----
+curl -X GET --user {USERNAME}:'{PASSWORD}' \
+  '{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/instances/{PROCESS_PLACEHOLDER}?withVars=true' \
+  -H 'Accept: application/json'
+----
+
+* RESPONSE: (HTTP 200 - ok)
+
+[source,json]
+----
+{
+    "initiator": "john",
+    "process-instance-id": 1,
+    "process-id": "org.jbpm.demo.NewApplication",
+    "process-name": "NewApplication",
+    "process-version": "1.0",
+    "process-instance-state": 1,
+    "container-id": "org.jbpm.demo:bpm-mobile-workflows:TEST",
+    "start-date": 1524498884314,
+    "process-instance-desc": "NewApplication",
+    "correlation-key": "",
+    "parent-instance-id": -1
+}
+----
+
+== Step 3: Manipulate BPM Task Instances
+
+An important aspect of business processes is human task management. Whilst we strive to automate as work in a process as possible, some tasks need to be executed by human actors e.g. Approval Steps.
+
+BPM also includes a human task service, a back-end service that manages the life cycle of these tasks at runtime. The BPM implementation is based on the WS-HumanTask specification.
+
+NOTE: The Human Task Service is fully pluggable, meaning that users can integrate their own human task solutions if necessary.
+
+The various stages of the Task Management Lifecycle can be reviewed here: http://docs.jboss.org/jbpm/v6.4/userguide/ch07.html#jBPMTaskLifecycle
+BPMS has the concept of a Potential Task Owner. As it sounds, a 'Potential Task Owner' is a user whom has the correct security context to act upon a Human Task i.e. the user belongs to a given LDAP/Authorisation  group.
+
+ - First lets query the API for available Human Tasks. Regardless of what user you are imitating, this API call will return the tasks for a given Process Intance ID:
+
+ * REQUEST (Query/Task) - GET All Tasks by Process Instance ID:
+
+[source,sh, subs="attributes"]
+----
+curl -X GET --user {USERNAME}:'{PASSWORD}' \
+  '{HOST}/kie-server/services/rest/server/queries/tasks/instances/process/{PROCESS_PLACEHOLDER} ' \
+  -H 'Accept: application/json'
+----
+
+ * RESPONSE: (HTTP 200 - ok)
+
+[source,sh, subs="attributes"]
+----
+{
+    "task-summary": [
+        {
+            "task-id": 1,
+            "task-name": "Assign Internal Owner",
+            "task-subject": "",
+            "task-description": "",
+            "task-status": "Ready",
+            "task-priority": 1,
+            "task-is-skipable": true,
+            "task-created-on": 1523283354638,
+            "task-activation-time": 1523283354638,
+            "task-proc-inst-id": 1,
+            "task-proc-def-id": "org.jbpm.demo.NewApplication",
+            "task-container-id": "$CONTAINER_ID",
+            "task-parent-id": -1
+        }
+    ]
+}
+----
+
+- Using the default Task Management Lifecycle within BPM, a task must be 'owned' by an individual before being worked up. Tasks can be assigned to users automatically based off some pre-determined criteria, or tasks can be assigned to a group for users to claim.
+- The Potential-Owners (pot-owners) API endpoint provides a list of Tasks that the authenticated user can work on (derived from underlying LDAP/JEE Roles & Group mappings).
+
+- First lets query the Potential-Owners endpoint to see if we are eligible to work on the above or any other tasks.
+
+ * REQUEST (Task) - GET All Tasks Pot Owners Query:
+
+[source,sh, subs="attributes"]
+----
+curl -X GET --user {USERNAME}:'{PASSWORD}' \
+  '{HOST}/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
+  -H 'Accept: application/json'
+----
+
+ * RESPONSE: (HTTP 200 - ok)
+
+[source,json]
+----
+{
+    "task-summary": [
+        {
+            "task-id": 1,
+            "task-name": "Assign Internal Owner",
+            "task-subject": "",
+            "task-description": "",
+            "task-status": "Ready",
+            "task-priority": 1,
+            "task-is-skipable": true,
+            "task-created-on": 1523283354638,
+            "task-activation-time": 1523283354638,
+            "task-proc-inst-id": 1,
+            "task-proc-def-id": "org.jbpm.demo.NewApplication",
+            "task-container-id": "$CONTAINER_ID",
+            "task-parent-id": -1
+        }
+    ]
+}
+----
+ - Running the following request should provide an empty response since the user is not eligible to work on this particular task:
+
+  * REQUEST (Task) - GET All Tasks Pot Owners Query:
+
+[source,sh, subs="attributes"]
+----
+curl -X GET --user jboss:'bpmsuite1!' \
+  '{HOST}/kie-server/services/rest/server/queries/tasks/instances/pot-owners ' \
+  -H 'Accept: application/json'
+----
+
+NOTE: For Postman users update the 'Authorization' method to 'Basic Auth' and provide the credentials jboss:bpmsuite1!. Then click 'Preview Request' to append the Auth token +
+image:postman/postman-basic-auth.png[Postman Basic Auth, width="100%"]
+
+ * RESPONSE: (HTTP 200 - ok)
+
+[source,sh, subs="attributes"]
+----
+{
+    "task-summary": []
+}
+----
+
+ - Using the Process Instance ID from the process created above we can start interacting with the Human Task Instances.
+ * There are multiple states a tasks can occupy in accordance with the lifecycle diagram linked above, however in this lab we'll simply investigate the happy path process of claiming, starting and completing a task.
+
+NOTE: Task states provide measurable audit trails of work/effort undertaken into fulfilling its purpose. i.e. How long a task sits in a group or individual queue, How long a task is worked upon, total lifespan of that task etc..
+
+
+  * REQUEST (Task) - PUT Claim Task by Task Instance ID:
+
+[source,sh, subs="attributes"]
+----
+ curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/tasks/{TASK_PLACEHOLDER}/states/claimed"
+----
+
+  * REQUEST (Query/Task) - GET All Owned Tasks Query (Authed User):
+
+// List Tasks owned By Authenticated User
+[source,sh, subs="attributes"]
+----
+ curl -X GET -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/queries/tasks/instances/owners"
+----
+
+* RESPONSE (HTTP 200) - Task is now in a reserved state and non claimable by other users. Only a manager can delegate to other users or move the task back into a claimable state :
+
+[source,json]
+----
+{
+  "task-summary" : [ {
+    "task-id" : 1,
+    "task-name" : "Assign Internal Owner",
+    "task-subject" : "",
+    "task-description" : "",
+    "task-status" : "Reserved",
+    "task-priority" : 1,
+    "task-is-skipable" : true,
+    "task-actual-owner" : "<USER_ID>",
+    "task-created-on" : 1523361110474,
+    "task-activation-time" : 1523361110474,
+    "task-proc-inst-id" : 1,
+    "task-proc-def-id" : "org.jbpm.demo.NewApplication",
+    "task-container-id" : "$CONTAINER_ID",
+    "task-parent-id" : -1
+  } ]
+}
+----
+
+  * REQUEST (Task) - PUT Start Task by Task Instance ID:
+
+// Start Task
+[source,sh, subs="attributes"]
+----
+ curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/tasks/{TASK_PLACEHOLDER}/states/started"
+----
+
+ - Verify that the status of the task moved to InProgress, use the Tasks Owned By user REST call.
+
+  * REQUEST (Task) - PUT Complete Task by Task Instance ID:
+
+// Complete Task
+[source,sh, subs="attributes"]
+----
+ curl -X PUT -H "Accept: application/json" --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/tasks/{TASK_PLACEHOLDER}/states/completed"
+----
+
+* In a browser, navigate to {HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/images/processes/instances/{PROCESS_PLACEHOLDER}, replacing $PROCESS_INSTANCE_ID and $CONTAINER_ID with your process and container details +
+
+You should now see the process has progressed to the next Human Task instance.
+
+image::new-application-process-task-complete.png[New Application Process Model Progressed]
+
+
+This concludes the BPM Container Labs exercise. Feel free to complete all the tasks to the complete the process, or alternatively you can delete the process instance with the command below.
+
+* REQUEST (Process) - DELETE Process Instance By Instance ID:
+
+// Complete Task
+[source,sh, subs="attributes"]
+----
+curl -X DELETE --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/instances/{PROCESS_PLACEHOLDER}"
+----

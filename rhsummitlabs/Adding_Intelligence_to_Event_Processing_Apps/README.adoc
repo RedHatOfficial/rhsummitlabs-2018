@@ -1,0 +1,59 @@
+:scrollbar:
+:data-uri:
+:toc2:
+
+== Adding intelligence to event-processing apps
+
+:numbered:
+
+== Overview
+
+Short description: Adding intelligence to event-processing apps on OpenShift
+with Apache Spark and Project Jupyter.
+
+Long description: For many applications, it’s not enough to be able to process
+big data at rest—you also need to be able to process streams of data in motion.
+
+In this lab, you’ll learn how to use open source tools and frameworks from
+radanalytics.io to develop and deploy intelligent event-processing
+applications on Red Hat OpenShift. We’ll start by explaining some of the
+concepts behind stream processing. Next, we’ll show you how to develop a
+basic log-processing application and refine it by adding summarization,
+queries, and features that take advantage of artificial intelligence and
+machine learning.
+
+. This demonstration showcases the following:
+
+* Deploying and using Jupyter Notebooks on OpenShift.
+* Deploying and managing Apache Spark on OpenShift with the radanalytics.io project.
+* Using Apache Spark to process data coming from an Apache Kafka source.
+
+. Goal
+
+* Use Apache Spark to perform sentiment analysis on social media updates in a
+  Jupyter notebook and a standalone microservice.
+
+. Prerequisites
+
+* A basic understanding of OpenShift and the Python language.
+
+Current versions of products used:
+
+[cols="1,1",options="header"]
+|=======
+|Product |Version 
+|`OpenShift Origin` |`3.7`
+|=======
+
+=== Environment
+
+The demo environment consists of an OpenShift Origin deployment, with the
+login console located at:
+
+`https://console.rhsummit.radanalyticslabs.io:8443/`
+
+== Installation and Operation
+
+For detailed instructions on the installation and operation of this lab, please
+see the
+https://github.com/radanalyticsio/streaming-lab[repository documentation].

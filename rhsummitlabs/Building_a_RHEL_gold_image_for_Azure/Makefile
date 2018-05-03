@@ -1,0 +1,2 @@
+default:
+	asciidoctor README.adoc
