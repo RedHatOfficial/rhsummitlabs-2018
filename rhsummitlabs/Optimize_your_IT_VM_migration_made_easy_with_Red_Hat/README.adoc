@@ -411,10 +411,12 @@ image::migration_running_3.png[Migration Running 3]
 +
 image::migration_running_5.png[Migration Running 5]
 
+We would like to know more about your *IT Optimization* plans. Please take a minute to fill link:https://goo.gl/forms/AcPOG90RGry8vFTg2[this 9 question survey].
+
 And, with this, the Lab is done!. We hope you enjoyed it!
 
 Please click on the *RESET STATION* once you have finished.
 
 image::lab_guid_grab_4.png[Lab GUID Grab 4]
 
-*Remember to fill in the evaluation form in the Red Hat Summit app*. Thank you!
+*Remember to also fill in the evaluation form in the Red Hat Summit app*. Thank you!
