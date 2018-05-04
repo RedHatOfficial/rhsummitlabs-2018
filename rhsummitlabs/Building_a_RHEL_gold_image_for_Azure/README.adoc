@@ -159,6 +159,10 @@ server. You need to configure your workstation to get packages from this server
     lab-user@goldimageworkstation-fa72: cd /etc/yum.repos.d/
     lab-user@goldimageworkstation-fa72: wget http://40.112.68.75/lab.repo
 
+It's always a good idea to clean the yum cache after repos change;
+
+	lab-user@goldimageworkstation-fa72: yum clean all
+
 Check that the repository can be found with this command;
 
     lab-user@goldimageworkstation-fa72: yum repolist
@@ -525,13 +529,26 @@ this virtual machine's IP address on libvirt, which starts with
     inet6 fe80::5054:ff:fef3:b315/64 scope link
        valid_lft forever preferred_lft forever
 
-    
+We can see from the above output that in this environment the IP address of our
+gold image is **192.168.122.108**. Your IP address will be slightly different.
+Take a note of it.
 
-=== Setup system services
+Exit the serial console by pressing the **Control + ]** shortcut.
 
-Set a generic host name.
+SSH from the workstation back into the gold image VM, and use the password you
+set earlier;
 
-	hostnamectl set-hostname localhost.localdomain
+    root@goldimageworkstation-fa72: ssh root@192.168.122.108
+    root@192.168.122.108's password:
+    Last login: Fri May  4 04:08:24 2018
+    [root@localhost ~]#
+
+=== Setup common defaults
+
+Set a generic host name. You could of course set this to your corporate
+standard, like **goldimage.prod.example.com**.
+
+	[root@localhost ~]# hostnamectl set-hostname localhost.localdomain
 
 Edit /etc/sysconfig/network-scripts/ifcfg-eth0 so it matches the following list of configuration details.
 
@@ -543,10 +560,22 @@ Edit /etc/sysconfig/network-scripts/ifcfg-eth0 so it matches the following list 
 	PEERDNS="yes"
 	IPV6INIT="no"
 
+NOTE: Azure uses DHCP for it's network configuration of virtual machines. If
+you use static IP addresses from the Azure command line tools or portal, it's
+still using DHCP to actually apply these changes to virtual machines. This is a
+common practice in cloud environments and is recommended to keep configuration
+simple.  
+
 Remove any persistent network device rules.
 
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
 	rm -f /etc/udev/rules.d/75-persistent-net-generator.rules
+
+This is necessary because when we create multiple copies of this virtual
+machine on Azure, it will create network cards with different MAC addresses
+that have not been "seen" by this virtual machine before. This would mean your
+first virutal machine would be assigned **eth1** or **em2** or similar which is
+undesirable. 
 
 Set the network service to start automatically.
 
@@ -559,14 +588,16 @@ Set ssh to start automatically.
 
 Modify the kernel boot parameters.
 
-a. Add the following options to the end of the GRUB_CMDLINE_LINUX line in the `/etc/default/grub` file.
+a. Add the following options to the end of the **GRUB_CMDLINE_LINUX** line in the `/etc/default/grub` file.
 
 	earlyprintk=ttyS0
 	console=ttyS0
 	rootdelay=300
-	grub changes
 
-- The the `console` and `earlyprintk` statements allow the Azure diagnostics to pick up early bootup messages from the virtual machine in Azure. Note the Azure does not provide console access, however, so this is read-only.
+- The the `console` and `earlyprintk` statements allow the Azure diagnostics to
+  pick up early bootup messages from the virtual machine in Azure. Note the
+  Azure does not provide serial console access generally supported in every
+  region yet.
 
 b. Remove the following options, if they are present.
 
@@ -594,17 +625,19 @@ In a production environment, it's necessary to register RHEL instances using `su
 
 === Install the Windows Azure Linux Agent (WALinuxAgent/WALA).
 
-Enable the following repository, which contains the agent;
+The goldimage virtual machine does not have any repositories configured because
+it is not subscribed to **subscription-manager**. Again, lets download the lab
+repo in our gold image;
 
-	cd /etc/yum.repos.d/
-	wget FIXMEgithub/files/rhel-image-azure-lab-repo/rhel-image-azure-lab-repo.conf
-
-[NOTE]
-For production environments, the `rhel-7-server-extras-rpms` includes the Windows Azure Linux Agent.
+    [root@localhost ~]# cd /etc/yum.repos.d/
+    [root@localhost ~]# curl -O http://40.112.68.75/lab.repo
 
 It's always a good idea to clean the yum cache after repos change;
 
-	yum clean all
+	[root@localhost ~]#  yum clean all
+
+[NOTE]
+For production environments, the `rhel-7-server-extras-rpms` includes the Windows Azure Linux Agent.
 
 Install the agent, and configure it to start on boot;
 
