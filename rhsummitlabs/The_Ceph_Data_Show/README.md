@@ -1,4 +1,3 @@
-# Your labs docs placeholder, put your documentation here.
+# The Ceph Data Show lab documentation
 
-For an example, see the [Example lab](../Example/example.adoc). Feel free to insert your own documentation
-Aor start with the example as a template to design your own lab documentation. 
+This lab is hosted by the creaters on AWS and provided us with no centralized documentation or link, therefore it's not available for post-Summit hosting.
