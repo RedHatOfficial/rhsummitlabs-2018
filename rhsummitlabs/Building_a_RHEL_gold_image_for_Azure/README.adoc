@@ -3,6 +3,8 @@
 
 = Building a RHEL gold image for Azure
 
+NOTE: There is a HTML rendered version of this guide here that might be a
+little nicer to read than on GitHub: http://40.112.68.75/guide/
 
 == Introduction and Lab Outline
 
@@ -568,8 +570,8 @@ simple.
 
 Remove any persistent network device rules.
 
-	rm -f /etc/udev/rules.d/70-persistent-net.rules
-	rm -f /etc/udev/rules.d/75-persistent-net-generator.rules
+	[root@localhost ~]# rm -f /etc/udev/rules.d/70-persistent-net.rules
+	[root@localhost ~]# rm -f /etc/udev/rules.d/75-persistent-net-generator.rules
 
 This is necessary because when we create multiple copies of this virtual
 machine on Azure, it will create network cards with different MAC addresses
@@ -579,12 +581,12 @@ undesirable.
 
 Set the network service to start automatically.
 
-	chkconfig network on
+	[root@localhost ~]# chkconfig network on
 
 Set ssh to start automatically.
 
-	systemctl enable sshd
-	systemctl is-enabled sshd
+	[root@localhost ~]# systemctl enable sshd
+	[root@localhost ~]# systemctl is-enabled sshd
 
 Modify the kernel boot parameters.
 
@@ -641,8 +643,8 @@ For production environments, the `rhel-7-server-extras-rpms` includes the Window
 
 Install the agent, and configure it to start on boot;
 
-	yum -y install WALinuxAgent
-	systemctl enable waagent.service
+	[root@localhost ~]# yum -y install WALinuxAgent
+	[root@localhost ~]# systemctl enable waagent.service
 
 Edit the following lines in the /etc/waagent.conf file to configure swap space for provisioned VMs. Set swap space for whatever is appropriate for your provisioned VMs.
 
@@ -651,19 +653,18 @@ Edit the following lines in the /etc/waagent.conf file to configure swap space f
 	ResourceDisk.EnableSwap=y
 	ResourceDisk.SwapSizeMB=2048
 
-Take a snapshot of the VM.
+Now many of the common tasks have been completed, we're almost ready to
+"deprovision" the machine from WALA. It's sensible to take a backup of our work
+so far, so that if the deprovisioning fails or we want to make changes later,
+we can come back to this backup.
 
-From the VM menu:
+Logout of the gold image, and go back to the workstation. Take a snapshot of the VM from the workstation; 
 
-a. Select View.
-
-b. Select Snapshots.
-
-c. Click the plus symbol and create the snapshot.
+    lab-user@goldimageworkstation-fa72: virsh snapshot-create-as --domain goldimage --name "goldimage-before-deprovision"
 
 Prepare the VM for Azure provisioning by cleaning up the existing provisioning details; Azure will reprovision the VM in Azure. This command generates warnings, which is expected.
 
-	waagent -force -deprovision
+	[root@localhost ~]# waagent -force -deprovision
 
 Clean the shell history and shut down the VM.
 
@@ -719,7 +720,7 @@ Convert the qcow2 image to raw format, resize it, and convert the raw image to v
 
 Convert the image from qcow2 to raw.
 
-	qemu-img convert -f qcow2 -O raw <image-xxx.qcow2> <image-xxx.raw>
+	lab-user@goldimageworkstation-fa72: qemu-img convert -f qcow2 -O raw <image-xxx.qcow2> <image-xxx.raw>
 
 Save the following as a script. (These steps use aligned-size.sh.) The script will calculate the size of the raw image to the nearest 1 MB boundary.
 
@@ -733,21 +734,21 @@ Save the following as a script. (These steps use aligned-size.sh.) The script wi
 
 Run the script.
 
-	sh aligned-size.sh
+	lab-user@goldimageworkstation-fa72: sh aligned-size.sh
 
 Resize the raw image using the rounded size.
 
-	qemu-img resize -f raw <image-xxx.raw> <rounded-size>
+	lab-user@goldimageworkstation-fa72: qemu-img resize -f raw <image-xxx.raw> <rounded-size>
 
 Convert the raw disk image to vhd format.
 
 Important: qemu-img version 1.5.3 is used in this procedure. Check the qemu-img version using yum info qemu-img (or dnf info qemu-img for Fedora 22 or later). If the version is 2.2.1 or later, add the option force_size in the conversion command, for example, subformat=fixed,force_size. All other command options remain the same.
 
-	qemu-img convert -f raw -o subformat=fixed -O vpc <image-xxx.raw> <image-xxx.vhd>
+	lab-user@goldimageworkstation-fa72: qemu-img convert -f raw -o subformat=fixed -O vpc <image-xxx.raw> <image-xxx.vhd>
 
 To verify the file is resized correctly, show the virtual-size using the following command.
 
-	qemu-img info --output=json -f vpc <path-to-image>
+	lab-user@goldimageworkstation-fa72: qemu-img info --output=json -f vpc <path-to-image>
 
 	Divide the virtual-size value by 1024, twice. If the result is a whole number, the vhd file is aligned properly.
 
@@ -1084,7 +1085,7 @@ and enjoy the rest of the Red Hat Summit!
 
 === What if I want to use this lab after Summit?
 
-Sure! It's on GitHub, check out: http://github.com/FIXME . Obviously the lab
+Sure! It's on GitHub, check out: https://github.com/redhatdemocentral/rhsummitlabs-2018/blob/master/rhsummitlabs/Building_a_RHEL_gold_image_for_Azure/README.adoc . Obviously the lab
 environment you used at Red Hat Summit will not be available, but you can
 easily create your own workstation and then many of the instructions are
 similar.
@@ -1094,8 +1095,9 @@ similar.
 Original lab guide document, also explains how to build images from ISOs and more; 
 https://access.redhat.com/articles/uploading-rhel-image-to-azure
 
-FAQ and Best Practices;
+Useful Links, FAQ and Best Practices;
 
-* https://access.redhat.com/articles/2758981
-* FIXME RHEL on Azure region list article
-* FIXME MOAR Articles
+* https://access.redhat.com/articles/2758981[Frequently Asked Questions and Recommended Practices for Microsoft Azure]
+* https://access.redhat.com/articles/product-configuration-for-azure#regional-product-availability-1[Azure regional product availability]
+* https://azure.microsoft.com/en-us/global-infrastructure/services/["Red Hat Linux" (sic) availability by Azure region]
+* https://www.redhat.com/en/technologies/cloud-computing/cloud-access[Overview of Cloud Access]
