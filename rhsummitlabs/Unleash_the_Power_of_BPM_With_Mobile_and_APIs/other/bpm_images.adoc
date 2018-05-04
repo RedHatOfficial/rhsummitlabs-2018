@@ -1,0 +1,49 @@
+= BPM API : Managing Containers, Processes and Tasks
+Doc Writer <ajarrett@redhat.com>
+:doctype: book
+:imagesdir: assets/images
+:reproducible:
+:icons:font
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+
+
+== Enable KIE Server UI Extension
+
+In this section, you make a configuration change to the Business Central application to enable the process image feature. You save the process image in the project KJAR as an SVG file.
+
+- Open a terminal shell and edit the jbpm.xml workbench configuration file:
+
+[source,sh]
+----
+vi ~/<JBOSS_HOME_DEPLOYMENTS>/business-central.war/org.kie.workbench.KIEWebapp/profiles
+----
+
+- Enable the #<storesvgonsave># element (near line 55 of the file).
+
+[source,sh]
+----
+<storesvgonsave enabled="true"/>
+----
+
+- Commit and start Business Central.
+- When saving the BPM Process Model, Business Central will automatically persist the Process Model for use with the KIE API.
+
+// TODO - Add Parts around Packaging.
+
+== Handling Exceptions on ServiceTasks
+- Add a Catching Intermediate Error Event to the Service Task Node
+* Catching Error Event will catch based off a package.
+
+- Set ErrorRef to: <java.package>.<ExceptionClass>
+- You can map the Exception to a process variable if required.
+
+[source,java]
+----
+Exception exception = (Exception) kcontext.getVariable("process_error");
+if (exception != null) {
+  exception.printStackTrace();
+}
+----

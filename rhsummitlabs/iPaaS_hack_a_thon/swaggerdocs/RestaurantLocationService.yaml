@@ -1,0 +1,76 @@
+swagger: '2.0'
+info:
+  title: San Fransisco Restaurant Location Service
+  description: 2018 Summit Lab - Restaurant Location Service
+  version: 1.0.0
+host: 'sflocation-2445581558442.production.gw.apicast.io'
+schemes:
+  - https
+paths:
+  /sflocation/restaurant/all:
+    get:
+      tags:
+        - restaurant
+      summary: All restaurant Info in San Fransico
+      description: All restaurant Info in San Fransisco within 50 miles diameter to Red Hat Summit location
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Restaurant found
+          schema:
+            $ref: '#/definitions/restaueantlocation'
+  '/sflocation/restaurant/rating/{rating}/':
+    get:
+      tags:
+        - restaurant
+      summary: Restaurant Info base on rating
+      description: Restaurant Info base on rating in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Restaurant Founs
+          schema:
+            $ref: '#/definitions/restaueantlocation'
+    parameters:
+      - name: rating
+        in: path
+        description: min rating required
+        required: true
+        type: string
+definitions:
+  restaueantlocation:
+    title: Root Type for place
+    description: The root of the place type's schema.
+    type: array
+    items:
+      type: object
+      properties:
+        ID:
+          type: string
+        PLACENAME:
+          type: string
+        PHONE:
+          type: string
+        ADDRESS:
+          type: string
+        LAT:
+          format: double
+          type: number
+        LNG:
+          format: double
+          type: number
+        PIC:
+          type: string
+        RATING:
+          format: double
+          type: number
