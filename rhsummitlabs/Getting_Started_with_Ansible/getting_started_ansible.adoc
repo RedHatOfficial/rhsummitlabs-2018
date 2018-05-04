@@ -41,17 +41,18 @@ The web browser of your laptop should default to https://www.opentlc.com/guidgra
 
 * Make sure you have your *GUID*
 * Open a terminal session
-* Log in to your control host:
+* Log in to your control host using the default `lab-user` user:
 
 ----
-ssh control-<GUID>.rhpds.opentlc.com
+ssh lab-user@control-<GUID>.rhpds.opentlc.com
 ----
 
 WARNING: *Replace <number> with the GUID assigned to your seat!*
 
-Example: If your GUID is "83d4", do this:
+Example:: If your GUID is "83d4", do this:
++
 ----
-ssh root@control-83d4.rhpds.opentlc.com
+ssh lab-user@root@control-83d4.rhpds.opentlc.com
 ----
 
 TIP: The user will default to `lab-user` and SSH key authentication will be used automatically.
@@ -76,7 +77,7 @@ Most prerequisite tasks have already been done for you:
 * SSH connection and keys are configured
 * `sudo` has been configured on the managed hosts to run commands that require root privileges.
 
-Check Ansible has been installed correctly
+Okay, let's get started. Make sure you are logged-in as root on `control.example.com` and check Ansible has been installed correctly:
 ----
 [root@control ~]# ansible --version
 ansible 2.5.0
@@ -97,9 +98,9 @@ Verify that the managed hosts accept password-less connections with key authenti
 [ansible@host2 ~]$ exit
 ----
 
-To allow user ansible to execute commands on host1.example.com and host2.example.com as root `sudo` needs to be configured on the managed hosts.
+To allow user `ansible` to execute commands on `host1.example.com` and `host2.example.com` as `root` `sudo` needs to be configured on the managed hosts.
 
-Test that the configuration allows ansible to run commands using `sudo` on host1.example.com and host2.example.com without a password, e.g.:
+Test that the configuration allows `ansible` to run commands using `sudo` on `host1.example.com` and `host2.example.com` without a password, e.g.:
 ----
 [ansible@control ~]$ ssh host1.example.com
 [ansible@host1 ~]$ sudo cat /etc/shadow
@@ -152,6 +153,7 @@ The most basic host pattern is the name for a single managed host listed in the 
 ----
 
 An inventory file can contain a lot more information, it can organize your hosts in groups or define variables. You will use grouping most of the times, change your inventory file to look like this:
+
 ----
 [webserver]
 host1.example.com
@@ -171,25 +173,26 @@ Now run Ansible with these host patterns and observe the output:
 [ansible@control ~]$ ansible all -i ~/ansible-files/inventory --list-hosts
 ----
 
-TIP: It is ok to put systems in more than one group, for instance a server could be both a web server and a database server.
+TIP: It is ok to put systems in more than one group, for instance a server could be both a web server and a database server. It is also possible (and often used) to have groups of groups with `[mysupergroup:children]` and then naming the included groups (`children` is a keyword here).
 
-TIP: The inventory can contain more data. E.g. if you have hosts that run on non-standard SSH ports you can put the port number after the hostname with a colon. Or you could define names specific to Ansible and have them point to the "real" IP or hostname.  
+TIP: The inventory can contain more data. E.g. if you have hosts that run on non-standard SSH ports you can put the port number after the hostname with a colon. Or you could define names specific to Ansible and have them point to the "real" IP or hostname.
 
-=== The Ansible Configuration Files
+=== The Ansible configuration files
 
 The behavior of Ansible can be customized by modifying settings in Ansible's ini-style configuration file. Ansible will select its configuration file from one of several possible locations on the control node, please refer to the documentation.
 
-TIP: The recommended practice is to create an `ansible.cfg` file in a directory from which you run Ansible commands. This directory would also contain any files used by your Ansible project, such as the inventory and Playbooks. 
+TIP: The recommended practice is to create an `ansible.cfg` file in a directory from which you run Ansible commands. This directory would also contain any files used by your Ansible project, such as the inventory and playbooks (the recipe files of Ansible, we'll learn more about those later).
 
 Make sure your inventory file is used by default when executing commands from the `~/ansible-files/` directory:
 
 * On control.example.com as ansible create the file `~/ansible-files/ansible.cfg` with the following content:
++
 ----
 [defaults]
 inventory=/home/ansible/ansible-files/inventory
 ----
-
-* Check with `ansible --version`, first from ansible's home directory and then from `~/ansible-files/`. You should find when run from `~/ansible-files/` your personal config settings override the main config file.
++
+* Check with `ansible --version`, first from ansible's home directory and then from `~/ansible-files/`. You'll notice on the second line of the output that, when run from `~/ansible-files/`, your personal config settings override the settings from the main config file.
 * From `~/ansible-files/` run `ansible all --list-hosts`.
 
 Your Ansible inventory was used without providing the `-i` option. To double-check, run the command again from outside `~/ansible-files/`:
@@ -229,11 +232,13 @@ Ansible comes with a lot of modules by default. To list all modules run:
 TIP: In `ansible-doc` use the `up`/`down` arrows to scroll through the content and leave with `q`.
 
 To find a module try e.g.:
+
 ----
 [ansible@control ansible-files]$ ansible-doc -l | grep -i user
 ----
 
 Get help for a specific module including usage examples:
+
 ----
 [ansible@control ansible-files]$ ansible-doc user
 ----
@@ -243,6 +248,7 @@ TIP: Mandatory options are marked by a "=" in `ansible-doc`.
 === More Ad Hoc Commands
 
 Let's try a simple module that just executes a command on a managed host:
+
 ----
 [ansible@control ansible-files]$ ansible host1.example.com -m command -a 'id' 
 
@@ -253,16 +259,18 @@ uid=1000(ansible) gid=1000(ansible) groups=1000(ansible),10(wheel) context=uncon
 In this case the module is called `command` and the option passed with `-a` is the actual command to run. Try to run this ad hoc command on both hosts using the `all` host pattern.
 
 Another example: Have a quick look at the kernel versions your hosts are running:
+
 ----
 [ansible@control ansible-files]$ ansible all -m command -a 'uname -r' 
 ----
 
 Sometimes it's desirable to have the output for a host on one line:
+
 ----
 [ansible@control ansible-files]$ ansible all -m command -a 'uname -r' -o
 ----
 
-Using the `copy` module, execute an ad hoc command on control.example.com to change the contents of the `/etc/motd` file on host1.example.com. *The content is handed to the module through an option in this case*. 
+Using the `copy` module, execute an ad hoc command on `control.example.com` to change the contents of the `/etc/motd` file on `host1.example.com`. *The content is handed out to the module through an option in this case*. 
 
 Run:
 
@@ -282,17 +290,20 @@ host1.example.com | FAILED! => {
 
 ----
 
-Should be all red for you, the ad hoc command failed. Why? Because user ansible is not allowed to write the motd file. 
+Should be all red for you, the ad hoc command failed. Why? Because the user ansible is not allowed to write the motd file. 
 
 Now this is a case for privilege escalation and the reason `sudo` has to be setup properly. We need to instruct ansible to use `sudo` to run the command as root by using the parameter `-b` (think "become"). 
 
 TIP: Ansible will connect to the machines using your current user name (ansible in this case), just like SSH would. To override the remote user name, you could use the `-u` parameter.
 
 For us it's okay to connect as ansible because `sudo` is set up. Change the command to use the `-b` parameter and run again:
+
 ----
 [ansible@control ansible-files]$ ansible host1.example.com -m copy -a 'content="Managed by Ansible\n" dest=/etc/motd' -b
 ----
+
 Output:
+
 ----
 host1.example.com | SUCCESS => {
     "changed": true, 
@@ -312,6 +323,7 @@ host1.example.com | SUCCESS => {
 ----
 
 Check the motd file:
+
 ----
 [ansible@control ansible-files]$ ansible host1.example.com -m command -a 'cat /etc/motd' 
 
@@ -331,7 +343,7 @@ TIP: This makes it a lot easier to spot changes and what Ansible actually did.
 * Using `ansible-doc`
 ** Find a module that uses Yum to manage software packages.
 ** Look up the help examples for the module to learn how to install a package in the latest version
-* Run an Ansible ad hoc command to install the package "screen" in the latest version on host1.example.com
+* Run an Ansible ad hoc command to install the package `screen` in the latest version on `host1.example.com`
 
 TIP: Use the copy ad hoc command from above as a template and change the module and options.
 
@@ -343,14 +355,13 @@ WARNING: *Solution below!*
 [ansible@control ansible-files]$ ansible host1.example.com -m yum -a 'name=screen state=latest' -b
 ----
 
-
 == Ansible Playbooks: Introduction
 
 While Ansible ad hoc commands are useful for simple operations, they are not suited for complex configuration management or orchestration scenarios. 
 
 Playbooks are files which describe the desired configurations or steps to implement on managed hosts. Playbooks can change lengthy, complex administrative tasks into easily repeatable routines with predictable and successful outcomes.
 
-TIP: Here is a nice analogy: When Ansible modules are the tools in your workshop, the inventory is the materials and the Playbooks are the instructions.
+TIP: Here is a nice analogy: When Ansible *modules are the tools* in your workshop, the *inventory is the materials* and the *Playbooks are the instructions*.
 
 === Playbook Basics
 
@@ -361,9 +372,9 @@ Playbooks are text files written in YAML format and therefore need:
 
 There are some important concepts:
 
-* *hosts*: the managed hosts to perform the tasks on
-* *tasks*: the operations to be performed by invoking Ansible modules and passing them the necessary options.
-* *become*: privilege escalation in Playbooks, same as using `-b` in the ad hoc command. 
+hosts:: the managed hosts to perform the tasks on
+tasks:: the operations to be performed by invoking Ansible modules and passing them the necessary options.
+become:: privilege escalation in Playbooks, same as using `-b` in the ad hoc command. 
 
 WARNING: The ordering of the contents within a Playbook is important, because Ansible executes plays and tasks in the order they are presented. 
 
@@ -383,11 +394,12 @@ Enough theory, it's time to create your first Playbook. In this lab you create a
 
 === Playbook: Install Apache
 
-This Playbook makes sure the package containing the Apache webserver is installed on host1.example.com. 
+This Playbook makes sure the package containing the Apache webserver is installed on `host1.example.com`. 
 
 TIP: You obviously need to use privilege escalation to install a package or run any other task that requires root permissions. This is done in the Playbook by `become: yes`. 
 
 On control.example.com as user ansible create the file `~/ansible-files/apache.yml` with the following content:
+
 ----
 ---
 - name: Apache server installed
@@ -409,16 +421,26 @@ This shows one of Ansible's strenghts: The Playbook syntax is easy to read and u
 === Running Playbooks
 
 Playbooks are executed using the `ansible-playbook` command on the control node. Before you run a new Playbook it's a good idea to check for syntax errors:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook --syntax-check apache.yml
 ----
 
-Now you should be ready to run your Playbook:
+Now you should be ready to run your Playbook, but first use SSH to check that the RPM isn't yet installed:
+
+----
+[ansible@control ansible-files]$ ssh host1.example.com rpm -qi httpd
+
+package httpd is not installed
+----
+
+And now install Apache using Ansible:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook apache.yml
 ----
 
-Use SSH to make sure Apache has been installed on host1.example.com. 
+Use SSH to make sure Apache has been installed on `host1.example.com`: 
 
 ----
 [ansible@control ansible-files]$ ssh host1.example.com rpm -qi httpd
@@ -440,12 +462,13 @@ TIP: The different colors, the "ok" and "changed" counters and the "PLAY RECAP" 
 
 === Extend your Playbook: Start & Enable Apache
 
-The next part of the Playbook makes sure the Apache webserver is enabled and started on host1.example.com. 
+The next part of the Playbook makes sure the Apache webserver is enabled and started on `host1.example.com`. 
 
-On control.example.com as user ansible edit the file `~/ansible-files/apache.yml` to add a second task using the `service` module. The Playbook should now look like this:
+On `control.example.com` as user ansible edit the file `~/ansible-files/apache.yml` to add a second task using the `service` module. The Playbook should now look like this:
+
 ----
 ---
-- name: Apache server installed
+- name: Apache server installed, enabled and running
   hosts: host1.example.com
   become: yes
   tasks:
@@ -469,6 +492,7 @@ And again what it does is easy to understand:
 WARNING: As this is YAML take care of the correct indentation when copy/pasting!
 
 Run your extended Playbook:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook apache.yml
 ----
@@ -481,6 +505,7 @@ Run your extended Playbook:
 === Extend your Playbook: Create an index.html
 
 Check that the tasks where executed correctly and Apache is accepting connections: Make an HTTP request using Ansible's `uri` module in an ad hoc command from the control node:
+
 ----
 [ansible@control ansible-files]$ ansible localhost -m uri -a "url=http://host1.example.com/"
 ----
@@ -490,9 +515,10 @@ WARNING: Expect a lot of red lines and a 403 status!
 As long as there is not at least an `index.html` file to be served by Apache, it will throw an ugly "HTTP Error 403: Forbidden" status and Ansible will report an error.
 
 So why not use Ansible to deploy a simple `index.html` file? Create the file `~/ansible-files/index.html` on the control node:
+
 ----
 <body>
-<h1>Apache is running fine</h1>
+<h1>Apache is running fine thanks to Ansible!</h1>
 </body>
 ----
 
@@ -501,7 +527,7 @@ You already used Ansible's `copy` module to write text supplied on the commandli
 On control.example.com as user ansible edit the file `~/ansible-files/apache.yml` and add a new task utilizing the `copy` module. It should now look like this:
 ----
 ---
-- name: Apache server installed
+- name: Apache server installed and configured
   hosts: host1.example.com
   become: yes
   tasks:
@@ -523,6 +549,7 @@ On control.example.com as user ansible edit the file `~/ansible-files/apache.yml
 You are getting used to the Playbook syntax, so what happens? The new task uses the `copy` module and defines the source and destination options for the copy operation.
 
 Run your extended Playbook:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook apache.yml
 ----
@@ -536,7 +563,7 @@ The command should now return a friendly green "status: 200" line, amongst other
 
 This was nice but the real power of Ansible is to apply the same set of tasks reliably to many hosts.
 
-* Change the apache.yml Playbook to run on host1 *and* host2.example.com. 
+* Change the apache.yml Playbook to run on `host1.example.com` *and* `host2.example.com`. 
 
 TIP: There are multiple ways to do this, try to edit the "webserver" group in your inventory file to include both hosts and change your Playbook to use the group in `hosts:`
 
@@ -546,6 +573,7 @@ TIP: There are multiple ways to do this, try to edit the "webserver" group in yo
 WARNING: *Solution below!*
 
 The changed inventory file:
+
 ----
 [webserver]
 host1.example.com
@@ -559,6 +587,7 @@ host2.example.com
 ----
 
 The Playbook now pointing to the group "webserver":
+
 ----
 ---
 - name: Apache server installed
@@ -581,11 +610,13 @@ The Playbook now pointing to the group "webserver":
 ----
 
 Run the Playbook:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook apache.yml
 ----
 
 And the commands to check if Apache is now running on both servers:
+
 ----
 [ansible@control ansible-files]$ ansible localhost -m uri -a "url=http://host1.example.com/"
 ----
@@ -600,6 +631,7 @@ And the commands to check if Apache is now running on both servers:
 Ansible supports variables to store values that can be used in Playbooks. Variables can be defined in a variety of places and have a clear precedence. Ansible substitutes the variable with its value when a task is executed. 
 
 *Variables are referenced in Playbooks by placing the variable name in double curly braces.*
+
 ----
 Here comes a variable {{ variable1 }}
 ----
@@ -608,7 +640,7 @@ The recommended practice is to define variables in files located in two director
 
 * To e.g. define variables for a group "servers", create a YAML file named `group_vars/servers` with the variable definitions.
 
-* To define variables specifically for a host "host1.example.com", create the file `host_vars/host1.example.com` with the variable definitions.
+* To define variables specifically for a host `host1.example.com`, create the file `host_vars/host1.example.com` with the variable definitions.
 
 TIP: Host variables take precedence over group variables (more about precedence can be found in the docs).
 
@@ -641,13 +673,14 @@ stage: prod
 What is this about?
 
 * For all servers in the `webserver` group the variable `stage` with value `dev` is defined. So as default we flag them as members of the dev environment.
-* For server "host2.example.com" this is overriden and the host is flagged as a production server.
+* For server `host2.example.com` this is overriden and the host is flagged as a production server.
 
 === Create index.html Files
 
 Now create two files in `~/ansible-files/`:
 
 One called `prod_index.html` with the following content:
+
 ----
 <body>
 <h1>This is a production webserver, take care!</h1>
@@ -655,6 +688,7 @@ One called `prod_index.html` with the following content:
 ----
 
 And the other called `dev_index.html` with the following content:
+
 ----
 <body>
 <h1>This is a development webserver, have fun!</h1>
@@ -689,6 +723,7 @@ TIP: Note how the variable "stage" is used in the name of the file to copy.
 === Test the Result
 
 The Playbook should copy different files as index.html to the hosts, use `curl` to test it:
+
 ----
 [ansible@control ansible-files]$ curl http://host1.example.com
 
@@ -696,6 +731,7 @@ The Playbook should copy different files as index.html to the hosts, use `curl` 
 <h1>This is a development webserver, have fun!</h1>
 </body>
 ----
+
 ----
 [ansible@control ansible-files]$ curl http://host2.example.com
 
@@ -719,11 +755,13 @@ To get an idea what facts Ansible collects by default, on control.example.com as
 TIP: You still remember why you have to run ansible from this directory?
 
 This might be a bit too much, you can use filters to limit the output to certain facts, the expression is shell-style wildcard:
+
 ----
 [ansible@control ansible-files]$ ansible host1.example.com -m setup -a 'filter=ansible_eth0'
 ----
 
 Or what about only looking for memory related facts:
+
 ----
 [ansible@control ansible-files]$ ansible all -m setup -a 'filter=ansible_*_mb'
 ----
@@ -746,6 +784,7 @@ WARNING: *Solution below!*
 === Using Facts in Playbooks
 
 Facts can be used in a Playbook like variables, using the proper naming, of course. Create this Playbook as `facts.yml` in the `~/ansible-files/` directory:
+
 ----
 ---
 - name: Output facts within a playbook
@@ -759,21 +798,22 @@ Facts can be used in a Playbook like variables, using the proper naming, of cour
 TIP: The "debug" module is handy for e.g. debugging variables or expressions.
 
 Execute it to see how the facts are printed:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook facts.yml 
 
-PLAY [all] *********************************************************************
+PLAY [Output facts within a playbook] ******************************************
 
-TASK [setup] *******************************************************************
+TASK [Gathering Facts] *********************************************************
 ok: [host1.example.com]
 ok: [host2.example.com]
 
-TASK [Prints various Ansible facts] ********************************************
+TASK [Prints Ansible facts] ****************************************************
 ok: [host1.example.com] => {
-    "msg": "The default IPv4 address of host1.example.com is 192.168.0.20\n"
+    "msg": "The default IPv4 address of host1.example.com is 192.168.0.20"
 }
 ok: [host2.example.com] => {
-    "msg": "The default IPv4 address of host2.example.com is 192.168.0.30\n"
+    "msg": "The default IPv4 address of host2.example.com is 192.168.0.30"
 }
 
 PLAY RECAP *********************************************************************
@@ -781,7 +821,82 @@ host1.example.com          : ok=2    changed=0    unreachable=0    failed=0
 host2.example.com          : ok=2    changed=0    unreachable=0    failed=0
 ----
 
-== Ansible Conditionals
+Notice how the setup module was called implicitly by Ansible under the task name "Gathering Facts".
+
+== Controlling Task Execution
+
+=== Loops
+
+Often you’ll want to do many things in one task, such as
+
+* create a lot of users
+* repeat a polling step until a certain result is reached.
+
+Ansible supports loops to iterate over a set of values and saves administrators from writing repetitive tasks that use the same module.
+
+Ansible supports three main types of loops: simple loops, list of hashes and nested loops. In this lab we'll have a quick look at the first two.
+
+WARNING: Ansible 2.5 brought a new and easier way do work with loops: The `loop` keyword. Before 2.5 Ansible mainly used the `with_<lookup>` keywords to create loops, the new `loop` keyword is basically analogous to `with_list`. You'll find a lot of Ansible examples using `with_items` or `with_nested` on the Internet.
+
+==== Simple Loops
+
+Simple loops are a list of items that Ansible iterates over. They are
+defined by providing a list of items to the `loop` keyword. Create the following Playbook as `loop1.yml` and run it:
+----
+---
+- name: Loop demo
+  hosts: host1.example.com
+  tasks:
+    - name: Check if service is started
+      service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - httpd
+        - sshd
+----
+
+The list of items to loop over could also be supplied as a list in the vars section or in a file. In this example the array is called `check_services`. Create this Playbook as `loop2.yml` and run it, the output should be the same:
+----
+---
+- name: Loop demo
+  hosts: host1.example.com
+  vars:
+    check_services:
+      - httpd
+      - sshd
+  tasks:
+    - name: Check if service is started
+      service:
+        name: "{{ item }}"
+        state: started
+      loop: "{{ check_services }}"
+----
+
+
+==== Hashes
+
+You can also loop over a list of hashes for more complex data. The
+following Playbook shows how a list of hashes with key-value pairs is passed to the user module. Create as `loop3.yml` and run it: 
+----
+---
+- name: Hash demo
+  hosts: host1.example.com
+  become: yes
+  tasks:
+    - name: Create users from hash
+      user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+      loop:
+        - { name: 'jane', groups: 'wheel' }
+        - { name: 'joe', groups: 'root' }
+----
+
+TIP: There is a lot more you can do with Ansible loops: http://docs.ansible.com/ansible/playbooks_loops.html
+
+=== Ansible Conditionals
 
 Ansible can use conditionals to execute tasks or plays when certain conditions are met. 
 
@@ -798,40 +913,41 @@ To implement a conditional, the `when` statement must be used, followed by the c
 
 For more on this, please refer to the documentation: http://jinja.pocoo.org/docs/2.9/templates/
 
-=== Inventory Group Membership in Conditional
+==== Use Conditionals
 
-As an example you would like to install an FTP server, but only on hosts that are in the "ftpserver" inventory group. 
+As an example you would like to install an FTP server, but only on hosts that are not in production because the protocol isn't secure.
 
-As user ansible create this Playbook on control.example.com as `ftpserver.yml` in the `~/ansible-files/` directory, run it and examine the output:
+As user ansible create this Playbook on `control.example.com` as `ftpserver.yml` in the `~/ansible-files/` directory, run it and examine the output:
+
 ----
 ---
-- name: Install vsftpd on ftpservers
+- name: Install insecure FTP server as long as not in production
   hosts: all
   become: yes
   tasks:
-    - name: Install FTP server when host in ftpserver group
+    - name: Install FTP server if not in production
       yum:
         name: vsftpd
         state: latest
-      when: inventory_hostname in groups["ftpserver"]
+      when: stage != "prod"
 ----
 
 TIP: The when statement must be placed "outside" of the module by being indented at the top level of the task.
 
-Expected outcome: The task is skipped on host1.example.com because it is not in the ftpserver group in your inventory file:
+Expected outcome: The task is skipped on `host2.example.com` because it has the `stage` variable set to `prod`:
+
 ----
 [...]
-TASK [Install FTP server when host in ftpserver group] *************************
-skipping: [host1.example.com]
-changed: [host2.example.com]
+TASK [Install FTP server if not in production] *************************
+skipping: [host2.example.com]
+changed: [host1.example.com]
 [...]
 ----
 
-=== Challenge Lab: Fact in Conditional
+==== Challenge Lab: Fact in Conditional
 
-Admittedly using an inventory group as a condition is the most basic case you would expect to just work. Let's try something a bit more interesting:
+Let's try something else. You might have noticed `host1.example.com` and `host2.example.com` have different amounts of RAM. If not have another look at the facts:
 
-You might have noticed host1 and host2 have different amounts of RAM. If not have another look at the facts:
 ----
 [ansible@control ansible-files]$ ansible all -m setup -a 'filter=ansible_*_mb'
 ----
@@ -841,7 +957,7 @@ Write a Playbook `mariadb.yml` that installs MariaDB but only if the host has mo
 * Find the fact for memtotal in MB (look at the ad hoc command output and feel free to use "grep").
 * Use this Playbook as a template and create the when statement by *replacing the upper case placeholders*:
 
-WARNING: In a `when` statement facts and variables are *not* to be inclosed in double curly braces like you would do for variables!
+WARNING: In a `when` statement facts and variables are *not* to be enclosed in double curly braces like you would do elsewhere in the playbook!
 
 ----
 ---
@@ -874,7 +990,7 @@ WARNING: *Solution below!*
 ----
 
 
-== Ansible Handlers
+=== Ansible Handlers
 
 Sometimes when a task does make a change to the system, a further task may need to be run. For example, a change to a service's configuration file may then require that the service be reloaded so that the changed configuration takes effect. 
 
@@ -885,7 +1001,8 @@ As a an example, let's write a Playbook that:
 * manages Apache's configuration file `httpd.conf` on all hosts in the `webserver` group
 * restarts Apache when the file has changed
 
-First we need the file Ansible will deploy, let's just take the one from control.example.com:
+First we need the file Ansible will deploy, let's just take the one from `control.example.com`:
+
 ----
 [ansible@control ansible-files]$ cp /etc/httpd/conf/httpd.conf .
 ----
@@ -903,37 +1020,38 @@ Then create the Playbook `httpd_conf.yml`:
       src: httpd.conf 
       dest: /etc/httpd/conf/
     notify:
-       - restart_apache
+    - restart_apache
   handlers:
-    - name: restart_apache
-      service: 
-        name: httpd 
-        state: restarted
+  - name: restart_apache
+    service: 
+      name: httpd 
+      state: restarted
 ----
 
 So what's new here?
 
-* The "notify" section calls the handler only when the copy task changed the file.
-* The "handlers" section defines a task that is only run on notification.
+* The `notify` section calls the handler only when the copy task changed the file.
+* The `handlers` section defines a task that is only run on notification.
 
 Run the Playbook. We didn't change anything in the file yet so there should not be any `changed` lines in the output and of course the handler shouldn't have fired.
 
 * Now change the `Listen 80` line in httpd.conf to:
++
 ----
 Listen 8080
 ----
-
++
 * Run the Playbook again. Now the Ansible's output should be a lot more interesting:
 ** httpd.conf should have been copied over
 ** The handler should have restarted Apache
 
 Apache should now listen on port 8080. Easy enough to verify:
+
 ----
 [ansible@control ansible-files]$ curl http://host2.example.com
 
 curl: (7) Failed connect to host2.example.com:80; Connection refused
-----
-----
+
 [ansible@control ansible-files]$ curl http://host2.example.com:8080
 
 <body>
@@ -954,7 +1072,8 @@ When a template for a file has been created, it can be deployed to the managed h
 
 As an example of using templates you will change the motd file to contain host-specific data.
 
-In the `~/ansible-files/` directory on control.example.com as user ansible create the template file `motd-facts.j2`:
+In the `~/ansible-files/` directory on `control.example.com` as user ansible create the template file `motd-facts.j2`:
+
 ----
 Welcome to {{ ansible_hostname }}.
 {{ ansible_distribution }} {{ ansible_distribution_version}} 
@@ -962,6 +1081,7 @@ deployed on {{ ansible_architecture }} architecture.
 ----
 
 In the `~/ansible-files/` directory on control.example.com as user ansible create the Playbook `motd-facts.yml`:
+
 ----
 ---
 - name: Fill motd file with host data
@@ -980,8 +1100,8 @@ You have done this a couple of times by now:
 
 * Understand what the Playbook does.
 * Execute the Playbook `motd-facts.yml`
-* Login to host1.example.com via SSH and check the motto of the day message.
-* Log out of host1.example.com
+* Login to `host1.example.com` via SSH and check the motto of the day message.
+* Log out of `host1.example.com`
 
 You should see how Ansible replaces the variables with the facts it discovered from the system.
 
@@ -995,7 +1115,7 @@ TIP: Do a `grep -i` for fqdn
 
 * Change the template to use the fact you found.
 * Run the Playbook again.
-* Check motd by logging in to host1.example.com
+* Check motd by logging in to `host1.example.com`
 
 WARNING: *Solution below!*
 
@@ -1056,11 +1176,13 @@ WARNING: *Solution below!*
 ==== Define the variables:
 
 * Add this line to `group_vars/webserver`:
++
 ----
 listen_port: 8080
 ----
 
 * Add this line to `host_vars/host2.example.com`:
++
 ----
 listen_port: 80
 ----
@@ -1068,14 +1190,17 @@ listen_port: 80
 ==== Prepare the template:
 
 * Copy `httpd.conf` to `httpd.conf.j2`
-* Edit the "Listen" directive in `httpd.conf.j2` to make it look like this:
+* Edit the `Listen` directive in `httpd.conf.j2` to use the variable:
++
 ----
 [...]
 Listen {{ listen_port }}
 [...]
 ----
 
-==== Create the Playbook `apache_config_tpl.yml`:
+==== Create the Playbook
+
+Create a file called `apache_config_tpl.yml` with the following content:
 
 ----
 ---
@@ -1088,25 +1213,24 @@ Listen {{ listen_port }}
       src: httpd.conf.j2 
       dest: /etc/httpd/conf/httpd.conf
     notify:
-       - restart apache
+    - restart apache
   handlers:
-    - name: restart apache
-      service: 
-        name: httpd 
-        state: restarted
+  - name: restart apache
+    service: 
+      name: httpd 
+      state: restarted
 ----
 
 ==== Run and test:
+
 ----
 [ansible@control ansible-files]$ ansible-playbook apache_config_tpl.yml 
-----
-----
+
 [ansible@control ansible-files]$ curl http://host2.example.com:80
 <body>
 <h1>This is a production webserver, take care!</h1>
 </body>
-----
-----
+
 [ansible@control ansible-files]$ curl http://host1.example.com:8080
 <body>
 <h1>This is a development webserver, have fun!</h1>
@@ -1142,12 +1266,12 @@ WARNING: *Solution below!*
       dest: /etc/ssh/sshd_config
       line: "PermitRootLogin no"
     notify:
-       - restart_ssh
+    - restart_ssh
   handlers:
-    - name: restart_ssh
-      service:
-        name: sshd 
-        state: restarted
+  - name: restart_ssh
+    service:
+      name: sshd 
+      state: restarted
 ----
 
 * Run it and check the SSH login as root:
@@ -1160,4 +1284,3 @@ WARNING: *Solution below!*
 root@host1.example.com's password: 
 Permission denied, please try again.
 ----
-
