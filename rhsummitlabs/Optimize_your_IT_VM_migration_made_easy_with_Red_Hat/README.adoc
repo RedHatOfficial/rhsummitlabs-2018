@@ -67,21 +67,21 @@ Internet Explorer is not recommended.
 
 . Access the link:https://www.opentlc.com/guidgrabber/guidgrabber.cgi[Labs Web Console], and select lab *L1056 - Optimize your IT. VM Migration made easy with Red Hat*
 +
-image::lab_guid_grab1.png[Lab GUID Grab 1]
+image::lab_guid_grab_1.png[Lab GUID Grab 1]
 
 . Wait to have a *Lab GUID* assigned
 +
-image::lab_guid_grab2.png[Lab GUID Grab 2]
+image::lab_guid_grab_2.png[Lab GUID Grab 2]
 
-. You will have your *Lab GUID* and will be able to start. In this example *YOUR-GUID* is `a2ce`
+. You will have your *Lab GUID* and will be able to start. In this example *YOUR-GUID* is `ba34`
 +
-image::lab_guid_grab3.png[Lab GUID Grab 3]
+image::lab_guid_grab_3.png[Lab GUID Grab 3]
 
 . Passwords to the services is referred as `<to_be_provided>`. The instructor will provide it to you
 
 === Environment
 
-A full new demo environment is deployed for each student. To make the environment unique a 4 character identifier is assigned to it (i.e. `a2ce`), this identifier is referred in this documentation as *YOUR-GUID*.  
+A full new demo environment is deployed for each student. To make the environment unique a 4 character identifier is assigned to it (i.e. `ba34`), this identifier is referred in this documentation as *YOUR-GUID*.  
 
 The demo environment consists of the following systems:
 
@@ -413,4 +413,8 @@ image::migration_running_5.png[Migration Running 5]
 
 And, with this, the Lab is done!. We hope you enjoyed it!
 
+Please click on the *RESET STATION* once you have finished.
 
+image::lab_guid_grab_4.png[Lab GUID Grab 4]
+
+*Remember to fill in the evaluation form in the Red Hat Summit app*. Thank you!
