@@ -1,0 +1,103 @@
+= Integration Redhat BPMS with Redhat Single Sign On
+Doc Writer <pbrown@redhat.com>
+:doctype: book
+:reproducible:
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+//:pdf-page-size: Letter
+
+
+== Introduction
+In this lab you will configure the Redhat BPMS Single Sign On Adapter.
+
+*Pre-Requisites:*
+. Red Hat Single Sign On instance available.
+. Red Hat Single Sign On Realm created for the BPMS application along with the relevant users and roles.
+. Red Hat BPMS Application installed and running on Redhat EAP 6.4
+
+*Software Downloads Required*
+. RH SSO Adapter
+
+== Step 1: Install the Redhat SSO EAP Adapter for EAP.
+["arabic"]
+. Unzip the RH-SSO-Adapter.zip in the base Redhat EAP directory.
+. From the command prompt navigate to the EAP_HOME/bin directory.
+. Ensure the EAP domain is up and running.
+. Run the following command:
+    * ./jboss_cli.sh --connect -file adapter-install.cli
+. The Redhat EAP SSO adapter should now be installed.
+
+== Step 2: Configure the Redhat BPMS EAP Domain to use the Redhat SSO BPMS Realm.
+["arabic"]
+. From the command prompt navigate to the EAP_HOME/standalone/configuration in your EAP installation and edit standalone.xml to add the RH-SSO subsystem configuration.
+
+----
+<subsystem xmlns="urn:jboss:domain:keycloak:1.1">
+ <secure-deployment name="business-central.war">
+   <realm>demo</realm>
+   <realm-public-key>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB</realm-public-key>
+   <auth-server-url>http://localhost:8180/auth</auth-server-url>
+   <ssl-required>external</ssl-required>
+   <enable-basic-auth>true</enable-basic-auth>
+   <resource>kie</resource>
+   <credential name="secret">759514d0-dbb1-46ba-b7e7-ff76e63c6891</credential>
+   <principal-attribute>preferred_username</principal-attribute>
+ </secure-deployment>
+</subsystem>
+----
+
+. secure-deployment name: Name of your application’s WAR file.
+. realm: Name of the realm that you created for the applications to use.
+. realm-public-key: The public key of the realm you created. You can find the key in the Keys tab in the Realm settings page of the realm you created in the RH-SSO Admin Console. If you do not provide a value for realm-public-key, the server retrieves it automatically.
+. auth-server-url: The URL for the RH-SSO authentication server.
+. enable-basic-auth: The setting to enable basic authentication mechanism, so that the clients can use both token-based and basic authentication approaches to perform the requests.
+. resource: The name for the client that you created.
+. credential name: The secret key for the client you created. You can find the key in the Credentials tab on the Clients page of the RH-SSO Admin Console.
+
+== Step 3: Secure Business Central Remote Service Using RH-SSO.
+. From the command prompt navigate to the EAP_HOME/standalone/deployments/business-central/WEB-INF directory.
+. Edit the Web.xml file and remove /comment out the following lines to remove the servlet filter and its mapping for class org.uberfire.ext.security.server.BasicAuthSecurityFilter.
+----
+<filter>
+  <filter-name>HTTP Basic Auth Filter</filter-name>
+  <filter-class>org.uberfire.ext.security.server.BasicAuthSecurityFilter</filter-class>
+  <init-param>
+    <param-name>realmName</param-name>
+    <param-value>KIE Workbench Realm</param-value>
+  </init-param>
+</filter>
+
+<filter-mapping>
+  <filter-name>HTTP Basic Auth Filter</filter-name>
+  <url-pattern>/rest/*</url-pattern>
+  <url-pattern>/maven2/*</url-pattern>
+  <url-pattern>/ws/*</url-pattern>
+</filter-mapping>
+----
+In the same Web.xml file add the following lines to add the security-constraint for the url-patterns that you have removed from the filter mapping.
+----
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>remote-services</web-resource-name>
+    <url-pattern>/rest/*</url-pattern>
+    <url-pattern>/maven2/*</url-pattern>
+    <url-pattern>/ws/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>rest-all</role-name>
+  </auth-constraint>
+</security-constraint>
+----
+. Save the changes
+. The Redhat BPMS Business Central authorisation and authentication should now be configured to use Redhat SSO.
+
+== Step 4: Test the Redhat BPMS SSO Configuration 
+. Open a browser and attempt to access the Business Central url. i.e https://localhost:8080:business-central
+. You should be redirected to the Redhat SSO Login page.
+. Attempt to login with the credentials you created earlier during the Redhat SSO realm configuration lab.
+. You should be prompted to change your password the first time you attempt to login.
+. After successfully logging via the Redhat SSO login page you should be redirected back to the BPMS Business-Central page.
+
+

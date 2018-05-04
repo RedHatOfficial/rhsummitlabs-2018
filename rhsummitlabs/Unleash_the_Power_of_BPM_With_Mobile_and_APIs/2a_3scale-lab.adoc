@@ -1,0 +1,183 @@
+= Creating and Exposing a Basic 3Scale API
+Doc Writer <doc@example.com>
+:doctype: book
+:reproducible:
+//:source-highlighter: coderay
+:source-highlighter: rouge
+:listing-caption: Listing
+// Uncomment next line to set page size (default is A4)
+//:pdf-page-size: Letter
+
+
+== Introduction
+
+In this lab you will expose the BPMS Create Process service via 3Scale.
+
+In short:
+[square]
+* *Login into 3Scale SaaS Application*
+* *Define API Service*
+* *Define Application Plan*
+* *Define Accounts and Users*
+* *Create Application*
+* Create Mappings and Methods for BPMS service integration
+
+== Configure the API Service
+. Log into 3scale - `https://redhat-bpms-admin.3scale.net`
+
+. On the homepage you will see 2 Service's username_default and username_custom for example `summit-student-01_default` and `summit-student-01_custom`
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-homepage.png[3Scale Home Page, 900]
++
+. Click and expand username_default
++
+NOTE: We will only use the _default API in the lab. The _custom API can be used to have a play without affecting the lab.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-default-expanded.png[3Scale Expand Default, 900]
++
+. Click Integration to bring up the configuration page for your service
+
+. Click "add the base URL of your API and save the configuration"
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-integrationpage.png[3Scale Integration Page, 900]
++
+. Enter the following information into the API and API Gateway sections.
+    * API Section Section
+    ** Private Base URL: `http://BPMSERVER:8080`
+NOTE:  use either server A: `http://34.251.130.28:8080` or server B: `http://52.51.30.91:8080` based on your username
+    * API Gateway Section
+    ** Staging Public Base URL: This should already be defaulted.
+    ** Production Public Base URL: This should already be defaulted.
+    * Mapping Rules Section
+    ** On the right hand side next to the "Metric or Method" label click the "Define" option
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-define.png[3Scale Define Tab, 300]
+    ** Click + New Method next under Methods
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-newmethod.png[3Scale New Method, 600]
+    ** Set a Friendly such as "Create a process" and System name such as "create_process"
+    ** Click Create Method
+    ** Click "Add a mapping rule", this will take you back to the Integration page
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule.png[3Scale Add Mapping Rule, 600]
+    ** Click "+ Add Mapping Rule" again
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-addmappingrule3.png[3Scale Add Mapping Rule Again, 300]
+    ** Under verb option select "POST"
+    ** In the pattern section enter the following: /kie-server/services/rest/server/containers/bpm-mobile-workflows/processes/org.jbpm.demo.NewApplication/instances
+    ** In Metric or Method drop down, change Hits and select your newly created method
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-mappingrulecomplete.png[3Scale Mapping Rule Complete, 600]
+    * Expand Authenication Settings and enter the following
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale_authsettings.png[3Scale Expand Authentication Settings, 300]
+    ** Host Header: leave blank
+    ** Secret Token: leave default
+    * Credentials Location
+    ** Ensure "As HTTP Headers" is selected
+    ** For the Auth User Key: leave as it (this can however be any string value)
+    * Error Code Mapping
+    ** This section can be left with the default settings
+    * Client
+    ** For the API test GET Request enter "/business-central/kie-wb.jsp"
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-clientcomplete.png[3Scale Client Complete, 600]
++
+. Finally, click the "Update & test In Staging Environment" button located in the bottom right hand corner.
+
+NOTE: Failure is expected. We don't yet have a valid user_key. We generate this next by creating a Application Plan and then a Application.
+
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-authfailure.png[3Scale Client Failure, 600]
+
+== Define API Application Plan:
+
+NOTE: Application plans allow you to define the rules (limits, pricing, features) for using your API. Every application that accesses your api will do so within the constraints of an application plan. From the business perspective application plans allow you to target different audiences by using multiple plans (i.e basic, pro, premium) with different sets of rules.
+
+
+["arabic"]
+. Go back to the list of available API's by selecting the "APIs" menu option from the top of the screen
+. Expand username_default
+. Click on the "+ Create Application Plan" link that is situated just below the title of your newly create service
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-createappplan.png[3Scale Create App Plan, 600]
+. The "Create Application Plan" screen should now appear. Enter the following information
+    * Name : <Enter Any Name>
+    * System Name : <Username>_createLoanApplication
+    * Leave the "Applications require approval?" option unchecked
+    * Trial Period (days): Leave blank
+    * Setup Fee : Leave as per defaults 0.00
+    * Cost Per Month : Leave as per defaults 0.00
+. Click "Create Application Plan"
+. Finally click Publish, this will enable your application plan
+. At this stage your service should now be ready to test.
+
+== Define Application:
+
+NOTE: Now we have a API service and a application plan we need a Application who can use this service. In this section we setup a Organisation, add a Application.
+
+. Click Developers from the main menu
+. Click "Redhat-BPMS"
+. Click "X_Applications" from the sub menu. X will be be a number depending on the number of applications created.
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-applications.png[3Scale Applications, 600]
+. Click "+Create Application"
+. Choose your Application plan from the drop down menu
+. Enter a name such as username_default
+. Click Create Application
+. Copy the User Key under Credentials - you will need this to authenticate against the service
+
+== Test the Service using 3Scale Client:
+
+NOTE: We now go back to the integration page of our API and re-test the integration. 3Scale's test client uses the first user key it can find for the service.
+
+.Testing your service using the 3scale Client
+** Click back to APIs -> username_default -> Integration
+** Click edit APIcast configuration
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apired.png[3Scale API Red, 600]
+** Click Update & test at the bottom of the screen
+** Notice how the side is now green and the curl request now uses your user-key
++
+image::../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/images/3scale-apigreen.png[3Scale API Green, 600]
+
+== Promoting the Service to Production
+
+NOTE: 3Scale provides a staging and production url. We will now push our staging configuration into production.
+
+. Click APIs -> username_default -> Integration
+. Click Promote v.X to Production
+. You will now see a production environment url. Make a note of either the staging or production environment url which we will use to test the service now.
+
+
+== Testing your service using curl and postman
+
+. Retrieve the Public API URL for either staging or production from the UI.
+
+. Use the following curl command, changing USER_KEY to the Applications User Key header and value you created earlier:
+* curl "https://<Public API URL>/kie-server/services/rest/server/containers" -H'user-key: 623c19b73e3a87089ea2cdd16952f0b5' -H "Authorization: Basic amJvc3M6YnBtc3VpdGUxIQ==".
+
+NOTE: As we have not configured 3scale to perform single sign on we still need to provide a basic authorization header to talk to the BPM service. In a production environment you would configure SSO rather than providing the backend security credentials into your public api which we cover in a later lab.
+
+.Testing your service using Postman
+
+. Open the Postman application
+. Create a new request
+. Set the method to GET
+. Enter the public url of your API - https://<Public API URL>/kie-server/services/rest/server/containers.
+. In the Authorisation section set the following fields:
+    * Type: Basic Auth
+    * Username: jboss
+    * Password : bpmsuite1!
+. Set the Headers as follows:
+    * Content-Type : application/xml
+    * Accept : application/xml
+    * User_Key : User_Key  // The User_Key header value must match the user key entered on the API integration configuration page.
+
+NOTE: A postman request example can be found in this script under the 3Scale folder: link:other/Summit_BPM_Postman_Collection.postman_collection.json[Summit BPM Lab Collection] +
+Please refer to <<1_Deploy_And_Manage_BPM_Container.adoc#,Postman Setup>> if you need help importing these files.
+
+== Extension - OpenID Connect
+
+In the previous section you used 2 authentication mechanism: a user_key to let you into 3scale and then basic auth to let you into the BPM api. In this extension you combine these authentication mechanisms to give you SSO via OpenID connect.
+
+link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/3_3scale_openidconnect.adoc[Start the API Management OpenID Connect lab here]

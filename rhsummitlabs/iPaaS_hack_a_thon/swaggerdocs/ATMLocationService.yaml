@@ -1,0 +1,79 @@
+swagger: '2.0'
+info:
+  title: San Fransico ATM Location Service
+  description: 2018 Summit Lab - ATM Location Service
+  version: 1.0.0
+host: 'sfatmlocation-2445581558442.production.gw.apicast.io'
+schemes:
+  - https
+paths:
+  /sflocation/atm/all:
+    get:
+      tags:
+        - atm      
+      summary: Get all ATM locations
+      description: Get all ATM locations in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: ATM Found
+          schema:
+            $ref: '#/definitions/atmlocation'
+  /sflocation/atm/bankname/{bankname}:
+    get:
+      tags:
+        - atm      
+      summary: Get Bank Name in San Fransisco
+      description: |-
+        Get all Bank Name in SF
+        Eg 
+         - Wells Fargo
+         - Union
+         - Bank of America
+         - Chase
+      parameters:
+        - name: user_key
+          in: query
+          description: API key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: ATM Found
+          schema:
+            $ref: '#/definitions/atmlocation'
+    parameters:
+      - name: bankname
+        in: path
+        description: Bank Name
+        required: true
+        type: string
+definitions:
+  atmlocation:
+    title: Root Type for atmlocation
+    description: The root of the atmlocation type's schema.
+    type: array
+    items:
+      type: object
+      properties:
+        ID:
+          type: string
+        BANKNAME:
+          type: string
+        PHONE:
+          type: string
+        ADDRESS:
+          type: string
+        LAT:
+          format: double
+          type: number
+        LNG:
+          format: double
+          type: number
+        PIC:
+          type: string

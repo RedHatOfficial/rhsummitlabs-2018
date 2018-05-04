@@ -57,12 +57,12 @@ There are a large number of vendors working in this space to provide their own S
 
 OpenDaylight has been adopted as the core SDN implementation of the [OPNFV community](https://www.opnfv.org/community/upstream-projects/opendaylight), as well as being positioned as a core-enabling technology for Telco/NFV customers for Red Hat. We have no current plans to productise OpenDaylight as a stand-alone product, but we'll be continuing to integrate it alongside Red Hat OpenStack Platform in the coming releases, where we'll be adding significant value to customers in these industry sectors with the features that they require for their implementations, such as comprehensive policy-driven control over networking, service-function chaining, and open-API's/standards for integration with existing datacentre investments. Red Hat will ensure that the components and modules that ship with OpenDaylight have been thoroughly tested for functionality, stability, and compatibility, ensuring that customers have an easy transition to an SDN environment should they want to.
 
-The typical OpenDaylight solution consists of five main components: the OpenDaylight APIs, Authentication, Authorisation and Accounting (AAA), Model-Driven Service Abstraction Layer (MD-SAL), Services and Applications, and various southbound plug-ins. The following diagram picture shows a simplified view of the typical OpenDaylight architecture:
+The OpenDaylight architecture is modular and pluggable.  It consists of a Northbound layer (usually where REST API based applications exist), the Model-Driven Service Abstraction Layer (MD-SAL) which is used to service the core database as well as RPCs and communication between Services and Applications, as well as the Southbound layer, which contains many plug-ins used to program and interact with the network forwarding fabric. The following diagram picture shows a simplified view of the typical OpenDaylight architecture:
 <br /><br />
 
 <center><img src="images/odl-architecture.png" style="width: 900px;" border=0/></center>
 
-The Red Hat OpenDaylight solution (part of the Red Hat OpenStack Platform) consists of the five main parts, but the selection of applications and plug-ins is limited to a certain number only. The Controller platform is based on the NetVirt application. This is the only application currently supported by Red Hat. In the future releases, more applications will be added.
+The Red Hat OpenDaylight solution (part of the Red Hat OpenStack Platform) includes several Northbound plugins that provide things like authorisation (AAA), REST interface with Neutron (Neutron NB application), translating Neutron models to OpenFlow (NetVirt). NetVirt handles most of the complex logic of taking abstract Neutron network resources and translating it into OpenFlow/OVSDB based data models. In the future releases, more applications will be added to provide additional SDN/NFV functionality.
 
 Most applications will only use a small subset of the available southbound plug-ins to control the data plane. The NetVirt application of the Red Hat OpenDaylight solution uses OpenFlow and Open vSwitch Database Management Protocol (OVSDB). The overview of the Red Hat OpenDaylight architecture is shown in the following diagram:
 <br /><br />
@@ -74,20 +74,20 @@ Most applications will only use a small subset of the available southbound plug-
 
 OpenStack Networking (Neutron) supports a plugin model that allows it to integrate with multiple different systems in order to implement networking capabilities for OpenStack. For the purpose of OpenStack integration, OpenDaylight exposes a single common northbound service, which is implemented by the Neutron Northbound component. The exposed API matches exactly the REST API of Neutron. This common service allows multiple Neutron providers to exist in OpenDaylight. As mentioned before, the Red Hat OpenDaylight solution is based on NetVirt as a Neutron provider for OpenStack. It is important to highlight that NetVirt consumes the Neutron API, rather than replacing or changing it.
 
-The OpenDaylight plug-in for OpenStack Neutron is called **networking-odl**, and is responsible for passing the OpenStack network configuration into the OpenDaylight controller. The communication between OpenStack and OpenDaylight is done using the public REST APIs. This model simplifies the implementation on the OpenStack side, because it offloads all networking tasks onto OpenDaylight, which diminishes the processing burden for OpenStack.
+The OpenDaylight plug-in for OpenStack Neutron is called **networking-odl**, and is responsible for passing the OpenStack network configuration into the OpenDaylight controller. The communication between OpenStack and OpenDaylight is done using the public REST APIs. This model simplifies the implementation on the OpenStack side, because it offloads most of the networking tasks onto OpenDaylight, which diminishes the processing burden for OpenStack.  OpenDaylight directly programs the Open vSwitch (OVS) switches in the data center.  This eliminates the need for most agents on every OpenStack node.  For example, when using OpenDaylight there is no OVS agent or L3 agent on compute. This means less processes running on compute nodes, which frees up more resources on a per node basis and allows greater scalability within OSP.  However, the Neutron DHCP agent is still used and exists on each OpenStack controller.
 <br /><br />
 
 <center><img src="images/odl-neutron.png" style="width: 700px;" border=0/></center>
 
 <br /><br />
-The OpenDaylight controller uses NetVirt, then configures Open vSwitch instances (which use the OpenFlow and OVSDB protocols), and provides the necessary networking environment. This includes Layer 2 networking, IP routing, security groups, and so on. The OpenDaylight controller can maintain the necessary isolation among different tenants. In addition, NetVirt is also able to control hardware gateways using the OVSDB protocol. A hardware gateway is typically a top of rack (ToR) Ethernet switch, that supports the OVSDB hardware_vtep scheme, and can be used to connect virtual machines with the actual physical devices.
+The OpenDaylight controller uses NetVirt, then configures Open vSwitch instances (which use the OpenFlow and OVSDB protocols), and provides the necessary networking environment. This includes Layer 2 networking, L3 distributed virtual routing (DVR), security groups, and so on. The OpenDaylight controller can maintain the necessary isolation among different tenants. In addition, NetVirt is also able to control hardware gateways using the OVSDB protocol. A hardware gateway is typically a top of rack (ToR) Ethernet switch, that supports the OVSDB hardware_vtep schema, and can be used to connect virtual machines with physical devices. These physical machines may span over multiple L3 domains but still be able to function as part of the same broadcast L2 domain as the virtual machines thanks to VXLAN tunneling overlay, which terminates at the HW VTEP switch. The traffic is then mapped to VLANs and sent to the appropriate physical machine; making it seem as if the VMs and physical machines were in the same L2 domain.
 <br /><br />
 
 ## **Overview of OpenDaylight Features with OpenStack (OSP12)**
 
 This section lists the key features available with OpenDaylight and Red Hat OpenStack Platform 12 release. Please skip ahead if you're already aware of these, or if you just want to have them as a reference for a later date.
 
-* **Integration with Red Hat OpenStack Platform Director** - The Red Hat OpenStack Platform director is a toolset for installing and managing a complete OpenStack environment. With Red Hat OpenStack Platform 12, director can deploy and configure OpenStack to work with OpenDaylight. OpenDaylight can run together with the OpenStack overcloud controller role, or as a separate custom role on a different node in several possible scenarios. In Red Hat Openstack Platform 12, OpenDaylight is installed and run in **containers** which provides more flexibility to its maintenance and use.
+* **Integration with Red Hat OpenStack Platform Director** - The Red Hat OpenStack Platform director is a toolset for installing and managing a complete OpenStack environment. With Red Hat OpenStack Platform 12, director can deploy and configure OpenStack to work with OpenDaylight. OpenDaylight can run together with the OpenStack overcloud controller role, or as a separate custom role on a different node in several possible scenarios. In Red Hat Openstack Platform 12, OpenDaylight is installed and run in a **container** which provides more flexibility to its maintenance and use.
 
 * **L2 Connectivity between OpenStack instances** - OpenDaylight provides the required Layer 2 (L2) connectivity among VM instances belonging to the same Neutron virtual network. Each time a Neutron network is created by a user, OpenDaylight automatically sets the required Open vSwitch (OVS) parameters on the relevant compute nodes to ensure that instances, belonging to the same network, can communicate with each other over a shared broadcast domain.
 
@@ -97,7 +97,7 @@ This section lists the key features available with OpenDaylight and Red Hat Open
 
 	> **NOTE**: OpenDaylight can operate as a DHCP server. However, using the Neutron DHCP agent provides High Availability (HA) and support for VM instance metadata (cloud-init). Therefore Red Hat recommends to deploy the DHCP agent, rather than relying on OpenDaylight for such functionality at this time.
 
-* **Routing between OpenStack networks** - OpenDaylight provides support for Layer 3 (L3) routing between OpenStack networks, whenever a virtual router device is defined by the user. Routing is supported between different networks of the same project (tenant), which is also commonly referred to as East-West routing. OpenDaylight uses a distributed virtual routing paradigm, so that the forwarding jobs are done locally on each compute node.
+* **Routing between OpenStack networks** - OpenDaylight provides support for Layer 3 (L3) routing between OpenStack networks, whenever a virtual router device is defined by the user. Routing is supported between different networks of the same project (tenant), which is also commonly referred to as East-West routing. OpenDaylight uses a distributed virtual routing paradigm, so that the packet forwarding and routing is done locally on each compute node and programmed directly into the switch dataplane.
 
 * **Floating IPs** - A floating IP is a 1-to-1 IPv4 address mapping between a floating address (on an external network) and the fixed IP address, assigned to the instance in the tenant network. Once a VM instance is assigned with a floating IP by the user, the IP is used for any incoming or outgoing external communication. Red Hat OpenStack Platform director includes a default template, where each compute role has external connectivity for floating IPs communication. These external connections support both flat (untagged) and VLAN based networks, and is a source of **DNAT** (Destination Network Address Translation).
 
@@ -133,7 +133,8 @@ This section lists the key features available with OpenDaylight and Red Hat Open
 
 * **Hardware VXLAN VTEP (L2GW)** - Layer 2 gateway services allow a tenant’s virtual network to be bridged to a physical network. This integration provides users with the capability to access resources on a physical server through a layer 2 network connection rather than via a routed layer 3 connection, that means extending the layer 2 broadcast domain instead of going through L3 or Floating IPs. To implement this, there is a need to create a bridge between the virtual workloads running inside an overlay (VXLAN) and workloads running in physical networks (normally using VLAN). This requires some sort of control over the physical top-of-rack (ToR) switch the physical workload is connected to. Hardware VXLAN Gateway (aka HW VTEP) can help with that.
 
-	HW VTEP (VXLAN Tunnel End Point) usually resides on the ToR switch itself and performs VXLAN encapsulation and de-encapsulation. Each VTEP device has two interfaces – one is a VLAN interface (facing the physical server) and the other is an IP interface to other VTEPs. The idea behind hardware VTEPs is to create an overlay network that connects VMs and physical servers and make them think that they’re in the same L2 network. Red Hat OpenStack customers can benefit from an L2GW to integrate traditional bare-metal services into a Neutron overlay. This is especially useful for bridging external physical workloads into a Neutron tenant network, BMaaS/Ironic for bringing a bare metal server (managed by OpenStack) into a tenant network, and bridging SR-IOV traffic into a VXLAN overlay; taking advantage of the line-rate speed of SR-IOV and the benefits of an overlay network to interconnect SR-IOV VMs.#**Getting Started with the Labs**
+	HW VTEP (VXLAN Tunnel End Point) usually resides on the ToR switch itself and performs VXLAN encapsulation and de-encapsulation. Each VTEP device has two interfaces – one is a VLAN interface (facing the physical server) and the other is an IP interface to other VTEPs. The idea behind hardware VTEPs is to create an overlay network that connects VMs and physical servers and make them think that they’re in the same L2 network. Red Hat OpenStack customers can benefit from an L2GW to integrate traditional bare-metal services into a Neutron overlay. This is especially useful for bridging external physical workloads into a Neutron tenant network, BMaaS/Ironic for bringing a bare metal server (managed by OpenStack) into a tenant network, and bridging SR-IOV traffic into a VXLAN overlay; taking advantage of the line-rate speed of SR-IOV and the benefits of an overlay network to interconnect SR-IOV VMs.
+#**Getting Started with the Labs**
 
 The OpenStack environment that we're going to be using has been preinstalled and largely preconfigured (including OpenDaylight integration) for the purposes of this lab. We've done our best to preconfigure the classroom and ensure that the cloud-based virtual machines that make up the infrastruture are ready to go at the start of the lab, but we need to ensure that you're able to log in to the environment, as the workstation you're at will be used for multiple different labs during the Red Hat Summit.
 
@@ -450,7 +451,7 @@ Tenant networks provide fully granular control of networking inside of each tena
 
 To provide routing both ingress and egress to that tenant network requires the attachment of a virtual router, controlled by the chosen OpenStack Networking plugin (in our case OpenDaylight) where said router will, by default, provide SNAT capabilities to allow egress traffic. On-top of this, the virtual router can provide DNAT capabilities for ingress traffic through the concept of a floating-IP, which is attached on a 1:1 basis to an instance, allowing NAT based communication from an external routed network into the tenant network.
 
-In a vanilla OpenStack configuration (e.g. one that uses ML2/OVS), this routing mechanism takes place on either dedicated networker nodes, or via the OpenStack controller nodes themselves in a centralised configuration, which can cause potential bottlenecks in performance as all North/South traffic goes through a centralised set of nodes. But with OpenDaylight, the responsibility for DNAT/SNAT resides with the compute node hosting said virtual machine, with the exception of instances that do not have a floating IP, where all SNAT still runs on a centralised set of controllers or networker nodes, depending on where OpenDaylight resides.
+In a vanilla OpenStack configuration (e.g. one that uses ML2/OVS), this routing mechanism takes place on either dedicated networker nodes, or via the OpenStack controller nodes themselves in a centralised configuration, which can cause potential bottlenecks in performance as all North/South traffic goes through a centralised set of nodes. But with OpenDaylight, the responsibility for DNAT/SNAT resides with the compute node hosting said virtual machine.  SNAT is implemented by using conntrack (part of Linux Netfilter suite) to track connections and then Netfilter entries handle NAT translation.
 
 We're going to use the default **tenant** network model in this lab with distributed routing on our compute nodes through an **external** network that we're going to define. We'll create these networks here and investigate how they're constructed and enabled through OpenDaylight later on. We're using the provider network extension to advise Neutron on the logical network mapping (i.e. how the external network is physically attached on the underlying nodes); we'll explore this later too.
 
@@ -495,7 +496,7 @@ There are a number of key parameters here, for reference use the table below:
 
 | Parameter  | Details  |
 |---|---|
-| --provider-physical-network  |  This defines the **logical** physical network name that Neutron uses to look up the bridge mapping |
+| --provider-physical-network  |  This defines the **logical** physical network name that OpenDaylight uses to map this virtual network to a physical network on the compute host |
 | --provider-network-type  | This sets the network type, e.g. if it's flat, or VLAN tagged  |
 | --external  | This tells Neutron that this is an **external** network and can be used for routing (e.g. floating IP's) |
 
@@ -907,19 +908,43 @@ Let's explore the current configuration to verify OpenDaylight integration, and 
 
 What you'll see is that we have three systems that have networking functions, the '**summit-networker**' machine, and the '**summit-computeX**' machines; the **controller** is shown above as it also has ODL enabled by default, which it doesn't actually need if you're running dedicated networker nodes like we are.
 
-On each of these nodes you'll see '**ODL-L2**' running - this is the agent that's responsible for configuring Open vSwitch on each machine by taking instructions from the OpenDaylight SDN controller, and setting up traffic flows for each virtual machine. In addition, you'll note that the **networker** provides some additional capabilities - DHCP and Metadata. The **ODL-L2** agent configures the connections for OVSDB and OpenFlow, and are configured within Open vSwitch; each is described below:
+First thing to note is that the **networker** provides some additional capabilities - DHCP and Metadata. On each of these nodes you'll also see '**ODL-L2**' running, but how is this possible when earlier we stated that OpenDaylight removes the need for any agents other than DHCP/Metadata, and directly programs Open vSwitch? The answer is these are not real agents; they are in fact called pseudo-agents. The **networking-odl** driver is reading configuration provided by OpenDaylight about each OpenStack node, and then entering it into the Neutron Agent DB as an agent for ML2. This information is used to select the node for ML2 port binding (binding a Neutron port to a physical host). But where does OpenDaylight get this configuration from? This is a good time to take a look at the Open vSwitch configuration on a node:
+
+    $ ssh root@summit-compute1 ovs-vsctl list open_vswitch
+	_uuid               : 9aa34a4e-efdf-4b9f-98dc-089b71506c97
+	bridges             : [2180eb91-09d5-44dd-b084-ad042340b15e, ac6193d6-f3b5-4ea5-9a97-9445a2beac7e]
+	cur_cfg             : 23
+	datapath_types      : [netdev, system]
+	db_version          : "7.15.0"
+	external_ids        : {hostname="summit-compute1.localdomain", "odl_os_hostconfig_config_odl_l2"="{  \"supported_vnic_types\": [{    \"vnic_type\": \"normal\",    \"vif_type\": \"ovs\",    \"vif_details\": {}  }],  \"allowed_network_types\": [\"local\",\"vlan\",\"vxlan\",\"gre\"],  \"bridge_mappings\": {\"datacentre\":\"br-ex\"}}", odl_os_hostconfig_hostid="summit-compute1.localdomain", system-id="62467b46-8d0c-4124-803f-640e77034668"}
+	iface_types         : [geneve, gre, internal, lisp, patch, stt, system, tap, vxlan]
+	manager_options     : [ace09c13-2d72-4372-8394-548b2575f6ed, d1d2e151-b7f1-4900-ab10-61391cf34ed8]
+	next_cfg            : 23
+	other_config        : {local_ip="172.17.2.16", provider_mappings="datacentre:br-ex"}
+	ovs_version         : "2.7.3"
+	ssl                 : []
+	statistics          : {}
+	system_type         : rhel
+	system_version      : "7.4"
+
+Let's examine the above output.  The **'other_config'** section lists **'local_ip'**, this is source IP that VXLAN based network overlay will use as the source IP for its tunnel. The **'provider_mappings'** works the same way as Neutron bridge mappings and provides the mapping for logical to physical networks on this host.
+
+Additionally look at **'external_ids'**.  The **'odl\_os\_hostconfig\_config\_odl\_l2'** section contains more information (some duplicate for legacy reasons) which indicates what kind of ports this node supports (vhostuser DPDK, or normal OVS VIF ports), the allowed network types on this node, etc. This information is read by OpenDaylight using the OVSDB protocol and eventually propagated by networking-odl into the Neutron Agent DB.
+Note, in Red Hat OpenStack Platform 12 when a port binding event occurs, networking-odl automatically sets the port to Active state.  Typically in port binding a port should get created in Neutron then a ML2 port binding will execute a bind call to the driver (in this case ODL) who will verify the port is bound on the correct host. In Red Hat OpenStack Platform 13, there is support for a new web-socket based connection which runs over port 8185 between OpenDaylight and Neutron.  This allows OpenDaylight to update the port state to **Active** once it sees the port created on the compute node and bound correctly to the virtual Neutron network.
+
+The **ODL-L2** agent configures the connections for OVSDB and OpenFlow, and are configured within Open vSwitch; each is described below:
 
 | Connection Type  | Host/Port Number  | Description |
 |---|---|---|
 | ODL Southbound OVSDB |  odl-controller:6640 | OVSDB is used to manage switch configuration.  While OpenFlow (see below) allows us to configure the **datapath** table of a switch, we also need a protocol to allow configuration of ports, bridges and other settings on the switch.  OVSDB gives us that ability to do switch configuration management, and this connection is used by OpenDaylight to program the local Open vSwitch.
-| ODL Southbound OpenFlow | odl-controller:6653 | OpenFlow is a protocol that was designed with SDN in mind.  In the network data path it is represented as a list of rules that determine how packets are forwarded.  The concept of a rule is broken down into **match** criteria (to match on a packet) and then an **action** (what to do with the packet).  The control plane side of OpenFlow allows a centralised OpenFlow controller (such as ODL) to push these rules into remote switches and control datapath forwarding throughout a network from a centralised controller. This connection is how OpenDaylight configures the flows of the local Open vSwitch.
-| Local OVSDB Connection  | localhost:6639 | This is also configured by the ODL-L2 agent, but is actually a listener used by Neutron's **DHCP agent** so it can be used with OpenDaylight on systems that implement DHCP functionality. Note that all nodes are configured with this, regardless of whether the DHCP agent is started.
+| ODL Southbound OpenFlow | odl-controller:6653 | OpenFlow is a protocol that was designed with SDN in mind.  In the network data path it is represented as a list of rules that determine how packets are forwarded.  The concept of a rule is broken down into **'match'** criteria (to match on a packet) and then an **'action'** (what to do with the packet). The control plane side of OpenFlow allows a centralised OpenFlow controller (such as ODL) to push these rules into remote switches and control datapath forwarding throughout a network from a centralised controller. This connection is how OpenDaylight configures the flows of the local Open vSwitch.
+| Local OVSDB Connection  | localhost:6639 | This is configured by Director as the local port to run OVSDB Server on. By default OVSDB Server runs on port 6640, but since that port is taken by ODL on the control nodes, we reconfigure the local OVSDB server to use 6639. This port is what Neutron's **DHCP agent** uses to configure OVS with DHCP ports. Note that all nodes are configured with this, regardless of whether the DHCP agent is started.
 
 If we look at the Open vSwitch configuration on our **summit-networker** machine we can see how all of this has been configured. To do this, we'll need to briefly ssh to that machine and output the entire configuration; this is annotated below:
 
 	$ ssh root@summit-networker ovs-vsctl show
     60ccb669-1eb9-4097-b915-8f02ac6f46e3
-    Manager "ptcp:6639:127.0.0.1"                      <--- Local OVSDB Connection (DHCP)
+    Manager "ptcp:6639:127.0.0.1"                      <--- Local OVSDB Server listener (DHCP)
     Manager "tcp:172.17.1.16:6640"                     <--- ODL Southbound OVSDB
         is_connected: true
     Bridge br-ex                                       <--- the br-ex OVS bridge
@@ -954,7 +979,7 @@ If we look at the Open vSwitch configuration on our **summit-networker** machine
         Port "tun86ef5582407"                          <--- VXLAN tunnel endpoint
             Interface "tun86ef5582407"                      to a compute node
                 type: vxlan
-                options: {key=flow, local_ip="172.17.2.20", remote_ip="172.17.2.19"}
+                options: {key=flow, local_ip="172.17.2.20", remote_ip="172.17.2.19"} <--- local_ip from OVS configuration
         Port br-ex-patch
             Interface br-ex-patch
                 type: patch
@@ -965,7 +990,7 @@ If we look at the Open vSwitch configuration on our **summit-networker** machine
 
 > **NOTE**: Tunnel devices are created when required rather than establishing a full mesh network, hence why the output above only shows a single connection to one of our compute nodes, and not the other one. Recall that we only have **one** instance running, and it would have been scheduled upon one of those nodes, not both.
 
-In addition, you'll also note that bridge "br-ex" is already attached to a real world physical network interface, **"eth1"**. The important thing to understand here is that Neutron only understands **logical** "physical network" names - these logical network names are translated into real underlying networks via a network bridge by the plugin that we're using (in our case, OpenDaylight). To understand how this works, we need to look at the defined logical networks that OVS/OpenDaylight is exposing to Neutron via the '**bridge_mappings**' extension. Select the '**id**' for the ODL-L2 agent running on '**summit-networker**' in the following command, and it will show you the current bridge mappings:
+In addition, you'll also note that bridge "br-ex" is already attached to a real world physical network interface, **"eth1"**. The important thing to understand here is that Neutron only understands **logical** "physical network" names - these logical network names are translated into real underlying networks via a network bridge by the plugin that we're using (in our case, OpenDaylight). To understand how this works, we need to look at the defined logical networks that OVS/OpenDaylight is exposing to Neutron via the '**bridge_mappings**' extension. Select the '**id**' for the ODL-L2 pseudo agent on '**summit-networker**' in the following command, and it will show you the current bridge mappings:
 
 	$ openstack network agent show 23e8b46a-bce0-4a94-a8ba-277aa60ed971 -f json | grep -A2 bridge_mappings
 		"bridge_mappings": {
@@ -974,7 +999,7 @@ In addition, you'll also note that bridge "br-ex" is already attached to a real 
 
 What this shows it that we have a physical network name of "**datacentre**", which if used, would tell Neutron to route all external traffic for that network onto the Open vSwitch bridge "**br-ex**". Recall that when we created our external network, we defined it as using the **'datacentre'** logical network, hence the mapping here. To re-iterate, when we defined our external network with the Neutron logical name **"datacentre"**, the traffic utilises **"eth1"** as a physical network via the Open vSwitch bridge **"br-ex"**. 
 
-Let's now explore how Neutron is communicating with OpenDaylight, showing that through the ML2 interface Neutron networks are represented within OpenDaylight and are then implemented within the Open vSwitch configuration on the relevant nodes. For this, we need to query the OpenDaylight REST API and ask it for a list of networks. By default, the OpenDaylight controller as deployed by TripleO is not accessible from the external or public network, but is available on both the control plane network and the internal API network within the overcloud. These endpoints, like many other OpenStack services, are maintained by the HAproxy configuration on the overcloud controller.
+Let's now explore how Neutron is communicating with OpenDaylight, showing that through the ML2 interface Neutron networks are represented within OpenDaylight and are then implemented within the Open vSwitch configuration on the relevant nodes. For this, we need to query the OpenDaylight REST API and ask it for a list of networks. By default, the OpenDaylight controller as deployed by TripleO is not accessible from the external or public network, but is available on both the control plane network and the internal API network within the overcloud. These endpoints, like many other OpenStack services, are maintained by the HA Proxy configuration on the overcloud controller.
 
 Let's first get the control plane virtual IP address so we know how to contact our OpenDaylight controller, for this we can request a list from the undercloud, making sure that you've sourced your **stackrc** (undercloud) environment file, **not** the overcloud one:
 

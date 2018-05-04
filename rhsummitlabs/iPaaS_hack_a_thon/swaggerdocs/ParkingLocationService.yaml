@@ -1,0 +1,105 @@
+swagger: '2.0'
+info:
+  title: San Fransico Parking Location Service
+  description: 2018 Summit Lab - Parking Location Service
+  version: 1.0.0
+host: 'sfparkinglocation-2445581558442.production.gw.apicast.io'
+schemes:
+  - https
+paths:
+  /sflocation/parking/all:
+    get:
+      tags:
+        - parking
+      summary: Get all parking information
+      description: Get all parking information in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Parking Place Found
+          schema:
+            $ref: '#/definitions/parkinglocation'
+          examples: {}
+  '/sflocation/parking/freelot/{freelot}':
+    get:
+      tags:
+        - parking
+      summary: 'Get Parking place base on free lot '
+      description: Get Parking place base on free lot in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Parking Place Found
+          schema:
+            $ref: '#/definitions/parkinglocation'
+          examples: {}
+    parameters:
+      - name: freelot
+        in: path
+        description: Number of parking spaces you need
+        required: true
+        type: integer
+  '/sflocation/parking/hourlyrate/{maxpay}':
+    get:
+      tags:
+        - parking
+      summary: ' Get Parking place base on hourly rate'
+      description: Get Parking place base on hourly rate in San Fransisco
+      parameters:
+        - name: user_key
+          in: query
+          description: API Key
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Parking Place Found
+          schema:
+            $ref: '#/definitions/parkinglocation'
+          examples: {}
+    parameters:
+      - name: maxpay
+        in: path
+        description: hour rate
+        required: true
+        type: integer
+definitions:
+  parkinglocation:
+    title: Root Type for parkinglocation
+    description: The root of the parkinglocation type's schema.
+    type: array
+    items:
+      type: object
+      properties:
+        ID:
+          type: string
+        PLACENAME:
+          type: string
+        PHONE:
+          type: string
+        ADDRESS:
+          type: string
+        LAT:
+          format: double
+          type: number
+        LNG:
+          format: double
+          type: number
+        PIC:
+          type: string
+        PRICE:
+          format: int32
+          type: integer
+        FREELOT:
+          format: int32
+          type: integer

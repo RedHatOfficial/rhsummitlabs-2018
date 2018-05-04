@@ -62,17 +62,18 @@ The web browser of your laptop should default to https://www.opentlc.com/guidgra
 
 * Make sure you have your *GUID*
 * Open a terminal session
-* Log in to your control host:
+* Log in to your control host using the default `lab-user` user:
 
 ----
-ssh control-<GUID>.rhpds.opentlc.com
+ssh lab-user@control-<GUID>.rhpds.opentlc.com
 ----
 
 WARNING: *Replace <number> with the GUID assigned to your seat!*
 
-Example: If your GUID is "83d4", do this:
+Example:: If your GUID is "83d4", do this:
++
 ----
-ssh root@control-83d4.rhpds.opentlc.com
+ssh lab-user@control-83d4.rhpds.opentlc.com
 ----
 
 TIP: The user will default to `lab-user` and SSH key authentication will be used automatically.
@@ -119,20 +120,22 @@ The dashboard also displays real time data about the execution of tasks complete
 image::menu1.png[]
 
 Projects are logical collections of Ansible playbooks in Ansible Tower. These playbooks either
-reside on the Ansible Tower instance, or in a source code version control system supported
-by Tower.
+reside on the Ansible Tower instance, or more commonly in a source code version control system supported
+by Tower, e.g. Git.
 
 === Inventories
 
 image::menu2.png[]
 
-An Inventory is a collection of hosts against which jobs may be launched, the same as an Ansible inventory file. Inventories are divided into groups and these groups contain the actual hosts. Groups may be populated manually, by entering host names into Tower, or from one of Ansible Tower’s supported cloud providers.
+An Inventory is a collection of hosts against which jobs may be launched, the same as an Ansible inventory file. Inventories are divided into groups and these groups contain the actual hosts.
+Groups and hosts may be populated manually by entering them into Tower or created dynamically from one of Ansible Tower’s supported inventory sources (e.g. cloud providers like Open Stack).
+You can also rather easily create your own inventory source grabbing data from a central repository like a CMDB.
 
 === Credentials
 
 image::menu3.png[]
 
-Credentials are utilized by Tower for authentication when launching Jobs against machines, synchronizing with inventory sources, and importing project content from a version control system. Credential configuration can be found in the Settings.
+Credentials are utilized by Tower for authentication when launching Jobs against machines, synchronizing with inventory sources, and importing project content from a version control system. Credential configuration can be found in the Settings (the cog).
 
 Tower credentials are imported and stored encrypted in Tower, and are not retrievable in plain text on the command line by any user. You can grant users and teams the ability to use these credentials, without actually exposing the credential to the user.
 
@@ -187,13 +190,14 @@ To access the Tower host via SSH do the following:
 
 * Open an SSH session to your control host (replace <GUID>):
 ----
-# ssh root@control-<GUID>.rhpds.opentlc.com
+# ssh lab-user@control-<GUID>.rhpds.opentlc.com
 ----
 
-* From here you can "jump" to the Tower host `tower.example.com` 
+* From here you can become root and "jump" to the Tower host `tower.example.com` 
 * On Tower become user `ansible`
 
 ----
+[lab-user@control-<GUID> ~]# sudo -i
 [root@control-<GUID> ~]# ssh tower.example.com
 [root@tower ~]# su - ansible
 ----
@@ -214,10 +218,10 @@ Now let's go and configure the credentials to access our managed hosts from Towe
 
 * Click the *+ADD* button to add new credentials
 ** *NAME:* Example Credentials
-** *ORGANIZATION:* Default
-
+** *ORGANIZATION:* Default (if you don't enter an organization, the credentials will not be usable by other members)
++
 TIP: Whenever you see a magnifiying glass icon next to an input field, clicking it will open a list to choose from.
-
++
 ** *CREDENTIAL TYPE:* Machine
 ** *USERNAME:* ansible
 ** *PRIVILEGE ESCALATION METHOD:* sudo
@@ -243,7 +247,7 @@ As you've probably done with Ansible before you can run ad hoc commands from Tow
 * In the web UI go to *INVENTORIES -> Example Inventory* 
 * Click the *HOSTS* button to change into the hosts view and select the two hosts by ticking the boxes to the left of the host entries.
 * Click *RUN COMMANDS*. In the next screen you have to specify the ad hoc command:
-** As *MODULE* choose *Ping*
+** As *MODULE* choose *ping*
 ** For *MACHINE CREDENTIAL* click the magnifying glass icon and select *Example Credentials*.
 ** Click *LAUNCH*, lean back and enjoy the show... 
 
@@ -254,10 +258,12 @@ TIP: Don't forget the Credentials!
 TIP: After choosing the module to run, Tower will provide a link to the docs page for the module when clicking the question mark next to "Arguments". This is handy, give it a try.
 
 * Find the userid of the executing user using an ad hoc command.
+** if you're still on the job log of the previous ad-hoc command, go back one page in the history of your browser and enter the following fields
 ** *MODULE:* command 
 ** *ARGUMENTS:* id
+** *LIMIT:* replace for fun `all` with `host[12].example.com`
 
-TIP: The simple *Ping* module doesn't need options. For the command module you need to supply the command to run as an argument.
+TIP: The simple *ping* module doesn't need options. For the command module you need to supply the command to run as an argument.
 
 * Print out _/etc/shadow_.
 ** *MODULE:* command
@@ -273,7 +279,7 @@ TIP: For tasks that have to run as root you need to escalate the privileges. Thi
 
 === Challenge Lab: Ad Hoc Commands
 
-Okay, a small challenge: Run an ad hoc to
+Okay, a small challenge: Run an ad hoc command to
 
 * Make sure the package "screen" is installed on all hosts
 
@@ -292,14 +298,14 @@ TIP: The yellow output of the command indicates Ansible has actually done someth
 You might have seen you can add variables for a host in the inventory.
 
 * Go to *INVENTORIES -> Example Inventory*, switch to the *HOSTS* view and edit `host1.example.com` by clicking the pen icon.
-* Add a variable named "file" by putting *file: /etc/passwd* in the *VARIABLES* field under the YAML start (the three dashes)
-
-TIP: There has to be a blank between the *file:* and the content string
-
+* Add a variable named "password_file" by putting *password_file: /etc/passwd* in the *VARIABLES* field under the YAML start (the three dashes)
++
+TIP: There has to be a blank between the *password_file:* and the content string. You can validate your entry by toggling between YAML and JSON format and see if the result makes sense.
++
 * Click *SAVE*
 * Now run an ad hoc command on `host1.example.com`
 ** *MODULE:* command
-** *ARGUMENTS:* cat {{ file }}
+** *ARGUMENTS:* cat {{ password_file }}
 ** *MACHINE CREDENTIAL:* Example Credentials
 * The output should now show the content of the file.
 
@@ -344,7 +350,7 @@ For this lab you will use a pre-configured Git repository on `control.example.co
       state: started
 ----
 
-TIP: Note the difference to other Playbooks you might have written! Most importantly there is no `become` and `hosts` is set to `all`.
+TIP: Note there is no `become` because this is handled in Tower.
 
 To configure and use this repository as a *Source Control Management (SCM)* system in Tower you have to:
 
@@ -367,6 +373,7 @@ In the Tower web UI click the gear-icon for *Settings*. From the settings choose
 
 * Click the *+ADD* button to add new credentials
 * *NAME*: Control Git
+* *ORGANIZATION*: Default
 * *CREDENTIAL TYPE*: *Source Control*
 
 TIP: You will have to change the page in the *SELECT CREDENTIAL TYPE* window.
@@ -389,9 +396,9 @@ TIP: You will have to change the page in the *SELECT CREDENTIAL TYPE* window.
 
 TIP: The new Project will be synced after creation automatically. 
 
-Sync the Project again with the Git repository by going to the *PROJECTS* view and clicking the cloudy *Start an SCM Update* icon to the right of the Project.
+Sync the Project again with the Git repository by going to the *PROJECTS* view and clicking the cloudy *Start an SCM update* icon to the right of the Project.
 
-* After starting the sync job, go to the *JOBS* view, find your job and have a look at the details.
+* After starting the sync job, go to the *JOBS* view, find your job and have a look at the details (or simply click on the colored circle next to the name of the project).
 
 == Create a Job Template and Run a Job
 
@@ -409,7 +416,7 @@ Okay, let's just do that:
 ** *JOB TYPE:* Run
 ** *INVENTORY:* Example Inventory
 ** *PROJECT:* Control Git Repo
-** *PLAYBOOK:* apache.yml
+** *PLAYBOOK:* apache.yml (notice that it's a drop-down list of the potential playbooks found in the Git Repo)
 ** *CREDENTIAL:* Example Credentials
 ** We need to run the tasks as root so check *Enable privilege escalation*
 ** Click *SAVE*
@@ -452,7 +459,7 @@ Here is another challenge:
 ** *SAVE*
 * Go to the *TEMPLATES* view and launch the `Apache Ask` template.
 * It will now ask for the inventory to use, choose the `Webserver` inventory and click *LAUNCH*
-* Wait until the Job has finished and make sure it run only on `host1.example.com`
+* Wait until the Job has finished and make sure it runs only on `host1.example.com`
 
 TIP: The Job didn't change anything because Apache was already installed in the latest version.
 
@@ -470,7 +477,7 @@ You have installed Apache on both hosts in the job you just run. Now we're going
 
 === Create the index.html Jinja Template
 
-In the SSH console on host `control.example.com` as user `git` create a template as _/home/git/git-work/index.j2_ with the following content: 
+In the SSH console on host `control.example.com` as user `git` create a template as _/home/git/git-work/index.html.j2_ with the following content: 
 
 WARNING: Make sure you are adding the files to Git as user `git`, e.g. you might have to run `su - git` as `root` on the control host!
 
@@ -482,7 +489,7 @@ WARNING: Make sure you are adding the files to Git as user `git`, e.g. you might
 </body>
 ----
 
-TIP: Note the two variables marked by `{{...}}` used in the template!
+TIP: Note the two variables marked by `{{ ... }}` used in the template! They are Jinja2 constructs, you might also know from Django.
 
 === Create the Playbook
 
@@ -494,7 +501,7 @@ Again as user `git` create the playbook _/home/git/git-work/index_html_create.ym
   tasks:
   - name: Create index.html
     template:
-      src: index.j2
+      src: index.html.j2
       dest: /var/www/html/index.html
       owner: root
       group: root
@@ -511,8 +518,8 @@ Now run the following commands to add the files to the Git repository, commit an
 ----
 [git@control ~]$ cd /home/git/git-work
 [git@control git-work]$ git add index_html_create.yml
-[git@control git-work]$ git add index.j2
-[git@control git-work]$ git commit -a -m "index.j2 and playbook added"
+[git@control git-work]$ git add index.html.j2
+[git@control git-work]$ git commit -a -m "index.html.j2 and playbook added"
 [git@control git-work]$ git push origin master
 ----
 
@@ -576,6 +583,7 @@ TIP: Note how the two survey lines are shown to the left of the Job view as *Ext
 After the job has completed, check the Apache homepage:
 
 * In the SSH console on control.example.com, run: 
+
 ----
 [root@control ~]# curl http://host1.example.com
 ----
@@ -828,7 +836,7 @@ Your operations team and your application development team like what they see in
 
 === The Git Repository
 
-As a prerequsite you need a Git repo containing the needed files on control.example.com. This has been done for you already, it's a lab about Tower and not Git, after all...
+As a prerequsite you need a Git repo containing the needed files on `control.example.com`. This has been done for you already, it's a lab about Tower and not Git, after all...
 
 Login via SSH to `control.example.com`, become user `git` and review what you have got there:
 ----
@@ -874,7 +882,7 @@ Login via SSH to `control.example.com`, become user `git` and review what you ha
 
 There is of course more then one way to accomplish this, but here is what you should do:
 
-* Make sure both hosts are in the inventory group `Webserver` (add `host2.example.com`)
+* Make sure both hosts are in the inventory `Webserver` (add `host2.example.com`)
 * Add a variable `stage: dev` to the inventory `Webserver`
 * Add a variable `stage: prod` to `host2.example.com` that overrides the inventory variable.
 
@@ -889,9 +897,9 @@ TIP: Make sure to keep the three dashes that mark the YAML start!
 === Create the Template
 
 * Create a new *Job Template* named `Create Web Content` that 
-** targets the `Webserver` inventory 
+** targets the `Webserver` inventory
 ** uses the Playbook `stage_content.yml` from the new `Webcontent` Project
-** Defines two variables: `dev_content: default dev content` and `prod_content: default prod content` in the *EXTRA VARIABLES FILED*
+** Defines two variables: `dev_content: default dev content` and `prod_content: default prod content` in the *EXTRA VARIABLES FIELD*
 ** Uses `Example Credentials` and runs with privilege escalation
 * Save and run the template
 
@@ -915,8 +923,8 @@ default prod content
 === Add Survey
 
 * Add a survey to the Template to allow changing the variables `dev_content` and `prod_content`
-* Add permissions to the Team `Web Content` so it can be execute the Template " by `wweb`.
-* Run the survey as user `wweb`
+* Add permissions to the Team `Web Content` so it can execute the Template `Create Web Content`.
+* Run the Template as user `wweb` and fill in the survey
 * Check the results:
 ----
 [root@control ~]# curl http://host1.example.com
@@ -1100,32 +1108,26 @@ In most cases, you must set at least three configuration options (host, username
 
 === Examples
 
-Here are some examples, just try a couple of them:
+Here are some examples that should give you a starting point when clicking through the web UI is getting tedious.
 
+TIP: The Python virtual env you installed tower-cli in must be active, so in our case if you left the shell you must re-run `[root@tower ~]# . /var/lib/awx/venv/ansible/bin/activate`.
+
+Create a new inventory:
 ----
-# List all users.
-$ tower-cli user list
-
-# Create a new user.
-$ tower-cli user create --username=guido --first-name=Guido \
-                        --last-name="Van Rossum" --email=guido@python.org \
-                        --password=password1234
-
-# List all non-superusers
-$ tower-cli user list --is-superuser=false
-
-# Delete a user.
-$ tower-cli user delete <id>
-
-# List jobs
-$ tower-cli job list
-
-# Launch a job.
-$ tower-cli job launch --job-template=<id>
-
-# Monitor a job.
-$ tower-cli job monitor <id>
+tower-cli inventory create -n inventory-cli --organization Default --force-on-exists
 ----
+
+Add a host to the inventory:
+----
+(ansible)[root@tower ~]# tower-cli host create -n host1.example.com --inventory inventory-cli --force-on-exists
+----
+
+Create a new Project:
+----
+(ansible)[root@tower ~]# tower-cli project create -n project-cli -d "test project" --organization Default --scm-type git --scm-credential "Control Git" --scm-url "control.example.com:/home/git/git-webdev"
+----
+
+Go to the Tower web UI and check that these items have been created.
 
 === Getting Help
 
