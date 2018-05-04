@@ -17,7 +17,9 @@ If you're not familiar with Cloud Access, it's a feature of most existing Red
 Hat subscriptions for RHEL, JBoss, CloudForms, OpenShift and Gluster that allow
 Enterprise subscriptions to be moved to a public cloud provider. To find out
 more about cloud access and how to convert subscriptions, please look at this
-link; FIXME
+link;
+https://www.redhat.com/en/technologies/cloud-computing/cloud-access[Overview
+to Cloud Access].
 
 === Why would I want to learn how to build a gold image for Azure?
 
@@ -122,30 +124,70 @@ You may need these details later in the lab;
 |===
 
 
-== Connecting to your lab workstation 
+=== Connecting to your lab workstation 
 
-FIXMEEEEE
+There are 3x machines used in this lab;
+
+. Your lab laptop
+.. Graphical environment
+.. No root access
+. Your lab workstation 
+.. Hosted in the cloud
+.. Can run virtual machines
+.. This is the machine that you SSH into
+. The virtual machine gold image you will be building
+
+**You should now SSH into your lab workstation using the SSH command specified on
+the lab provisioning webpage**.
 
 == Start creating your gold image virtual machine
+
+=== Become root
+
+You can become root on your lab workstation using `sudo su`. This will allow
+you to install packages and create virtual machines with libvirt.
+
+    lab-user@goldimageworkstation-fa72: sudo su
+    root@goldimageworkstation-fa72: whoami
+    root
+
+=== Configure Yum server
+
+This lab environment has stored updates and essential packages on a utility
+server. You need to configure your workstation to get packages from this server
+
+    lab-user@goldimageworkstation-fa72: cd /etc/yum.repos.d/
+    lab-user@goldimageworkstation-fa72: wget http://40.112.68.75/lab.repo
+
+Check that the repository can be found with this command;
+
+    lab-user@goldimageworkstation-fa72: yum repolist
+
+You should see the 2x repos in the list;
+
+    root@goldimageworkstation-fa72: yum repolist
+    Loaded plugins: product-id, search-disabled-repos, subscription-manager
+    This system is not registered with an entitlement server. You can use subscription-m
+    rhel-7-server-extras-rpms
+    rhel-7-server-rpms
+    (1/2): rhel-7-server-extras-rpms/primary_db
+    (2/2): rhel-7-server-rpms/primary_db
 
 === Install packages needed to create Linux virtual machines
 
 The following packages are used in this lab. Below, there is a brief
 description of what the packages do, and in which repository to find them.
 
-All of these packages are preinstalled for you, this information is provided
-just for your reference and to get you familiar with the packages that we'll be
-using.
-
-FIXME uninstall
-
 |===
 | Package	| Repository | Description
 | libvirt	|rhel-7-server-rpms	|Open source API, daemon, and management tool for managing platform virtualization.
-|virt-manager	|rhel-7-server-rpms |	A command line and Gnome desktop virtual machine manager used to create and manage KVM virtual machines.
 |libguestfs	| rhel-7-server-rpms	| A library for accessing and modifying virtual machine file systems.
 |libguestfs-tools	| rhel-7-server-rpms	| System administration tools for virtual machines; includes the guestfish utility.
 |===
+
+Install the packages as follows;
+
+    root@goldimageworkstation-fa72: yum install libvirt libguestfs libguestfs-tools virt-install
 
 === Check that the processor Virtualisation Extensions are enabled on your workstation
 
@@ -156,7 +198,7 @@ automatically by the script that setup your workstation.
 To check if the extensions are enabled, run the following command in your
 terminal;
 
-	dmesg | grep -i kvm
+	root@goldimageworkstation-fa72: dmesg | grep -i kvm
 
 You should *not* see the following... If you do, something has gone terribly
 wrong, please contact a lab admin!
@@ -170,16 +212,20 @@ wrong, please contact a lab admin!
 We're now going to start libvirt, which is a helper service that talks to and
 manages KVM.
 
-    service libvirtd start
-    chkconfig libvirtd on
+    root@goldimageworkstation-fa72: service libvirtd start
+    root@goldimageworkstation-fa72: chkconfig libvirtd on
 
 === Create the RHEL VM from a RHEL KVM Guest Image
 
-Red Hat and the open source community optimized this image for virtualization. Once you have the image configured, you can use this image as a template for creating subsequent VMs in Microsoft Azure. Note the following configuration settings before you create the RHEL VM.
+Red Hat releases a distribution of RHEL in .qcow2 format. This is optimized for
+virtualization on libvirt hypervisors which is a useful starting point for
+building an image for Azure. Once you have the base image configured, you can
+use this image as a template for creating subsequent VMs in Microsoft Azure.
+Note the following configuration settings in the next couple of sections.
 
 ==== VM Configuration Settings
 
-Microsoft Azure VMs must have the following configuration settings. Some of these settings are enabled during the initial VM creation. Other settings are set when provisioning the VM image for Microsoft Azure. Keep these in mind as you move through the procedure and refer back to it if you need to.
+Microsoft Azure VMs must have several specific configuration settings. Some of these settings are enabled during the initial VM creation. Other settings are set when provisioning the VM image for Microsoft Azure. Keep these in mind as you move through the procedure and refer back to it if you need to.
 
 |===
 | Option | Recommendation
@@ -207,133 +253,204 @@ Azure's network cards and similar were only released in 7.1 and later.
 
 On your lab laptop, run the following command in a terminal; 
 
-	cd /opt/
-    ll
+	root@goldimageworkstation-fa72: cd /opt/
+    root@goldimageworkstation-fa72: ll
 
-You should see an imagei filename that was downloaded from the customer portal
-for you; **FIXME.qcow2**
+You should see an image filename that was downloaded from the customer portal
+for you; **rhel-server-7.5-x86_64-kvm.qcow2**
 
 Copy the image to `/var/lib/libvirt/images/`; We create a copy of this image because if we break something during the install, we can just make a new copy without having to download the image again.
 
-	cp FIXME.qcow2 /var/lib/libvirt/images/
+	root@goldimageworkstation-fa72: cp rhel-server-7.5-x86_64-kvm.qcow2 /var/lib/libvirt/images/
 
 === Create a Local RHEL VM from this image
 
-We are now going to create a new virtual machine on the laptop, based on this standard KVM guest image. We will customize this image, then prepare it to upload to Azure.
+We are now going to create a new virtual machine on the workstation, based on this standard KVM guest image. We will customize this image, then prepare it to upload to Azure.
 
-virt-manager is a virtual machine manager used to create and manage your VMs. It is available to run from the command line and from the Gnome desktop. Enter `virt-manager` at a terminal prompt or select **Virtual Machine Manager** from the Gnome GUI.
+You do not have any access to a graphical environment on your workstation, so
+we will create a virtual machine using command line tools **virt-install** and
+**virsh** (virtual shell). 
 
-image::labImages/virt-manager3.png[]
+----
+root@goldimageworkstation-fa72: virt-install -n goldimage -r 2048 --os-type=linux --os-variant=rhel7 --disk /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2,device=disk,bus=virtio -w bridge=virbr0,model=virtio --vnc --noautoconsole --import
+----
 
-Create a new VM and select **Import existing disk image.**
+If successful, you should see; 
 
-image::labImages/createvm_5.png[]
+    Starting install...
+    Domain creation completed.
 
+The virtual machine should be started automaticlaly for you, you can check this
+as follows;
 
-Select the **qcow2** KVM Guest Image from the `/var/lib/libvirt/images` directory. (Choose OS type **Linux** and the appropriate RHEL version in the subsequent dialog box.)
+    root@goldimageworkstation-fa72: virsh list
+     Id    Name                           State
+    ----------------------------------------------------
+     2     goldimage                      running
 
-image::labImages/selectqcow2_2.png[]
+If you see this, **awesome**!
 
-Select the capacity (RAM and CPUs) you want set for your VM. The default **1024mb** of RAM and **1 CPU** is fine for this activity.
+Lets connect to our VM, but because it does not have a default network
+configuration, we're going to use the serial console. 
 
-image::labImages/vmramcpus_2.png[]
+    root@goldimageworkstation-fa72: virsh console goldimage
 
-Review the settings and choose a name for this image. Select the **Customize configuration before install** check box.
+You will probably start seeing bootup warning messages like this; 
 
-image::labImages/basicsettingsvm_3.png[]
+    [  186.475166] cloud-init[802]: 2018-05-04 03:19:50,499 - url_helper.py[WARNING]: Calling 'http://192.168.122.1/latest/meta-data/instance-id' failed [50/120s]: request error [('Connection aborted.', error(111, 'Connection refused'))]
 
-On the custom configuration dialog box, make sure that **virtio** is set as the NIC Device model.
+It's important to pause here and understand what is happening here.
 
-image::labImages/virtio2.png[] 
+`cloud-init` is a useful tool in environments that support it, like Red Hat
+OpenStack Platform. It is a utility that starts up on bootup, and asks local
+metadata servers for confguration information - network device IP addresses,
+initial root passwords, initial SSH keys and various other details.
 
-Click Begin **Installation.**
+In our virtual environment, we have not got a cloud-init metadata server
+configured - and it would be unusual to use cloud-init in simple environments
+like this. Most importantly, cloud-init support for RHEL on Azure is not yet
+generally available (more on why later in this lab). 
 
-Once installation begins, the VM console appears and boots to a login prompt. (You may have to press Enter a couple of times to get the prompt to show up.)
+We could have disabled cloud-init using bootup options, but this was hopefully
+a useful learning opportunity! Wait for cloud-init to time out and you should
+then get a login screen eventually; 
 
-Once the login prompt appears, **Shut Down** the VM.
+----
+Red Hat Enterprise Linux Server 7.5 (Maipo)
+Kernel 3.10.0-862.el7.x86_64 on an x86_64
 
-image::labImages/vmshutdown.png[]
+localhost login:
+----
+
+Great, a basic login prompt! The problem is, because cloud-init failed, the
+root password has not been set, and so you cannot login...
+
+We're going to set the root password manually by turning the machine off,
+editing it's virtual disk, editing the shadow password file, and then starting
+it back up again!
+
+We need to exit the serial console first to get back to our workstation.
+
+. Press the keyboard shortcut **Control + ]** to exit the serial console. 
+. Power off the virtual machine; `virsh destroy goldimage` 
+
+Note that `virsh` uses the word "destroy" to mean "power off" virtual machine.
+We did not delete this virtual machine, and we can check it still exists with
+the following command;
+
+    root@goldimageworkstation-fa72: virsh list --all
+     Id    Name                           State
+    ----------------------------------------------------
+     -     goldimage                      shut off
 
 Once you have shut down the VM, we will now set up root access to the image.
 
 === Set Up Root Access to the RHEL VM Image
 
-Before transferring the RHEL VM image to Microsoft Azure, you need to set up root access to the VM. You can do this by using a public/private key generator like ssh-keygen, or you can set up a root password by completing the steps below. The VM must be shut down.
+So that the image can be customised for Microsoft Azure, you need to set up root access to the VM. You can do this by using a public/private key generator like ssh-keygen, or you can set up a root password by completing the steps below. 
 
-On your Azure administration server, use openssl to generate a new encrypted password for the root account on the new VM.
+On your workstation, use openssl to generate a new encrypted password for the root account on the new VM.
 
-	$ openssl passwd -1 <password>
+	root@goldimageworkstation-fa72: openssl passwd -1 yourPasswordGoesHere
+    $1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1
 
-Copy the encrypted password string.
-
-Because of SELinux limitations on the laptops, as you are not the root user, you must temporarily move the image out of it's default directory and work on it in your home directory;
-
-	mv /var/lib/libvirt-images/<image-name> ~/
+Copy the encrypted password string (in the example above -
+**$1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1** is our encrypted password). 
 
 Launch the guestfish utility to access the etc/shadow file on the image.
 
-	$ guestfish -a ~/<image_name>
+	root@goldimageworkstation-fa72: guestfish -a /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2 
 
 Enter the following commands at the guestfish command prompt.
 
 	><fs> run
+    100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ 00:00
+
+This lets the Guestfish tool see the virtual machine disks. 
+
 	><fs> list-filesystems
+    /dev/sda1: xfs
+
+This shows that the virtual machine has a single disk image. We can virtually
+mount it within Guestfish;
+
 	><fs> mount /dev/sda1 /
 
-Edit the shadow file using vi (or another text editor). Replace the root password value with the encrypted password generated by the openssl command.
+Within Guestfish, we can use tools like vi to then edit files directly on the
+disk. We'll use this to directly edit the shadow file (which stores our Linux
+passwords). 
+
+Edit the shadow file using **vi**. Replace the root password value with the encrypted password generated by the openssl command.
+
+NOTE: **vi** is a Unix text editor that you may not be used to using - please
+don't be afraid to ask a lab admin if you need help with using it!
+Unfortunately Guestfish won't allow you to use other editors like nano that you
+may choose to use instead.
 
 	><fs> vi /etc/shadow
 
-When you edit the **shadow** file, you replace the root password null value that is represented by !! in the unedited file. The first example below is unedited, and the second contains the new root password (encrypted).
+When you edit the **shadow** file, you replace the root password null value
+that is represented by **!!** in the unedited file. 
 
-image::labImages/shadowfile3.png[]
+----
+root:!!:17612:0:99999:7:::
+bin:*:17492:0:99999:7:::
+daemon:*:17492:0:99999:7:::
+... 
+----
 
-image::labImages/shadowfiledone3.png[]
+To setting the root password to our encrypted value, edit your file to look
+something like this;
 
-Save your changes to /etc/shadow.
+----
+root:$1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1:17612:0:99999:7:::
+bin:*:17492:0:99999:7:::
+daemon:*:17492:0:99999:7:::
+... 
+----
 
-Exit the guestfish utility.
+Save your changes to **/etc/shadow** and exit your text editor.
+
+To confirm we edited this file successfully, we can just double check the first
+line looks something like this using `cat`; 
+
+    ><fs> cat /etc/shadow
+    root:$1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1:17612:0:99999:7:::
+    ... 
+
+
+Exit the guestfish utility. This will close the disk. 
 
 	><fs> quit
 
-Now, we can move the image back to it's propper location;
+=== Start the VM again
 
-	mv ~/<image-name> /var/lib/libvirt/images/
+Use the following command to restart our virutal machine in libvirt;
 
-=== Start the VM in virt-manager again
+    root@goldimageworkstation-fa72: virsh start goldimage
 
-Verify root access by starting the RHEL VM and logging in as root from the VM running in virt-manager. Use the root password you created earlier. If the root password does not work, check the /etc/shadow file to make sure the password was set up properly.
+Note that cloud-init will try again, and will slow down your virtual machine
+startup. Use the `virsh console goldimage` command to reconnect to the console
+- you should now be able to login using the password you just set;
+
+----
+Red Hat Enterprise Linux Server 7.5 (Maipo)
+Kernel 3.10.0-862.el7.x86_64 on an x86_64
+
+localhost login: root
+Password:
+[root@localhost ~]#
+----
+
+If the root password does not work, check the **/etc/shadow** file to make sure the password was set up properly.
 
 Once you are logged in using the root account, you're ready to configure the image.
 
 == Configure the image for Azure
 Complete the procedures in the following sections to finalize the image configuration.
 
-=== Install Hyper-V Device Drivers on the RHEL VM (if needed)
-Microsoft provides network and storage device drivers as part of their Linux Integration Services for Hyper-V package. Hyper-V device drivers may need to be installed on the RHEL VM prior to importing it to Microsoft Azure. Use the `lsinitrd | grep hv` command to verify that the drivers are installed. If they are not installed, complete the following steps to manually configure the Hyper-V device drivers.
-
-Note the spaces before and after the quotes. For example, add_drivers+=" hv_vmbus ". This ensures that unique drivers are loaded in the event that other Hyper-V drivers already exist in the environment.
-
-On the RHEL VM, add the driver parameters to the /etc/dracut.conf file.
-
-	add_drivers+=" hv_vmbus "
-	add_drivers+=" hv_netvsc "
-	add_drivers+=" hv_storvsc "
-
-Regenerate the intramfs image.
-
-	dracut -f -v
-
-Verify the configuration changes.
-
-	lsinitrd | grep hv
-
-You should see a list of Hyper-V drivers similar to the following drivers.
-
-image::labImages/virt-manager_5.png[]
-
 === Remove cloud-init
-The RHEL VM requires further configuration changes to serve as your gold RHEL VM image in Microsoft Azure. Complete the following steps to make these changes. 
+Lets get rid of that bootup delay from cloud-init!
 
 If you are unfamiliar with this service, it's used to do the initial setup of virtual machines from generic images. OpenStack, and some other cloud platforms host a metadata server, which give images their initial hostname, username, ssh keys and similar. 
 
@@ -348,9 +465,69 @@ Remove the cloud-init software.
 
 	yum remove cloud-init
 
+
+=== Install Hyper-V Device Drivers on the RHEL VM (if needed)
+Microsoft provides network and storage device drivers as part of their Linux
+Integration Services for Hyper-V package. Hyper-V device drivers may need to be
+installed on the RHEL VM prior to importing it to Microsoft Azure. Use the
+`lsinitrd | grep hv` command to verify that the drivers are installed. i
+
+Here is how you would manually configure the Hyper-V device drivers (**these next
+few steps should not be necessary for you to type as recent RHEL7 images
+include these drivers by default**); 
+
+Note the spaces before and after the quotes. For example, add_drivers+=" hv_vmbus ". This ensures that unique drivers are loaded in the event that other Hyper-V drivers already exist in the environment.
+
+On the RHEL VM, you would add the driver parameters to the /etc/dracut.conf file.
+
+	add_drivers+=" hv_vmbus "
+	add_drivers+=" hv_netvsc "
+	add_drivers+=" hv_storvsc "
+
+Here's how you regenerate the intramfs image.
+
+	dracut -f -v
+
+Verify the configuration changes now include the **hv** drivers in your bootup
+image.
+
+	lsinitrd | grep hv
+
+You should see a list of Hyper-V drivers similar to the following drivers.
+
+image::labImages/virt-manager_5.png[]
+
+=== Enable password auth and login via SSH
+
 Edit the /etc/ssh/sshd_config file and enable password authentication. This allows you to use SSH password authentication without using public key authentication. 
 
 	PasswordAuthentication yes
+
+Restart the SSH daemon for the configuration changes to be picked up;
+
+    [root@localhost ~]# service sshd restart
+
+We can now exit the serial console and reconnect via SSH. First we need to find
+this virtual machine's IP address on libvirt, which starts with
+**192.168.122.x**. 
+
+    [root@localhost ~]# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 52:54:00:f3:b3:15 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.122.108/24 brd 192.168.122.255 scope global noprefixroute dynamic eth0
+       valid_lft 2571sec preferred_lft 2571sec
+    inet6 fe80::5054:ff:fef3:b315/64 scope link
+       valid_lft forever preferred_lft forever
+
+    
+
+=== Setup system services
 
 Set a generic host name.
 
@@ -469,6 +646,8 @@ Clean the shell history and shut down the VM.
 === FIXME: Storage, disk
 
 === FIXME: Azure Active Directory
+
+https://docs.microsoft.com/en-us/azure/active-directory-domain-services/active-directory-ds-join-rhel-linux-vm
 
 === Logical Volume Manager (LVM)
 

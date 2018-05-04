@@ -1,0 +1,36 @@
+
+=== Create a Local RHEL VM from this image
+
+It is available to run from the command line and from the Gnome desktop. Enter `virt-manager` at a terminal prompt or select **Virtual Machine Manager** from the Gnome GUI.
+
+Create a new VM and select **Import existing disk image.**
+
+image::labImages/createvm_5.png[]
+
+Select the **qcow2** KVM Guest Image from the `/var/lib/libvirt/images` directory. (Choose OS type **Linux** and the appropriate RHEL version in the subsequent dialog box.)
+
+image::labImages/selectqcow2_2.png[]
+
+Select the capacity (RAM and CPUs) you want set for your VM. The default **1024mb** of RAM and **1 CPU** is fine for this activity.
+
+image::labImages/vmramcpus_2.png[]
+
+Review the settings and choose a name for this image. Select the **Customize configuration before install** check box.
+
+image::labImages/basicsettingsvm_3.png[]
+
+On the custom configuration dialog box, make sure that **virtio** is set as the NIC Device model.
+
+image::labImages/virtio2.png[] 
+
+Click Begin **Installation.**
+
+
+
+
+
+
+Because of SELinux limitations on the laptops, as you are not the root user, you must temporarily move the image out of it's default directory and work on it in your home directory;
+
+	mv /var/lib/libvirt-images/<image-name> ~/
+
