@@ -1,11 +1,16 @@
 :data-uri:
 :toc: left
+:sectanchors: true
+:sectlinks: true
+:sectnums: true
 :encoding: UTF-8
 
 = Building a RHEL gold image for Azure
 
-NOTE: There is a HTML rendered version of this guide here that might be a
-little nicer to read than on GitHub: http://40.112.68.75/guide/
+include::sidebarhighlight.adoc[]
+
+NOTE: There is a HTML rendered version of this document that **is much nicer
+nicer to read than on GitHub, available here: http://40.112.68.75/guide/ **.
 
 == Introduction and Lab Outline
 
@@ -27,7 +32,7 @@ to Cloud Access].
 === Why would I want to learn how to build a gold image for Azure?
 
 - Most users of Red Hat at scale have their own gold images, with requirements
-  for standrd service configuration, security settings, and pre-installed packages.
+  for standard service configuration, security settings, and pre-installed packages.
 - Most of these users already have an existing large number of Red Hat
   Enterprise Linux subscriptions too, and want to bring those to Azure.
 
@@ -68,8 +73,7 @@ help out!
 
 === Author & Support, and ackowledgements
 
-This lab was submitted by **James Read** (EMEA Solution Architect for Cloud & Service
-Providers).
+This lab was submitted by **James Read**.
 
 This lab is being supported by **Götz Riger**, **Dan Kinkead**, and **Khaled
 Elbedri**. 
@@ -79,14 +83,14 @@ Here's what we look like if you want to ask for help!
 [cols="^,^"]
 |===
 | image:labImages/jreadProfile.jpg[jread, 200]          | image:labImages/goetzProfile.jpg[goetz, 200]                  
-| James Read                                            | Götz Rieger                                        
+| **James Read**                                        | **Götz Rieger**
 | EMEA Senior Solution Architect for Microsoft, Red Hat | Senior Solution Architect, Germany, Red Hat
 | Email: james@redhat.com                               | Email: grieger@redhat.com                          
 |===
 [cols="^,^"]
 |===
 | image:labImages/danProfile.jpg[dan, 200]              | image:labImages/khaledProfile.jpg[khaled, 200]
-| Dan Kinkead                                           | Khaled Elbedri
+| **Dan Kinkead**                                       | **Khaled Elbedri**
 | Platform Technical Integrated Support Manager, Red Hat| Technical Sales Lead for Open Source, Microsoft
 | Email: dkinkead@redhat.com                            | Email: Khaled.Elbedri@microsoft.com
 |===
@@ -106,9 +110,11 @@ the original article about using Azure Active Directory, LVM and a bit more.
 Be sure to add the following article to your bookmarks **for reference after the Red Hat Summit**!
 
 image::labImages/article.png[]
+
 https://access.redhat.com/articles/uploading-rhel-image-to-azure
 
-Also, many of the best practices we talk about in this lab are well documented on the Red HAt Customer Portal, see https://access.redhat.com/articles/2758981
+This link is also mentioned at the end of this lab guide, along with many other
+relevant and useful links.
 
 == Lab Orientation 
 === Environment
@@ -141,17 +147,61 @@ There are 3x machines used in this lab;
 . The virtual machine gold image you will be building
 
 **You should now SSH into your lab workstation using the SSH command specified on
-the lab provisioning webpage**.
+the lab provisioning webpage**. You can find the **Terminal** application in
+the Applictions -> Favorites top menu.
+
+image::labImages/guidGrabberSsh.png[]
 
 == Start creating your gold image virtual machine
+
+=== Welcome to your workstation!
+
+If you logged in successfully, you should see this message;
+
+----
+---
+  Welcome to the RHEL Gold Image Workstation!
+
+        Red Hat Summit 2018
+---
+lab-user@goldimageworkstation-GUID:
+----
+
+Lets just take a look around, this is a very simple workstation. Run a couple
+of simple commands below to explore the lab workstation;
+
+It's running RHEL 7.5.
+
+    lab-user@goldimageworkstation-GUID: cat /etc/redhat-release
+    Red Hat Enterprise Linux Server release 7.5 (Maipo)
+
+It has just 8Gb of RAM; 
+
+    lab-user@goldimageworkstation-GUID: free -h
+                  total        used        free      shared  buff/cache   available
+    Mem:           7.6G        136M        7.3G         16M        195M        7.3G
+    Swap:            0B          0B          0B
+
+Your workstation is a 2x core machine;
+
+    root@goldimageworkstation-GUID: lscpu | grep -i CPU
+    CPU op-mode(s):        32-bit, 64-bit
+    CPU(s):                2
+    On-line CPU(s) list:   0,1
+    CPU family:            6
+    CPU MHz:               2294.872
+    NUMA node0 CPU(s):     0,1
+
+This is more than enough to host a couple of small virtual machines - in this
+lab we just will create one virtual machine.
 
 === Become root
 
 You can become root on your lab workstation using `sudo su`. This will allow
 you to install packages and create virtual machines with libvirt.
 
-    lab-user@goldimageworkstation-fa72: sudo su
-    root@goldimageworkstation-fa72: whoami
+    lab-user@goldimageworkstation-GUID: sudo su
+    root@goldimageworkstation-GUID: whoami
     root
 
 === Configure Yum server
@@ -159,20 +209,20 @@ you to install packages and create virtual machines with libvirt.
 This lab environment has stored updates and essential packages on a utility
 server. You need to configure your workstation to get packages from this server
 
-    lab-user@goldimageworkstation-fa72: cd /etc/yum.repos.d/
-    lab-user@goldimageworkstation-fa72: wget http://40.112.68.75/lab.repo
+    lab-user@goldimageworkstation-GUID: cd /etc/yum.repos.d/
+    lab-user@goldimageworkstation-GUID: wget http://40.112.68.75/lab.repo
 
 It's always a good idea to clean the yum cache after repos change;
 
-	lab-user@goldimageworkstation-fa72: yum clean all
+	lab-user@goldimageworkstation-GUID: yum clean all
 
 Check that the repository can be found with this command;
 
-    lab-user@goldimageworkstation-fa72: yum repolist
+    lab-user@goldimageworkstation-GUID: yum repolist
 
 You should see the 2x repos in the list;
 
-    root@goldimageworkstation-fa72: yum repolist
+    root@goldimageworkstation-GUID: yum repolist
     Loaded plugins: product-id, search-disabled-repos, subscription-manager
     This system is not registered with an entitlement server. You can use subscription-m
     rhel-7-server-extras-rpms
@@ -190,11 +240,13 @@ description of what the packages do, and in which repository to find them.
 | libvirt	|rhel-7-server-rpms	|Open source API, daemon, and management tool for managing platform virtualization.
 |libguestfs	| rhel-7-server-rpms	| A library for accessing and modifying virtual machine file systems.
 |libguestfs-tools	| rhel-7-server-rpms	| System administration tools for virtual machines; includes the guestfish utility.
+| virt-install | rhel-7-server-rpms | Used to create a virtual machine
+definition and register it with libvirt. 
 |===
 
 Install the packages as follows;
 
-    root@goldimageworkstation-fa72: yum install libvirt libguestfs libguestfs-tools virt-install
+    root@goldimageworkstation-GUID: yum install libvirt libguestfs libguestfs-tools virt-install
 
 === Check that the processor Virtualisation Extensions are enabled on your workstation
 
@@ -205,24 +257,30 @@ automatically by the script that setup your workstation.
 To check if the extensions are enabled, run the following command in your
 terminal;
 
-	root@goldimageworkstation-fa72: dmesg | grep -i kvm
+	root@goldimageworkstation-GUID: dmesg | grep -i kvm
 
-You should *not* see the following... If you do, something has gone terribly
+You *should _not_ see* the following... If you do, something has gone terribly
 wrong, please contact a lab admin!
 
 	[164324.526483] kvm: disabled by bios
 	[164346.574009] kvm: disabled by bios
 	[164964.310827] kvm: disabled by bios
 
+You *should see* something like this; 
+
+    ...
+    [    0.000000] Hypervisor detected: KVM
+    ...
+
 === Setup the libvirt daemon
 
 We're now going to start libvirt, which is a helper service that talks to and
 manages KVM.
 
-    root@goldimageworkstation-fa72: service libvirtd start
-    root@goldimageworkstation-fa72: chkconfig libvirtd on
+    root@goldimageworkstation-GUID: service libvirtd start
+    root@goldimageworkstation-GUID: chkconfig libvirtd on
 
-=== Create the RHEL VM from a RHEL KVM Guest Image
+=== Introduction to image best practices
 
 Red Hat releases a distribution of RHEL in .qcow2 format. This is optimized for
 virtualization on libvirt hypervisors which is a useful starting point for
@@ -234,9 +292,12 @@ Note the following configuration settings in the next couple of sections.
 
 Microsoft Azure VMs must have several specific configuration settings. Some of these settings are enabled during the initial VM creation. Other settings are set when provisioning the VM image for Microsoft Azure. Keep these in mind as you move through the procedure and refer back to it if you need to.
 
+[options="header",cols="1,2"]
 |===
-| Option | Recommendation
-|LVM	| Do not use Logical Volume Management (LVM) on the operating system disk. Instead, use regular partitions and format the disk using ext3, ext4, or xfs. LVM or RAID can be used for data disks.
+| Option | Requirement
+|LVM	| Do not use Logical Volume Management (LVM) on the operating system
+disk. Instead, use regular partitions and format the disk using ext3, ext4, or
+xfs. LVM or RAID can be used for data disks. <<about-lvm,Explain more about LVM>>
 |ssh	| ssh must be enabled to provide remote access to your Azure VMs.
 | dhcp	| The primary virtual adapter should be configured for dhcp (IPv4 only).
 | Network Manager	| This service should be disabled on RHEL 6.x images.
@@ -260,26 +321,28 @@ Azure's network cards and similar were only released in 7.1 and later.
 
 On your lab laptop, run the following command in a terminal; 
 
-	root@goldimageworkstation-fa72: cd /opt/
-    root@goldimageworkstation-fa72: ll
+	root@goldimageworkstation-GUID: cd /opt/
+    root@goldimageworkstation-GUID: ll
 
 You should see an image filename that was downloaded from the customer portal
 for you; **rhel-server-7.5-x86_64-kvm.qcow2**
 
 Copy the image to `/var/lib/libvirt/images/`; We create a copy of this image because if we break something during the install, we can just make a new copy without having to download the image again.
 
-	root@goldimageworkstation-fa72: cp rhel-server-7.5-x86_64-kvm.qcow2 /var/lib/libvirt/images/
+	root@goldimageworkstation-GUID: cp rhel-server-7.5-x86_64-kvm.qcow2 /var/lib/libvirt/images/
 
 === Create a Local RHEL VM from this image
 
-We are now going to create a new virtual machine on the workstation, based on this standard KVM guest image. We will customize this image, then prepare it to upload to Azure.
+We are now going to create a new virtual machine on the workstation, based on
+this standard KVM guest image. We will customize this image, then prepare it to
+upload to Azure. 
 
 You do not have any access to a graphical environment on your workstation, so
 we will create a virtual machine using command line tools **virt-install** and
 **virsh** (virtual shell). 
 
 ----
-root@goldimageworkstation-fa72: virt-install -n goldimage -r 2048 --os-type=linux --os-variant=rhel7 --disk /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2,device=disk,bus=virtio -w bridge=virbr0,model=virtio --vnc --noautoconsole --import
+root@goldimageworkstation-GUID: virt-install -n goldimage -r 2048 --os-type=linux --os-variant=rhel7 --disk /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2,device=disk,bus=virtio -w bridge=virbr0,model=virtio --vnc --noautoconsole --import
 ----
 
 If successful, you should see; 
@@ -287,39 +350,66 @@ If successful, you should see;
     Starting install...
     Domain creation completed.
 
+Let's pause for a moment to understand what this command just did;
+
+. `virt-install -n goldimage` created a new KVM/libvirt Virtual Machine called
+"goldimage"
+. `-r 2048`, gave this machine 2048Mb (2Gb) of RAM. Note that in Azure, this
+virtual machine could be configured for any Azure machine size, and would not
+be limited to 2Gb. We're just using 2Gb to initially build the image as there
+is no workload installed.
+. `--os-type=linux --os-variant=rhel7` configures the virutal hardware choices
+to be the most compatible with RHEL.
+. `--disk
+/var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2,device=disk,bus=virtio`
+sets the virtual machine to use the base disk image we just copied, and
+connects it to the virtual machine using the "virtio" interface and driver. 
+. `-w bridge=virbr0,model=virtio` This gives the virtual
+machine a local network connection so we can SSH into it later.
+. `--import` This imports the virtual machine definition to the local libvirt
+daemon.
+
 The virtual machine should be started automaticlaly for you, you can check this
 as follows;
 
-    root@goldimageworkstation-fa72: virsh list
+    root@goldimageworkstation-GUID: virsh list
      Id    Name                           State
     ----------------------------------------------------
      2     goldimage                      running
 
-If you see this, **awesome**!
+If you see this, **awesome**! If you cannot see this, you should be sad and
+contact a lab admin :) 
+
+=== Connect to the VM serial console
 
 Lets connect to our VM, but because it does not have a default network
 configuration, we're going to use the serial console. 
 
-    root@goldimageworkstation-fa72: virsh console goldimage
+    root@goldimageworkstation-GUID: virsh console goldimage
 
-You will probably start seeing bootup warning messages like this; 
+You will probably start seeing bootup warning messages like this... **don't
+panic**!
 
     [  186.475166] cloud-init[802]: 2018-05-04 03:19:50,499 - url_helper.py[WARNING]: Calling 'http://192.168.122.1/latest/meta-data/instance-id' failed [50/120s]: request error [('Connection aborted.', error(111, 'Connection refused'))]
 
 It's important to pause here and understand what is happening here.
 
+==== Understanding cloud-init
+
 `cloud-init` is a useful tool in environments that support it, like Red Hat
-OpenStack Platform. It is a utility that starts up on bootup, and asks local
+OpenStack Platform. It is a utility that is pre-installed on virtual machines,
+and it starts up on bootup. It asks local
 metadata servers for confguration information - network device IP addresses,
 initial root passwords, initial SSH keys and various other details.
 
 In our virtual environment, we have not got a cloud-init metadata server
 configured - and it would be unusual to use cloud-init in simple environments
 like this. Most importantly, cloud-init support for RHEL on Azure is not yet
-generally available (more on why later in this lab). 
+generally available (<<cloud-init-about,Learn more here>>).
 
 We could have disabled cloud-init using bootup options, but this was hopefully
-a useful learning opportunity! Wait for cloud-init to time out and you should
+a useful learning opportunity! Wait for cloud-init to time out (should take
+about 3-5 minutes) and you should
 then get a login screen eventually; 
 
 ----
@@ -329,7 +419,14 @@ Kernel 3.10.0-862.el7.x86_64 on an x86_64
 localhost login:
 ----
 
-Great, a basic login prompt! The problem is, because cloud-init failed, the
+Great, a basic login prompt! Here's a quick **checkpoint of what we've done so
+far**;
+
+. SSHed into the workstartion that is running in Red Hat's cloud
+. Setup virtualisation on the workstartion
+. Created a goldimage virtual machine
+
+The problem is, because cloud-init failed, the
 root password has not been set, and so you cannot login...
 
 We're going to set the root password manually by turning the machine off,
@@ -345,7 +442,7 @@ Note that `virsh` uses the word "destroy" to mean "power off" virtual machine.
 We did not delete this virtual machine, and we can check it still exists with
 the following command;
 
-    root@goldimageworkstation-fa72: virsh list --all
+    root@goldimageworkstation-GUID: virsh list --all
      Id    Name                           State
     ----------------------------------------------------
      -     goldimage                      shut off
@@ -358,15 +455,17 @@ So that the image can be customised for Microsoft Azure, you need to set up root
 
 On your workstation, use openssl to generate a new encrypted password for the root account on the new VM.
 
-	root@goldimageworkstation-fa72: openssl passwd -1 yourPasswordGoesHere
+	root@goldimageworkstation-GUID: openssl passwd -1 yourPasswordGoesHere
     $1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1
 
 Copy the encrypted password string (in the example above -
-**$1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1** is our encrypted password). 
+**$1$bI/.EQaO$Qa.i9WtqjskncD9LgaJwq1** is our encrypted password).
+
+FIXME more detail on what Guestfish is 
 
 Launch the guestfish utility to access the etc/shadow file on the image.
 
-	root@goldimageworkstation-fa72: guestfish -a /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2 
+	root@goldimageworkstation-GUID: guestfish -a /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2 
 
 Enter the following commands at the guestfish command prompt.
 
@@ -434,7 +533,7 @@ Exit the guestfish utility. This will close the disk.
 
 Use the following command to restart our virutal machine in libvirt;
 
-    root@goldimageworkstation-fa72: virsh start goldimage
+    root@goldimageworkstation-GUID: virsh start goldimage
 
 Note that cloud-init will try again, and will slow down your virtual machine
 startup. Use the `virsh console goldimage` command to reconnect to the console
@@ -454,7 +553,8 @@ If the root password does not work, check the **/etc/shadow** file to make sure 
 Once you are logged in using the root account, you're ready to configure the image.
 
 == Configure the image for Azure
-Complete the procedures in the following sections to finalize the image configuration.
+Complete the procedures in the following sections to finalize the gold image
+for Azure.
 
 === Remove cloud-init
 Lets get rid of that bootup delay from cloud-init!
@@ -462,18 +562,18 @@ Lets get rid of that bootup delay from cloud-init!
 If you are unfamiliar with this service, it's used to do the initial setup of virtual machines from generic images. OpenStack, and some other cloud platforms host a metadata server, which give images their initial hostname, username, ssh keys and similar. 
 
 Red Hat Enterprise Linux and Azure does not have production support
-`cloud-init` ([FIXME click here to learn why]), instead the Windows Azure Live Agent (WALA) does most of the tasks that `cloud-init` normally does. 
+`cloud-init` (<<cloud-init-about,click here to learn why>>), instead the Windows Azure Live Agent (WALA) does most of the tasks that `cloud-init` normally does. 
 
 Stop the cloud-init service (if present).
 
-	systemctl stop cloud-init
+	[root@localhost ~]# systemctl stop cloud-init
 
 Remove the cloud-init software.
 
-	yum remove cloud-init
+	[root@localhost ~]# yum remove cloud-init
 
 
-=== Install Hyper-V Device Drivers on the RHEL VM (if needed)
+=== Check that the Hyper-V Device Drivers are installed
 Microsoft provides network and storage device drivers as part of their Linux
 Integration Services for Hyper-V package. Hyper-V device drivers may need to be
 installed on the RHEL VM prior to importing it to Microsoft Azure. Use the
@@ -493,12 +593,12 @@ On the RHEL VM, you would add the driver parameters to the /etc/dracut.conf file
 
 Here's how you regenerate the intramfs image.
 
-	dracut -f -v
+	[root@localhost ~]# dracut -f -v
 
 Verify the configuration changes now include the **hv** drivers in your bootup
 image.
 
-	lsinitrd | grep hv
+	[root@localhost ~]# lsinitrd | grep hv
 
 You should see a list of Hyper-V drivers similar to the following drivers.
 
@@ -541,7 +641,7 @@ Exit the serial console by pressing the **Control + ]** shortcut.
 SSH from the workstation back into the gold image VM, and use the password you
 set earlier;
 
-    root@goldimageworkstation-fa72: ssh root@192.168.122.108
+    root@goldimageworkstation-GUID: ssh root@192.168.122.108
     root@192.168.122.108's password:
     Last login: Fri May  4 04:08:24 2018
     [root@localhost ~]#
@@ -654,6 +754,8 @@ Edit the following lines in the /etc/waagent.conf file to configure swap space f
 	ResourceDisk.EnableSwap=y
 	ResourceDisk.SwapSizeMB=2048
 
+=== Deprovisioning
+
 Now many of the common tasks have been completed, we're almost ready to
 "deprovision" the machine from WALA. It's sensible to take a backup of our work
 so far, so that if the deprovisioning fails or we want to make changes later,
@@ -661,7 +763,7 @@ we can come back to this backup.
 
 Logout of the gold image, and go back to the workstation. Take a snapshot of the VM from the workstation; 
 
-    lab-user@goldimageworkstation-fa72: virsh snapshot-create-as --domain goldimage --name "goldimage-before-deprovision"
+    lab-user@goldimageworkstation-GUID: virsh snapshot-create-as --domain goldimage --name "goldimage-before-deprovision"
 
 Prepare the VM for Azure provisioning by cleaning up the existing provisioning details; Azure will reprovision the VM in Azure. This command generates warnings, which is expected.
 
@@ -684,25 +786,7 @@ Clean the shell history and shut down the VM.
 
 https://docs.microsoft.com/en-us/azure/active-directory-domain-services/active-directory-ds-join-rhel-linux-vm
 
-=== Logical Volume Manager (LVM)
-
-If you inspect the root disk of these machines, you'll notice that Logical
-Volume Management (LVM) is not being used. LVM is very common in physical
-machines and on-premise virtual machines to configure OS and Data disks in
-software, rather than in hardware.
-
-While LVM is a useful tool still for Data disks in Azure, the Red Hat
-recommendation is **not** to use LVM for Operating System disks at this time
-(mount points like /, /bin, /usr, /var, etc). 
-
-. Azure's disk resizing capabilities have no understanding of LVM, and risk
-damaging disks if resized.
-
-. If LVM has issues during bootup, it would pause the bootup before SSH becomes
-available, rendering the machine impossible to login to. Note that some Azure
-regions have early support for serial consoles that may make this limitation
-less of an issue in the future. However, it is not yet available in all
-regions for all machine types. 
+=== FIXME: Automating the build
 
 === Any more best practices. hmm?
 
@@ -721,7 +805,7 @@ Convert the qcow2 image to raw format, resize it, and convert the raw image to v
 
 Convert the image from qcow2 to raw.
 
-	lab-user@goldimageworkstation-fa72: qemu-img convert -f qcow2 -O raw <image-xxx.qcow2> <image-xxx.raw>
+	lab-user@goldimageworkstation-GUID: qemu-img convert -f qcow2 -O raw <image-xxx.qcow2> <image-xxx.raw>
 
 Save the following as a script. (These steps use aligned-size.sh.) The script will calculate the size of the raw image to the nearest 1 MB boundary.
 
@@ -735,21 +819,21 @@ Save the following as a script. (These steps use aligned-size.sh.) The script wi
 
 Run the script.
 
-	lab-user@goldimageworkstation-fa72: sh aligned-size.sh
+	lab-user@goldimageworkstation-GUID: sh aligned-size.sh
 
 Resize the raw image using the rounded size.
 
-	lab-user@goldimageworkstation-fa72: qemu-img resize -f raw <image-xxx.raw> <rounded-size>
+	lab-user@goldimageworkstation-GUID: qemu-img resize -f raw <image-xxx.raw> <rounded-size>
 
 Convert the raw disk image to vhd format.
 
 Important: qemu-img version 1.5.3 is used in this procedure. Check the qemu-img version using yum info qemu-img (or dnf info qemu-img for Fedora 22 or later). If the version is 2.2.1 or later, add the option force_size in the conversion command, for example, subformat=fixed,force_size. All other command options remain the same.
 
-	lab-user@goldimageworkstation-fa72: qemu-img convert -f raw -o subformat=fixed -O vpc <image-xxx.raw> <image-xxx.vhd>
+	lab-user@goldimageworkstation-GUID: qemu-img convert -f raw -o subformat=fixed -O vpc <image-xxx.raw> <image-xxx.vhd>
 
 To verify the file is resized correctly, show the virtual-size using the following command.
 
-	lab-user@goldimageworkstation-fa72: qemu-img info --output=json -f vpc <path-to-image>
+	lab-user@goldimageworkstation-GUID: qemu-img info --output=json -f vpc <path-to-image>
 
 	Divide the virtual-size value by 1024, twice. If the result is a whole number, the vhd file is aligned properly.
 
@@ -1077,6 +1161,8 @@ Authentication command: ssh -i <path-to-existing-ssh-key> <admin-username@public
 
 == Summary
 
+=== What did you just do?!
+
 In this lab we've run through most of the basic steps needed to create a Red Hat Enterprise Linux image for Azure. We covered why the Windows Azure live agent needs to be installed, as well as common configuration changes necessary.
 
 We hope that you are now more familiar with the process, please do review the recommended links below to learn more.
@@ -1091,6 +1177,8 @@ environment you used at Red Hat Summit will not be available, but you can
 easily create your own workstation and then many of the instructions are
 similar.
 
+== Appendixes
+
 === Recommended Links
 
 Original lab guide document, also explains how to build images from ISOs and more; 
@@ -1102,3 +1190,29 @@ Useful Links, FAQ and Best Practices;
 * https://access.redhat.com/articles/product-configuration-for-azure#regional-product-availability-1[Azure regional product availability]
 * https://azure.microsoft.com/en-us/global-infrastructure/services/["Red Hat Linux" (sic) availability by Azure region]
 * https://www.redhat.com/en/technologies/cloud-computing/cloud-access[Overview of Cloud Access]
+
+[#about-lvm]
+=== Logical Volume Manager (LVM) in Azure
+
+If you inspect the root disk of these machines, you'll notice that Logical
+Volume Management (LVM) is not being used. LVM is very common in physical
+machines and on-premise virtual machines to configure OS and Data disks in
+software, rather than in hardware.
+
+While LVM is a useful tool still for Data disks in Azure, the Red Hat
+recommendation is **not** to use LVM for Operating System disks at this time
+(mount points like /, /bin, /usr, /var, etc). 
+
+. Azure's disk resizing capabilities have no understanding of LVM, and risk
+damaging disks if resized.
+
+. If LVM has issues during bootup, it would pause the bootup before SSH becomes
+available, rendering the machine impossible to login to. Note that some Azure
+regions have early support for serial consoles that may make this limitation
+less of an issue in the future. However, it is not yet available in all
+regions for all machine types. 
+
+[#cloud-init-about]
+=== cloud-init support in Azure
+
+FIXME
