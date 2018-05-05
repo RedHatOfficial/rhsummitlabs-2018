@@ -1,2 +1,2 @@
 default:
-	asciidoctor README.adoc
+	asciidoctor -v README.adoc
