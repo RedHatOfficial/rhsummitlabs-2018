@@ -1,5 +1,6 @@
 :data-uri:
 :toc: left
+:encoding: UTF-8
 
 = Building a RHEL gold image for Azure
 
@@ -84,7 +85,7 @@ Here's what we look like if you want to ask for help!
 |===
 [cols="^,^"]
 |===
-| image:labImages/danProfile.png[dan, 200]              | image:labImages/khaledProfile.jpg[khaled, 200]
+| image:labImages/danProfile.jpg[dan, 200]              | image:labImages/khaledProfile.jpg[khaled, 200]
 | Dan Kinkead                                           | Khaled Elbedri
 | Platform Technical Integrated Support Manager, Red Hat| Technical Sales Lead for Open Source, Microsoft
 | Email: dkinkead@redhat.com                            | Email: Khaled.Elbedri@microsoft.com
