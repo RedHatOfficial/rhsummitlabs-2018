@@ -16,7 +16,7 @@ nicer to read than on GitHub, available here: http://40.112.68.75/guide/ **.
 
 This lab walks you through the process of building a RHEL "gold image" that can be used in a Microsoft Azure cloud environment. 
 
-This process is necessary if your organisation wants to use Cloud Access
+This process is necessary if your organization wants to use Cloud Access
 ("Bring your own subscription"), and not Marketplace images. It is important to
 understand that marketplace images can only be consumed with on a Pay As You Go
 basis from Azure - you cannot use existing Cloud Access subscriptions.
@@ -29,6 +29,10 @@ link;
 https://www.redhat.com/en/technologies/cloud-computing/cloud-access[Overview
 to Cloud Access].
 
+|===
+| **Lab Technical Difficulty:** | **Beginner** - Basic command line knowledge is useful, and lots of help is available!
+|===
+
 === Why would I want to learn how to build a gold image for Azure?
 
 - Most users of Red Hat at scale have their own gold images, with requirements
@@ -36,7 +40,7 @@ to Cloud Access].
 - Most of these users already have an existing large number of Red Hat
   Enterprise Linux subscriptions too, and want to bring those to Azure.
 
-- The Azure Marketplace images cannot be customised before they are
+- The Azure Marketplace images cannot be customized before they are
   provisioned, and they also cannot be used with existing subscriptions.
   Therefore it is necessary to learn how to build a RHEL gold image for Azure.
 
@@ -55,7 +59,10 @@ Hat's cloud. You will have root on this workstation.
 Because this lab produces a virtual machine that is approximately 10Gb in size,
 which is unpractical to upload to Azure during the Red Hat Summit due to
 bandwidth limits. This lab includes instructions on how you would upload the image using the
-Azure tools, but you will not practically take that step during this lab.
+Azure tools which you can read through. However, the actual **upload to Azure** is
+read only and you will not upload your built images to Azure. You will see how
+these steps are quite simple through, so you won't miss much, and you **will
+learn lots of Azure best practices for RHEL in this lab**!
 
 === What skills do I need for this lab? 
 
@@ -71,7 +78,7 @@ help out!
 - To understand the reasons behind some of the changes we make for Azure
 - Be able to build your own Azure image for use in Cloud Access
 
-=== Author & Support, and ackowledgements
+=== Author & Support, and acknowledgments
 
 This lab was submitted by **James Read**.
 
@@ -148,7 +155,7 @@ There are 3x machines used in this lab;
 
 **You should now SSH into your lab workstation using the SSH command specified on
 the lab provisioning webpage**. You can find the **Terminal** application in
-the Applictions -> Favorites top menu.
+the Applications -> Favorites top menu.
 
 image::labImages/guidGrabberSsh.png[]
 
@@ -248,9 +255,9 @@ Install the packages as follows;
 
     root@goldimageworkstation-GUID: yum install libvirt libguestfs libguestfs-tools virt-install
 
-=== Check that the processor Virtualisation Extensions are enabled on your workstation
+=== Check that the processor Virtualization Extensions are enabled on your workstation
 
-To run virtual machines on the workstations, the processor Virtualisation
+To run virtual machines on the workstations, the processor Virtualization
 Extensions need to be enabled in the BIOS/EFI. This will have been done for you
 automatically by the script that setup your workstation.
 
@@ -358,7 +365,7 @@ Let's pause for a moment to understand what this command just did;
 virtual machine could be configured for any Azure machine size, and would not
 be limited to 2Gb. We're just using 2Gb to initially build the image as there
 is no workload installed.
-. `--os-type=linux --os-variant=rhel7` configures the virutal hardware choices
+. `--os-type=linux --os-variant=rhel7` configures the virtual hardware choices
 to be the most compatible with RHEL.
 . `--disk
 /var/lib/libvirt/images/rhel-server-7.5-x86_64-kvm.qcow2,device=disk,bus=virtio`
@@ -369,7 +376,7 @@ machine a local network connection so we can SSH into it later.
 . `--import` This imports the virtual machine definition to the local libvirt
 daemon.
 
-The virtual machine should be started automaticlaly for you, you can check this
+The virtual machine should be started automatically for you, you can check this
 as follows;
 
     root@goldimageworkstation-GUID: virsh list
@@ -399,7 +406,7 @@ It's important to pause here and understand what is happening here.
 `cloud-init` is a useful tool in environments that support it, like Red Hat
 OpenStack Platform. It is a utility that is pre-installed on virtual machines,
 and it starts up on bootup. It asks local
-metadata servers for confguration information - network device IP addresses,
+metadata servers for configuration information - network device IP addresses,
 initial root passwords, initial SSH keys and various other details.
 
 In our virtual environment, we have not got a cloud-init metadata server
@@ -422,8 +429,8 @@ localhost login:
 Great, a basic login prompt! Here's a quick **checkpoint of what we've done so
 far**;
 
-. SSHed into the workstartion that is running in Red Hat's cloud
-. Setup virtualisation on the workstartion
+. SSHed into the workstation that is running in Red Hat's cloud
+. Setup virtualization on the workstation
 . Created a goldimage virtual machine
 
 The problem is, because cloud-init failed, the
@@ -451,7 +458,7 @@ Once you have shut down the VM, we will now set up root access to the image.
 
 === Set Up Root Access to the RHEL VM Image
 
-So that the image can be customised for Microsoft Azure, you need to set up root access to the VM. You can do this by using a public/private key generator like ssh-keygen, or you can set up a root password by completing the steps below. 
+So that the image can be customized for Microsoft Azure, you need to set up root access to the VM. You can do this by using a public/private key generator like ssh-keygen, or you can set up a root password by completing the steps below. 
 
 On your workstation, use openssl to generate a new encrypted password for the root account on the new VM.
 
@@ -531,7 +538,7 @@ Exit the guestfish utility. This will close the disk.
 
 === Start the VM again
 
-Use the following command to restart our virutal machine in libvirt;
+Use the following command to restart our virtual machine in libvirt;
 
     root@goldimageworkstation-GUID: virsh start goldimage
 
@@ -677,7 +684,7 @@ Remove any persistent network device rules.
 This is necessary because when we create multiple copies of this virtual
 machine on Azure, it will create network cards with different MAC addresses
 that have not been "seen" by this virtual machine before. This would mean your
-first virutal machine would be assigned **eth1** or **em2** or similar which is
+first virtual machine would be assigned **eth1** or **em2** or similar which is
 undesirable. 
 
 Set the network service to start automatically.
@@ -765,7 +772,7 @@ Logout of the gold image, and go back to the workstation. Take a snapshot of the
 
     lab-user@goldimageworkstation-GUID: virsh snapshot-create-as --domain goldimage --name "goldimage-before-deprovision"
 
-Prepare the VM for Azure provisioning by cleaning up the existing provisioning details; Azure will reprovision the VM in Azure. This command generates warnings, which is expected.
+Prepare the VM for Azure provisioning by cleaning up the existing provisioning details; Azure will provision the VM in Azure. This command generates warnings, which is expected.
 
 	[root@localhost ~]# waagent -force -deprovision
 
@@ -801,7 +808,7 @@ Important: The resulting vhd file must be sized to the nearest 1 MB boundary for
 
 === Indirect Method
 
-Convert the qcow2 image to raw format, resize it, and convert the raw image to vhd.
+Convert the qcow2 image to raw format, re-size it, and convert the raw image to vhd.
 
 Convert the image from qcow2 to raw.
 
