@@ -27,7 +27,7 @@ This lab provides an overview of the Satellite product, showing core functionali
 * Managing custom templates
 * Enhancements to content management (Lazy Sync)
 
-=== Audience/Intro/Prerequisites:
+=== Audience/Intro/Prerequisites
 
 This lab is geared towards Operators and System Administrators, those are the primary users of Satellite. No prior knowledge of Satellite is required. However, this lab focuses on upcoming features of Satellite 6.4 and a few enhancements in Satellite 6.3, so attendees who are new to Satellite will benefit from some self discovery on the product during the lab.
 
@@ -69,7 +69,7 @@ Instance info with Public DNS is given below. One can access any of these instan
 .Other Information of Instances with network & login credentials
 |============================
 |*Data*                     |*Value*                                                     |*FQDN*
-|Satellite Instance         |https://satellite6-GUID.rhpds.opentlc.com                   |satellite.example.com
+|Satellite Instance         |https://satellite-GUID.rhpds.opentlc.com                    |satellite.example.com
 |Default Username           |admin                                                       |N/A
 |Default Password           |changeme                                                    |N/A
 |Organization               |Default Organization                                        |N/A
@@ -98,11 +98,13 @@ If you would like to keep up to date with the latest development, or if you woul
 
 == Story 1 - Tour of Satellite 6.4
 
-The first story is not really a user story, but rather a tour of Satellite 6.4. If you are familiar with Satellite 6 you can continue to Story 2. The user will be given small exercises to do, but the real goal of this story is to understand the major components of Satellite 6.4 and to view the pre-populated data for the lab.
+The first story is not really a user story, but rather a tour of Satellite 6.4. If you are familiar with Satellite 6 you can continue to Story 2, though Satellite 6.4 does include a change to the user interface which will be new for all users. The user will be given small exercises to do, but the real goal of this story is to understand the major components of Satellite 6.4 and to view the pre-populated data for the lab.
+
+`Note: The answers to the excercises are at the end of this story, so write down your answers and check your work at the end`
 
 === Login
 
-Log in to the Satellite 6.4 Server at *https://satellite-GUID.rhpds.opentlc.com* using the provided credentials. ( Note: please update the GUID as given to you or contact Lab administrator) This is an administrator account, which is similar to the “Site Admin” role in Satellite 5. Satellite 6 has a robust Role Based Access Control (RBAC) system which controls what actions users can take, and the resources (e.g. organizations) which they can access. For the sake of simplicity in this lab, only the admin account will be used.
+Log in to the Satellite 6.4 Server at *https://satellite-GUID.rhpds.opentlc.com* using the provided credentials [admin/changeme]. ( Note: please update the GUID as given to you or contact Lab administrator) This is an administrator account, which is similar to the “Site Admin” role in Satellite 5. Satellite 6 has a robust Role Based Access Control (RBAC) system which controls what actions users can take, and the resources (e.g. organizations) which they can access. For the sake of simplicity in this lab, only the admin account will be used.
 
 === Basic Navigation and Organizations
 
@@ -110,14 +112,21 @@ When you login, you are presented with a set of menus on left side as vertical m
 
 image:./images/dashboard.png[1500px,1150px]
 
-Please make sure _Deafult Organization_ is selected when you login to UI. It can be selected through org switcher _Any Context_ from top left dropdown
+Please make sure _Default Organization_ is selected when you login to UI. It can be selected through Organization switcher _Any Context_ from top left dropdown
 
-
-==== The menus have the following functions:
+==== The top menus have the following functions:
 
 |===================================
 |*Menu Item*                         |*Description*
-|Any Context / Default Organization|This is the organization and location switcher, and lets the user select the current Organization and Location which is being managed. Satellite 6 is a multi tenant solution, and this selector which is always at the top of the screen tells the user the current organization and location. For this lab, the organization to use is named “Default Organization” and the location setting will remain “Any Location”. If the context is not “Default Organization” then select the organization by going to Org Switcher >> Any Organization >> Default Organization.
+|Org Switcher / Default Organization|This is the organization and location switcher, and lets the user select the current Organization and Location which is being managed. Satellite 6 is a multi tenant solution, and this selector which is always at the top of the screen tells the user the current organization and location. For this lab, the organization to use is named “Default Organization” and the location setting will remain “Any Location”. If the context is not “Default Organization” then select the organization by going to Org Switcher >> Any Organization >> Default Organization.
+|Notification Drawer               | The notification drawer shows recent events in Satellite as well as the contents of an RSS feed.
+|Admin User                        |This is the user control, which lets users edit their own information.
+|===================================
+
+==== The vertical menus have the following functions:
+
+|===================================
+|*Menu Item*                         |*Description*
 |Monitor                           |Summary Dashboards and Reports are grouped here.
 |Content                           |Features around Content Management are grouped here. This includes Subscriptions, Lifecycle Environments, Products, Repositories, Content Views, Errata, and Activation Keys.
 |Containers                        |Container management features are here.
@@ -126,7 +135,6 @@ Please make sure _Deafult Organization_ is selected when you login to UI. It can
 |Infrastructure                    |How Satellite 6 interacts with the environment is managed through these menus.
 |Insights                  |An interface into the Red Hat Insights tool is embedded into Satellite 6, and can be accessed here.
 |Administer                        |Advanced configuration such as Users, RBAC, and Settings are grouped here.
-|Admin User                        |This is the user control, which lets users edit their own information.
 |===================================
 
 === Subscriptions
@@ -155,15 +163,17 @@ How many packages are contained in the _Red Hat Enterprise Linux 7 Server Kickst
 
 Satellite 6 provides Activation Keys which allow users to define properties that may be applied to machines that are registered using the key. This includes properties like lifecycle environment, content view, subscriptions, enabling repositories and host collections.
 
+Users can access Activation Keys at *Content >> Activation Keys*.  You will see some Activation Keys that have already been created, and you could create your own Activation Keys from this menu, but that will not be done in this lab.
+
 === Content Views
 
 Satellite 6 allows users to define rules for creating snapshots of content. These snapshots are called Content Views. These views can be promoted across Lifecycle Environments to provide a controlled deployment model where different machines are updated based on different schedules. For customers who do not wish to use content views, the Library contains a default content view with the latest version of all content.
 
-The Lab starts with a single content view representing a simple RHEL Standard Operating Environment (SOE) based on RHEL 7. Satellite 6 has built in access to minor releases of RHEL (e.g. 7) and robust filters which will allow users to make highly specialized content views. Users can access the Content View Functionality at *Content >> Content Views*.
+The Lab starts with a single content view, RHEL 7 SOE, representing a simple RHEL Standard Operating Environment (SOE) based on RHEL 7. Satellite 6 has built in access to minor releases of RHEL (e.g. 7) and robust filters which will allow users to make highly specialized content views. Users can access the Content View Functionality at *Content >> Content Views*.
 
 ==== Exercise: Content Views
 
-How many Packages are contained in Version 1.0 of the _RHEL 7 SOE_ Content View?
+How many Packages are contained in Version 9.0 of the _RHEL 7 SOE_ Content View?
 
 === Host Groups
 
@@ -174,19 +184,21 @@ Host Groups are recipes for systems, describing how the system should be provisi
 Create a new hostgroup by following settings and make sure to set the default root password, activation key.
 
 . Go to *Configure >> Host groups*.
-. Create hostgroup with name *RHEL 7 SOE*.
-.. Select Lifcycle envrionment *Library*
-.. Select Content View *RHEL 7 SOE*
-.. Select Content Source *satellite.example.com*
+. Create a hostgroup with the name *RHEL 7 SOE* by completing the following steps:
+.. Click *Create Host Group*.
+.. In the *Name* field enter the name *RHEL 7 SOE*
+.. In the *Lifcycle envrionment* dropdown select *Library*
+.. In the *Content View* dropdown select *RHEL 7 SOE*
+.. In the *Content Source* dropdown select *satellite.example.com*
 . Select the *Network* tab
-.. For *Domain*, select *example.com*
+.. In the *Domain* dropdown select *example.com*
 . Select the *Operating System* Tab
-.. Select Architecture *x86_64*
-.. Select Operating System *RedHat 7.5*
-.. Select Partition table *Kickstart default*
-.. Type root password *changeme* in the *Root password* field
+.. In the *Architecture* dropdown select *x86_64*
+.. In the *Operating System* dropdown select *RedHat 7.5*
+.. In the *Partition table* dropdown select *Kickstart default*
+.. In the *Root Pass* field type the root password *changeme*
 . Select the *Activation Keys* Tab
-.. Click the *input box* and select *ak-rhel-7*
+.. Click the *Activation Keys* field and type *ak-rhel-7*
 . Click *Submit*
 
 === Compute Resources
@@ -199,6 +211,7 @@ Satellite 6 supports the Hybrid Cloud model by allowing users to provision machi
 . Go to *Infrastructure >> Compute resources*
 . Click *Edit* on the row for the compute resource named *libvirt*
 . Click the *Test Connection* button
+. Notice the *Test Connection was successful* message
 . Click *Submit*
 
 
@@ -209,10 +222,10 @@ Satellite 6 ships with a full command line tool called hammer. The goal of the c
 ==== Exercise: List the organizations
 
 
-ssh in to the Satellite lab vm:
+SSH to the Satellite lab vm:
 
 ----
-ssh satellite-GUID.rhpds.opentlc.com
+# ssh satellite-GUID.rhpds.opentlc.com
 ----
 
 *_Note: Private ssh-key is already placed on your provided laptop_*
@@ -220,9 +233,11 @@ ssh satellite-GUID.rhpds.opentlc.com
 Execute the following command:
 
 ----
-hammer -u admin -p changeme organization list
-sudo su
+# sudo su -
+# hammer organization list
 ----
+
+The output from the hammer command lists the organizations present in your Satellite environment.
 
 ==== Exercise: List the roles in the hammer shell
 
@@ -231,18 +246,21 @@ Hammer comes with a shell which can be used to run multiple hammer commands
 If you are not already logged in from a previous exercise, ssh in to the Satellite lab vm:
 
 ----
-ssh satellite-GUID.rhpds.opentlc.com
-sudo su
+# ssh satellite-GUID.rhpds.opentlc.com
 ----
 
 Execute the following commands:
 
 ----
- hammer -u admin -p changeme shell
+# hammer -u admin -p changeme shell
  hammer> role list
  hammer> role filters --id 1
  hammer> exit
 ----
+
+This shows how you can use the hammer shell to run multiple hammer commands.
+The output of this hammer commands lists the availble user roles in Satellite. 
+
 ==== Exercise: Export the subscriptions to a CSV file.
 
 Hammer comes with an ability to export items in a csv format which then can be imported into any software that can read csv files.
@@ -250,15 +268,18 @@ Hammer comes with an ability to export items in a csv format which then can be i
 If you are not already logged in from a previous exercise, ssh in to the Satellite lab vm:
 
 ----
-ssh satellite-GUID.rhpds.opentlc.com
-sudo su
+# ssh satellite-GUID.rhpds.opentlc.com
+# sudo su -
 ----
 
-Execute the following command:
+Execute the following command to export the list to a file:
 
 ----
-hammer --csv subscription list --organization-label Default_Organization > subscriptions
+# hammer --csv subscription list --organization-label Default_Organization > subscriptions.csv
 ----
+
+If you now perform a directory listing you will see that the subscriptions.csv file is listed.
+This file can now be used in any other software that reads .csv files to show all of the subscriptions available in the Default Organization.
 
 === Answers
 
@@ -268,7 +289,7 @@ hammer --csv subscription list --organization-label Default_Organization > subsc
 |*Exercise*     |*Answer*
 |Subscriptions|Support Level: Premium, Contract Number: 11528762. Go to Content >> Red Hat Subscriptions.
 |Products     |5099. Go to Content >> Products >> Red Hat Enterprise Linux Server >> Repositories.
-|Content Views|23249. Go to Content >> Content Views >> RHEL 7 SOE.
+|Content Views|37593. Go to Content >> Content Views >> RHEL 7 SOE.
 |==============
 
 == Story 2 - Notification Drawer RSS feed
@@ -277,28 +298,39 @@ Among new features in Satellite 6.4 is the ability to pull a RSS feed and displa
 
 === Observing the notifications
 
-To see the three newest items from the RSS feed, follow these steps:
+To see the newest items from the RSS feed, follow these steps:
 
 - Log in to the Satellite
 - Open the notification drawer in the upper right (shaped like a bell)
+- In case there is no *Community* item, log into the Satellite over SSH and run the following command to make it appear again.
+
+----
+FOREMAN_RSS_FORCE_REPOST=true foreman-rake rss:create_notifications
+----
+
 - Expand the *Community* item
+- Click the three dots on the right then click Open to read the latest blog post.
 
 === Overriding the feed source
 
-This mechanism can be used for example by administrator of Satellite to deliver messages about the instance to its users. For the purpose of the lab there is a RSS feed prepared on the Satellite server. It contains information which might come in handy. Let’s reconfigure the Satellite to pull from it.
+In a real world deployment this mechanism could be used for example by administrator of Satellite to deliver messages about the instance to its users. Given the lab's short life span, where maintenance wouldn't make sense, we prepared a RSS feed containing items about various things related to the lab and to Red Hat Summit. Let’s reconfigure the Satellite to pull from this custom feed.
 
 - Navigate to *Administer* -> *Settings*
 - Select the *Notifications* tab
-- Change the value of *RSS URL* to `https://satellite.example.com/pub/atom.xml`
+- Change the value of *RSS URL* to `https://satellite.example.com/pub/atom.xml` by clicking the edit button (shaped like a pencil), overwriting the existing URL with the custom URL, and clicking the check box to accept the changes.
 
 === Refreshing the feed manually
-By default the RSS feed is refreshed twice a day. To force the refresh and actually see it is working, log into the Satellite over SSH and run the following command:
+By default the RSS feed is refreshed twice a day. To force the refresh and actually see it is working, log into the Satellite over SSH and run the following command as root:
 
 ----
-# foreman-rake rss:create_notifications
+# sudo foreman-rake rss:create_notifications
 ----
 
-The notification drawer should now be populated with information about scheduled maintenance of the machine. This can be easily verified by following the steps described earlier.
+The notification drawer should now be populated with new information. This can be easily verified by following the steps described earlier.
+
+- Open the notification drawer in the upper right (shaped like a bell)
+- Expand the *Community* item
+- Review the information from the RSS feed
 
 == Story 3 - Future Dated Subscriptions
 // Prerequisites
@@ -308,7 +340,7 @@ The notification drawer should now be populated with information about scheduled
 
 Satellite allows importing content from Red Hat's Content Delivery Network, which can then be consumed by client machines. In order to do so, Satellite needs to know what product subscriptions are available so it can use the products' repositories. This is done by importing a subscription manifest into the Satellite.
 
-Among new features in Satellite 6.3 is the ability to import subscriptions with future dates into the Satellite. In previous versions of Satellite, subscriptions that were purchased, but not yet active were unable to be added to a subscription manifest. The future dated subscriptions feature allows an administrator to attach "not-yet-valid" subscriptions to hosts, before their current subscriptions expire.
+Among the new features in Satellite 6.3 is the ability to import subscriptions with future dates into Satellite. In previous versions of Satellite, subscriptions that were purchased, but not yet active were unable to be added to a subscription manifest. The future dated subscriptions feature allows an administrator to attach "not-yet-valid" subscriptions to hosts, before their current subscriptions expire.
 
 In the lab, the *tomcatclient.example.com* machine is consuming a subscription `Red Hat Enterprise Linux Server with Smart Management, Premium (Physical or Virtual Nodes)`. To find out when the subscription is going to expire, navigate to *Hosts* -> *Content Hosts*, select the tomcatclient host, select the *Subscriptions* > *Subscriptions* tab and take a look at the *Expires* column.
 
@@ -328,7 +360,7 @@ The workflow for attaching future dated subscriptions is exactly the same as for
 - Select the tomcatclient host where you will attach the future subscription
 - Click *Subscriptions* > *Subscriptions*
 - Click the *Add* tab
-- Check the subscription to attach. In this case it is the one marked (future).
+- Check the box to the left of the subscription you want to attach. In this case it is the one marked (future).
 - Click *Add Selected*
 - Return to the *List/Remove* tab and you will see the future subscription listed and ready for use.
 
@@ -342,19 +374,23 @@ To do the same thing using hammer, perform the following when logged on to the S
 To ensure everything works log into the client machine over SSH and use `subscription-manager` to query information about attached subscriptions. Search for *Status Details* key in the output. In there you should be able to see two subscriptions, one with "Subscription is current" and one with "Subscription has not begun" details.
 
 ----
+# ssh tomcatclient-GUID.rhpds.opentlc.com
+# sudo su
 # subscription-manager refresh
 # subscription-manager list --consumed
 ----
 
+Looking through the list of subscriptions you will see the future dated subscription that you added listed with the Status detail: Subscription has not begun
+
 == Story 4 - Find Risks With Red Hat Insights and Fix Them With Satellite 6
 
-Red Hat Insights provides ongoing, in-depth analysis of customers’ IT infrastructure and compares this information against our constantly expanding knowledge base to identify key risks and vulnerabilities in four areas that are critical to IT optimization: performance, availability, stability, and security. Any critical issues requiring attention are clearly displayed and prioritized by the level of risk to the environment. Tailored resolution steps are provided to help the IT organization quickly and confidently respond to critical issues. Insights also ​ automates IT remediation of Insights findings through Ansible, Ansible Tower, and Red Hat Satellite. In this section, we'll demonstrate how a user of Satellite can identify risks using Insights, and easily address them using simple workflows within Satellite
+Red Hat Insights provides ongoing, in-depth analysis of a customer's IT infrastructure and compares this information against our constantly expanding knowledge base to identify key risks and vulnerabilities in four areas that are critical to IT optimization: performance, availability, stability, and security. Any critical issues requiring attention are clearly displayed and prioritized by the level of risk to the environment. Tailored resolution steps are provided to help the IT organization quickly and confidently respond to critical issues. Insights also ​ automates IT remediation of Insights findings through Ansible, Ansible Tower, and Red Hat Satellite. In this section, we'll demonstrate how a user of Satellite can identify risks using Insights, and easily address them using simple workflows within Satellite
 
 Please make sure Red Hat Insights Service is enabled by navigating to the *Insights -> Manage*. If the service is not enabled, please click *Enable Service* and Save. Also, check Insights engine connection, *Status* should be *Connected*
 
 === Using a bootstrap script to register client
 
-With Satellite 6, in addition to creating new hosts, you can  also easily bring existing hosts under Satellite’s wings. **_Bootstrap script_** is used for this purpose. The two main use cases are:
+With Satellite 6, in addition to creating new hosts, you can  also easily bring existing hosts under Satellite’s wings. The **_Bootstrap script_** is used for this purpose. The two main use cases are:
 
 . Migrate from RHN Classic or Satellite 5
 . Register a new host that has not been previously registered with Red Hat Systems Management Platform
@@ -367,14 +403,13 @@ ssh into a VM that will be bootstrapped:
 
 ----
 # ssh rhaiclient-GUID.rhpds.opentlc.com
-sudo su
-cd ~
+# sudo su -
 ----
 
 *Download the script:*
 
 ----
-# curl -O -k https://satellite-GUID.rhpds.opentlc.com/pub/bootstrap.py
+# curl -O -k https://satellite.example.com/pub/bootstrap.py
 ----
 
 Make the script executable:
@@ -393,14 +428,15 @@ Now let’s run the script:
 # ./bootstrap.py -l admin -s capsule.example.com -o 'Default Organization' -L 'Default Location' -a ak-rhel-7 -g 'bootstrap' --unmanaged
 ----
 Type in the admin’s password when prompted [changeme].
+
 The bootstrap script will download the necessary packages, install the consumer RPM and run subscription-manager (with the user provided activation key) to register the system. Then it will set up the system with a proper Puppet configuration pointing to Satellite server.
 
-By default, Satellite & Satellite Capsules require the administrator to approve the Puppet Certificate via the UI (via *Infrastructure -> Capsules -> Certificates*). The bootstrap script will wait indefinitely until this certificate is approved. However, in this lab, we've setup auto-signing so the Satellite/Capsule auto-approves the certificate when the client requests it. Once  bootstrap script is completed, follow below steps
+By default, Satellite & Satellite Capsules require the administrator to approve the Puppet Certificate via the UI (via *Infrastructure -> Capsules -> Certificates*). The bootstrap script will wait indefinitely until this certificate is approved. However, in this lab, we've setup auto-signing so the Satellite/Capsule auto-approves the certificate when the client requests it. Once the bootstrap script is completed, follow the below steps
 
 . Navigate to *Hosts -> All Hosts*
 . Verify that the rhaiclient is connected to the correct hostgroup which is *bootstrap*
-. Select the host *rhaiclient.example.com*
-. Click the content button.
+. Click on the host *rhaiclient.example.com* which takes you to the host details page.
+. Click the *Content* button.
 . Verify that your host is subscribed which is indicated by *Fully entitled* in the *Subscription Status* field.
 
 === Install redhat-access-insights
@@ -410,26 +446,26 @@ Once you have verified that the client is registered in your Satellite environme
 Install the Red Hat Insights client for reporting the flaws and risks to Satellite +
 Login to your client machine *(rhaiclient-GUID.rhpds.opentlc.com)* using ssh:
 
-ssh into a VM that will be bootstrapped:
+If you are not already logged in from a previous task, ssh into rhaiclient.example.com:
 
 ----
 # ssh rhaiclient-GUID.rhpds.opentlc.com
-sudo su
-cd ~
+# sudo su -
 ----
 
 Run the following command to refresh and install the Red Hat Insights client:
 
 ----
-# yum install redhat-access-insights
+# yum install -y redhat-access-insights
 ----
 
 === Populate risks on registered client
 
-We will simulate the risks by generating flaws in configuration files using _helper.sh_ script from
+We will simulate the risks by generating flaws in configuration files using _helper.sh_ script from the Satellite Server.
+Download the helper.sh file to the rhaiclient by running the command:
 
 ----
-# curl -O -k https://satellite-GUID.rhpds.opentlc.com/pub/helper.sh
+# curl -O -k https://satellite.example.com/pub/helper.sh
 ----
 
 Make the script executable:
@@ -444,16 +480,17 @@ Run the _helper.sh_ script on registered *rhaiclient.example.com* client.
 # ./helper.sh
 ----
 
+This script will setup the rhaiclient in your lab with several risks that Insights will detect once it is registered.
 
 === Register client with Red Hat Insights
 
-Register the client with insights on Satellite6 server using below command:
+Register the client with Insights on the Satellite server using below command:
 
 ----
 # redhat-access-insights --register
 ----
 
-This registers the server with insights, adds a cron entry under cron.daily and also runs the insights client immediately.
+This registers the server with Insights, adds a cron entry under cron.daily and also runs the Insights client immediately.
 
 === Examine flaws and risks on registered client using Insights
 
@@ -462,16 +499,20 @@ After registering your client with Insights, one can start analyzing the risks b
 You can find the risks and vulnerabilities on a selected system by following:
 
 . Navigate to *Insights -> Inventory*
-. Select *rhaiclient.example.com*
-. Click on *5 Actions* just below the *Status* column.
-. All kind of risks and steps to remediate will be displayed for a selected host.
+. To the right of the rhaiclient.example.com system name, Click on *5 Actions* just below the *Status* column. (Not the *Actions* dropdown on the upper left)
+. Risks and the steps to remediate these risks will be displayed for the selected host.
+. Notice that each risk includes the impact of the risk, the liklihood that this system will hit this risk, and the total risk. Also included is the risk of performing the remediation itself.  
 . Close the window by clicking *X* icon once you done with analyzing the risks.
 
 === Download the Ansible playbook to remediate identified risk
 
-To remediate the identified risks on each registered client *rhaiclient.example.com*, Navigate to *‘Insights’ -> Inventory* on the left navigation menu. There you will see your registered clients with number of actions under Status header. Follow the below steps to run the Ansible playbook to remediate the detected issues:
+The next step is to remediate the identified risks on each registered client, in this case *rhaiclient.example.com*. 
+If you are not already there from the previous task, Navigate to *‘Insights’ -> Inventory* on the left navigation menu. There you will see your registered clients with number of actions under Status header. 
 
-* Click on *Actions* dropdown on the left of the *Inventory* page
+Follow the below steps to run the Ansible playbook to remediate the detected issues:
+
+* Select the checkbox to the left of *rhaiclient.example.com*
+* Click the *Actions* dropdown on the left of the *Inventory* page
 * Select *Create a new Plan/Playbook*
 ** Enter the plan name *logfix*
 ** Make sure *rhaiclient.example.com* is selected under *Specific System* dropdown
@@ -480,11 +521,12 @@ To remediate the identified risks on each registered client *rhaiclient.example.
 ** Decreased security in system logging permissions
 * Click *Save*
 * Now the click on *Run Playbook* on bottom of the planner page. This will send you to a Job invocations page.
-* Wait until job get finished.
+* Wait until the job completes.  This may take 2-3 minutes.
 
-After performing the recommended resolution and running the remote-execution job on client, re-run the Insights client with: *# redhat-access-insights* on client node. The identified risk should be fixed. You will get a notification on Satellite web interface once remediation is done.
 
-Please navigate to *Insights* -> *Overview* page and web UI should no longer show the risk/issue we just remediated.
+After performing the recommended resolution and running the remote-execution job on client, if the risks you just remediated are still showing you might need to run command *redhat-access-insights* on rhaiclient.example.com to force Insights to update immediately.
+
+Please navivate to the *Insights -> Inventory* page and see that there are only three risks remaining. The othe two risks were remediated by the Ansible playbook which Insights generated, and which Satellite 6 invoked on the impacted system
 
 == Story 5 - Managing templates
 
@@ -498,7 +540,7 @@ To import the templates from the repository, run the following command on the Sa
 # hammer import-templates --prefix '[Summit 2018] ' --organization 'Default Organization'
 ----
 
-To see the imported templates, return to the Satellite UI and go to *Hosts* > *Provisioning templates* and see the templates with `[Summit 2018]` prefix.
+To see the imported templates, return to the Satellite UI and go to *Hosts* > *Provisioning templates* and see the templates with `[Summit 2018]` prefix by searching on the word Summit.
 
 Sometimes it may be desirable to filter the templates before importing them to avoid cluttering the system. To do so, several options can be passed to the `hammer import-templates` command to modify its behavior. To import only Ansible templates from upstream repository and development branch to get the latest and greatest Ansible templates run the following:
 ----
@@ -510,9 +552,9 @@ Sometimes it may be desirable to filter the templates before importing them to a
     --organization 'Default Organization'
 ----
 
-Looking at the templates in Satellite now, we should be able to see a couple of new templates with the '[develop]' prefix.
+Because Ansible templates are in fact *Job Templates*, they can be found under *Hosts* > *Job Templates*. Looking at them in Satellite, we should be able to see a couple of new templates with the '[develop]' prefix.
 
-In the last example we can see the repository path can be overriden by passing another path or URL to the command on a per-invocation basis. To change the repository in Satellite, navigate to *Administer* > *Settings* > *TemplateSync* and change the repository to `/custom/templates`.
+In the last example we can see the repository path can be overriden by passing another path or URL to the command on a per-invocation basis. To change the repository in Satellite, navigate to *Administer* > *Settings* > *TemplateSync* and change the *Repo* setting to `/custom/templates`.
 
 The path we configured doesn't exist on the Satellite server yet, so we have to create it. We'll go on and clone the community templates repository to `/custom/templates`.
 
@@ -530,8 +572,7 @@ Because the exporting and importing is done by the Satellite server, we need to 
 
 Now we can export the templates to the directory.
 
-----/Hello Product
-
+----
 # hammer export-templates --organization 'Default Organization'
 ----
 
@@ -539,13 +580,14 @@ We can now inspect the exported templates and commit them to the repository.
 
 ----
 # cd /custom/templates
-# git commit -am 'exported templates from Satellite'
+# git add .
+# git commit -m 'exported templates from Satellite'
 ----
 
-To see the true benefit of having the templates version controlled, edit any of the templates and export them again. Now we can take a look at the repository again and see what changed.
+To see the true benefit of having the templates version controlled, let's make some changes to a template. In Satellite, navigate to *Hosts* > *Job Templates* and pick any template which is not locked (without a padlock icon in the "Locked" column). In the opened modal window, do some changes to the template and click *Submit*. Now export the templates again into `/custom/templates` using the procedure described above. Now we can take a look at the repository again and see what changed.
 
 ----
-# cd /custom/community-templates
+# cd /custom/templates
 # git diff
 ----
 
@@ -577,35 +619,40 @@ On the Satellite exists a pre-built WAR file that will now get uploaded to our r
 If you are not already logged in from a previous exercise, ssh in to the Satellite lab vm.
 
 ----
-ssh satellite-GUID.rhpds.opentlc.com
-sudo su
-cd ~
+# ssh satellite-GUID.rhpds.opentlc.com
+# sudo su -
+----
+
+If you are logged in from a previous exercise, you need to make sure that you are in the root user's home directory.
+
+----
+# cd /root
 ----
 
 Now upload the WAR file to the file repository.
 
 ----
-hammer repository upload-content --product "Hello Product" --name "Hello Java App" --organization "Default Organization" --path helloworld/hello.war
+# hammer repository upload-content --product "Hello Product" --name "Hello Java App" --organization "Default Organization" --path helloworld/hello.war
 ----
 
 Back in the Satellite UI, click on the repository *Hello Java App* and note it lists *Files 1*. Click on the *1* to see that our *hello.war* file exists in that repository.
 
 === Create Content Views
 
-  1. Navigate to *Content > Content View*
+  1. Navigate to *Content > Content Views*
   2. Click the *Create New View* button
 	3. Give it the name *Hello Application* and click *Save*
   4. Click *File Repositories* tab
   5. Click *Add* sub-tab
   6. Select the checkbox to the left of *Hello Java App* from the table
   7. Click *Add Repositories* button
- 	8. Navigate back to *Content View* list by clicking the breadcrumb located under the *Hello Application* title
+ 	8. Navigate back to *Content Views* list by clicking the breadcrumb located under the *Hello Application* title
 
-Note in CV List there is a *RHEL7 SOE* pre-built. This reflects how another department, such as IT, might build and control the base OS view. Let's create a composite content view to use the SOE and our application view.
+Note in the Content Views List there is a *RHEL7 SOE* pre-built. This reflects how another department, such as IT, might build and control the base OS view. Let's create a composite content view to use the SOE and our application view.
 
   1. Click the *Create New View* button
   2. Give it the name *Hello Application with RHEL7 SOE*
-  3. Select *Composite View?* and *Auto Publish*
+  3. Select the *Composite View?* and *Auto Publish* checkboxes
   4. Click *Save*
 
 We have now created a composite content view that is set to auto publish itself whenever a component view is updated. Thus if the SOE view is re-published, or our Application view receives an update, this composite will publish and stage a new view.
@@ -613,8 +660,8 @@ We have now created a composite content view that is set to auto publish itself 
 You will be starting this task where the previous one left off. In case you changed views, to start this task you will need to select *Content* > *Content Views* > *Hello Application with RHEL7 SOE* > *Content Views* > *Add*.
 
 
-  1. Select *RHEL7 SOE* view set to *Always Use Latest*
-  2. Select *Hello Application* view set to *Always Use Latest*
+  1. Select the checkbox to the left of *RHEL7 SOE* and verify the version is set to *Always Use Latest*
+  2. Select the checkbox to the left of *Hello Application* and verify the version is set to *Always Use Latest*
 	3. Click *Add Content Views*
 
 Using the arrows icon next to the breadcrums *Hello Application with RHEL7 SOE >> Content Views*, navigate back to the *Hello Application*. Now we will publish our application.
@@ -630,28 +677,29 @@ Note that *Version 1.0* is either published or still publishing via the *Status*
 	1. Navigate to *Hosts > All Hosts*
 	2. Click on *tomcatclient.example.com*
  	3. Click *Schedule Remote Job*
-	4. In the *Job Category* dropdown, ensure *Ansible Playbook* is selected
+	4. In the *Job Category* dropdown, select *Ansible Playbook* 
   5. Click *Submit*. This will take you to the Job Invocations view.
 	6. Click *Hosts* tab
 	7. Click *tomcatclient.example.com*
 
 This page shows the Ansible role in action running on our host. Once this is complete we can view our application.
 
-	1. Open a browser tab to *http://tomcatclient-GUID.rhpds.opentlc.com:8080/hello*
-	2. Note a "Hello World!* application is running
+	1. Wait for a minute or two and open a browser tab to *http://tomcatclient-GUID.rhpds.opentlc.com:8080/hello* [Replace GUID in the URL with the GUID of your environment]
+	2. Note a *Hello World!* application is running
 
 === Bonus: Deploy New Version of Java App
 
 On the Satellite exists a new version of our application in a pre-built WAR file that will now get uploaded to our repository.
 
 ----
-ssh satellite-GUID.rhpds.opentlc.com
+# ssh satellite-GUID.rhpds.opentlc.com
+# sudo su -
 ----
 
 Now upload the WAR file to the file repository.
 
 ----
-hammer repository upload-content --product "Hello Product" --name "Hello Java App" --organization "Default Organization" --path hellosummit/hello.war
+# hammer repository upload-content --product "Hello Product" --name "Hello Java App" --organization "Default Organization" --path hellosummit/hello.war
 ----
 
 Now let's publish our application content view to produce a new version with our application.
@@ -669,7 +717,7 @@ Now, let's re-apply our Ansible role to fetch the new version of our application
 	1. Navigate to *Hosts > All Hosts*
 	2. Click on *tomcatclient.example.com*
  	3. Click *Schedule Remote Job*
-	4. Ensure *Ansible Playbook* is selected
+	4. From the *Job Category* dropdown select *Ansible Playbook*
   5. Click *Submit*
 	6. Click *Hosts* tab
 	7. Click *tomcatclient.example.com*
@@ -690,7 +738,7 @@ Lazy Sync allows you to more quickly synchronize large repositories by not downl
 |===
 |*Download Policy*|*How it works?*
 |*Immediate*    |Traditional synchronization where rpm files are downloaded immediately. This is the only type of synchronization policy that existed prior to Satellite 6.3.
-|*On Demand*    |The initial synchronization only downloads the repository metadata.  RPM files are not downloaded until they are requested by a client.  These repositories can be published in content views and synced to capsules even if any or all of the rpms are not downloaded. This is the default option.
+|*On Demand*    |The initial synchronization only downloads the repository metadata.  RPM files are not downloaded until they are requested by a client.  These repositories can be published in content views and synced to capsules even if any or all of the rpms are not downloaded. This is the default option with a fresh install of Satellite 6.3. 
 |*Background*   |Similar to On Demand. Initially, only the repository metadata is synced. After the initial synchronization is finished, Satellite will continue downloading the rpm files in the background.  Any requests for RPMs while that is happening will be synced immediately.
 |===
 
@@ -698,17 +746,17 @@ Lazy Sync allows you to more quickly synchronize large repositories by not downl
 
 . Navigate to *Content > Products*
 . Click *Create Product* in the upper right corner
-. Give it name *Summit*
+. Give it the name *Summit*
 . Click *Save*
 . Click *New Repository* in the upper right corner
 . Give it the name *lazy*
-. Select the type *yum*
+. In the *Type* dropdown select the type *yum*
 . Provide the *Upstream Url*  http://satellite.example.com/pub/lazy[^]
-. For *Download Policy* select *On Demand*
+. In the *Download Policy* dropdown select *On Demand*
 . Click *Save*
-. Click on the *lazy* repository
-. Select Action -> *Sync Now* in the upper right corner
-. Once it is synced, go back to the repository details page and click *Content Counts -> Packages* link to see the list of packages
+. Click the checkbox to the left of the *lazy* repository
+. Select *Sync Now* in the upper right corner
+. Once it is synced, go back to the repository tab, click on *lazy* to see the details, and click *Content Counts -> Packages* link to see the list of packages
 
 To see the file system:
 
@@ -716,24 +764,32 @@ To see the file system:
 . You should notice that no RPMs exist in the repo (Look in the the *Packages/b* directory ).  The URL you are browsing to should look like:
 
 ----
-http://satellite-GUID.rhpds.opentlc.com/pulp/repos/Default_Organization/Library/custom/Summit/lazy/*
+http://satellite-GUID.rhpds.opentlc.com/pulp/repos/Default_Organization/Library/custom/Summit/lazy/
 ----
 
 
 ==== Simulate a client request
 
-Request an RPM to force Satellite to download it.  Run the following command from your workstation:
+Request an RPM to force Satellite to download it.  Run the following command on your Satellite instance:
 
 ----
-wget http://satellite.example.com/pulp/repos/Default_Organization/Library/custom/Summit/lazy/Packages/b/bear-4.1-1.noarch.rpm
+# wget http://satellite.example.com/pulp/repos/Default_Organization/Library/custom/Summit/lazy/Packages/b/bear-4.1-1.noarch.rpm
 ----
 
-Browse the repository again:
+Refresh the web page you opened earlier to see the RPM we downloaded appear in the repository.
+
+If you happened to close the page, navigate to:
 
 . Navigate to *Content > Products*
 . Click the *Summit* Product
 . Click the *lazy* repository
 . Click on the *Published At* link
+.. The URL should look like this:  
+----
+http://satellite-GUID.rhpds.opentlc.com/pulp/repos/Default_Organization/Library/custom/Summit/lazy/
+----
+. Click on Packages/
+. Click on b/
 You should see the RPM we downloaded now appears in the repository.  Note this may take up to 5 minutes to occur.
 
 == Glossary
