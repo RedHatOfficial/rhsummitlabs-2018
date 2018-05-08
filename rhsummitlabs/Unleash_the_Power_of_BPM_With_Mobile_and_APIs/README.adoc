@@ -107,6 +107,6 @@ link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/2b_mobile_lab.adoc[Start t
 
 == Troubleshooting
 
-If you're having any issues with credentials/authentication please refer to the  link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/access.adoc[Labs acces guide here] +
+If you're having any issues with credentials/authentication please refer to the  link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/access.adoc[Labs access guide here] +
 
 Anything else please speak to your Lab Instructor/Assistants
