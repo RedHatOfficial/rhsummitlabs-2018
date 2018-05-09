@@ -42,10 +42,10 @@
       shell: printf "o\nn\ne\n1\n\n\nw\n" | /sbin/fdisk /dev/vdb
 
     - name: LAB Setup (LVM - create 6x 1G partitions)
-      shell: for i in {1..6} ; do printf "n\nl\n\n+1G\nw\n" | /sbin/fdisk /dev/vdb ; done
+      shell: for i in {1..6} ; do printf "n\nl\n\n+1G\nw\n" | /sbin/fdisk /dev/vdb ; sleep 3; done
 
     - name: LAB Setup (LVM - create 1x 10G partition)
-      shell: printf "n\nl\n\n+10G\nw\n" | /sbin/fdisk /dev/vdb
+      shell: printf "n\nl\n\n+10G\nw\n" | /sbin/fdisk /dev/vdb ; sleep 3
 
     - name: LAB Setup (LVM - running partprobe to sync changes)
       shell: /sbin/partprobe
