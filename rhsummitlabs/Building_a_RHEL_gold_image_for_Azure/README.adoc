@@ -880,7 +880,7 @@ Use the following command to directly convert the file.
 
 Take a quick look at size of the VHD file that was just generated;
 
-    root@goldimageworkstation-GUID: ls -h rhel-server-7.5-x86_64-kvm.vhd
+    root@goldimageworkstation-GUID: ll -h rhel-server-7.5-x86_64-kvm.vhd
 
 You should get something that looks like this;
 
@@ -893,7 +893,7 @@ Summit bandwidth!!
 
 To verify the file is resized correctly, show the virtual-size using the following command.
 
-	qemu-img info --output=json -f vpc <path-to-image>
+	root@goldimageworkstation-GUID: qemu-img info --output=json -f vpc rhel-server-7.5-x86_64-kvm.vhd
 
 You should see some output like this. Take a note of the virtual-size which you
 can see is **10737893376**.
@@ -954,7 +954,7 @@ Example:
 		}
 	  ]
 
-===  Export a Storage Account Key
+=== Read-Only: Export a Storage Account Key
 
 Important: The following steps are only for users that have existing resources for the VM in Microsoft Azure. If you need to create new Azure resources, go to Set Up New Resources in Microsoft Azure.
 
@@ -1128,7 +1128,7 @@ Example:
 	  }
 	}
 
-=== Upload and Provision the Azure RHEL VM
+=== Read-Only: Upload and Provision the Azure RHEL VM
 Complete the following steps to upload and provision the VM. Note that the exported storage connection string does not persist after a system reboot. If any of commands in the following steps fail, export the storage connection string again. (See Steps 3 and 4 in the previous section.)
 
 Upload the image to the storage container. It may take several minutes.
@@ -1151,7 +1151,7 @@ Example:
 	[clouduser@localhost]$ az storage blob url -c azrhelclistcont -n rhel-image-7.3.vhd
 	"https://azrhelclistact.blob.core.windows.net/azrhelclistcont/rhel-image-7.3.vhd"
 
-=== Create the VM
+=== Read-Only: Create the VM
 
 Note: The following command uses the option --generate-ssh-keys, which creates a private/public key pair. The private and public key files are created in ~/.ssh on your local machine. The public key is added to the authorized_keys file on the VM for the user specified by the --admin-username option.
 
@@ -1207,6 +1207,22 @@ Authentication command: ssh -i <path-to-existing-ssh-key> <admin-username@public
 
 == Summary
 
+=== I still have time left!
+
+If you still have some time left in this lab (and you have some time free
+because we didn't want you to run out of time) then here's some extras you
+could do;
+
+. Make use of the lab assistants to ask your Azure questions! We use Azure a
+lot, and one of us will hopefully know the answer!
+. Try automating some of these steps - as they would be necessary when new
+releases of RHEL come out, like 7.6, 7.7, etc. 
+. What else do you do for a corporate standard build? Configure auditing,
+logging, do you often install a webserver? Do that on this image, use the
+WAAgent again to deprovision, realign the image if needed. 
+. Spend time reading through the recommended links! Really there is a lot of
+useful stuff there to learn.
+
 === What did we learn in this lab?!
 
 In this lab we've run through most of the basic steps needed to create a Red
@@ -1232,6 +1248,13 @@ Sure! It's on GitHub, check out: https://github.com/redhatdemocentral/rhsummitla
 environment you used at Red Hat Summit will not be available, but you can
 easily create your own workstation and then many of the instructions are
 similar.
+
+=== Goodbye, and thanks for your time!
+
+Thanks so much for taking the time to sit in this lab. It's super, mega, uber
+important to **fill out the survey in the mobile app**. It's like TripAdvisor for Red Hat Summit
+labs. Give us 5 stars and we're happy. Anything less and we're sad :( (but
+welcome your honest feedback!) 
 
 == Appendixes
 
@@ -1274,12 +1297,12 @@ regions for all machine types.
 https://docs.microsoft.com/en-us/azure/virtual-machines/linux/using-cloud-init
 
 [#indirect-method]
-=== RHEL 7.1 Indirect Method of converting images
+=== Indirect Method of converting images 
 
-RHEL 7.1 images are not aligned. For RHEL 7.1 only the following instructions
-are required.
+NOTE: RHEL 7.1 images are not aligned. For RHEL 7.1 the following instructions
+are required, and if you image somehow became unaligned. 
 
-Convert the qcow2 image to raw format, re-size it, and convert the raw image to vhd.
+We need to convert the qcow2 image to raw format, re-size it, and convert the raw image to vhd.
 
 Convert the image from qcow2 to raw.
 
