@@ -66,18 +66,38 @@
       yum: name=rear,genisoimage,syslinux state=installed
 
     - name: LAB Setup (REAR - create config template)
-      shell: 
+      shell:
         cmd: |
           cat > /var/tmp/rear-local-config.template << EOF
-          OUTPUT=ISO 
+          OUTPUT=ISO
           OUTPUT_URL=nfs://server1.example.com/tmp
-          BACKUP=NETFS 
+          BACKUP=NETFS
           BACKUP_URL=nfs://server1.example.com/tmp
-          SSH_ROOT_PASSWORD="redhat" 
-          BACKUP_PROG_EXCLUDE=("${BACKUP_PROG_EXCLUDE[@]}" '/media' '/var/tmp' '/var/crash') 
+          SSH_ROOT_PASSWORD="redhat"
+          BACKUP_PROG_EXCLUDE=("${BACKUP_PROG_EXCLUDE[@]}" '/media' '/var/tmp' '/var/crash')
           NETFS_KEEP_OLD_BACKUP_COPY=
           GRUB_RESCUE=y
           GRUB_RESCUE_PASSWORD="grub.pbkdf2.sha512.10000.50F96A687B8BCFAE6090234ACB363ABD465A1DBA9E086C26D0E268354EAF7238CEA68889D7B7B0C486BF2AD30A3035C4259EBDFE8A19F4140D241386100B6AAE.C9615BDD47B42A98575DA91854E2017A71B4345F4D52AB03A54347A222C00A3D74A4987CE511DFA76E6B70C57ECE45A3106E4C53C160AFE1C2A3F61123FCFF15"
           EOF
       args:
         creates: /var/tmp/rear-local-conf.template
+
+    - name: create a custom ansible config for root
+      copy:
+        src: /root/RHEL7lab2018/ansible.cfg
+        dest: /root/.ansible.cfg
+        owner: root
+        group: root
+        mode: 0644
+      tags: ansible-config
+
+    - name: example copying file with owner and permissions
+      copy:
+        src: /root/RHEL7lab2018/inventory
+        dest: /root/inventory
+        owner: root
+        group: root
+        mode: 0644
+      tags: ansible-config
+
+    
