@@ -30,8 +30,8 @@ By the end of this lab you should be able to:
 === Environment
 
 The demo environment is deployed using katacoda and the presentation can be found in Google Docs
-- https://katacoda.com/fatherlinux/courses/subsystems/[Katacoda - Subsystems, Components, and Internals]
-- https://docs.google.com/presentation/d/1fC9cKR2-kFW5l-VEk0Z5_1vriYpROXOXM_5rhyVnBi4/edit#slide=id.gb6f3e2d2d_2_213 - Google Slides - Linux Container Internals] 
+- link:https://katacoda.com/fatherlinux/courses/subsystems/[Katacoda - Subsystems, Components, and Internals]
+- link:https://docs.google.com/presentation/d/1fC9cKR2-kFW5l-VEk0Z5_1vriYpROXOXM_5rhyVnBi4/edit#slide=id.gb6f3e2d2d_2_213 - Google Slides - Linux Container Internals] 
 
 == Conclusion
 In this course you learned:
