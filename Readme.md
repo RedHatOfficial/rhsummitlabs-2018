@@ -25,9 +25,9 @@ each lab for your usage beyond just Red Hat Summit.
 
  - [**Defend Yourself Using Built-in RHEL Security Technologies**](rhsummitlabs/Defend_Yourself_Using_Built_in_RHEL_Security_Technologies/README.adoc)
 
- - [**Linux Container Internals: Part 1**](rhsummitlabs/Linux_Container_Internals:_Part_1/README.md)
+ - [**Linux Container Internals: Part 1**](rhsummitlabs/Linux_Container_Internals_Part_1/README.adoc)
  
- - [**Linux Container Internals: Part 2**](rhsummitlabs/Linux_Container_Internals:_Part_2/README.md)
+ - [**Linux Container Internals: Part 2**](rhsummitlabs/Linux_Container_Internals_Part_2/README.adoc)
 
  - [**Up and Running with Red Hat Identity Management**](rhsummitlabs/Up_and_Running_with_Red_Hat_Identity_Management/README.md)
 
