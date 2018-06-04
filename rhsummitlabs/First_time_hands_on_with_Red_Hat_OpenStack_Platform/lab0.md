@@ -1,5 +1,11 @@
 <img src="images/redhat.png" style="width: 350px;" border=0/>
 
+<font color="red">
+**Lab Update - 4th June 2018**
+
+**This lab has now been updated to run on the Red Hat Product Demo System (RHPDS) and so Summit instructions have been removed in favour of specific instructions for RHPDS. You can skip to the first lab section if you're following this post-Summit. If you have any questions or any problems accessing this content, please let us know.**
+</font>
+
 <h2>Red Hat Summit, San Francisco 2018</h2>
 **Title**: First time hands-on with Red Hat OpenStack Platform (**L1009**)<br>
 **Date**: 9th May 2018<br>
