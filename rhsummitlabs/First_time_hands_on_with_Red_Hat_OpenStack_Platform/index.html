@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>all</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+}
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<p><img src="images/redhat.png" style="width: 350px;" border=0/></p>
+
+<p><font color="red">
+<strong>Lab Update - 4th June 2018</strong></p>
+
+<p><strong>This lab has now been updated to run on the Red Hat Product Demo System (RHPDS) and so Summit instructions have been removed in favour of specific instructions for RHPDS. You can skip to the first lab section if you&#39;re following this post-Summit. If you have any questions or any problems accessing this content, please let us know.</strong>
+</font></p>
+
+<h2>Red Hat Summit, San Francisco 2018</h2>
+
+<p><strong>Title</strong>: First time hands-on with Red Hat OpenStack Platform (<strong>L1009</strong>)<br>
+<strong>Date</strong>: 9th May 2018<br></p>
+
+<p><strong>Authors/Lab Owners</strong>:
+<ul class="tab">
+<li>Rhys Oxenham &lt;<a href="mailto:roxenham@redhat.com">roxenham@redhat.com</a>&gt;</li>
+<li>Jacob Liberman &lt;<a href="mailto:jliberma@redhat.com">jliberma@redhat.com</a>&gt;</li>
+</ul></p>
+
+<h1 id="toc_0"><strong>Lab Contents</strong></h1>
+
+<ol>
+<li><strong>Getting Started</strong></li>
+<li><strong>Creating Users, Roles, Tenants, and policies via Keystone (Identity Service)</strong></li>
+<li><strong>Creating/Adding Images into Glance (Image Service)</strong></li>
+<li><strong>Creation and configuration of Networks in Neutron (Networking Service)</strong></li>
+<li><strong>Creation of Instances in Nova (Compute Service)</strong></li>
+<li><strong>Creation and Attachment of Block Devices with Cinder (Volume Service)</strong></li>
+<li><strong>Deployment of Application Stacks using Heat (Orchestration)</strong></li>
+<li><strong>Deployment of Load Balancers using Neutron&#39;s LBaaS feature</strong></li>
+</ol>
+
+<!--BREAK-->
+
+<h1 id="toc_1"><strong>Lab Overview</strong></h1>
+
+<p>First of all, it&#39;s my pleasure to welcome you to the Red Hat Summit 2018, here at the San Francisco Moscone Centre! The past few years have been an exciting time for both Red Hat and the OpenStack community; we&#39;ve seen unprecedented interest and development in this new revolutionary technology and we&#39;re proud to be at the heart of it all. Red Hat is firmly committed to the future of OpenStack; our goal is to continue to enhance the technology, make it more readily consumable and to enable our customers to be successful when using it.</p>
+
+<p>This hands-on lab aims to get you, the attendees, a bit closer to Red Hat OpenStack Platform. It&#39;s comprised of a number of individual steps inside of this lab-guide that will run you through some of the more common tasks, such as initial configuration, network management, image deployment, block storage assignment, and virtual machine provisioning; giving you a hands-on overview of OpenStack, how the components fit together, and how to use it. We will use a combination of command-line tools and interaction via the OpenStack Dashboard (Horizon).</p>
+
+<p>Whilst you&#39;ll be asked to configure some fundamental components within OpenStack, you won&#39;t need to install OpenStack from scratch within this lab, we&#39;ve provided a pre-installed OpenStack environment with a simple configuration - a one controller, one networker, and two compute node layout. These machines will be virtual machines themselves, running on-top of a shared public cloud environment. You will have been provided with the necessary connection details on-screen and the first lab will demonstrate how to connect into the environment and how to get started with the lab sections.</p>
+
+<blockquote>
+<p><strong>NOTE</strong>: If you&#39;ve <strong>not</strong> been provided with connection details or you do not see your unique session information on-screen, please ask and we&#39;ll ensure that access is provided.</p>
+</blockquote>
+
+<p>If you have any problems at all or have any questions about Red Hat or our OpenStack distribution, please put your hand-up and a lab moderator will be with you shortly to assist - we&#39;ve asked many of our OpenStack experts to be here today, so please make use of their time. If you have printed materials, they&#39;re yours to take away with you, otherwise the online copy will be available for the foreseeable future; I hope that they&#39;ll be useful assets in your OpenStack endeavours.</p>
+
+<h1 id="toc_2"><strong>Lab 1: Getting Started</strong></h1>
+
+<p>The OpenStack environment that we&#39;re going to be using has been preinstalled and largely preconfigured for the purposes of this lab. We&#39;ve done our best to preconfigure the classroom and ensure that the cloud-based virtual machines that make up the infrastruture are ready to go at the start of the lab, but we need to ensure that you&#39;re able to log in to the environment, as the workstation you&#39;re at will be used for multiple different labs during the Red Hat Summit.</p>
+
+<h1 id="toc_3">Lab Environment</h1>
+
+<p>The environment, despite running in the public cloud, has been deployed with OSP director, Red Hat&#39;s deployment and lifecycle management platform for OpenStack. As such, it&#39;s been deployed with the TripleO methodology, i.e. a smaller &#39;bootstrap&#39; OpenStack cloud, known as the <strong>undercloud</strong> deploys the &#39;production&#39; cloud known as the <strong>overcloud</strong>, i.e. where your workloads would actually run. The overcloud that has been deployed in the lab environment is a simple configuration, comprising of a single controller, single networker, and dual compute node setup. All of these nodes, the undercloud, and all overcloud nodes are virtual machines running within a unique session on-top of the public-cloud ready for your consumption, roughly looking like the following:</p>
+
+<p><img src="images/lab-setup.png" style="width: 1000px;"/></p>
+
+<blockquote>
+<p><strong>NOTE</strong>: In the above image you&#39;ll see the <strong>bastion</strong> host is the one that we&#39;ll be using as a jump host, i.e. the machine that we connect to first to establish a connection into the lab environment that we&#39;ll be using for the rest of the labs; this is the only virtual machine in your unique environment that has secure shell access exposed to the public internet.</p>
+</blockquote>
+
+<p>In this lab, you <strong>won&#39;t</strong> be utilising the undercloud platform to deploy any overcloud infrastructure - this has already been done for you, but you will be using it as the base in which we carry out our labs. If you&#39;re interested in learning more, there&#39;s a later lab today, <strong>L1010</strong> (<a href="https://agenda.summit.redhat.com/SessionDetail.aspx?id=153520" target="_blank">Hands on with Red Hat OpenStack Platform director</a>) in the same room, which will allow you to build upon your OpenStack knowledge and experience the deployment side.</p>
+
+<p>Using a virtualised infrastructure inside of the public cloud allows us to have full control over all of the network and storage without impacting other lab users, and whilst we won&#39;t be running any intensive workloads, it allows us to build up and test OpenStack in a short amount of time and with great flexibility. To re-iterate, we&#39;ll first be connecting to the <strong>jump host</strong>, and then further connecting to our <strong>undercloud</strong> machine as the conduit into our overcloud OpenStack environment. The undercloud will be used for both executing commands on the overcloud, and also as a conduit for connecting to our overcloud nodes and any deployed resources when required to do so.</p>
+
+<h1 id="toc_4">Lab Access</h1>
+
+<p>We&#39;re using the Red Hat Product Demo Suite (RHPDS) for our labs, and therefore we need to request and get access to a unique environment based within the public cloud for you to use to complete the lab steps. If you&#39;re a Red Hat employee you&#39;ll need to follow these instructions to generate a session, othewise please get the connection details from your Red Hat representative and skip to the &#39;<strong>Connecting</strong>&#39; part below where we&#39;re connecting via secure-shell to the environment provided.</p>
+
+<blockquote>
+<p><strong>NOTE</strong>: Only proceed with the RHPDS creation instructions below if you&#39;re a Red Hat employee, or have been given access to RHPDS as a partner.</p>
+</blockquote>
+
+<p>First you&#39;ll need to request a session via RHPDS, the WebUI (and associated login page) can be found at <a href="https://rhpds.redhat.com/" target="_blank">https://rhpds.redhat.com/</a>. Once you&#39;ve logged in, navigate to the service catalogue by selecting &#39;<strong>Services</strong>&#39; --&gt; &#39;<strong>Catalogs</strong>&#39;, and navigate to the correct lab that you want to access by clicking &#39;<strong>Order</strong>&#39; on the right hand side. This lab is &#39;<strong>Hands on with RH OSP</strong>&#39; and should look like the following:</p>
+
+<p><img src="images/order-osp1.png" style="width: 1000px;"/></p>
+
+<p>Once you select &#39;Order&#39; you&#39;ll be presented with the following page which you&#39;ll need to accept some terms about the order time and the expiry:</p>
+
+<p><img src="images/order-osp2.png" style="width: 1000px;"/></p>
+
+<p>Select <strong>&#39;Submit&#39;</strong> at the bottom of the page and it should generate the environment for you, and will show up in your requests:</p>
+
+<p><img src="images/requests.png" style="width: 1000px;"/></p>
+
+<blockquote>
+<p><strong>NOTE</strong>: This is a generic screenshot above, your output might look slightly different if you&#39;re using a different lab.</p>
+</blockquote>
+
+<p>The RHPDS system will now generate a unique environment for you to use and you will receive an email with some of the connection details. These details uniquely identify your session to ensure that you are connecting to your unique environment, see here for an example:</p>
+
+<p><img src="images/email-osp.png" style="width: 1000px;"/></p>
+
+<p>You&#39;ll notice that it contains some links, specifically the &quot;<strong>External Hostname</strong>&quot; for the <strong>WORKSTATION</strong> system - this is the <strong>jumphost</strong> that you&#39;ll be connecting to from the outside, and it has a unique hostname to connect to from the outside that&#39;s routable over the internet. Here, mine is <strong>&quot;osp-88e0.rhpds.opentlc.com&quot;</strong>. In addition, there are links to other areas such as the Horizon dashboard that you&#39;ll likely use later in the lab, as well as a link to these labs.</p>
+
+<h1 id="toc_5">Connecting</h1>
+
+<p>You&#39;ll see that my assigned lab UUID for my environment is &#39;<strong>88e0</strong>&#39; and is used to uniquely identify my session, and is used as part of the connection address. The environment takes around 20-30 minutes to power-up, and this should have already been done for you prior to the session starting, but don&#39;t be alarmed if you cannot connect in straight away, it may just require a few more minutes. Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I&#39;m using my example but <strong>you&#39;ll need to replace this with your own username and unique session</strong>:</p>
+
+<div><pre><code class="language-none">$ ssh osp-88e0.rhpds.opentlc.com -l (your RHPDS username)
+The authenticity of host &#39;osp-88e0.rhpds.opentlc.com (129.146.91.32)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:SqbVF0TGdHuTsoDChp6/cw4jFHqwJlBWFOeqwd88Bi4.
+Are you sure you want to continue connecting (yes/no)? yes
+(...)</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: The above assumes that you&#39;ve associated your public secure shell key with RHPDS - if you have not done so, please update it <a href="https://account.opentlc.com/update/" target="_blank">here</a>. If you have associated your key already then you&#39;re good to go and you shouldn&#39;t be required to use a password. <strong>If you have been assigned a system from a Red Hat employee, ensure he/she provides you with a username and keypair to use</strong>.</p>
+</blockquote>
+
+<p><br />
+If successful, we can jump straight to our <strong>undercloud</strong> machine, as this is the one that we&#39;re going to be using for all of the lab sections, note that we&#39;re using sudo below as the root user on the jump host is the only one configured with the ssk-keys:</p>
+
+<div><pre><code class="language-none">$ sudo ssh stack@undercloud</code></pre></div>
+
+<p><strong>Only</strong> if this is unsuccessful (e.g. for some reason that there&#39;s no entry in /etc/hosts), attempt the following:</p>
+
+<div><pre><code class="language-none">$ sudo ssh stack@192.168.122.253</code></pre></div>
+
+<p>You will have full root access (via sudo) and control over this virtual machine, and we&#39;ll run our tasks directly here. If you&#39;re still unable to connect into your environment after a few minutes, please ask for assistance.</p>
+
+<h1 id="toc_6"><strong>Lab 2: Creating Users, Roles and Tenants via Keystone (Identity Service)</strong></h1>
+
+<h2 id="toc_7"><strong>Introduction</strong></h2>
+
+<p>Keystone is the identity management component of OpenStack, a common authentication and authorisation store. It&#39;s primarily responsible for managing users, their roles and the projects (tenants) that they belong to, in other words - who&#39;s who, what can they do, and to which groups they belong to; essentially a centralised directory of users mapped to the services they are granted to use. In addition to providing a centralised repository of users, Keystone provides a catalogue of services deployed in the environment, allowing service discovery with their endpoints (or API entry-points) for access. Keystone is responsible for governance in an OpenStack cloud, it provides a policy framework for allowing fine grained access control over various components and responsibilities.</p>
+
+<p>As a crucial and critical part of OpenStack infrastructure, Keystone is used to verify <em>all</em> requests from end-users to ensure that what clients are trying to do is both authenticated and authorised. In modern day implementations of Keystone, we rely on non-persistent <strong>tokens</strong> that are issued to authenticated users; these are signed by Keystone and contain all of the necessary information for all OpenStack components to validate the users authority over the tasks that they&#39;re being asked to perform.</p>
+
+<h2 id="toc_8"><strong>Creating Users</strong></h2>
+
+<p>As part of the lab we&#39;re going to allow you to create your own user and project using Keystone.</p>
+
+<p>As we highlighted previously, we&#39;re going to use the <strong>undercloud</strong> machine as our &#39;command and control&#39; system, and will be used to carry out all tasks. So, once you&#39;ve logged onto your undercloud lab machine, you&#39;ll notice that there are a number of files sitting within the &#39;stack&#39; users home directory. There are two (but really three) primary files that we need to be concerned with:</p>
+
+<ul>
+<li><strong>~/stackrc</strong> - the environment &#39;source&#39; file in which we can load in environment variables to configure the <strong>undercloud</strong> with the OpenStack command line tools (we won&#39;t be using this file during this particular session, but if you join for the OSP director lab later in the day, you will use this file extensively)<br><br></li>
+<li><strong>~/overcloudrc</strong> - the primary environment &#39;source&#39; file that contains the OpenStack environment variables that will allow us to use the OpenStack command line tools against our <strong>overcloud</strong> deployment.<br><br></li>
+<li><strong>~/overcloudrc.v3</strong> - Essentially the same as the above, but uses Keystone v3 API as opposed to v2 by default; Red Hat OpenStack Platform is almost entirely utilising v3 at present, but some things still require v2, hence why we provide both of these files.<br><br></li>
+</ul>
+
+<p>The <strong>overcloudrc</strong> file will allow you to have admin access to the environment so that you can create your own user and project - just like Linux administration, the root user is not used for day-to-day tasks, hence why we&#39;re going to create our own one. Note that we&#39;re only going to be using this overcloudrc file for the purpose of this lab, we&#39;ll generate our own &#39;rc file&#39; later on. First, let&#39;s source that file:</p>
+
+<div><pre><code class="language-none">$ source ~/overcloudrc</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: This file allows users to <strong>administratively</strong> control the overcloud, we&#39;ll need to use this with caution.</p>
+</blockquote>
+
+<p>By running the above command, you will have configured environment variables that the OpenStack command line tools will use, e.g. the API location of Keystone, and the admin username and password. You&#39;ll also notice that the command line has the &quot;<strong>(overcloud)</strong>&quot; prefix to signify that you&#39;ll be issuing OpenStack commands against the overcloud by default.</p>
+
+<p>The next few steps create a &#39;<strong>user</strong>&#39; account, a &#39;<strong>project</strong>&#39; (or &#39;tenant&#39;) which is a group of users, and a &#39;<strong>role</strong>&#39; which is used to determine permissions across the stack. You can choose your own username and password here, just remember what they are as we&#39;ll use them later, and choose something <strong>generic</strong> (i.e. not your usual password) as it&#39;ll be used in plaintext later in the lab. I&#39;ve used my initials &#39;<strong>rdo</strong>&#39; for my user below:</p>
+
+<div><pre><code class="language-none">$ openstack user create --password-prompt &lt;your username&gt;
+User Password:
+Repeat User Password:
++----------+----------------------------------+
+| Field    | Value                            |
++----------+----------------------------------+
+| email    | None                             |
+| enabled  | True                             |
+| id       | 2c580c9e773143f5b4d82b9a6131b47a |
+| name     | rdo                              |
+| options  | {}                               |
+| username | rdo                              |
++----------+----------------------------------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: The command shown above will ask you to choose a new password, but it will not be visible, even when typing it out.</p>
+</blockquote>
+
+<p>Next, create a project for your user to reside in, let&#39;s use the project name &#39;<strong>demo</strong>&#39;:</p>
+
+<div><pre><code class="language-none">$ openstack project create demo
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description | None                             |
+| enabled     | True                             |
+| id          | f991d44fac91419c8e6016184381871a |
+| name        | demo                             |
++-------------+----------------------------------+</code></pre></div>
+
+<p>Finally we can give the user a role and assign that user to the project we just created. Note that we&#39;re using usernames, roles and projects by their name here, but it&#39;s possible to use their id&#39;s instead. Let&#39;s assign our user the &#39;<strong>admin</strong>&#39; role, and place them into our new project, remebering to use the username and project name from the earlier commands:</p>
+
+<div><pre><code class="language-none">$ openstack role add --user &lt;your username&gt; --project demo admin
++-----------+----------------------------------+
+| Field     | Value                            |
++-----------+----------------------------------+
+| domain_id | None                             |
+| id        | 221700f25ec24d94b69fea75b6141da1 |
+| name      | admin                            |
++-----------+----------------------------------+</code></pre></div>
+
+<p>To save time and to not have to worry about specifying usernames/passwords on the command-line, it&#39;s prudent to create another &#39;rc&#39; or &#39;source&#39; file which will load in environment variables as we used previously for the main admin user. Let&#39;s do the same for your new user. We first need to set some temporary environment variables, making sure that you substitute these values with your own:</p>
+
+<div><pre><code class="language-none">$ export USERNAME=&lt;your username&gt;
+$ export PASSWORD=&lt;your password&gt;</code></pre></div>
+
+<p>Now we can create our file:</p>
+
+<div><pre><code class="language-none">$ cat &gt; ~/demorc &lt;&lt;EOF
+export OS_USERNAME=$USERNAME
+export OS_PROJECT_NAME=demo
+export OS_PASSWORD=$PASSWORD
+export OS_AUTH_URL=http://192.168.122.100:5000/v2.0/
+export NOVA_VERSION=1.1
+export OS_NO_CACHE=True
+export COMPUTE_API_VERSION=1.1
+export no_proxy=,192.168.122.100,172.16.0.30
+export OS_VOLUME_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+export OS_AUTH_TYPE=password
+export PS1=&quot;[\u@\h \W]\$ &quot;
+export PS1=&quot;(overcloud-demo) \$PS1&quot;
+EOF</code></pre></div>
+
+<p>You can test the file by logging out of your ssh session to the OpenStack virtual machine, logging back in and trying the following-</p>
+
+<div><pre><code class="language-none">$ logout
+$ sudo ssh stack@undercloud
+
+$ openstack token issue
+Missing value auth-url required for auth plugin password</code></pre></div>
+
+<p>As you can see, without setting the environment variables, the authentication token request has failed. Now let&#39;s try it again when sourcing our new <strong>demo</strong> environment file for our new user:</p>
+
+<div><pre><code class="language-none">$ source ~/demorc
+$ openstack token issue
++------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field      | Value                                                                                                                                                                                   |
++------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| expires    | 2018-04-09T14:28:04+0000                                                                                                                                                                |
+| id         | gAAAAABay2pkh0i9AQQJyNolx7zkdFQ-3xg102pW2aatmTjutWkl9TX5tV6_pcMxUraCZUCtnWOOIfgRnGt4zvhAQ3G9oks_c4aMHfBaXvyjSDKcj2-aotiT5YicrF5tLnrk-iE2cJbTi7iKbPnjljF7t6Pobf2sj2u3n8lknHynOpzEXqqU-Zs |
+| project_id | f991d44fac91419c8e6016184381871a                                                                                                                                                        |
+| user_id    | 2c580c9e773143f5b4d82b9a6131b47a                                                                                                                                                        |
++------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</code></pre></div>
+
+<p>Note that the first attempt at running the &quot;<strong>openstack token issue</strong>&quot; command failed; it was either expecting you to specify the authorisation credentials as parameters or via environment variables. The second time it should have succeeded (and you&#39;ll be presented with a token id starting &quot;<strong>gAAA...</strong>&quot;, if not, please check the contents of your <strong>~/demorc</strong> file, and ensure they match the username and password you created earlier in the lab. Once you save the file, you&#39;ll need to run &#39;<strong>source ~/demorc</strong>&#39; again to use the new environment variables.</p>
+
+<h1 id="toc_9"><strong>Lab 3: Adding Images into Glance (Image Service)</strong></h1>
+
+<h2 id="toc_10"><strong>Introduction</strong></h2>
+
+<p>Glance is OpenStack&#39;s image service, it provides a mechanism for discovering, registering and retrieving virtual machine images. These images are typically standardised and generalised so that they will require post-boot configuration applied. Glance supports a wide variety of disk image formats, including raw, qcow2, vmdk, ami and iso, all of which can be stored in multiple types of backends, including OpenStack Swift, Ceph, or basic implementations such as NFS, although by default it will use the local filesystem. When a user requests an instance with OpenStack, it&#39;s Glance&#39;s responsibility to provide that image and allow it to be retrieved prior to instantiation.</p>
+
+<p>Glance stores metadata alongside each image which helps identify it and describe the image, it accomodates multiple container types, e.g. an image could be completely self contained such as a qcow2 image, or it could be a separate kernel and initrd file which need to be tied together to successfully boot an instance of that machine. Glance is made up of two components, the glance-registry which is the actual image registry service and glance-api which provides the RESTful API end-point to the rest of the OpenStack services.</p>
+
+<h2 id="toc_11"><strong>Adding an image to Glance</strong></h2>
+
+<p>As previously mentioned, images uploaded to Glance should be &#39;re-initialised&#39; or &#39;sysprepped&#39; so that any system-specific configuration is wiped away, this ensures that there are no conflicts between instances that are started. It&#39;s common practice to find pre-defined virtual machine images online that contain a base operating system and perhaps a set of packages for a particular purpose. The next few steps will allow you to take such an image and upload it into the Glance registry. </p>
+
+<p>As part of the lab, we&#39;ll use an image already residing on the filesystem for you (although with the CLI tools, it&#39;s possible to point to a URL) and upload it as our own. Let&#39;s verify that the disk image is as expected and has the correct properties:</p>
+
+<div><pre><code class="language-none">$ qemu-img info ~/labs/rhel-server-7.4-x86_64-kvm.qcow2
+image: /home/stack/labs/rhel-server-7.4-x86_64-kvm.qcow2
+file format: qcow2
+virtual size: 10G (10737418240 bytes)
+disk size: 538M
+cluster_size: 65536
+Format specific information:
+    compat: 0.10
+    refcount bits: 16</code></pre></div>
+
+<p>Next we can create a new image within Glance and import its contents, it may take a few minutes to copy the data. Let&#39;s ensure that we&#39;ve sourced our demo user environment file (noting that it doesn&#39;t matter if you&#39;ve already sourced this file - repeating the source command is safe), and proceed with the image creation:</p>
+
+<div><pre><code class="language-none">$ source ~/demorc
+
+$ openstack image create rhel7 --public \
+    --disk-format qcow2 --container-format bare \
+    --file ~/labs/rhel-server-7.4-x86_64-kvm.qcow2
++------------------+------------------------------------------------------------------------------+
+| Field            | Value                                                                        |
++------------------+------------------------------------------------------------------------------+
+| checksum         | 2065a01cacd127c2b5f23b1738113325                                             |
+| container_format | bare                                                                         |
+| created_at       | 2018-04-09T13:35:25Z                                                         |
+| disk_format      | qcow2                                                                        |
+| file             | /v2/images/4568dd3f-b6f6-4a8e-b551-473e885cf7c5/file                         |
+| id               | 4568dd3f-b6f6-4a8e-b551-473e885cf7c5                                         |
+| min_disk         | 0                                                                            |
+| min_ram          | 0                                                                            |
+| name             | rhel7                                                                        |
+| owner            | f991d44fac91419c8e6016184381871a                                             |
+| properties       | direct_url=&#39;swift+config://ref1/glance/4568dd3f-b6f6-4a8e-b551-473e885cf7c5&#39; |
+| protected        | False                                                                        |
+| schema           | /v2/schemas/image                                                            |
+| size             | 564330496                                                                    |
+| status           | active                                                                       |
+| tags             |                                                                              |
+| updated_at       | 2018-04-09T13:35:34Z                                                         |
+| virtual_size     | None                                                                         |
+| visibility       | public                                                                       |
++------------------+------------------------------------------------------------------------------+ </code></pre></div>
+
+<p>The container format is &#39;<strong>bare</strong>&#39; because it doesn&#39;t require any additional images such as a kernel or initrd to support it, it&#39;s completely self-contained. The &#39;<strong>--public</strong>&#39; option allows any projects to use the image rather than locking it down for the specific project uploading the image. We could have used the parameter &#39;<strong>--private</strong>&#39; to set the opposite if we would have preferred.</p>
+
+<p>In our environment, we use <strong>Swift</strong> as a backing store for our Glance images; Swift is an OpenStack project that provides RESTful object storage, and is deployed automatically with Red Hat OpenStack Platform by default, and provides resiliency and load-balancing for objects right out of the box. When we uploaded our image to Glance, it automatically stored it as an object, the location of which is reflected in the output:</p>
+
+<blockquote>
+<p><strong>direct_url=&#39;swift+config://ref1/glance/4568dd3f-b6f6-4a8e-b551-473e885cf7c5&#39;</strong></p>
+</blockquote>
+
+<p>If we had multiple OpenStack Controllers, Swift would ensure that this object was replicated across multiple nodes, ensuring that the Glance image (and any other objects held by Swift) are highly available. There are many other storage backends that can be used for image storage with Glance; <strong>Ceph</strong> is one of the most common.</p>
+
+<p>Finally, vertify that the image is available in the repository, and it&#39;s status is set to &#39;active&#39;:</p>
+
+<div><pre><code class="language-none">$ openstack image list
++--------------------------------------+-------+--------+
+| ID                                   | Name  | Status |
++--------------------------------------+-------+--------+
+| 4568dd3f-b6f6-4a8e-b551-473e885cf7c5 | rhel7 | active |
++--------------------------------------+-------+--------+</code></pre></div>
+
+<h1 id="toc_12"><strong>Lab 4: Creation of Tenant Networks in Neutron (Networking Service)</strong></h1>
+
+<h2 id="toc_13"><strong>Introduction</strong></h2>
+
+<p>Neutron is OpenStack&#39;s Networking service and provides an abstract virtual networking API, enabling administrators and end-users to manage both virtual and physical networks for their instances on-top of OpenStack. Neutron simply provides an API for self-service and management but relies on underlying technologies for the actual implementation via Neutron-plugins. The class environment makes use of Open vSwitch, but there are many other plugins available upstream such as Nuage, Juniper Contrail, etc. Neutron allows users to create rich networking topologies within their own projects - having full control over their networks.</p>
+
+<p>We&#39;re going to be starting our first instances in the next lab, but for an instance to start, it must be assigned a network to attach to (amongst other configuration requirements, such as the image you want to use). These are typically private networks, i.e. have no public connectivity and is primarily used for virtual machine interconnects and private networking - called a &quot;<strong>tenant network</strong>&quot;. Within OpenStack we bridge the private network out to the real world via a public (or &#39;external&#39;) network, it is simply the network interface in which public traffic will connect into, and is typically where you&#39;d assign &quot;<strong>floating IP&#39;s</strong>&quot;, i.e. IP addresses that are dynamically assigned to instances so that external traffic can be routed through correctly. Instances don&#39;t typically have direct access to the public network interface, they only see the private network and the user is responsible for optionally connecting a virtual router to interlink the two networks for both external access and inbound access from outside the private network.</p>
+
+<p>There are many other options for networking configuration with Neutron that does allow instances to be directly connected to an external network (e.g. provider networks, or SR/IOV), but for the purpose of this lab we&#39;re going to keep things relatively simple and use the tenant network construct with floating IP&#39;s for inbound routing via Neutron&#39;s L3 agent.</p>
+
+<p>Neutron&#39;s internal to external network architecture (with the L3 agent) looks like the following:</p>
+
+<p><img src="images/neutron.png" style="width: 1000px;" border="2"/></p>
+
+<h2 id="toc_14"><strong>Configuring the External Network</strong></h2>
+
+<p>As we mentioned before, external networks provide a mechanism for OpenStack instances to communicate to the outside, but critically to allow instances to have inbound connectivity from the outside via the mechanism of a floating IP. These external networks are typically existing datacentre networks, and OpenStack administrators will need to tell Neutron how to utilise such networks. An administrator must define a name for the network, a subnet (including address ranges), and advise Neutron of which networking bridge (which would be associated with a physical interface) to route external traffic to. It&#39;s possible to have multiple external networks within OpenStack, and users can select which networks they want their instance to be able to see, and also which networks they want a floating IP to be listening on.</p>
+
+<p>For the purpose of this lab, we&#39;re going to create an external network that is connected to the dedicated public-cloud based environment that you&#39;re using (<strong>192.168.122.0/24</strong>). This will allow us to connect directly into instances via floating IP&#39;s during a later lab. The first thing we need to do is make sure that we&#39;ve sourced our environment file for our demo user, noting that the default security policy only allows administrators to define external networks, but we gave our demo user &#39;admin&#39; privileges in an earlier lab (even though that&#39;s not strictly best practice):</p>
+
+<div><pre><code class="language-none">$ source ~/demorc</code></pre></div>
+
+<p>Next, we need to start defining our external network. This follows the same logical steps as creating <em>any</em> network, regardless of whether you&#39;re an administrator or not. However, we need to specify a number of parameters, specifically advising Neutron that this is an external network, and defining exactly how it connects to the outside world. Let&#39;s first see all of the networking agents and services that are running within our environment:</p>
+
+<div><pre><code class="language-none">$ openstack network agent list
++--------------------------------------+----------------------+------------------------------+-------------------+-------+-------+---------------------------+
+| ID                                   | Agent Type           | Host                         | Availability Zone | Alive | State | Binary                    |
++--------------------------------------+----------------------+------------------------------+-------------------+-------+-------+---------------------------+
+| 124371fc-1bce-48a8-af61-cde99b83e74f | Open vSwitch agent   | summit-networker.localdomain | None              | :-)   | UP    | neutron-openvswitch-agent |
+| 247d49b7-537e-44d9-a3c6-19844be5da88 | Loadbalancerv2 agent | summit-networker.localdomain | None              | :-)   | UP    | neutron-lbaasv2-agent     |
+| 25bd6fe6-b29c-4d0f-9d49-7d7ee0f7d820 | L3 agent             | summit-networker.localdomain | nova              | :-)   | UP    | neutron-l3-agent          |
+| 7bbb6b31-c10c-49f5-a6da-fe50e1670ee7 | Open vSwitch agent   | summit-compute2.localdomain  | None              | :-)   | UP    | neutron-openvswitch-agent |
+| a0ec6b56-bb99-449b-829b-0ee0ab9cf138 | Open vSwitch agent   | summit-compute1.localdomain  | None              | :-)   | UP    | neutron-openvswitch-agent |
+| b5c90ce6-af7f-44c4-aaf5-5beb5afddddd | DHCP agent           | summit-networker.localdomain | nova              | :-)   | UP    | neutron-dhcp-agent        |
+| fd82f7f7-e7fe-4741-93e9-db0484192531 | Metadata agent       | summit-networker.localdomain | None              | :-)   | UP    | neutron-metadata-agent    |
++--------------------------------------+----------------------+------------------------------+-------------------+-------+-------+---------------------------+</code></pre></div>
+
+<p>What you&#39;ll see is that we have three systems that have networking functions, the &#39;<strong>summit-networker</strong>&#39; machine, and the &#39;<strong>summit-computeX</strong>&#39; machines. The <strong>compute</strong> machines only need to worry about connectivity of virtual machine networks, whereas the dedicated networker machine has to also worry about providing things like external network routing and DHCP services for OpenStack networks and the instances that run on-top of them.</p>
+
+<p>On each of these nodes you&#39;ll see &#39;<strong>neutron-openvswitch-agent</strong>&#39; running - this is the agent that&#39;s responsible for configuring Open vSwitch on each machine, and setting up traffic flows for each virtual machine and all related services like DHCP, etc. As the <strong>networker</strong> machine is also responsible for network routing (via the L3 agent), it needs to know how to route traffic between administratively-defined external networks and internal tenant networks that the users have control over, hence why you can see the &#39;<strong>neutron-l3-agent</strong>&#39; running on the networker node.</p>
+
+<p>The important thing to understand here is that Neutron only understands <strong>logical</strong> &quot;physical network&quot; names - these logical network names are translated into real underlying networks via a network bridge by the plugin that we&#39;re using (in our case, Open vSwitch). To understand how this works, we need to look at the defined logical networks that Open vSwitch is exposing to Neutron via the &#39;<strong>bridge_mappings</strong>&#39; extension. Select the &#39;id&#39; for the Open vSwitch agent running on &#39;<strong>summit-networker</strong>&#39; in the following command, and it will show you the current bridge mappings:</p>
+
+<div><pre><code class="language-none">$ openstack network agent show 9c2d624f-e009-4910-bb20-36a5973f2a9e -f json | grep -A2 bridge_mappings
+    &quot;bridge_mappings&quot;: {
+        &quot;datacentre&quot;: &quot;br-ex&quot;
+    }</code></pre></div>
+
+<p>What this shows it that we have a physical network name of &quot;<strong>datacentre</strong>&quot;, which if used, would tell Neutron to route all external traffic for that network onto the Open vSwitch bridge &quot;<strong>br-ex</strong>&quot;. If we look at the &quot;br-ex&quot; bridge on our <strong>summit-networker</strong> machine we can see that it is already attached to a real world physical network interface, <strong>&quot;eth1&quot;</strong>. To do this, we&#39;ll need to briefly ssh to that machine:</p>
+
+<div><pre><code class="language-none">$ ssh root@summit-networker sudo ovs-vsctl show | grep -A20 &quot;Bridge br-ex&quot;
+Bridge br-ex                                                        &lt;--- the bridge name
+    Controller &quot;tcp:127.0.0.1:6633&quot;
+        is_connected: true
+    fail_mode: secure
+    Port br-ex
+        Interface br-ex
+            type: internal
+    Port &quot;eth1&quot;                                                     &lt;--- the physical ethernet connection
+        Interface &quot;eth1&quot;
+    Port &quot;vlan201&quot;                                                  &lt;--- additional VLANs for other traffic
+        tag: 201
+        Interface &quot;vlan201&quot;
+            type: internal
+    Port phy-br-ex
+        Interface phy-br-ex
+            type: patch
+            options: {peer=int-br-ex}
+    Port &quot;vlan101&quot;                                                 &lt;--- additional VLANs for other traffic
+        tag: 101
+        Interface &quot;vlan101&quot;
+            type: internal</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> We don&#39;t need to specify a password to execute remote commands on the networker node - we&#39;ve already pre-populated the overcloud nodes with a secure shell key for convenience. We&#39;ve also highlighted certain sections in the OVS output above to make things clear.</p>
+</blockquote>
+
+<p>To summarise, if we define an external network with the Neutron logical name <strong>&quot;datacentre&quot;</strong>, the traffic will utilise <strong>&quot;eth1&quot;</strong> as a physical network via the Open vSwitch bridge <strong>&quot;br-ex&quot;</strong>.</p>
+
+<p>Let&#39;s tie this together and create our external network:</p>
+
+<div><pre><code class="language-none">$ openstack network create external --external \
+--provider-physical-network datacentre \
+--provider-network-type flat \
+--project admin
+
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | UP                                   |
+| availability_zone_hints   |                                      |
+| availability_zones        |                                      |
+| created_at                | 2018-04-09T14:10:15Z                 |
+| description               |                                      |
+| dns_domain                | None                                 |
+| id                        | d5bfe8ac-d26c-4db3-b9ca-6459426f6362 |
+| ipv4_address_scope        | None                                 |
+| ipv6_address_scope        | None                                 |
+| is_default                | False                                |
+| is_vlan_transparent       | None                                 |
+| mtu                       | 1500                                 |
+| name                      | external                             |
+| port_security_enabled     | True                                 |
+| project_id                | 9eb95e04cff34482b44b8672b65caac9     |
+| provider:network_type     | flat                                 |   &lt;--- Note the &#39;flat&#39; type
+| provider:physical_network | datacentre                           |   &lt;--- Note the &#39;datacentre&#39; mapping
+| provider:segmentation_id  | None                                 |
+| qos_policy_id             | None                                 |
+| revision_number           | 4                                    |
+| router:external           | External                             |
+| segments                  | None                                 |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tags                      |                                      |
+| updated_at                | 2018-04-09T14:10:16Z                 |
++---------------------------+--------------------------------------+    </code></pre></div>
+
+<p>There are a number of key parameters here, for reference use the table below:</p>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Details</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>--provider-physical-network</td>
+<td>This defines the <strong>logical</strong> physical network name that Neutron uses to look up the bridge mapping</td>
+</tr>
+<tr>
+<td>--provider-network-type</td>
+<td>This sets the network type, e.g. if it&#39;s flat, or VLAN tagged</td>
+</tr>
+<tr>
+<td>--external</td>
+<td>This tells Neutron that this is an <strong>external</strong> network and can be used for routing (e.g. floating IP&#39;s)</td>
+</tr>
+<tr>
+<td>--project X</td>
+<td>We specifially tell Neutron to assign ownership of this network to the &#39;<strong>admin</strong>&#39; project, i.e. not our new users project. External networks should always be owned by the admin project, or a dedicated project, not a normal user project.</td>
+</tr>
+</tbody>
+</table>
+
+<p>Let&#39;s associate a subnet to our external network so that Neutron knows what IP ranges to use for outbound routing (SNAT) and inbound routing via floating IP&#39;s (DNAT), noting that this coincides with our virtualised default network, accessible from our workstation:</p>
+
+<div><pre><code class="language-none">$ openstack subnet create external_subnet --network external \
+--subnet-range 192.168.122.0/24 \
+--allocation-pool start=192.168.122.200,end=192.168.122.249 \
+--no-dhcp --dns-nameserver 192.168.122.1 --gateway 192.168.122.1 \
+--project admin
+
++-------------------------+--------------------------------------+
+| Field                   | Value                                |
++-------------------------+--------------------------------------+
+| allocation_pools        | 192.168.122.200-192.168.122.249      |
+| cidr                    | 192.168.122.0/24                     |
+| created_at              | 2018-04-09T14:11:09Z                 |
+| description             |                                      |
+| dns_nameservers         | 192.168.122.1                        |
+| enable_dhcp             | False                                |
+| gateway_ip              | 192.168.122.1                        |
+| host_routes             |                                      |
+| id                      | f1b165b1-f839-469f-b649-4ed2cc71b873 |
+| ip_version              | 4                                    |
+| ipv6_address_mode       | None                                 |
+| ipv6_ra_mode            | None                                 |
+| name                    | external_subnet                      |
+| network_id              | d5bfe8ac-d26c-4db3-b9ca-6459426f6362 |
+| project_id              | 9eb95e04cff34482b44b8672b65caac9     |
+| revision_number         | 0                                    |
+| segment_id              | None                                 |
+| service_types           |                                      |
+| subnetpool_id           | None                                 |
+| tags                    |                                      |
+| updated_at              | 2018-04-09T14:11:09Z                 |
+| use_default_subnet_pool | None                                 |
++-------------------------+--------------------------------------+</code></pre></div>
+
+<p>As previously, there are a number of key parameters here, for reference use the table below:</p>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Details</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>--subnet-range</td>
+<td>This defines the CIDR of the network that we&#39;re wanting to create</td>
+</tr>
+<tr>
+<td>--allocation-pool</td>
+<td>This sets the range of IP&#39;s within the CIDR that we can use to allocate as floating IP&#39;s, or to use as SNAT IP&#39;s</td>
+</tr>
+<tr>
+<td>--no-dhcp</td>
+<td>This disables any form of DHCP service for this network - this is an external network that we use for bridging traffic between internal and external networks. In this lab, instances cannot be directly connected to the external network without routing (NAT) taking place via the L3 agent, although it is possible to establish this type of alternative configuration. Therefore, as instances won&#39;t be DHCP&#39;ing on this network, we disable this functionality.</td>
+</tr>
+<tr>
+<td>--dns-nameserver</td>
+<td>This defines the nameserver that instances can use, although this is not required as it&#39;s provided only when DHCP is enabled. It&#39;s shown here for completeness.</td>
+</tr>
+<tr>
+<td>--gateway</td>
+<td>This defines the upstream network gateway for the external network, i.e. the next-hop that would be used within that external network. This corresponds to the virtualised network gateway provided by the underlying host</td>
+</tr>
+<tr>
+<td>--project X</td>
+<td>We specifially tell Neutron to assign ownership of this subnet to the &#39;<strong>admin</strong>&#39; project, i.e. not our new users project. Just like external networks, their associated subnets should always be owned by the admin project, or a dedicated project, not a normal user project.</td>
+</tr>
+</tbody>
+</table>
+
+<p>Now that we&#39;ve got the external network configured we need to create internal networks for our instances as they won&#39;t have direct access to this network. This is the responsibility of a user within a project, the external network is just exposed to all of the projects that are created; whilst they cannot modify it, they can attach a virtual router to it for routing and floating IP access.</p>
+
+<h2 id="toc_15"><strong>Creating Tenant Networks</strong></h2>
+
+<p>Next, let&#39;s create a tenant network for our instances to use. If we create a network and don&#39;t specify any additional parameters, Neutron assumes that it&#39;s a private tenant network that uses some form of network isolation mechanism (to isolate tenant networks between other projects) such as VLAN, or VXLAN. In our environment we&#39;re defaulting to <strong>VXLAN</strong>:</p>
+
+<div><pre><code class="language-none">$ openstack network create internal
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | UP                                   |
+| availability_zone_hints   |                                      |
+| availability_zones        |                                      |
+| created_at                | 2018-04-09T14:11:52Z                 |
+| description               |                                      |
+| dns_domain                | None                                 |
+| id                        | 68abade7-ce4c-4592-9128-25d52e95a21a |
+| ipv4_address_scope        | None                                 |
+| ipv6_address_scope        | None                                 |
+| is_default                | False                                |
+| is_vlan_transparent       | None                                 |
+| mtu                       | 1450                                 |
+| name                      | internal                             |
+| port_security_enabled     | True                                 |
+| project_id                | f991d44fac91419c8e6016184381871a     |
+| provider:network_type     | vxlan                                |   &lt;--- Note the &#39;vxlan&#39; type
+| provider:physical_network | None                                 |
+| provider:segmentation_id  | 3                                    |
+| qos_policy_id             | None                                 |
+| revision_number           | 3                                    |
+| router:external           | Internal                             |
+| segments                  | None                                 |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tags                      |                                      |
+| updated_at                | 2018-04-09T14:11:53Z                 |
++---------------------------+--------------------------------------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> As we&#39;re using VXLAN, it&#39;s assumed that we&#39;re using the default frame size of 1500bytes, and has automatically reduced the MTU given to instances to 1450 to accomodate the VXLAN header.</p>
+</blockquote>
+
+<p>Next, associate a subnet with this network as before, but using a completely different subnet CIDR:</p>
+
+<div><pre><code class="language-none">$ openstack subnet create internal_subnet --network internal \
+    --subnet-range 172.16.1.0/24 --dns-nameserver 192.168.122.1
+
++-------------------------+--------------------------------------+
+| Field                   | Value                                |
++-------------------------+--------------------------------------+
+| allocation_pools        | 172.16.1.2-172.16.1.254              |
+| cidr                    | 172.16.1.0/24                        |
+| created_at              | 2018-04-09T14:12:36Z                 |
+| description             |                                      |
+| dns_nameservers         | 192.168.122.1                        |
+| enable_dhcp             | True                                 |
+| gateway_ip              | 172.16.1.1                           |
+| host_routes             |                                      |
+| id                      | 4d38f43b-402e-48a5-b048-3092d6f7da02 |
+| ip_version              | 4                                    |
+| ipv6_address_mode       | None                                 |
+| ipv6_ra_mode            | None                                 |
+| name                    | internal_subnet                      |
+| network_id              | 68abade7-ce4c-4592-9128-25d52e95a21a |
+| project_id              | f991d44fac91419c8e6016184381871a     |
+| revision_number         | 0                                    |
+| segment_id              | None                                 |
+| service_types           |                                      |
+| subnetpool_id           | None                                 |
+| tags                    |                                      |
+| updated_at              | 2018-04-09T14:12:36Z                 |
+| use_default_subnet_pool | None                                 |
++-------------------------+--------------------------------------+  </code></pre></div>
+
+<p>This means that any instances that we start on this internal network will receive an IP address (via DHCP) on the <strong>172.16.1.0/24</strong> network, noting that by default, Neutron assumes that you want to have DHCP enabled, and will automatically assign an address to use for the default gateway (this will be the address that the L3 agent uses as a gateway for NAT).</p>
+
+<p>At the moment, any instances attached to this network will be completely <strong>isolated</strong>; there&#39;s no routing between the internal and the external network - despite having a gateway defined we cannot get out, and we cannot get in. Neutron allows you to bridge tenant networks and external networks via the concept of virtual <strong>routers</strong>, and is what gets implemented by the L3 agent to perform such capabilities. Let&#39;s create a virtual router for our network:</p>
+
+<div><pre><code class="language-none">$ openstack router create demo_router
++-------------------------+--------------------------------------+
+| Field                   | Value                                |
++-------------------------+--------------------------------------+
+| admin_state_up          | UP                                   |
+| availability_zone_hints |                                      |
+| availability_zones      |                                      |
+| created_at              | 2018-04-09T14:13:18Z                 |
+| description             |                                      |
+| distributed             | False                                |
+| external_gateway_info   | None                                 |
+| flavor_id               | None                                 |
+| ha                      | False                                |
+| id                      | f8d34761-f57b-4697-8e37-741f274c4ff4 |
+| name                    | demo_router                          |
+| project_id              | f991d44fac91419c8e6016184381871a     |
+| revision_number         | None                                 |
+| routes                  |                                      |
+| status                  | ACTIVE                               |
+| tags                    |                                      |
+| updated_at              | 2018-04-09T14:13:18Z                 |
++-------------------------+--------------------------------------+  </code></pre></div>
+
+<p>Now let&#39;s associate a gateway for this router, in other words, to which external network do we want outbound traffic to route through? That&#39;ll be our &#39;<strong>external</strong>&#39; network...</p>
+
+<div><pre><code class="language-none">$ openstack router set demo_router --external-gateway external</code></pre></div>
+
+<p>Then we need to add an interface to the internal network that we created in a previous step, noting that we need to associate it to the subnet, and not the network (as a network may have multiple subnets associated with it):</p>
+
+<div><pre><code class="language-none">$ openstack router add subnet demo_router internal_subnet</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: The above two commands produce no output unless there have been any errors.</p>
+</blockquote>
+
+<p>In conclusion, we&#39;ve created a private &#39;tenant network&#39;, called <strong>&#39;internal&#39;</strong> for our instances to use and have created a virtual router for our internal network to route traffic to the outside; onto the administratively defined external network called <strong>&quot;external&quot;</strong>. In a later lab we&#39;ll demonstrate how routing works and how we can associate floating IP&#39;s to our instances for inbound connectivity.</p>
+
+<h1 id="toc_16"><strong>Lab 5: Creation of Instances in Nova (Compute Service)</strong></h1>
+
+<h2 id="toc_17"><strong>Introduction</strong></h2>
+
+<p>Nova is OpenStack&#39;s compute service, it&#39;s responsible for scheduling and lifecycle management of compute resource, e.g. instances (note it&#39;s called an instance as it&#39;s not explicit that OpenStack provisions a virtual machine, it could be a baremetal node, or indeed a container). Nova is undoubtably one of the most important parts of the OpenStack project and is indeed where the vast majority of the original OpenStack code was implemented.</p>
+
+<p>Nova schedules virtual machines to run on a set of nodes by defining drivers that interact with underlying virtualisation mechanisms, and by exposing the functionality to the other OpenStack components. It&#39;s responsible for ensuring that an instance continues to run, can have networking interfaces attached, access to storage devices, and provides full control over the lifecycle to the project that owns the instance.</p>
+
+<p>Nova supports a wide variety of drivers, but we&#39;re going to be focussing on the libvirt driver that uses KVM as the hypervisor. This lab enables us to start instances based on the previous two labs; each instance requires an image to boot from and a network to attach to at the very least.</p>
+
+<h2 id="toc_18"><strong>Starting instances via the console</strong></h2>
+
+<p>Let&#39;s launch our first instance in OpenStack using the command line. The first task that we&#39;ll do is create our own custom flavor; flavors define the specification of the instance in terms of vCPUs, memory, disk space, etc. Given that we have to run all of this on a workstation, we have to create our own specific flavor to match the needs of our image, but also to fit within the constraints of the environment.</p>
+
+<p>First, make sure we&#39;ve sourced our environment file (with administrative access):</p>
+
+<div><pre><code class="language-none">$ source ~/demorc</code></pre></div>
+
+<p>Then, create a new flavor for us to use:</p>
+
+<div><pre><code class="language-none">$ openstack flavor create --ram 2048 --disk 10 --vcpus 2 --id 6 m1.labs
++----------------------------+---------+
+| Field                      | Value   |
++----------------------------+---------+
+| OS-FLV-DISABLED:disabled   | False   |
+| OS-FLV-EXT-DATA:ephemeral  | 0       |
+| disk                       | 10      |
+| id                         | 6       |
+| name                       | m1.labs |
+| os-flavor-access:is_public | True    |
+| properties                 |         |
+| ram                        | 2048    |
+| rxtx_factor                | 1.0     |
+| swap                       |         |
+| vcpus                      | 2       |
++----------------------------+---------+</code></pre></div>
+
+<p>What we&#39;ve done there is to create a new flavor, with the name &quot;m1.labs&quot; with 2048MB RAM, 2 vCPU&#39;s, and 10GB of disk space; this matches the requirements of our booting RHEL7 image, where all other flavors wouldn&#39;t have sufficed. Any instance that we create with this flavor profile will be assigned this specification.</p>
+
+<p>Next, boot a new instance on OpenStack using our new flavor and the image we uploaded earlier (&quot;<strong>rhel7</strong>&quot;), ensure you specify a name for the instance, below we use &quot;<strong>my_vm</strong>&quot;:</p>
+
+<div><pre><code class="language-none">$ openstack server create --flavor m1.labs --image rhel7 my_vm
++-------------------------------------+----------------------------------------------+
+| Field                               | Value                                        |
++-------------------------------------+----------------------------------------------+
+| OS-DCF:diskConfig                   | MANUAL                                       |
+| OS-EXT-AZ:availability_zone         |                                              |
+| OS-EXT-SRV-ATTR:host                | None                                         |
+| OS-EXT-SRV-ATTR:hypervisor_hostname | None                                         |
+| OS-EXT-SRV-ATTR:instance_name       |                                              |
+| OS-EXT-STS:power_state              | NOSTATE                                      |
+| OS-EXT-STS:task_state               | scheduling                                   |
+| OS-EXT-STS:vm_state                 | building                                     |
+| OS-SRV-USG:launched_at              | None                                         |
+| OS-SRV-USG:terminated_at            | None                                         |
+| accessIPv4                          |                                              |
+| accessIPv6                          |                                              |
+| addresses                           |                                              |
+| adminPass                           | Qk7M9caVyjQT                                 |
+| config_drive                        |                                              |
+| created                             | 2018-04-09T14:38:25Z                         |
+| flavor                              | m1.labs (6)                                  |
+| hostId                              |                                              |
+| id                                  | e11dba06-cccf-47ce-b6e2-8c2d425d382a         |
+| image                               | rhel7 (4568dd3f-b6f6-4a8e-b551-473e885cf7c5) |
+| key_name                            | None                                         |
+| name                                | my_vm                                        |
+| progress                            | 0                                            |
+| project_id                          | f991d44fac91419c8e6016184381871a             |
+| properties                          |                                              |
+| security_groups                     | name=&#39;default&#39;                               |
+| status                              | BUILD                                        |
+| updated                             | 2018-04-09T14:38:25Z                         |
+| user_id                             | 2c580c9e773143f5b4d82b9a6131b47a             |
+| volumes_attached                    |                                              |
++-------------------------------------+----------------------------------------------+</code></pre></div>
+
+<p>Note that because we only have one private network (&quot;<strong>internal</strong>&quot; as created earlier), it assumes we want to join this one. Otherwise we would have had to specify a network to use. We can verify that our system has been started successfully with the following command, noting that it may take a few minutes to become active:</p>
+
+<div><pre><code class="language-none">$ openstack server list
++--------------------------------------+-------+--------+---------------------+-------+---------+
+| ID                                   | Name  | Status | Networks            | Image | Flavor  |
++--------------------------------------+-------+--------+---------------------+-------+---------+
+| e11dba06-cccf-47ce-b6e2-8c2d425d382a | my_vm | ACTIVE | internal=172.16.1.9 | rhel7 | m1.labs |
++--------------------------------------+-------+--------+---------------------+-------+---------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: You may see that the system is in a <strong>&quot;SPAWNING&quot;</strong> state for a few minutes, this is to be expected as the machine provisions itself. Please be patient and allow it to start. We want to make sure that it goes into an <strong>&quot;ACTIVE&quot;</strong> state.</p>
+</blockquote>
+
+<h2 id="toc_19"><strong>Viewing Console Output (VNC)</strong></h2>
+
+<p>It&#39;s critical to ensure that our virtual machine has started successfully. Nova provides us with two main ways of checking this without relying on networking being available - the console output, and the VNC console output. During this section, we&#39;ll demonstrate how to access the VNC console of the booting VM. OpenStack provides a component called novncproxy; this brokers connections from clients to the compute nodes running the instances - connections come into the novncproxy service only, it then creates a tunnel through to the VNC server, meaning VNC servers need not be open to everyone, only to the proxy service.</p>
+
+<p>Using a web-browser, we can view the VNC console via an HTML5 viewer. We can get the URL via the following command:</p>
+
+<div><pre><code class="language-none">$ openstack console url show my_vm --novnc
++-------+--------------------------------------------------------------------------------------+
+| Field | Value                                                                                |
++-------+--------------------------------------------------------------------------------------+
+| type  | novnc                                                                                |
+| url   | http://129.146.150.142:6080/vnc_auto.html?token=1991f8b8-1de0-427e-a9e4-56effdc938aa |
++-------+--------------------------------------------------------------------------------------+</code></pre></div>
+
+<p><strong>WARNING</strong>: You may find that if you run the above command before the machine has booted, you&#39;ll receive the following error. Simply wait a minute or two for the instance to boot.</p>
+
+<div><pre><code class="language-none">$ openstack console url show my_vm --novnc
+ERROR: Instance not yet ready (HTTP 409) (Request-ID: req-da372916-10ba-4158-91a2-0cc10f4d083e)</code></pre></div>
+
+<p>You should be able to open this URL directly from your workstation and view the VM&#39;s VNC console; you can also login should you wish, the <strong>root</strong> password is <strong>&#39;redhat&#39;</strong>.</p>
+
+<p><img src="images/vnc-console.png" style="width: 1000px;"/></p>
+
+<p>Close down the web browser window before continuing.</p>
+
+<h2 id="toc_20"><strong>Attaching Floating IP&#39;s to Instances</strong></h2>
+
+<p>According to Nova, our machine has been given a network address of <strong>172.16.1.5</strong> and has been started; the IP address that you receive may be slightly different. You&#39;ll note that the IP address of this system is on the private <strong>internal</strong> network, and you won&#39;t be able to access it - remember that despite us attaching a router to get to the outside, this machine doesn&#39;t have a floating IP yet, and as such we cannot get to it from the outside.</p>
+
+<p>OpenStack allows us to assign &#39;floating IPs&#39; to instances to allow network traffic from any <strong>external</strong> network to be routed to a specific instance, running on a private tenant network, or in our case the <strong>internal</strong> network. Behind the scenes Neutron&#39;s L3-agent listens on an additional IP address based on the network bridge and physical interface we configured in an earlier lab and uses NAT to tunnel the traffic to the correct instance on the private/internal network.</p>
+
+<h2 id="toc_21"><strong>Creating and Assigning Floating IP&#39;s</strong></h2>
+
+<p>For this task you&#39;ll need an instance running first, if you don&#39;t have one running revisit the previous section and start an instance. We&#39;ll request floating IP&#39;s from a pool that we&#39;ve already created, this is known as the allocation pool on the <strong>external</strong> network.</p>
+
+<p>OpenStack makes you &#39;claim&#39; an IP from the available list of IP addresses for the tenant (project) you&#39;re currently running in before you can assign it to an instance, we specify the &#39;ext&#39; network to claim from:</p>
+
+<div><pre><code class="language-none">$ openstack floating ip create external
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| created_at          | 2018-04-09T14:44:38Z                 |
+| description         |                                      |
+| fixed_ip_address    | None                                 |
+| floating_ip_address | 192.168.122.210                      |
+| floating_network_id | d5bfe8ac-d26c-4db3-b9ca-6459426f6362 |
+| id                  | 88d118f7-daad-4fa0-b94c-37158e98ab59 |
+| name                | 192.168.122.210                      |
+| port_id             | None                                 |
+| project_id          | f991d44fac91419c8e6016184381871a     |
+| revision_number     | 0                                    |
+| router_id           | None                                 |
+| status              | DOWN                                 |
+| updated_at          | 2018-04-09T14:44:38Z                 |
++---------------------+--------------------------------------+</code></pre></div>
+
+<p>You can see that it&#39;s reserved <strong>192.168.122.210</strong> for our project, although it&#39;s not attached to an instance <em>yet</em> and therefore is not much use. Next, we can assign our claimed IP address to an instance:</p>
+
+<div><pre><code class="language-none">$ openstack server add floating ip my_vm 192.168.122.210    </code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> If the command is successful it has no output, and your IP address may vary from the one displayed above - use the IP address that the create command allocated to you.</p>
+</blockquote>
+
+<p>You can now verify that the IP address was assigned to your node with the following:</p>
+
+<div><pre><code class="language-none">$ openstack server list
++--------------------------------------+-------+--------+--------------------------------------+-------+---------+
+| ID                                   | Name  | Status | Networks                             | Image | Flavor  |
++--------------------------------------+-------+--------+--------------------------------------+-------+---------+
+| e11dba06-cccf-47ce-b6e2-8c2d425d382a | my_vm | ACTIVE | internal=172.16.1.9, 192.168.122.210 | rhel7 | m1.labs |
++--------------------------------------+-------+--------+--------------------------------------+-------+---------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: It may take a while for the floating IP to show up here, so keep trying the above command. </p>
+</blockquote>
+
+<p>For those of you that may have already tried to ping or SSH into the node using this IP address may be confused as to why this is not working. By default, OpenStack&#39;s security group rules will prevent <strong>all</strong> inbound access, so we&#39;ll need to open these up before we confirm that our instance is working properly.</p>
+
+<h2 id="toc_22"><strong>OpenStack Security Groups</strong></h2>
+
+<p>By default, OpenStack Security Groups prevent any inbound access to instances, including ICMP/ping! Therefore, we have to edit the security group policy to ensure that the firewall is opened up for us. If you don&#39;t believe me, try ping&#39;ing your instance:</p>
+
+<div><pre><code class="language-none">$ ping 192.168.122.210
+PING 192.168.122.210 (192.168.122.210) 56(84) bytes of data.
+^C
+--- 192.168.122.210 ping statistics ---
+14 packets transmitted, 0 received, 100% packet loss, time 13005ms</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: You&#39;ll likely need to Ctrl-C the above ping command to get back out.</p>
+</blockquote>
+
+<p>Let&#39;s add two rules, firstly for all instances to have ICMP and SSH access. By default, Neutron ships with a &#39;default&#39; security group, it&#39;s possible to create new groups and assign custom rules to these groups and then assign these groups to individual servers. For this lab, we&#39;ll just configure the default group. The problem is that there are multiple default groups, and as an administrator you can see them all, noting that they&#39;re project-specific, and the ID for your project will be different than the ones in the example below as we created it in an earlier step:</p>
+
+<div><pre><code class="language-none">$ openstack security group list -c ID -c Project
++--------------------------------------+----------------------------------+
+| ID                                   | Project                          |
++--------------------------------------+----------------------------------+
+| 13f8b461-0a66-4c1d-ba81-9bd53b16c31a | 9eb95e04cff34482b44b8672b65caac9 |
+| 69f49751-975f-412b-a21f-765b6e7715a4 | f991d44fac91419c8e6016184381871a |
+| 6f2a4119-fc40-434e-8b71-f9796cd4d9cc |                                  |
+| c9fcfba4-5788-4f50-b4f9-2bffd398feb3 | ae16125945e84ecbb09f81e6ec102649 |
++--------------------------------------+----------------------------------+</code></pre></div>
+
+<p>So, let&#39;s look at enabling ICMP for <em>every</em> node within the default group, using the security group ID as the unique identifier for our &#39;<strong>default</strong>&#39; group within the demo project that we&#39;re using (and that our instance is booted onto):</p>
+
+<div><pre><code class="language-none">$ openstack project list
++----------------------------------+---------+
+| ID                               | Name    |
++----------------------------------+---------+
+| 9eb95e04cff34482b44b8672b65caac9 | admin   |
+| ae16125945e84ecbb09f81e6ec102649 | service |
+| f991d44fac91419c8e6016184381871a | demo    |          &lt;--- this is the project we&#39;re concerned with
++----------------------------------+---------+</code></pre></div>
+
+<p>If we take the the project ID of our demo project (<strong>f991d44fac91419c8e6016184381871a</strong>), noting that your UUID will be different here, we can see that it maps to security group ID <strong>69f49751-975f-412b-a21f-765b6e7715a4</strong> from the output of &#39;openstack security group list&#39; as shown above. We can now create the rules in the correct group, for convenience we&#39;ll ensure we grab the correct one:</p>
+
+<div><pre><code class="language-none">$ export MY_PROJECT=$(openstack project list | awk &#39;$4 == &quot;demo&quot; {print $2};&#39;)
+$ export SEC_GROUP_ID=$(openstack security group list | grep $MY_PROJECT | awk &#39;{print $2;}&#39;)
+$ echo $SEC_GROUP_ID
+69f49751-975f-412b-a21f-765b6e7715a4</code></pre></div>
+
+<p>Now we can use this ID to create our security group rules, noting that your ID <em>will</em> be different from the one above, hence why we used the export commands above to ensure that we&#39;re using the correct ID&#39;s for your environment:</p>
+
+<div><pre><code class="language-none">$ openstack security group rule create --proto icmp $SEC_GROUP_ID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| created_at        | 2018-04-09T15:14:29Z                 |
+| description       |                                      |
+| direction         | ingress                              |
+| ether_type        | IPv4                                 |
+| id                | 2546ea92-3417-44e3-a4ed-e7d4e4849637 |
+| name              | None                                 |
+| port_range_max    | None                                 |
+| port_range_min    | None                                 |
+| project_id        | f991d44fac91419c8e6016184381871a     |
+| protocol          | icmp                                 |
+| remote_group_id   | None                                 |
+| remote_ip_prefix  | 0.0.0.0/0                            |
+| revision_number   | 0                                    |
+| security_group_id | 69f49751-975f-412b-a21f-765b6e7715a4 |
+| updated_at        | 2018-04-09T15:14:29Z                 |
++-------------------+--------------------------------------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> These security group rules can be configured with a lot more granularity, e.g. specifying from which subnets we allow from, etc, but here we allow from all as we didn&#39;t specify any limitations.</p>
+</blockquote>
+
+<p>Within a few seconds (for the hypervisor to pick up the changes) you should be able to ping your floating IP:</p>
+
+<div><pre><code class="language-none">$ ping -c4 192.168.122.210
+PING 192.168.122.210 (192.168.122.210) 56(84) bytes of data.
+64 bytes from 192.168.122.210: icmp_seq=1 ttl=63 time=3.82 ms
+64 bytes from 192.168.122.210: icmp_seq=2 ttl=63 time=1.34 ms
+64 bytes from 192.168.122.210: icmp_seq=3 ttl=63 time=1.16 ms
+(...)</code></pre></div>
+
+<p>We can ping, but we can&#39;t SSH yet, as that&#39;s still not allowed (<strong>Ctrl-C</strong> to stop this command if you don&#39;t want to wait for it to timeout):</p>
+
+<div><pre><code class="language-none">$ ssh -v root@192.168.122.210
+OpenSSH_7.4p1, OpenSSL 1.0.2k-fips  26 Jan 2017
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 58: Applying options for *
+debug1: Connecting to 192.168.122.210 [192.168.122.210] port 22.
+debug1: connect to address 192.168.122.210 port 22: Connection timed out
+ssh: connect to host 192.168.122.210 port 22: Connection timed out</code></pre></div>
+
+<p>Next, let&#39;s try adding another rule, to allow SSH access for all instances in the &#39;default&#39; group, but restrict access to ssh from the <strong>192.168.122.0/24</strong> source network only:</p>
+
+<div><pre><code class="language-none">$ openstack security group rule create --proto tcp --dst-port 22:22 $SEC_GROUP_ID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| created_at        | 2018-04-09T15:16:03Z                 |
+| description       |                                      |
+| direction         | ingress                              |
+| ether_type        | IPv4                                 |
+| id                | 425f092a-901f-4e9a-b241-b01f325bbd85 |
+| name              | None                                 |
+| port_range_max    | 22                                   |
+| port_range_min    | 22                                   |
+| project_id        | f991d44fac91419c8e6016184381871a     |
+| protocol          | tcp                                  |
+| remote_group_id   | None                                 |
+| remote_ip_prefix  | 0.0.0.0/0                            |
+| revision_number   | 0                                    |
+| security_group_id | 69f49751-975f-412b-a21f-765b6e7715a4 |
+| updated_at        | 2018-04-09T15:16:03Z                 |
++-------------------+--------------------------------------+</code></pre></div>
+
+<p>Let&#39;s now retry the SSH connection.. (The root password is <strong>&#39;redhat&#39;</strong>)</p>
+
+<div><pre><code class="language-none">$ ssh root@192.168.122.210
+The authenticity of host &#39;192.168.122.210 (192.168.122.210)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:+uZc8kjyYfBW5RRV67kbpbaESKrard1XuosJDkpy0s0.
+ECDSA key fingerprint is MD5:01:d6:c8:87:8a:5e:34:cf:35:95:1c:df:1f:b5:15:1c.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;192.168.122.210&#39; (ECDSA) to the list of known hosts.
+Password:
+Last login: Mon Apr  9 10:42:28 2018
+[root@my-vm ~]#</code></pre></div>
+
+<p>When you see the &quot;<strong>[root@my-vm ~]#</strong>&quot; prompt, you&#39;re connected into your instance successfully. Check the network configuration within the instance, note that it is <em>not</em> aware of the &quot;192.168.122.210&quot; address - this is being NAT&#39;d by the L3 agent from the outside <strong>external</strong> network:</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# ip address show eth0
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1450 qdisc pfifo_fast state UP qlen 1000
+    link/ether fa:16:3e:8e:25:34 brd ff:ff:ff:ff:ff:ff
+    inet 172.16.1.9/24 brd 172.16.1.255 scope global dynamic eth0
+       valid_lft 84123sec preferred_lft 84123sec
+    inet6 fe80::f816:3eff:fe8e:2534/64 scope link
+       valid_lft forever preferred_lft forever</code></pre></div>
+
+<p>Press &quot;Ctrl+d&quot;, or simply type &quot;<strong>exit</strong>&quot; to return to your OpenStack environment:</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# exit
+Connection to 192.168.122.210 closed.
+$</code></pre></div>
+
+<p>Before we move on, let&#39;s open up one more security group rule for HTTP traffic. It will become clear as to why we&#39;re doing this during a later lab:</p>
+
+<div><pre><code class="language-none">$ openstack security group rule create --proto tcp --dst-port 80:80 $SEC_GROUP_ID
++-------------------+--------------------------------------+
+| Field             | Value                                |
++-------------------+--------------------------------------+
+| created_at        | 2018-04-09T15:19:08Z                 |
+| description       |                                      |
+| direction         | ingress                              |
+| ether_type        | IPv4                                 |
+| id                | 5190f741-c731-4a23-abf1-adeb911d3719 |
+| name              | None                                 |
+| port_range_max    | 80                                   |
+| port_range_min    | 80                                   |
+| project_id        | f991d44fac91419c8e6016184381871a     |
+| protocol          | tcp                                  |
+| remote_group_id   | None                                 |
+| remote_ip_prefix  | 0.0.0.0/0                            |
+| revision_number   | 0                                    |
+| security_group_id | 69f49751-975f-412b-a21f-765b6e7715a4 |
+| updated_at        | 2018-04-09T15:19:08Z                 |
++-------------------+--------------------------------------+</code></pre></div>
+
+<h2 id="toc_23"><strong>Networking under the Covers</strong></h2>
+
+<p>So we know that we can connect from our workstation to our instances, demonstrating that security groups (ip filtering/firewalling) is working, and that routing (NAT based L3) is working. But how does it actually work under the covers? Let&#39;s briefly explore this - security groups and routing are both performed by iptables, but at different places.</p>
+
+<p>Security groups are implemented by the hypervisor, and assuming the instance has a single network interface, the virtual NIC (a tap device) is attached into a Linux bridge, and filtering is imposed at the bridge level where specific iptables chains are configured for each virtual interface on a per-port basis. Ideally, we wouldn&#39;t want to go through a Linux bridge to do the filtering as it&#39;s additional overhead and has a slight performance impact; longer term we&#39;re looking to implement Open vSwitch based filtering (and OVS based routing) instead.</p>
+
+<p>As mentioned, the chains are constructed based on the security group applied to each port (when we say port we mean Neutron port, i.e. a virtual interface), as such all iptables chains are named after the respective Neutron port-id. As security groups are implemented at the hypervisor, the port we&#39;re interested in is the internal network port, i.e. the <strong>internal</strong> network that the instances vNIC is associated to. Remember that the floating IP&#39;s are handled by the dedicated network node(s) where the L3 agent resides by default, and the hypervisors or the instances themselves have no visibility into the external routing.</p>
+
+<p>So, let&#39;s first remind ourselves of the internal IP address assigned to our instance:</p>
+
+<div><pre><code class="language-none">$ openstack server list -c Name -c Networks
++-------+--------------------------------------+
+| Name  | Networks                             |
++-------+--------------------------------------+
+| my_vm | internal=172.16.1.9, 192.168.122.210 |
++-------+--------------------------------------+</code></pre></div>
+
+<p>Take the IP address that we&#39;ve been assigned (yours will be slightly different) and get the Neutron port-id </p>
+
+<div><pre><code class="language-none">$ export IP_ADDR=172.16.1.5
+$ openstack port list | awk -v ip_addr=&quot;$IP_ADDR&quot; &#39;$7 ~ ip_addr {print $2;}&#39;
+6b9ccfcf-91ac-43f5-aa4b-51d455030d40</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Your IP address may be different, and the port-number will almost certainly be different. Do not copy the &#39;export&#39; command above, this is just an example based on the test environment used to build this lab.</p>
+</blockquote>
+
+<p>Now that we&#39;ve got the port-id, we can take a look on the hypervisor itself and dump the iptables chains for that port, noting that the chain names take the first ten characters of the port-id, so in our case &quot;<strong>6b9ccfcf-9</strong>&quot;, but as highlighted earlier yours will be different as they&#39;re unique identifiers, so make sure to edit the following lines accordingly. We need to establish which host our instance is running on to ensure we execute the commands on the correct node:</p>
+
+<div><pre><code class="language-none">$ openstack server show my_vm -c name -c OS-EXT-SRV-ATTR:hypervisor_hostname
++-------------------------------------+-----------------------------+
+| Field                               | Value                       |
++-------------------------------------+-----------------------------+
+| OS-EXT-SRV-ATTR:hypervisor_hostname | summit-compute2.localdomain |         &lt;--- it&#39;s on this node.
+| name                                | my_vm                       |
++-------------------------------------+-----------------------------+</code></pre></div>
+
+<p>In the above example it shows that our instance is running on &#39;summit-compute2&#39;, but please adjust to your environment, as the scheduler may have chosen &#39;summit-compute1&#39; instead.</p>
+
+<p>We need to view the individual rules inside of two important chains-</p>
+
+<ul>
+<li>neutron-openvswi-<strong>i</strong>6b9ccfcf-9 (note highlighted &#39;i&#39; for input/inbound)</li>
+<li>neutron-openvswi-<strong>o</strong>6b9ccfcf-9 (note highlighted &#39;o&#39; for output/outbound)</li>
+</ul>
+
+<p>Let&#39;s take a look at the rules that exist for the input chain, as we&#39;ve only created entries in our security groups for inbound traffic, noting that we&#39;re remotely executing these commands on the compute node that our instance is running on, adjust this to suit your environment:</p>
+
+<div><pre><code class="language-none">$ ssh root@summit-compute2 iptables -S | grep 6b9ccfcf-9
+-N neutron-openvswi-i6b9ccfcf-9
+-N neutron-openvswi-o6b9ccfcf-9
+-N neutron-openvswi-s6b9ccfcf-9
+(snip)
+-A neutron-openvswi-i6b9ccfcf-9 -p icmp -j RETURN                        &lt;-- here&#39;s our icmp rule
+-A neutron-openvswi-i6b9ccfcf-9 -p tcp -m tcp --dport 22 -j RETURN       &lt;-- here&#39;s our ssh rule
+-A neutron-openvswi-i6b9ccfcf-9 -p tcp -m tcp --dport 80 -j RETURN       &lt;-- here&#39;s our http rule
+(snip)</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: I&#39;ve slightly modified the output above to show the most important rules as dictated by the security group choices that we made before, primarily allowing port 22/tcp and 80/tcp, and ICMP (ping) from everywhere. Your output will show a lot more rules, primarily for things like allowing DHCP, preventing spoofing, and allowing existing connections. I&#39;ve annotated the above too.</p>
+</blockquote>
+
+<p>As you can see, it&#39;s relatively easy to view the iptables rules that are governed by Neutron&#39;s security group rules. These are dynamically updated upon security group modification so that any security changes are almost instantaneously reflected in the configuration.</p>
+
+<p>Next, let&#39;s check out how the NAT-based routing is implemented by the L3 agent on the dedicated network node (<strong>summit-networker</strong>). It&#39;s possible to have multple L3 agents for high availability and load sharing, and it&#39;s also possible to have the L3 functionality being taken care of by the compute nodes themselves, which we call Distributed Virtual Routing (DVR), but we&#39;re using the legacy approach here with a single L3 agent for simplicity.</p>
+
+<p>Earlier in this lab we configured a virtual router, this is what the L3 agent is responsible for creating and maintaining. The virtual routers are scheduled across any nodes within the cluster that are both running the L3 agent daemon, and have connectivity to the external network being requested. Within our environment we only have one L3 agent daemon running on a single system, so we know where the virtual router will be scheduled.</p>
+
+<p>Each virtual router runs within its own network namespace on the host in which it has been schedule to run on, with the namespace being uniquely identified by the ID of the virtual router itself:</p>
+
+<div><pre><code class="language-none">$ openstack router list
++--------------------------------------+-------------+--------+-------+-------------+-------+----------------------------------+
+| ID                                   | Name        | Status | State | Distributed | HA    | Project                          |
++--------------------------------------+-------------+--------+-------+-------------+-------+----------------------------------+
+| f8d34761-f57b-4697-8e37-741f274c4ff4 | demo_router | ACTIVE | UP    | False       | False | f991d44fac91419c8e6016184381871a |
++--------------------------------------+-------------+--------+-------+-------------+-------+----------------------------------+
+
+$ ssh root@summit-networker ip netns list | grep router
+qrouter-808f8855-0e10-4749-ba2f-bff9ebacb102</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> In the above output, note that the qrouter namespace matches to the router ID</p>
+</blockquote>
+
+<p>Inside of this namespace is where iptables is used to perform both DNAT (destination NAT, i.e. inbound traffic) and SNAT (source NAT, i.e. outbound traffic) based on floating IP&#39;s that have been allocated to instances. Note that if a floating IP hasn&#39;t been allocated to an instance, SNAT still works but it goes through another,  dedicated IP address that would be shared by multiple instances that don&#39;t have their own IP.</p>
+
+<p>If we view the iptables NAT rules within the dedicated network namespace on the networker node, we can see the NAT rules present. First, let&#39;s verify the IP addresses that we&#39;re working with, both our internal IP and the floating IP that we allocated:</p>
+
+<div><pre><code class="language-none">$ openstack server list -c Name -c Networks
++-------+--------------------------------------+
+| Name  | Networks                             |
++-------+--------------------------------------+
+| my_vm | internal=172.16.1.9, 192.168.122.210 |
++-------+--------------------------------------+</code></pre></div>
+
+<p>Now, let&#39;s look within our namespace, and specifically ask for iptables NAT rules associated with our floating IP (192.168.122.210 in the example environment), noting that we&#39;re executing this command remotely on the <strong>summit-networker</strong> machine:</p>
+
+<div><pre><code class="language-none">$ ssh root@summit-networker ip netns exec \
+    qrouter-808f8855-0e10-4749-ba2f-bff9ebacb102 \
+    iptables -L -n -t nat | grep 192.168.122.210
+
+DNAT       all  --  0.0.0.0/0            192.168.122.210      to:172.16.1.9
+DNAT       all  --  0.0.0.0/0            192.168.122.210      to:172.16.1.9
+SNAT       all  --  172.16.1.9           0.0.0.0/0            to:192.168.122.210</code></pre></div>
+
+<p>As you can see, there are specific entries for both <strong>DNAT</strong> from floating IP 192.168.122.210 to 172.16.1.9, our internal port, and SNAT from the internal port out to the same external IP.</p>
+
+<p>Before moving onto the next section, clean-up the environment by removing this instance:</p>
+
+<div><pre><code class="language-none">$ openstack server delete my_vm</code></pre></div>
+
+<p><strong>NOTE</strong>: There is no output from the delete command, you can run the &#39;openstack server list&#39; command again to verify that it has been removed.</p>
+
+<h2 id="toc_24"><strong>Starting instances via the Dashboard</strong></h2>
+
+<p>The vast majority of this lab guide focusses on the command line, but many tasks can also be completed via the OpenStack Web-based user interface (Horizon). Let&#39;s log in and take a look, we&#39;ll demonstate the launching of an instance via the dashboard also. Follow these options to complete this section of the lab:</p>
+
+<ol>
+<li><p>Firstly, open up a web-browser and navigate to the Horizon dashboard. </p>
+
+<p>The URL for this can be found in the email that you received from RHPDS, see the hyperlink in the middle that looks like this - <a href="http://horizon-REPL.rhpds.opentlc.com/dashboard" target="_blank">http://horizon-REPL.rhpds.opentlc.com/dashboard</a> (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:</p>
+
+<p><img src="images/horizon.png" style="width: 1000px;"/></p></li>
+<li><p>Login to the dashboard with your own credentials (remembering that you created this username and password, if you need to confirm them, look at the <strong>~/demorc</strong> file we created earlier.</p></li>
+<li><p>Our user has administrative rights, and therefore it automatically positions you to the &#39;admin&#39; tab of Horizon, but as we&#39;re wanting to launch instances, we need to move to the <strong>&quot;Project&quot;</strong> tab by selecting the appropriate tab underneath the URL and next to the &quot;Red Hat OpenStack Platform&quot; image in the top-left hand corner:</p>
+
+<p><img src="images/admin.png" style="width: 1000px;"/></p></li>
+<li><p>Next, select &#39;<strong>Compute</strong>&#39; and then &#39;<strong>Instances</strong>&#39; and you should be provided with an <strong>empty</strong> list of machines (if it lists a machine already running, perhaps you forgot to delete the one that we created earlier?)...</p>
+
+<p><img src="images/instances.png" style="width: 1000px;"/></p></li>
+<li><p>Select &#39;Launch Instance&#39; in the top-right corner of this page, and you should be presented with a pop-up window:</p>
+
+<p><img src="images/launch.png" style="width: 1000px;"/></p></li>
+<li><p>Next, in the <strong>Details</strong> pane you&#39;ll need to provide your instance with a name, I&#39;ve chosen &quot;<strong>new_vm</strong>&quot;, you can ignore the availability zone and instance count here, as the defaults are just fine - we only want one instance, and we only have one availability zone in our environment.</p></li>
+<li><p>In the <strong>Source</strong> pane you&#39;ll need to ensure that the &#39;<strong>Boot Source</strong>&#39; is set to &#39;<strong>Image</strong>&#39; as we want to boot from our RHEL7 image that we uploaded previously, and we want to make sure that we have selected <strong>NO</strong> to &#39;<strong>Create New Volume</strong>&#39;. This means that we&#39;re asking the OpenStack platform to utilise ephemeral storage, and not persistent storage backed by Cinder (we&#39;ll use this in a later lab). You&#39;ll also need to ensure that you select the &#39;<strong>rhel7</strong>&#39; image by clicking the &quot;<strong>+</strong>&quot; symbol to the right hand side of the image at the bottom of the pane.</p>
+
+<p>The completed dialog should look like this:</p>
+
+<p><img src="images/source.png" style="width: 1000px;"/></p></li>
+<li><p>Next, move to the &#39;<strong>Flavor</strong>&#39; pane and ensure that our &quot;<strong>m1.labs</strong>&quot; flavor is selected, as shown below:</p>
+
+<p><img src="images/flavor.png" style="width: 1000px;"/></p></li>
+<li><p>Now move onto the &#39;<strong>Networks</strong>&#39; pane and you&#39;ll see that our one <strong>&#39;internal&#39;</strong> network has already been selected for us by default:</p>
+
+<p><img src="images/networks.png" style="width: 1000px;"/></p></li>
+<li><p>Finally, select &#39;<strong>Launch Instance</strong>&#39; in the bottom right-hand corner of the pop-up window.</p></li>
+<li><p>The machine should now be scheduled and started as a nested virtual machine; the dashboard will monitor progress for you.</p>
+
+<ul>
+<li>Spawning/building the machine:</li>
+</ul>
+
+<p><img src="images/spawning.png" style="width: 1000px;"/></p>
+
+<ul>
+<li>Once successful, the machine should go into an <strong>ACTIVE</strong> state, like we saw before via the CLI:</li>
+</ul>
+
+<p><img src="images/active.png" style="width: 1000px;"/></p></li>
+<li><p>In the above image you&#39;ll see that there&#39;s a drop-down box underneath <strong>Actions</strong> on the right hand side of each instance running. Have a look in here - you can view the startup log via &quot;<strong>View Log</strong>&quot; or view the VNC console via &quot;<strong>Console</strong>&quot;:</p>
+
+<p><img src="images/actions.png" style="width: 1000px;"/></p>
+
+<p>Here&#39;s an example of the console log being shown directly in the Horizon dashboard:</p>
+
+<p><img src="images/console-log.png" style="width: 1000px;"/></p></li>
+<li><p>Finally, once you&#39;re happy with how this works, reteurn back to the instances tab and shut down the instance via the same <strong>Actions</strong> drop-down menu, then select <strong>Delete Instance</strong>. You&#39;ll be asked to confirm, as this is a permenant deletion, <strong>NOT a shutdown</strong>:</p>
+
+<p><img src="images/confirm.png" style="width: 1000px;"/></p></li>
+</ol>
+
+<blockquote>
+<p><strong>NOTE</strong>: Make sure that you delete all instances that may be available before proceeding with the next section of this lab.</p>
+</blockquote>
+
+<h2 id="toc_25"><strong>Uploading public keys</strong></h2>
+
+<p>Public keys are used in OpenStack (and other cloud platforms) to uniquely identify a user, avoiding any password requirements. It&#39;s also useful when you have passwords installed by users in their VM images but they aren&#39;t shared; with a key a user can log-in and change the password to something they&#39;re happy with. When an instance is first initialised, one of the options is to select a public key that should be injected into the image at boot time. With the image that we have been using we already know the root password, but it&#39;s good practice to demonstrate how we can use them with images that do not permit root login, or don&#39;t allow password-based authentication.</p>
+
+<p>Note that for public key injection to work, the guest must have <strong>cloud-init</strong> installed; an in-guest agent that contacts OpenStack&#39;s metadata service to check whether there are any tasks for the guest to perform, e.g. public key injection, software installation, arbitrary code execution, etc. For the rest of this lab we&#39;re going to be returning to our command line, and the next steps <strong>assume</strong> that you&#39;re logged into your OpenStack environment.</p>
+
+<p>We should already have a public key created for us that we can utilise:</p>
+
+<div><pre><code class="language-none">$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ3FaJmZqjBD94oRh8SIxqjpWs[...]</code></pre></div>
+
+<p>Next, upload the public keypair into OpenStack - this ensures that Nova has a record of the keypair so it can be injected when required. We&#39;ll call our keypair &quot;<strong>my_keypair</strong>&quot;:</p>
+
+<div><pre><code class="language-none">$ source ~/demorc
+$ openstack keypair create my_keypair --public-key ~/.ssh/id_rsa.pub
++-------------+-------------------------------------------------+
+| Field       | Value                                           |
++-------------+-------------------------------------------------+
+| fingerprint | 9f:f4:27:53:8e:2b:1c:d8:cf:79:1f:ee:79:00:8b:67 |
+| name        | my_keypair                                      |
+| user_id     | 19af400bc0e4445eb96879b1e718072b                |
++-------------+-------------------------------------------------+</code></pre></div>
+
+<h2 id="toc_26"><strong>Launching an Instance with a Keypair</strong></h2>
+
+<p>Next, launch an instance and ensure that you specify your keypair to use (note that if you do this via the dashboard it will automatically select it if it&#39;s the <strong>only</strong> one available):</p>
+
+<div><pre><code class="language-none">$ openstack keypair list
++------------+-------------------------------------------------+
+| Name       | Fingerprint                                     |
++------------+-------------------------------------------------+
+| my_keypair | 9f:f4:27:53:8e:2b:1c:d8:cf:79:1f:ee:79:00:8b:67 |
++------------+-------------------------------------------------+</code></pre></div>
+
+<p>Let&#39;s now boot up another RHEL 7 instance with the previously used flavor, but this time we&#39;ll specify our keypair:</p>
+
+<div><pre><code class="language-none">$ openstack server create --flavor m1.labs --image rhel7 --key-name my_keypair my_vm
+(... output omitted...)</code></pre></div>
+
+<p>Next, request an additional floating IP address for our instance and assign it:</p>
+
+<div><pre><code class="language-none">$ openstack floating ip create external
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| created_at          | 2018-04-09T21:55:38Z                 |
+| description         |                                      |
+| fixed_ip_address    | None                                 |
+| floating_ip_address | 192.168.122.206                      |
+| floating_network_id | d5bfe8ac-d26c-4db3-b9ca-6459426f6362 |
+| id                  | d82569c0-631a-48d3-a39c-83e208498479 |
+| name                | 192.168.122.206                      |
+| port_id             | None                                 |
+| project_id          | f991d44fac91419c8e6016184381871a     |
+| revision_number     | 0                                    |
+| router_id           | None                                 |
+| status              | DOWN                                 |
+| updated_at          | 2018-04-09T21:55:38Z                 |
++---------------------+--------------------------------------+
+
+$ openstack server add floating ip my_vm 192.168.122.206</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Your IP address may vary from the output shown above, use the IP as listed when requesting the IP address</p>
+</blockquote>
+
+<p>If the metadata server worked correctly you should be able to <strong>ssh</strong> into the machine without requiring the password. If you cannot login, ensure that you associated your instance with the keypair as above.</p>
+
+<div><pre><code class="language-none">$ ssh root@192.168.122.206
+The authenticity of host &#39;192.168.122.206 (192.168.122.206)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:ALlJOwHLgobeacRyYpkkq+NLQHBGmASeaF2qdoKf+yI.
+ECDSA key fingerprint is MD5:c1:26:eb:d2:d1:dd:64:87:35:b5:9c:2d:6c:48:12:ea.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;192.168.122.206&#39; (ECDSA) to the list of known hosts.
+[root@my-vm ~]#
+
+[root@my-vm ~]# uname -a
+Linux my-vm 3.10.0-693.el7.x86_64 #1 SMP Thu Jul 6 19:56:57 EDT 2017 x86_64 x86_64 x86_64 GNU/Linux</code></pre></div>
+
+<p>Let&#39;s now delete this machine now we&#39;ve confirmed the metadata service and keypair injection is working. You&#39;ll need to disconnect from this machine first:</p>
+
+<div><pre><code class="language-none"># exit
+logout
+Connection to 192.168.122.206 closed.
+$</code></pre></div>
+
+<p>Then, delete the machine, remembering that unless there&#39;s an error, this call provides no output:</p>
+
+<div><pre><code class="language-none">$ openstack server delete my_vm</code></pre></div>
+
+<h2 id="toc_27"><strong>Executing boot-time scripts</strong></h2>
+
+<p>In addition to injecting public keys, the <strong>cloud-init</strong> guest agent can request executable code (and other instructions) from OpenStack&#39;s metadata service. In this section of the lab we&#39;re going to provide a demonstration of an instance retrieving a script and executing it at boot time, and we&#39;ll demonstrate exactly how <strong>cloud-init</strong> and the metadata service works.</p>
+
+<p>First, we need a script to execute, let&#39;s create one that makes some basic system calls and writes the output to a text file on the instance&#39;s filesystem:</p>
+
+<div><pre><code class="language-none">$ cat &gt; ~/user-script.sh &lt;&lt; EOF
+#!/usr/bin/env bash
+uname -a &gt; /tmp/uname
+date &gt; /tmp/date
+EOF</code></pre></div>
+
+<p>Next, create another instance, but pass the script as <strong>user-data</strong> to the instance with the parameter <strong>&quot;--user-data&quot;</strong>:</p>
+
+<div><pre><code class="language-none">$ openstack server create --flavor m1.labs --image rhel7 \
+    --key-name my_keypair --user-data user-script.sh my_vm
+(...)</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: It&#39;s also possible to inject user-data via the OpenStack Dashboard</p>
+</blockquote>
+
+<p>Now, create and assign a floating IP so that we can check that our script worked...</p>
+
+<div><pre><code class="language-none">$ openstack floating ip create external
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| created_at          | 2018-04-09T21:58:55Z                 |
+| description         |                                      |
+| fixed_ip_address    | None                                 |
+| floating_ip_address | 192.168.122.202                      |
+| floating_network_id | d5bfe8ac-d26c-4db3-b9ca-6459426f6362 |
+| id                  | 05138ed3-632b-49b3-8070-d6d8cfb87cfa |
+| name                | 192.168.122.202                      |
+| port_id             | None                                 |
+| project_id          | f991d44fac91419c8e6016184381871a     |
+| revision_number     | 0                                    |
+| router_id           | None                                 |
+| status              | DOWN                                 |
+| updated_at          | 2018-04-09T21:58:55Z                 |
++---------------------+--------------------------------------+
+
+$ openstack server add floating ip my_vm 192.168.122.202</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Your IP address may vary from the output shown above, use the IP as listed when requesting the IP address</p>
+</blockquote>
+
+<p>Once your machine goes active, you may have to wait a little while for it to actually boot up. You can attempt to SSH into it (noting that we also asked it to inject our keypair) with the following command, if it gives you the following error, the machine is still booting up:</p>
+
+<div><pre><code class="language-none">$ ssh root@192.168.122.202
+ssh: connect to host 192.168.122.202 port 22: Connection refused</code></pre></div>
+
+<p>Once you&#39;re able to successfully SSH into your machine, we can check for success:</p>
+
+<div><pre><code class="language-none">$ ssh root@192.168.122.202
+The authenticity of host &#39;192.168.122.202 (192.168.122.202)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:yHv+iwMxE+g9BlEQX3aiOM+FJNfJ0jPdu+eQ/OMx3nI.
+ECDSA key fingerprint is MD5:be:32:63:36:c7:50:18:ca:14:bd:bf:eb:99:92:06:07.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;192.168.122.202&#39; (ECDSA) to the list of known hosts.
+[root@my-vm ~]#
+
+[root@my-vm ~]# cat /tmp/date; cat /tmp/uname
+Mon Apr  9 17:59:21 EDT 2018
+Linux my-vm 3.10.0-693.el7.x86_64 #1 SMP Thu Jul 6 19:56:57 EDT 2017 x86_64 x86_64 x86_64 GNU/Linux</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: If you receive any empty files, or not files not found, it&#39;s likely that the user data was not retrieved successfully.</p>
+</blockquote>
+
+<p>So, our script ran successfully, but how does the user-data get delivered to the instance? Well, cloud-init is designed to work across multiple cloud platforms, OpenStack, EC2, etc, all of which support the metadata service. This metadata service &quot;listens&quot; on a specific IP address <strong>169.254.169.254</strong>, which we can interrogate from our instance to see what data it provides. <strong>cloud-init</strong> simply provides a mechanism and hierarchy for executing and applying data that is found within the metadata service. The metadata service provides instance-specific data by uniquely identifying each machine.</p>
+
+<p>Assuming that you&#39;re still connected to your instance, run the following commands to demonstrate the metadata functionality (<strong>within our instance</strong>):</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# curl http://169.254.169.254
+1.0
+2007-01-19
+2007-03-01
+2007-08-29
+2007-10-10
+2007-12-15
+2008-02-01
+2008-09-01
+2009-04-04
+latest
+
+[root@my-vm ~]# curl http://169.254.169.254/latest
+meta-data/
+user-data
+
+[root@my-vm ~]# curl http://169.254.169.254/latest/user-data
+#!/bin/sh
+uname -a &gt; /tmp/uname
+date &gt; /tmp/date</code></pre></div>
+
+<p>Now we can see where our script came from. <strong>cloud-init</strong> simply downloads the user-data and executes it as part of a module. You can check out <strong>/etc/cloud/cloud.cfg</strong> to see what modules this instance is configured to use.</p>
+
+<p>For now, disconnect from the machine, but <strong>don&#39;t delete it</strong>, we&#39;ll need this machine for a later lab:</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# exit
+logout
+Connection to 192.168.122.202 closed.
+$</code></pre></div>
+
+<h1 id="toc_28"><strong>Lab 6: Creation and Attachment of Block Devices with Cinder (Volume Service)</strong></h1>
+
+<h2 id="toc_29"><strong>Introduction</strong></h2>
+
+<p>Cinder is OpenStack&#39;s volume service, it&#39;s responsible for managing persistent block storage, i.e. the creation of a block device, it&#39;s lifecycle, connections to instances and it&#39;s eventual deletion. Block storage is an optional requirement in OpenStack but has many advantages, firstly persistence but also for performance scenarios, e.g. access to data backed by tiered storage. We call it optional because by default, an instances root disk space is provided by the hypervisor and resides on a local disk; it&#39;s tied to the lifecycle of an instance - if you remove the instance, this disk also gets removed, whereas with a Cinder it&#39;s external to the hypervisor and provides persistence. There are two main reasons why people would want to use a Cinder volume-</p>
+
+<ul>
+<li><p>To remove the reliance on the underlying hypervisor storage (i.e. the root disk of an instance resides on a storage volume), which may be capacity-limited, is not necessarily <strong>performant</strong>, is <strong>ephemeral</strong> by default - there&#39;s no <strong>persistence</strong>, and if the hypervisor is lost, so is your data!</p></li>
+<li><p>To provide <strong>additional</strong> storage, either in the situation where you are using default hypervisor storage space, or the root disk is also a Cinder volume. In this scenario, additional volumes can be provides from one or more backend storage types to provide additional capacity for an instance that isn&#39;t tied to the flavor size of an instance.</p></li>
+</ul>
+
+<p>Cinder supports many different back-ends (with various protocols, e.g. iSCSI, FC, and file) in which it can connect to and manage storage for OpenStack, including a wide variety of hardware arrays, e.g. EMC, 3PAR, NetApp, etc, as well as software implementations such as Ceph. However, for testing, Cinder provides support for a basic Linux storage model, based on exposing logical volumes (LVM) via iSCSI - as we&#39;re doing this on our workstations, we&#39;ll be using this model, and has already been configured for you.</p>
+
+<h2 id="toc_30"><strong>Testing Cinder</strong></h2>
+
+<p>Let&#39;s test our Cinder configuration, making sure that it can create a volume, note that you&#39;ll need to be authenticated with Keystone for this to work:</p>
+
+<div><pre><code class="language-none">$ source ~/demorc
+$ openstack volume create --size 5 my_volume
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| attachments         | []                                   |
+| availability_zone   | nova                                 |
+| bootable            | false                                |
+| consistencygroup_id | None                                 |
+| created_at          | 2018-04-09T22:04:31.013598           |
+| description         | None                                 |
+| encrypted           | False                                |
+| id                  | da6c2b7b-d10c-4171-89e3-e2e76e7638f0 |
+| migration_status    | None                                 |
+| multiattach         | False                                |
+| name                | my_volume                            |
+| properties          |                                      |
+| replication_status  | None                                 |
+| size                | 5                                    |
+| snapshot_id         | None                                 |
+| source_volid        | None                                 |
+| status              | creating                             |
+| type                | None                                 |
+| updated_at          | None                                 |
+| user_id             | 2c580c9e773143f5b4d82b9a6131b47a     |
++---------------------+--------------------------------------+</code></pre></div>
+
+<p>The above command will create a 5GB block device within the test environment although it won&#39;t be attached to any instances yet. The volume is created based on a type, or backend, and as we only have one type (LVM-backed iSCSI, or as we&#39;ve configured it, &quot;<strong>tripleo_iscsi</strong>&quot;) it default to this type, hence we don&#39;t have to specifically set it on the command line. Each backend is fullfilled by a <strong>cinder-volume</strong> service, and it&#39;s possible to view all of these services with the following command:</p>
+
+<div><pre><code class="language-none">$ openstack volume service list
++------------------+-------------------------+------+---------+-------+----------------------------+
+| Binary           | Host                    | Zone | Status  | State | Updated At                 |
++------------------+-------------------------+------+---------+-------+----------------------------+
+| cinder-scheduler | hostgroup               | nova | enabled | up    | 2018-04-09T22:04:45.000000 |
+| cinder-volume    | hostgroup@tripleo_iscsi | nova | enabled | up    | 2018-04-09T22:04:52.000000 |
++------------------+-------------------------+------+---------+-------+----------------------------+</code></pre></div>
+
+<p>In our environment, this cinder-volume service is running on the <strong>summit-controller</strong>, and we&#39;ll explore how it creates and implements volumes over the next few sections. After a minute or so, our created volume should become available:</p>
+
+<div><pre><code class="language-none">$ openstack volume list
++--------------------------------------+-----------+-----------+------+-------------+
+| ID                                   | Name      | Status    | Size | Attached to |
++--------------------------------------+-----------+-----------+------+-------------+
+| da6c2b7b-d10c-4171-89e3-e2e76e7638f0 | my_volume | available |    5 |             |
++--------------------------------------+-----------+-----------+------+-------------+</code></pre></div>
+
+<p>Now that&#39;s been created, let&#39;s see if we can find the logical volume that backs that Cinder volume on our <strong>summit-controller</strong> machine, noting that we&#39;re executing this command remotely:</p>
+
+<div><pre><code class="language-none">$ ssh root@summit-controller lvscan
+  ACTIVE            &#39;/dev/cinder-volumes/cinder-volumes-pool&#39; [&lt;9.54 GiB] inherit
+  ACTIVE            &#39;/dev/cinder-volumes/volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0&#39; [5.00 GiB] inherit</code></pre></div>
+
+<p>OK, so that volume corresponds with our UUID for our Cinder volume (note that your ID will be different to the above example). When we attach this to a volume, the node that runs the <strong>cinder-volume</strong> service will expose the LVM over iSCSI to the hypervisor running the instance, which, in turn, will attach it to the virtual machine as a local SCSI disk.</p>
+
+<p>Let&#39;s attach our volume to the running instance from the previous lab; if you don&#39;t have this - create a new instance as part of the previous lab before you proceed. The following also assumes that you have called your VM &quot;<strong>my_vm</strong>&quot; as per the previous instructions. You can verify that your VM is still running with this command:</p>
+
+<div><pre><code class="language-none">$ openstack server list
++--------------------------------------+-------+--------+--------------------------------------+-------+---------+
+| ID                                   | Name  | Status | Networks                             | Image | Flavor  |
++--------------------------------------+-------+--------+--------------------------------------+-------+---------+
+| 9f5c7572-f64b-4509-8522-ad2b39fe65c5 | my_vm | ACTIVE | internal=172.16.1.9, 192.168.122.202 | rhel7 | m1.labs |
++--------------------------------------+-------+--------+--------------------------------------+-------+---------+</code></pre></div>
+
+<h2 id="toc_31"><strong>Attaching your volume</strong></h2>
+
+<p>We&#39;ll use the command line to attach this volume to our running instance:</p>
+
+<div><pre><code class="language-none">$ openstack server add volume my_vm my_volume</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Unless there was an error, this command provides no feedback.</p>
+</blockquote>
+
+<p>Verify that it has been successfully attached with the following, noting that it may take a minute or so to appear as <strong>in-use</strong>:</p>
+
+<div><pre><code class="language-none">$ openstack volume list
++--------------------------------------+-----------+--------+------+--------------------------------+
+| ID                                   | Name      | Status | Size | Attached to                    |
++--------------------------------------+-----------+--------+------+--------------------------------+
+| da6c2b7b-d10c-4171-89e3-e2e76e7638f0 | my_volume | in-use |    5 | Attached to my_vm on /dev/vdb  |
++--------------------------------------+-----------+--------+------+--------------------------------+</code></pre></div>
+
+<p>So, OpenStack is telling us that the volume has been created and attached, but there&#39;s one way to test that the instance can see it. Note that in the output you&#39;ll see that it has attached the volume to <strong>&#39;/dev/vdb&#39;</strong>, the second interface for that machine; the first (<strong>&#39;/dev/vda&#39;</strong>) will be the default ephemeral hypervisor storage, which resides in &#39;<strong>/var/lib/nova/instances/[uuid]/disk</strong>&#39; on the hyperisor as shown below. First get the uuid of your instance and the compute node it&#39;s running on:</p>
+
+<div><pre><code class="language-none">$ openstack server show my_vm -c id -c OS-EXT-SRV-ATTR:host
++----------------------+--------------------------------------+
+| Field                | Value                                |
++----------------------+--------------------------------------+
+| OS-EXT-SRV-ATTR:host | summit-compute2.localdomain          |
+| id                   | 9f5c7572-f64b-4509-8522-ad2b39fe65c5 |
++----------------------+--------------------------------------+</code></pre></div>
+
+<p>Now take a look at the instance&#39;s ephemeral disk on our dedicated hypervisor/compute node (<strong>summit-compute2</strong> in my example, yours may be different), noting that we&#39;ll be running this command remotely:</p>
+
+<div><pre><code class="language-none">$ ssh root@summit-compute2 \
+    qemu-img info /var/lib/nova/instances/9f5c7572-f64b-4509-8522-ad2b39fe65c5/disk
+
+image: /var/lib/nova/instances/9f5c7572-f64b-4509-8522-ad2b39fe65c5/disk
+file format: qcow2
+virtual size: 10G (10737418240 bytes)
+disk size: 42M
+cluster_size: 65536
+backing file: /var/lib/nova/instances/_base/fd2beb46d533a0209d6e0be31715938351ed7dde
+Format specific information:
+    compat: 1.1
+    lazy refcounts: false
+    refcount bits: 16
+    corrupt: false</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> For reference, you&#39;ll see that there&#39;s a <strong>&#39;backing_file&#39;</strong> listed above. This is used by OpenStack to layer a much smaller file (in our case 41MB) on-top of the Glance image and is used as a template. This allows us to be very efficient with storage utilisation by using copy-on-write (COW).</p>
+</blockquote>
+
+<p>Let&#39;s reconnect back into our instance and verify that the new volume is available, replace the IP address as necessary for your machine:</p>
+
+<div><pre><code class="language-none">$ ssh root@192.168.122.202</code></pre></div>
+
+<p>Once connected, let&#39;s ensure that the block device is available for us to use:</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# fdisk -l
+Disk /dev/vda: 10.7 GB, 10737418240 bytes, 20971520 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x000a73bb
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/vda1   *        2048    20971486    10484719+  83  Linux
+
+Disk /dev/vdb: 5368 MB, 5368709120 bytes, 10485760 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes</code></pre></div>
+
+<p>So we can see the second disk that it can see is <strong>/dev/vdb</strong> at a size of <strong>5GB</strong>, proving that Nova has successfully attached our Cinder volume to our instance. Next, we can create a filesystem and mount that up:</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# mkfs.xfs /dev/vdb
+meta-data=/dev/vdb               isize=512    agcount=4, agsize=327680 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=0, sparse=0
+data     =                       bsize=4096   blocks=1310720, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal log           bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0 
+[root@my-vm ~]# mount /dev/vdb /mnt
+[root@my-vm ~]# df -Th
+Filesystem     Type      Size  Used Avail Use% Mounted on
+/dev/vda1      xfs        10G  885M  9.2G   9% /
+devtmpfs       devtmpfs  900M     0  900M   0% /dev
+tmpfs          tmpfs     920M     0  920M   0% /dev/shm
+tmpfs          tmpfs     920M  8.4M  912M   1% /run
+tmpfs          tmpfs     920M     0  920M   0% /sys/fs/cgroup
+tmpfs          tmpfs     184M     0  184M   0% /run/user/0
+/dev/vdb       xfs       5.0G   33M  5.0G   1% /mnt</code></pre></div>
+
+<p>Next unmount your volume and disconnect from the VM:</p>
+
+<div><pre><code class="language-none">[root@my-vm ~]# umount /mnt
+[root@my-vm ~]# exit
+logout
+Connection to 192.168.122.202 closed.</code></pre></div>
+
+<p>Let&#39;s confirm how the iSCSI export has worked to our hypervisor via <strong>targetcli</strong>, noting that in the printout this information will have gone off the page in the printed version, but the electronic HTML copy should allow you to scroll through. We&#39;ll need to execute this command on our controller node (<strong>summit-controller</strong>) as this is where the volume resides, and is where it&#39;s exported from, hence we&#39;re executing this command remotely:</p>
+
+<div><pre><code class="language-none">$ ssh root@summit-controller targetcli ls
+o- / ......................................................................................................................... [...]
+  o- backstores .............................................................................................................. [...]
+  | o- block .................................................................................................. [Storage Objects: 1]
+  | | o- iqn.2010-10.org.openstack:volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0  [/dev/cinder-volumes/volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0 (5.0GiB) write-thru activated]
+  | |   o- alua ................................................................................................... [ALUA Groups: 1]
+  | |     o- default_tg_pt_gp ....................................................................... [ALUA state: Active/optimized]
+  | o- fileio ................................................................................................. [Storage Objects: 0]
+  | o- pscsi .................................................................................................. [Storage Objects: 0]
+  | o- ramdisk ................................................................................................ [Storage Objects: 0]
+  o- iscsi ............................................................................................................ [Targets: 1]
+  | o- iqn.2010-10.org.openstack:volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0 ............................................. [TPGs: 1]
+  |   o- tpg1 .......................................................................................... [no-gen-acls, auth per-acl]
+  |     o- acls .......................................................................................................... [ACLs: 1]
+  |     | o- iqn.1994-05.com.redhat:1fa3396fe29e ...................................................... [1-way auth, Mapped LUNs: 1]
+  |     |   o- mapped_lun0 ................. [lun0 block/iqn.2010-10.org.openstack:volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0 (rw)]
+  |     o- luns .......................................................................................................... [LUNs: 1]
+  |     | o- lun0  [block/iqn.2010-10.org.openstack:volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0 (/dev/cinder-volumes/volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0) (default_tg_pt_gp)]
+  |     o- portals .................................................................................................... [Portals: 1]
+  |       o- 172.17.3.13:3260 ................................................................................................. [OK]
+  o- loopback ......................................................................................................... [Targets: 0]
+  o- xen_pvscsi ....................................................................................................... [Targets: 0]  </code></pre></div>
+
+<p>What this shows is that we&#39;re currently exporting one block device <strong>&quot;/dev/cinder-volumes/volume-da6c2b7b-d10c-4171-89e3-e2e76e7638f0 (5.0GiB)&quot;</strong>, with one connected node (restricted via ACL&#39;s), <strong>&quot;iqn.1994-05.com.redhat:1fa3396fe29e&quot;</strong>. Non LVM/iSCSI Cinder backends have their own way of exporting and providing/zoning the volumes to necessary nodes for utilisation.</p>
+
+<p>Let&#39;s now clean up by detaching the volume from the instance:</p>
+
+<div><pre><code class="language-none">$ openstack server remove volume my_vm my_volume</code></pre></div>
+
+<p>And then remove our volume and the instance before we move onto the next lab:</p>
+
+<div><pre><code class="language-none">$ openstack volume delete my_volume
+$ openstack server delete my_vm</code></pre></div>
+
+<p>After a minute or so the following should be empty:</p>
+
+<div><pre><code class="language-none">$ openstack server list
+[Empty]</code></pre></div>
+
+<h1 id="toc_32"><strong>Lab 7: Deployment of Application Stacks using OpenStack Orchestration (Heat)</strong></h1>
+
+<h2 id="toc_33"><strong>Introduction</strong></h2>
+
+<p>OpenStack Heat is a feature that was originally designed as an orchestration engine, allowing organisations to pre-define which OpenStack resources to deploy for a given application. One would simply define a stack template, typically a set of yaml formatted text documents, outlining the requirement for a number of infrastructure resources (for example, instances, networks, floating IP&#39;s, storage volumes) along with a set of parameters for configuration. Heat would deploy the resources based on a given dependency chain, in other words, which resources need to be built before the others. Heat can then monitor such resources for availability, and scale them out where necessary. These templates enable application stacks to become portable and to achieve repeatability and predictability.</p>
+
+<p>In this lab we&#39;ll deploy a simple resource-based stack, comprising of a single server, a port on our existing internal network, a floating IP address on the external network, and to install and configure a web server for us, based on packages exported from our workstation.</p>
+
+<h2 id="toc_34"><strong>Getting the Heat Stack Definition</strong></h2>
+
+<p>For this lab, the instructor has provided a pre-defined template. It can be deployed either using the dashboard or via the command line tools. This lab will guide you through deploying via the command line. The file has already been placed within the home directory (<strong>~/heat-demo.yaml</strong>). If you don&#39;t have this file in your home directory, please let us know.</p>
+
+<p>For your reference, the file contents look like the following:</p>
+
+<div><pre><code class="language-none">$ cat ~/labs/osp/heat-demo.yaml
+heat_template_version: 2015-04-30
+
+description: Red Hat Summit 2018 - Lab1009
+
+parameters:
+  key_name:
+    type: string
+    description:
+      Name of an existing key pair to enable SSH access to the instance.
+    default: default
+  image:
+    type: string
+    description: ID of the image to use for the instance to be created.
+    default: rhel7
+  instance_type:
+    type: string
+    description: Type of the instance to be created.
+    default: m1.labs
+  public_net:
+    type: string
+    description: &gt;
+      Public network for which floating IP addresses will be allocated
+    default: external
+  private_net:
+    type: string
+    description: Private network into which servers get deployed
+    default: internal
+  private_subnet:
+    type: string
+    description: Private subnet into which servers get deployed
+    default: internal_subnet
+  my_name:
+    type: string
+    description: Enter your name here
+    default: Anonymous
+
+resources:
+  summit_srv:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: key_name }
+      image: { get_param: image }
+      flavor: { get_param: instance_type }
+      networks:
+        - port: { get_resource: summit_port }
+      user_data_format: RAW
+      user_data:
+        get_resource: summit_config
+
+  summit_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: private_net }
+      fixed_ips:
+        - subnet: { get_param: private_subnet }
+      security_groups: [{ get_resource: summit_secgroup }]
+
+  summit_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_net }
+      port_id: { get_resource: summit_port }
+
+  summit_secgroup:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: Add security group rules for server
+      name: heat-stack-secgroup
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 80
+          port_range_max: 80
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+
+  summit_config:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: ungrouped
+      config:
+        str_replace:
+          template: |
+            #!/usr/bin/env bash
+            curl -o /etc/yum.repos.d/packages.repo http://192.168.122.253/packages.repo
+            yum install httpd -y
+            systemctl enable httpd
+            systemctl start httpd
+            MY_IP=$(/sbin/ifconfig eth0 | grep &#39;inet &#39; | awk &#39;{ print $2}&#39;)
+            echo &quot;Hello, $my_name, I am $(hostname -s) @ $MY_IP&quot; &gt; /var/www/html/index.html
+          params:
+            $my_name: {get_param: my_name}
+
+outputs:
+  instance_ip:
+    description: Public IP address of the newly created Nova instance.
+    value: { get_attr: [ summit_floating_ip, floating_ip_address ] }</code></pre></div>
+
+<h2 id="toc_35"><strong>What the Stack Definition does</strong></h2>
+
+<p>For those not familiar with the template language (HOT) used within OpenStack Heat, I suggest you take a look at the file, specifically where it lists the images used, the resources it requires, and any script data that the Heat tools execute upon boot. You will notice that the Heat definition deploys the following elements-</p>
+
+<ul>
+<li>A new security group to allow ICMP, TCP on port 22 (SSH), and TCP on port 80 (HTTP)</li>
+<li>An instance with a configuration script (that gets uploaded into the user-data)</li>
+<li>Finally, a floating IP address for external access</li>
+</ul>
+
+<h2 id="toc_36"><strong>Deploying our Stack</strong></h2>
+
+<p>As you may have seen, each parameter in the Heat stack has a <strong>default</strong> value, which has been set according to the environment that you&#39;ve been using, e.g. the name of the flavor to use, the name of the external network (for floating IP&#39;s), and the name of the image. Therefore, deploying this stack is very straight forward. We have, however, made a deliberate mistake in the template to demonstrate how parameters can be overridden via the CLI; we&#39;ve got the keyname &quot;default&quot; listed as the default keypair to inject, but this doesn&#39;t exist. If you recall, we created one called &quot;my_keypair&quot;, let&#39;s deploy our stack via Heat and specify the new keypair:</p>
+
+<div><pre><code class="language-none">$ source ~/demorc
+
+$ openstack stack create --template ~/labs/osp/heat-demo.yaml --parameter key_name=my_keypair demo
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| id                  | 5db87e43-6ed8-43c6-af89-a1adfebbe285 |
+| stack_name          | demo                                 |
+| description         | Red Hat Summit 2018 - Lab1009        |
+| creation_time       | 2018-04-09T22:15:31Z                 |
+| updated_time        | None                                 |
+| stack_status        | CREATE_IN_PROGRESS                   |
+| stack_status_reason | Stack CREATE started                 |
++---------------------+--------------------------------------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE:</strong> If you omit the <strong>key_name</strong> parameter, the stack will fail to create.</p>
+</blockquote>
+
+<p>After a few minutes, it should have completed, you can view the progress using the following-</p>
+
+<div><pre><code class="language-none">$ openstack stack list
++--------------------------------------+------------+----------------------------------+-----------------+----------------------+--------------+
+| ID                                   | Stack Name | Project                          | Stack Status    | Creation Time        | Updated Time |
++--------------------------------------+------------+----------------------------------+-----------------+----------------------+--------------+
+| 5db87e43-6ed8-43c6-af89-a1adfebbe285 | demo       | f991d44fac91419c8e6016184381871a | CREATE_COMPLETE | 2018-04-09T22:15:31Z | None         |
++--------------------------------------+------------+----------------------------------+-----------------+----------------------+--------------+</code></pre></div>
+
+<p>Once your stack has deployed successfully (with the stack status at <strong>&quot;CREATE_COMPLETE&quot;</strong>), simply use the following to find the output IP address for your instance. Within a Heat template you can specify a number of <strong>outputs</strong> that you can query Heat for, saving you from using other tooling to get the data you requested:</p>
+
+<div><pre><code class="language-none">$ openstack stack show demo | grep output_value
+|                       |   output_value: 192.168.122.205                                                                                                                  </code></pre></div>
+
+<p>In my example, the floating IP address that was allocated for my machine is <strong>192.168.122.205</strong>, you may receive a different one. Let&#39;s curl this machine on the http port and see what it displays:</p>
+
+<div><pre><code class="language-none">$ curl http://192.168.122.205
+Hello, Anonymous, I am demo-summit-srv-2d4cplvtrw5k @ 172.16.1.12</code></pre></div>
+
+<p>This has shown us that our script has worked properly (to install httpd and present a welcome message saying which server and IP address this machine is) and that our stack deployment was successful. An alternative way of checking that the machine is running successfully is to use the script <strong>&quot;~/labs/osp/server-check.sh&quot;</strong> in your home directory (<strong>Ctrl-C</strong> to stop it):</p>
+
+<div><pre><code class="language-none">$ sh ~/labs/osp/server-check.sh 192.168.122.205
+INFO: Using http://192.168.122.205:80... (Ctrl-c to stop)
+
+Tue  4 Apr 11:53:49 EDT 2017
+Hello, Anonymous, I am demo-summit-srv-2d4cplvtrw5k @ 172.16.1.12</code></pre></div>
+
+<p>The reason why this is a repeating script will become obvious in the next lab when we look at utilising load balancers. Finally, clean-up your deployment:</p>
+
+<div><pre><code class="language-none">$ openstack stack delete demo
+Are you sure you want to delete this stack(s) [y/N]? y</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Make sure you enter &#39;y&#39; above, otherwise it won&#39;t clean up the existing resources.</p>
+</blockquote>
+
+<h1 id="toc_37"><strong>Lab 8: Deployment of Load Balancers using Neutron&#39;s LBaaS feature</strong></h1>
+
+<h2 id="toc_38"><strong>Introduction</strong></h2>
+
+<p>Today, LBaaS (Load Balancing-as-a-Service) is part of Neutron as an advanced extra component, providing both proprietary and open source load balancing technologies to end users via self-service. A user can simply request a load balancer via Neutron&#39;s RESTful API and Neutron is responsible for managing the lifecycle of such a load balancer to distribute requests amongst a group of instances.</p>
+
+<p>In this lab we&#39;ll deploy a load balancer with the default <strong>HAproxy</strong> based backend, which is the default in Red Hat OpenStack Platform. We&#39;ll deploy multiple instances that we&#39;ll load balance across to demonstrate functionality, and to show how LBaaS can recover from situations in which a node may cease to exist.</p>
+
+<h2 id="toc_39"><strong>Deploying Multiple Machines</strong></h2>
+
+<p>In the previous lab we deployed a single node with an httpd server (and a welcome message) via OpenStack Heat. For our LBaaS lab we&#39;ll need more than one machine to demonstrate its capabilities. Heat supports the concept of &quot;<strong>resource groups</strong>&quot; which allows us to deploy multiple OpenStack resources of the same type by simply specifying a quantity.</p>
+
+<p>Via a simple Heat template we can point to our original stack template and call it multiple times using this concept, making it easy for us to deploy multiple machines. We&#39;ve provided this file for you, and it looks like the following:</p>
+
+<div><pre><code class="language-none">$ cat ~/labs/osp/multiple-instances.yaml
+heat_template_version: 2013-05-23
+
+resources:
+  resource_group:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: 2
+      resource_def: {type: heat-demo.yaml}</code></pre></div>
+
+<p>This stack requests <strong>two</strong> (see <strong>count</strong>) of the stacks detailed in <strong>heat-demo.yaml</strong> (our original stack template) to form the constuct of <strong>nested stacks</strong>. We simply need to feed in the <strong>multiple-instances.yaml</strong> file to Heat, and it&#39;ll take care of pulling in the nested stack templates and build out the resources.</p>
+
+<p>Let&#39;s deploy our nested Heat stack. As before, we need to provide our <strong>key_name</strong> parameter, but this time we&#39;ll use an environment file. An environment file allows us to provide parameters within a file, allowing configuration to become repeatable, portable, and versionable, just like the templates. You may remember that the message said &quot;Hello, Anonymous&quot;, we can override this parameter at the same time as the name of the keypair to us.</p>
+
+<p>But first, we need to make sure that we include <strong>your</strong> name (replace with your name):</p>
+
+<div><pre><code class="language-none">$ export MY_NAME=&lt;your name&gt;
+
+$ cat &gt; ~/summit.yaml &lt;&lt; EOF
+parameter_defaults:
+  key_name: my_keypair
+  my_name: $MY_NAME
+EOF</code></pre></div>
+
+<p>Now we can launch our multiple instances Heat stack:</p>
+
+<div><pre><code class="language-none">$ openstack stack create --template ~/labs/osp/multiple-instances.yaml \
+    --environment ~/summit.yaml multiple
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| id                  | 5c8072ec-4ea4-4bea-a1e1-e9094723bbf9 |
+| stack_name          | multiple                             |
+| description         | No description                       |
+| creation_time       | 2018-04-09T22:20:40Z                 |
+| updated_time        | None                                 |
+| stack_status        | CREATE_IN_PROGRESS                   |
+| stack_status_reason | Stack CREATE started                 |
++---------------------+--------------------------------------+</code></pre></div>
+
+<p>Once this has turned to a <strong>CREATE_COMPLETE</strong> state, we need to validate that multiple instances have been started (if you&#39;re reading this with the printed version, I apologise for the formatting):</p>
+
+<div><pre><code class="language-none">$ openstack stack list
++--------------------------------------+------------+----------------------------------+-----------------+----------------------+--------------+
+| ID                                   | Stack Name | Project                          | Stack Status    | Creation Time        | Updated Time |
++--------------------------------------+------------+----------------------------------+-----------------+----------------------+--------------+
+| 5c8072ec-4ea4-4bea-a1e1-e9094723bbf9 | multiple   | f991d44fac91419c8e6016184381871a | CREATE_COMPLETE | 2018-04-09T22:20:40Z | None         |
++--------------------------------------+------------+----------------------------------+-----------------+----------------------+--------------+
+
+$ openstack server list
++--------------------------------------+-------------------------------------------------------+--------+---------------------------------------+-------+---------+
+| ID                                   | Name                                                  | Status | Networks                              | Image | Flavor  |
++--------------------------------------+-------------------------------------------------------+--------+---------------------------------------+-------+---------+
+| ebe48c72-ceec-4473-812c-c7171aac01bd | mu-cgmawqm6yiy-0-eoiv432ojknr-summit_srv-rxqhqfrgiq2h | ACTIVE | internal=172.16.1.9, 192.168.122.203  | rhel7 | m1.labs |
+| e1362b6d-b6d8-475b-92f6-001ecc0ed598 | mu-cgmawqm6yiy-1-2i2kn4aj3v5y-summit_srv-wjqclkn66vi7 | ACTIVE | internal=172.16.1.12, 192.168.122.205 | rhel7 | m1.labs |
++--------------------------------------+-------------------------------------------------------+--------+---------------------------------------+-------+---------+</code></pre></div>
+
+<p>As before, we can test these instances with the <strong>server-check.sh</strong> script to ensure that firstly the software deployment and configuration was completed, and secondly that it took our name as configured. For this we&#39;ll need to take the floating IP&#39;s as per the output from &#39;<strong>openstack server list</strong>&#39;, noting that your IP&#39;s will differ from the ones shown in the example below:</p>
+
+<div><pre><code class="language-none">$ sh ~/labs/osp/server-check.sh 192.168.122.203
+
+INFO: Using http://192.168.122.203:80... (Ctrl-c to stop)
+
+
+Mon  9 Apr 18:25:10 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-0-eoiv432ojknr-summit-srv-rxqhqfrgiq2h @ 172.16.1.9
+
+
+Mon  9 Apr 18:25:13 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-0-eoiv432ojknr-summit-srv-rxqhqfrgiq2h @ 172.16.1.9
+
+
+^C</code></pre></div>
+
+<p>Next try the other server:</p>
+
+<div><pre><code class="language-none">$ sh ~/labs/osp/server-check.sh 192.168.122.205
+
+INFO: Using http://192.168.122.205:80... (Ctrl-c to stop)
+
+
+Mon  9 Apr 18:25:52 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-1-2i2kn4aj3v5y-summit-srv-wjqclkn66vi7 @ 172.16.1.12
+
+
+Mon  9 Apr 18:25:55 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-1-2i2kn4aj3v5y-summit-srv-wjqclkn66vi7 @ 172.16.1.12
+
+
+^C</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Your IP addresses will very likely be different to the ones in the lab guide, and you can use <strong>Ctrl-C</strong> to stop the server-check script. You may get some errors where it says that it cannot communicate with the server. It may be the case that the machines are still installing the required packages.</p>
+</blockquote>
+
+<p>If both of these attempts succeeded, we know that both of the machines are up, and responding individually.</p>
+
+<h2 id="toc_40"><strong>Creating a Loadbalancer</strong></h2>
+
+<p>Now we&#39;re actually going to create a load balancer that will balance traffic between our two instances that we launched via our Heat template. OpenStack Neutron has a built-in mechanism for automating the creation of load balancers and relies on a set of backend plugins for implementation. Out of the box, we ship with a HAproxy implementation and is what we&#39;re going to be using in this lab, although there are other plugins that organisations may want to use, e.g. to leverage existing investments from the likes of F5, etc.</p>
+
+<p>The high level architecture looks like this:</p>
+
+<p><br>
+<img src="images/lbaasv2-diagram.png" style="width: 1000px;"/>
+<br><br></p>
+
+<blockquote>
+<p><strong>NOTE</strong>: The following instructions utilise the legacy Neutron command line tooling rather than the OpenStack command line tooling, this is only because certain syntax is not yet supported in the OpenStack command line replacement, hence we&#39;re falling back to the Neutron CLI for these steps only.</p>
+</blockquote>
+
+<p>The first step is to create the top-level <strong>load balancer</strong> construct. This will allow us to select the type of loadbalancer that we want to create based on the backend and will allow us to choose the network in which we want the load balancer to live in. For our use-case we want to use HAproxy, and therefore given it&#39;s the default we don&#39;t need to specify it on the commandline, and for the network we want to select our <strong>internal_subnet</strong>:</p>
+
+<div><pre><code class="language-none">$ neutron lbaas-loadbalancer-create --name demo_lb internal_subnet
+
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new loadbalancer:
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| admin_state_up      | True                                 |
+| description         |                                      |
+| id                  | 18868c2f-3e5d-4a75-a568-f8bae2d7518c |
+| listeners           |                                      |
+| name                | demo_lb                              |
+| operating_status    | OFFLINE                              |
+| pools               |                                      |
+| provider            | haproxy                              |
+| provisioning_status | PENDING_CREATE                       |
+| tenant_id           | f991d44fac91419c8e6016184381871a     |
+| vip_address         | 172.16.1.13                          |
+| vip_port_id         | 726869e5-c519-41cc-abc0-868f885cb3f0 |
+| vip_subnet_id       | 4d38f43b-402e-48a5-b048-3092d6f7da02 |
++---------------------+--------------------------------------+</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Ignore the Neutron CLI warnings; the most important item above is to see the VIP that was created on the internal network, 172.16.1.0/24.</p>
+</blockquote>
+
+<p>Next we&#39;ll need to create a <strong>listener</strong> for our load balancer, a listener is used to define what it is that we&#39;re load balancing, for example, on which port, over which protocol, and also some additional configurables such as connection limits. As we&#39;re going to be balancing requests between our two machines that are utilising port 80 for their web content (over HTTP) we need to build a listener as appropriate:</p>
+
+<div><pre><code class="language-none">$ neutron lbaas-listener-create --name demo_lb_http \
+    --loadbalancer demo_lb --protocol HTTP --protocol-port 80
+
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new listener:
++---------------------------+------------------------------------------------+
+| Field                     | Value                                          |
++---------------------------+------------------------------------------------+
+| admin_state_up            | True                                           |
+| connection_limit          | -1                                             |
+| default_pool_id           |                                                |
+| default_tls_container_ref |                                                |
+| description               |                                                |
+| id                        | ece3a993-bdfc-4ca1-96d3-23cfb0c9346d           |
+| loadbalancers             | {&quot;id&quot;: &quot;18868c2f-3e5d-4a75-a568-f8bae2d7518c&quot;} |
+| name                      | demo_lb_http                                   |
+| protocol                  | HTTP                                           |
+| protocol_port             | 80                                             |
+| sni_container_refs        |                                                |
+| tenant_id                 | f991d44fac91419c8e6016184381871a               |
++---------------------------+------------------------------------------------+</code></pre></div>
+
+<p>Now we need to create a <strong>pool</strong> for our listener. A pool allows us to associate a set of <strong>members</strong>, i.e. the actual systems we want to load balance across and the method in which we balance, e.g. round-robin, or perhaps least number of connections. By default it selects round-robin based balancing, i.e. send each request to each node in sequence, ignoring the load-level on each node. Let&#39;s create our pool:</p>
+
+<div><pre><code class="language-none">$ neutron lbaas-pool-create --name demo_lb_pool_http \
+    --lb-algorithm ROUND_ROBIN --listener demo_lb_http --protocol HTTP
+
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new pool:
++---------------------+------------------------------------------------+
+| Field               | Value                                          |
++---------------------+------------------------------------------------+
+| admin_state_up      | True                                           |
+| description         |                                                |
+| healthmonitor_id    |                                                |
+| id                  | 19ca4761-ab73-4577-8a0a-6a8fc3d8e421           |
+| lb_algorithm        | ROUND_ROBIN                                    |
+| listeners           | {&quot;id&quot;: &quot;ece3a993-bdfc-4ca1-96d3-23cfb0c9346d&quot;} |
+| loadbalancers       | {&quot;id&quot;: &quot;18868c2f-3e5d-4a75-a568-f8bae2d7518c&quot;} |
+| members             |                                                |
+| name                | demo_lb_pool_http                              |
+| protocol            | HTTP                                           |
+| session_persistence |                                                |
+| tenant_id           | f991d44fac91419c8e6016184381871a               |
++---------------------+------------------------------------------------+</code></pre></div>
+
+<p>We&#39;ve created our pool, but before we add our <strong>members</strong> we need to define how the pool should identify whether a node has failed or not, and how to avoid sending requests to any failed nodes. For this we need to create a <strong>health monitor</strong>. There are a number of ways of configuring the monitor depending on the type of application you&#39;re wanting to load balance. For example, you could perform a simple <strong>ping</strong> check, this pings each node to see if it&#39;s up, the problem with this test is that a ping doesn&#39;t tell you whether the application itself is running, just that the underlying node is responding; therefore, if the application dies, the load balancer will still point clients to it, which is not ideal. Therefore we should focus on application-specific checks, and utilise some of the other available checks such as a simple HTTP (or others) connection which should validate whether the application itself is running.</p>
+
+<p>As our application is HTTP based, we&#39;re going to use the <strong>http</strong> test, as it&#39;s the most simple to demonstrate functionality. We&#39;re going to be using the following characteristics:</p>
+
+<ul>
+<li>A <strong>delay</strong> of 5 seconds</li>
+<li>A <strong>timeout</strong> of 5 seconds</li>
+<li>A max <strong>retries</strong> of 2</li>
+<li>Using the HTTP protocol to check node availability</li>
+</ul>
+
+<p>This ensures that we check each node every 5 seconds, with a maximum timeout of 5000ms, and to attempt this two times before we assume that the node has be lost, and to no longer send any requests to it. Let&#39;s create the monitor based on these characteristics:</p>
+
+<div><pre><code class="language-none">$ neutron lbaas-healthmonitor-create --name demo_lb_http_monitor \
+    --delay 5 --max-retries 2 --timeout 5 --type HTTP --pool demo_lb_pool_http
+
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new healthmonitor:
++------------------+------------------------------------------------+
+| Field            | Value                                          |
++------------------+------------------------------------------------+
+| admin_state_up   | True                                           |
+| delay            | 5                                              |
+| expected_codes   | 200                                            |
+| http_method      | GET                                            |
+| id               | ff371340-0f1c-45b4-bc26-9f62244828a1           |
+| max_retries      | 2                                              |
+| max_retries_down | 3                                              |
+| name             | demo_lb_http_monitor                           |
+| pools            | {&quot;id&quot;: &quot;19ca4761-ab73-4577-8a0a-6a8fc3d8e421&quot;} |
+| tenant_id        | f991d44fac91419c8e6016184381871a               |
+| timeout          | 5                                              |
+| type             | HTTP                                           |
+| url_path         | /                                              |
++------------------+------------------------------------------------+</code></pre></div>
+
+<p>Now we need to add our members to our pool, recall that the members are the instances/nodes themselves that we want to load balance across. We need to get the IP addresses of our two nodes on the <strong>internal</strong> network, lets quickly get these from Nova:</p>
+
+<div><pre><code class="language-none">$ openstack server list -c ID -c Networks
++--------------------------------------+---------------------------------------+
+| ID                                   | Networks                              |
++--------------------------------------+---------------------------------------+
+| ebe48c72-ceec-4473-812c-c7171aac01bd | internal=172.16.1.9, 192.168.122.203  |
+| e1362b6d-b6d8-475b-92f6-001ecc0ed598 | internal=172.16.1.12, 192.168.122.205 |
++--------------------------------------+---------------------------------------+</code></pre></div>
+
+<p>In my environment you can see that we have <strong>172.16.1.9</strong>, and <strong>172.16.1.12</strong>. These are the two IP addresses that I need to add to the pool, and will become the two nodes that the health monitor will continually poll to ensure that only alive nodes are sent traffic. To save some time in creating the members, you can export these environment variables:</p>
+
+<div><pre><code class="language-none">$ export NODE1_INTERNAL=172.16.1.9
+$ export NODE2_INTERNAL=172.16.1.12</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: You&#39;ll need to specify <strong>your</strong> node IP&#39;s in the above command.</p>
+</blockquote>
+
+<p>Next, create the members, making sure that we specify the subnet that they reside in, the internal port that they&#39;re listening on (for us the port doesn&#39;t deviate from the default port 80) and the pool that they&#39;re to be attached to (<strong>demo<em>lb</em>pool_http</strong>):</p>
+
+<div><pre><code class="language-none">$ neutron lbaas-member-create --name demo_lb_member1 --subnet internal_subnet \
+    --address $NODE1_INTERNAL --protocol-port 80 demo_lb_pool_http
+
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new member:
++----------------+--------------------------------------+
+| Field          | Value                                |
++----------------+--------------------------------------+
+| address        | 172.16.1.9                           |
+| admin_state_up | True                                 |
+| id             | f8ad7143-67c9-42a2-8bc9-b8da0afa3d1a |
+| name           | demo_lb_member1                      |
+| protocol_port  | 80                                   |
+| subnet_id      | 4d38f43b-402e-48a5-b048-3092d6f7da02 |
+| tenant_id      | f991d44fac91419c8e6016184381871a     |
+| weight         | 1                                    |
++----------------+--------------------------------------+
+
+$ neutron lbaas-member-create --name demo_lb_member2 --subnet internal_subnet \
+    --address $NODE2_INTERNAL --protocol-port 80 demo_lb_pool_http
+
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new member:
++----------------+--------------------------------------+
+| Field          | Value                                |
++----------------+--------------------------------------+
+| address        | 172.16.1.12                          |
+| admin_state_up | True                                 |
+| id             | 7d11c195-a409-4cb7-bf3f-6cd6ff719049 |
+| name           | demo_lb_member2                      |
+| protocol_port  | 80                                   |
+| subnet_id      | 4d38f43b-402e-48a5-b048-3092d6f7da02 |
+| tenant_id      | f991d44fac91419c8e6016184381871a     |
+| weight         | 1                                    |
++----------------+--------------------------------------+</code></pre></div>
+
+<p>Now we need to add a virtual IP for our loadbalancer that listens on the external network. This will provide a <strong>frontend</strong> virtual IP address to load balance across the nodes on the <strong>internal</strong> network (we won&#39;t be able to access the load balancer from the outside external network yet). The first step is to get the internal network Neutron port ID in which our load balancer is running on. The easiest way to get this port-id is to query the load-balancer object itself:</p>
+
+<div><pre><code class="language-none">$ neutron lbaas-loadbalancer-show demo_lb
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
++---------------------+------------------------------------------------+
+| Field               | Value                                          |
++---------------------+------------------------------------------------+
+| admin_state_up      | True                                           |
+| description         |                                                |
+| id                  | 18868c2f-3e5d-4a75-a568-f8bae2d7518c           |
+| listeners           | {&quot;id&quot;: &quot;ece3a993-bdfc-4ca1-96d3-23cfb0c9346d&quot;} |
+| name                | demo_lb                                        |
+| operating_status    | ONLINE                                         |
+| pools               | {&quot;id&quot;: &quot;19ca4761-ab73-4577-8a0a-6a8fc3d8e421&quot;} |
+| provider            | haproxy                                        |
+| provisioning_status | ACTIVE                                         |
+| tenant_id           | f991d44fac91419c8e6016184381871a               |
+| vip_address         | 172.16.1.13                                    |
+| vip_port_id         | 726869e5-c519-41cc-abc0-868f885cb3f0           |
+| vip_subnet_id       | 4d38f43b-402e-48a5-b048-3092d6f7da02           |
++---------------------+------------------------------------------------+</code></pre></div>
+
+<p>The ID we need here is <strong>vip<em>port</em>id</strong>, in my case this is <strong>726869e5-c519-41cc-abc0-868f885cb3f0</strong>. So, let&#39;s create a floating IP and associate it directly to this port:</p>
+
+<div><pre><code class="language-none">$ openstack floating ip create external --port 726869e5-c519-41cc-abc0-868f885cb3f0
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| created_at          | 2018-04-09T22:33:51Z                 |
+| description         |                                      |
+| fixed_ip_address    | 172.16.1.13                          |
+| floating_ip_address | 192.168.122.201                      |
+| floating_network_id | d5bfe8ac-d26c-4db3-b9ca-6459426f6362 |
+| id                  | e11c06cc-4b2d-4b3a-a912-13fd55cd589a |
+| name                | 192.168.122.201                      |
+| port_id             | 726869e5-c519-41cc-abc0-868f885cb3f0 |
+| project_id          | f991d44fac91419c8e6016184381871a     |
+| revision_number     | 0                                    |
+| router_id           | f8d34761-f57b-4697-8e37-741f274c4ff4 |
+| status              | DOWN                                 |
+| updated_at          | 2018-04-09T22:33:51Z                 |
++---------------------+--------------------------------------+</code></pre></div>
+
+<p>In my case, this means that any inbound requests on my floating IP (<strong>192.168.122.201</strong>) should be directed to the load-balancers VIP (<strong>172.16.1.13</strong>).</p>
+
+<h2 id="toc_41"><strong>Testing our Load Balancer</strong></h2>
+
+<p>Now we can test to see whether our load balancer is working as expected. Let&#39;s fire up our <strong>server-check</strong> script like before but provide it with the new floating IP we just associated:</p>
+
+<div><pre><code class="language-none">$ sh ~/labs/osp/server-check.sh 192.168.122.201
+INFO: Using http://192.168.122.201:80... (Ctrl-c to stop)
+
+
+Mon  9 Apr 18:35:18 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-1-2i2kn4aj3v5y-summit-srv-wjqclkn66vi7 @ 172.16.1.12
+
+
+Mon  9 Apr 18:35:21 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-0-eoiv432ojknr-summit-srv-rxqhqfrgiq2h @ 172.16.1.9
+
+
+Mon  9 Apr 18:35:24 EDT 2018
+Hello, Rhys, I am mu-cgmawqm6yiy-1-2i2kn4aj3v5y-summit-srv-wjqclkn66vi7 @ 172.16.1.12
+
+
+^C</code></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong>: Replace this IP address with your own as per the floating IP it created for you earlier.</p>
+</blockquote>
+
+<p>The output of which shows that it&#39;s load balancing between both of the nodes at every connection attempt (it&#39;s doing this because we selected the <strong>ROUND_ROBIN</strong> allocation mechanism; other options would have likely confused us when it kept redirecting us to the <strong>same</strong> node.</p>
+
+<p>Let&#39;s make sure that from a client perspective we&#39;re not interrupted by the loss of a node. Let&#39;s shut down on of our nodes. Firstly, bring up your Horizon dashboard again, you may have to login again using your <strong>user</strong> credentials, or it may let you proceed based on the existing login if your session hasn&#39;t already timed out:</p>
+
+<p><img src="images/horizon.png" style="width: 1000px;"/></p>
+
+<p>The first thing you should see when you navigate to the <strong>project</strong> tab, and then navigate to the <strong>Compute</strong> tab, and <strong>Instances</strong> sub-tab, is the two virtual machines that were created by Heat in the previous step:</p>
+
+<p><img src="images/two-instances.png" style="width: 1000px;"/></p>
+
+<p>Let&#39;s shut the first node off - select the <strong>Actions</strong> menu for the first node in the list and select <strong>&quot;Shut Off Instance&quot;</strong> (this won&#39;t delete the instance, it will merely turn it off):</p>
+
+<p><br>
+<img src="images/shut-off.png" style="width: 1000px;" border=0/></p>
+
+<p>You&#39;ll be asked to confirm that you definitely want to do this, select &quot;Shut Off Instance&quot;:</p>
+
+<p><br>
+<img src="images/confirm-shutdown.png" style="width: 1000px;" border=0/></p>
+
+<p>Now, if you immediately re-run your server-check script, you&#39;ll notice that the first few connections will likely swap between the two, but once the other node has been safely shut down, the load balancer starts pointing all requests to the only surviving node (in our case <strong>172.16.1.12</strong>), showing that our monitor is working properly and that our load balancer is able to recover efficiently with minimal client problems or downtime:</p>
+
+<p><br>
+<img src="images/server-check-fail.png" style="width: 1200px;" border=0/></p>
+
+<h2 id="toc_42"><strong>Cleaning up</strong></h2>
+
+<p>That&#39;s it! We&#39;re done! We need to clean up the Heat stack, and we&#39;ll take care of the rest before some of the other labs can proceed later in the day.</p>
+
+<div><pre><code class="language-none">$ openstack stack delete multiple
+Are you sure you want to delete this stack(s) [y/N]? y</code></pre></div>
+
+<p>Thank you very much for attending this lab, I hope that it gave you a bit of insight into how to use OpenStack, how its components fit together and how it all works with practical examples. If you have any feedback please share it with us, and if there&#39;s anything we can do to assist you in your OpenStack journey, please don&#39;t hesitate to ask!</p>
+
+
+
+
+</body>
+
+</html>

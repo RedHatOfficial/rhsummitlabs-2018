@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Red Hat Summit 2018 - OpenStack and OpenDaylight</title>
+<title>odl</title>
 
 
 <style type="text/css">
@@ -330,6 +330,12 @@ kbd {
 
 <p><img src="images/redhat.png" style="width: 200px;" border=0/></p>
 
+<p><font color="red">
+<strong>Lab Update - 4th June 2018</strong></p>
+
+<p><strong>This lab has now been updated to run on the Red Hat Product Demo System (RHPDS) and so Summit instructions have been removed in favour of specific instructions for RHPDS. You can skip to the first lab section if you&#39;re following this post-Summit. If you have any questions or any problems accessing this content, please let us know.</strong>
+</font></p>
+
 <h2>Red Hat Summit, San Francisco 2018</h2>
 
 <p><strong>Title</strong>: Hands on with OpenStack and OpenDaylight SDN (<strong>L1059</strong>)<br>
@@ -494,29 +500,58 @@ The OpenDaylight controller uses NetVirt, then configures Open vSwitch instances
 
 <h1 id="toc_7">Connecting to your Environment</h1>
 
-<p>As previously highlighted, the workstation you&#39;re sat at will be used by many different lab sessions, yet each of you will have been allocated a unique environment based within the public cloud for you to use to complete the lab steps associated with each session. On screen you should already have a tab open to the lab request form where we need to select the correct lab. If you don&#39;t have this in front of you, it&#39;s available <a href="https://www.opentlc.com/guidgrabber/guidgrabber.cgi">here</a>.</p>
+<h1 id="toc_8">Lab Access</h1>
 
-<p>What you should see is as follows, noting that I&#39;ve already selected the correct lab (<strong>&#39;L1059 - Hands-on with OpenStack and OpenDaylight SDN&#39;</strong>) and have entered the activation key &#39;<strong>day</strong>&#39;, which you will need to do too:</p>
+<p>We&#39;re using the Red Hat Product Demo Suite (RHPDS) for our labs, and therefore we need to request and get access to a unique environment based within the public cloud for you to use to complete the lab steps. If you&#39;re a Red Hat employee you&#39;ll need to follow these instructions to generate a session, othewise please get the connection details from your Red Hat representative and skip to the &#39;<strong>Connecting</strong>&#39; part below where we&#39;re connecting via secure-shell to the environment provided.</p>
 
-<p><img src="images/lab-request1.png" style="width: 1000px;"/></p>
+<blockquote>
+<p><strong>NOTE</strong>: Only proceed with the RHPDS creation instructions below if you&#39;re a Red Hat employee, or have been given access to RHPDS as a partner.</p>
+</blockquote>
 
-<p>This will allocate a pre-deployed session for your usage with <strong>GUID</strong> that&#39;s used to uniquely identify your session, and will provide you with instructions on how to connect to the <strong>jumphost</strong> that we discussed above. Here&#39;s an example below:</p>
+<p>First you&#39;ll need to request a session via RHPDS, the WebUI (and associated login page) can be found at <a href="https://rhpds.redhat.com/" target="_blank">https://rhpds.redhat.com/</a>. Once you&#39;ve logged in, navigate to the service catalogue by selecting &#39;<strong>Services</strong>&#39; --&gt; &#39;<strong>Catalogs</strong>&#39;, and navigate to the correct lab that you want to access by clicking &#39;<strong>Order</strong>&#39; on the right hand side. This lab is &#39;<strong>Hands on with OpenStack and OpenDaylight</strong>&#39; and should look like the following:</p>
 
-<p><img src="images/lab-request2.png" style="width: 1000px;"/></p>
+<p><img src="images/order-odl1.png" style="width: 1000px;"/></p>
 
-<p>You&#39;ll see that my assigned lab GUID is &#39;<strong>f5cf</strong>&#39; and is used to uniquely identify my session, and is used as part of the connection address. Halfway down the page you&#39;ll see an ssh command that you&#39;ll need to use to connect to the environment. The environment takes around 20 minutes to power-up, and this should have already been done for you prior to the session starting, but don&#39;t be alarmed if you cannot connect in straight away, it may just require a few more minutes.</p>
+<p>Once you select &#39;Order&#39; you&#39;ll be presented with the following page which you&#39;ll need to accept some terms about the order time and the expiry:</p>
 
-<p>Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I&#39;m using my example but you&#39;ll need to <strong>replace</strong> this with your own:</p>
+<p><img src="images/order-odl2.png" style="width: 1000px;"/></p>
 
-<div><pre><code class="language-none">$ ssh odl-f5cf.rhpds.opentlc.com
-The authenticity of host &#39;odl-f5cf.rhpds.opentlc.com (129.146.91.32)&#39; can&#39;t be established.
+<p>Select <strong>&#39;Submit&#39;</strong> at the bottom of the page and it should generate the environment for you, and will show up in your requests:</p>
+
+<p><img src="images/requests.png" style="width: 1000px;"/></p>
+
+<blockquote>
+<p><strong>NOTE</strong>: This is a generic screenshot above, your output might look slightly different if you&#39;re using a different lab.</p>
+</blockquote>
+
+<p>The RHPDS system will now generate a unique environment for you to use and you will receive an email with some of the connection details. These details uniquely identify your session to ensure that you are connecting to your unique environment, see here for an example:</p>
+
+<p><img src="images/email-odl.png" style="width: 1000px;"/></p>
+
+<p>You&#39;ll notice that it contains some links, specifically the &quot;<strong>External Hostname</strong>&quot; for the <strong>WORKSTATION</strong> system - this is the <strong>jumphost</strong> that you&#39;ll be connecting to from the outside, and it has a unique hostname to connect to from the outside that&#39;s routable over the internet. Here, mine is <strong>&quot;odl-4f17.rhpds.opentlc.com&quot;</strong>. In addition, there are links to other areas such as the Horizon dashboard that you&#39;ll likely use later in the lab, as well as a link to these labs.</p>
+
+<h1 id="toc_9">Connecting</h1>
+
+<p>You&#39;ll see that my assigned lab UUID for my environment is &#39;<strong>4f17</strong>&#39; and is used to uniquely identify my session, and is used as part of the connection address. The environment takes around 20-30 minutes to power-up, and this should have already been done for you prior to the session starting, but don&#39;t be alarmed if you cannot connect in straight away, it may just require a few more minutes. Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I&#39;m using my example but <strong>you&#39;ll need to replace this with your own username and unique session</strong>:</p>
+
+<div><pre><code class="language-none">$ ssh odl-4f17.rhpds.opentlc.com -l (your RHPDS username)
+The authenticity of host &#39;odl-4f17.rhpds.opentlc.com (129.146.91.32)&#39; can&#39;t be established.
 ECDSA key fingerprint is SHA256:SqbVF0TGdHuTsoDChp6/cw4jFHqwJlBWFOeqwd88Bi4.
 Are you sure you want to continue connecting (yes/no)? yes
 (...)</code></pre></div>
 
 <blockquote>
-<p><strong>NOTE</strong>: If you lose your connection details you can return <a href="https://www.opentlc.com/guidgrabber/guidgrabber.cgi">here</a> at any time.</p>
+<p><strong>NOTE</strong>: The above assumes that you&#39;ve associated your public secure shell key with RHPDS - if you have not done so, please update it <a href="https://account.opentlc.com/update/" target="_blank">here</a>. If you have associated your key already then you&#39;re good to go and you shouldn&#39;t be required to use a password. <strong>If you have been assigned a system from a Red Hat employee, ensure he/she provides you with a username and keypair to use</strong>.</p>
 </blockquote>
+
+<p><br />
+If successful, we can jump straight to our <strong>undercloud</strong> machine, as this is the one that we&#39;re going to be using for all of the lab sections, note that we&#39;re using sudo below as the root user on the jump host is the only one configured with the ssk-keys:</p>
+
+<div><pre><code class="language-none">$ sudo ssh stack@undercloud</code></pre></div>
+
+<p><strong>Only</strong> if this is unsuccessful (e.g. for some reason that there&#39;s no entry in /etc/hosts), attempt the following:</p>
+
+<div><pre><code class="language-none">$ sudo ssh stack@192.168.122.253</code></pre></div>
 
 <p><br />
 Next, we can jump straight to our <strong>undercloud</strong> machine, as this is the one that we&#39;re going to be using for all of the lab sections, note that we&#39;re using sudo below as the root user on the jump host is the only one configured with the ssk-keys:</p>
@@ -529,7 +564,7 @@ Next, we can jump straight to our <strong>undercloud</strong> machine, as this i
 
 <p>You will have full root access (via sudo) and control over this virtual machine, and we&#39;ll run our tasks directly here. If you&#39;re still unable to connect into your environment after a few minutes, please ask for assistance.</p>
 
-<h2 id="toc_8"><strong>Lab Environment Exploration</strong></h2>
+<h2 id="toc_10"><strong>Lab Environment Exploration</strong></h2>
 
 <p>In this section we&#39;re going to take a brief look of the pre-deployed lab environment to see how it has been put together. Unfortunately due to the time taken to complete a deployment end-to-end, the lab authors decided that working with a pre-deployed environment made the most sense; a deployment typically takes between 30-60 minutes on normal hardware (depending on the configuration), and when we tested within the public cloud environment it took much longer. Therefore we&#39;re not actually going to be deploying OpenStack in this lab, that step has already been done for you, but we&#39;ll investigate the integration of OpenDaylight and OpenStack over the next couple of hours, and will also demonstrate how it could have been configured through TripleO (OSP director) later on at the end.</p>
 
@@ -542,7 +577,7 @@ There are six total machines, if you include the jump-host, that we&#39;ll be ut
 
 <p>As highlighted previously, we&#39;re operating with two separate clouds here, both of which are running OpenStack; the <strong>undercloud</strong> and the <strong>overcloud</strong>; it&#39;s the undercloud that&#39;s used to <strong>bootstrap</strong> the overcloud. As such, getting access to each of these clouds requires the correct credentials and some parameters that specify where the relevant API&#39;s reside. Typically you&#39;d only ever need to interact with the undercloud if you were deploying, updating, or deleting an overcloud, but we&#39;re going to demonstrate the base functionality of the undercloud here just to level-set on the architecture of the overcloud.</p>
 
-<h1 id="toc_9">The ~/stackrc and ~/overcloudrc files</h1>
+<h1 id="toc_11">The ~/stackrc and ~/overcloudrc files</h1>
 
 <p>Upon initial installation of the undercloud (not covered in this lab), OSP director generates a file called &#39;<strong>stackrc</strong>&#39;; this file resides in the stack user&#39;s home directory and is a source of environment variables that enable the OpenStack command line tools to execute commands against the <strong>undercloud</strong> itself. Then, by default, after an <strong>overcloud</strong> has been deployed by the undercloud, OSP director (through TripleO) creates a file called <strong>overcloudrc</strong> (and <strong>overcloudrc.v3</strong>), which essentially provides very similar information to stackrc, but instead of telling the OpenStack command line tooling to point at the undercloud, it points it at the overcloud.</p>
 
@@ -679,7 +714,7 @@ fi</code></pre></div>
 | service_type | network                          |
 +--------------+----------------------------------+</code></pre></div>
 
-<h1 id="toc_10"><strong>Extra Files</strong></h1>
+<h1 id="toc_12"><strong>Extra Files</strong></h1>
 
 <p>In addition to these files you&#39;ll find a &#39;<strong>labs</strong>&#39; directory within the stack user&#39;s home directory. This will contain a number of different files that we&#39;ll be using over the next few lab sections, including all of the OSP director templates that were used for deployment. As we have a number of different OpenStack labs going on during the Red Hat Summit that our team have prepared, the same shared directory is available on all systems:</p>
 
@@ -695,13 +730,13 @@ drwxrwxr-x. 3 stack stack       172 Mar 25 20:07 osp
 
 <p>Don&#39;t worry about exploring for now, just know that we have these available for us.</p>
 
-<h2 id="toc_11"><strong>Testing, Investigating, and Using ODL</strong></h2>
+<h2 id="toc_13"><strong>Testing, Investigating, and Using ODL</strong></h2>
 
 <p>So far, all we&#39;ve done is take a basic look at what the architecture looks like; we&#39;ve not deployed any resources, we&#39;ve not looked into the OpenDaylight integration, and we certainly don&#39;t know if it&#39;s even working yet. Right now you&#39;re going to have to trust us that it has been configured properly, but we&#39;ll start testing that right away.</p>
 
 <p>In this section we&#39;re going to be verifying the environment to ensure that it first of all functions properly, but secondly adheres to a well-integrated OpenDaylight setup. The first thing we should do is make sure that OpenStack itself is working; let&#39;s build out some resources within our overcloud environment.</p>
 
-<h3 id="toc_12">Uploading an Image to Glance</h3>
+<h3 id="toc_14">Uploading an Image to Glance</h3>
 
 <p>As part of the lab, we&#39;ll use an image already residing on the filesystem for you; this is a stripped down version of RHEL 7.4 with a pre-set root password; we&#39;ll upload it as our own. Let&#39;s verify that the disk image is as expected and has the correct properties:</p>
 
@@ -756,7 +791,7 @@ $ openstack image create rhel7 --public \
 | 2650782f-e95c-4309-b041-49f79468413d | rhel7 | active |
 +--------------------------------------+-------+--------+</code></pre></div>
 
-<h3 id="toc_13">Creating a Flavor to use</h3>
+<h3 id="toc_15">Creating a Flavor to use</h3>
 
 <p>Next we&#39;re going to need a flavor for our environment; as we&#39;re relatively resource constrained the out of the box flavors don&#39;t quite give us what we need, so let&#39;s create an additional flavor for us to use:</p>
 
@@ -777,7 +812,7 @@ $ openstack image create rhel7 --public \
 | vcpus                      | 2       |
 +----------------------------+---------+</code></pre></div>
 
-<h3 id="toc_14">Networking Configuration</h3>
+<h3 id="toc_16">Networking Configuration</h3>
 
 <p>A little bit of background given that this is a networking lab...</p>
 
@@ -1037,7 +1072,7 @@ $ openstack image create rhel7 --public \
 
 <p>In conclusion, we&#39;ve created a private &#39;tenant network&#39;, called <strong>&#39;internal&#39;</strong> for our instances to use and have created a virtual router for our internal network to route traffic to the outside; onto the administratively defined external network called <strong>&quot;external&quot;</strong>.</p>
 
-<h3 id="toc_15">Instance Boot up</h3>
+<h3 id="toc_17">Instance Boot up</h3>
 
 <p>Next, boot a new instance on OpenStack using our new flavor, the <strong>internal</strong> tenant network, and the image we uploaded earlier (&quot;<strong>rhel7</strong>&quot;), ensuring that you specify a name for the instance, below we use &quot;<strong>my_vm</strong>&quot;:</p>
 
@@ -1090,7 +1125,7 @@ $ openstack image create rhel7 --public \
 <p><strong>NOTE</strong>: You may see that the system is in a <strong>&quot;SPAWNING&quot;</strong> state for a few minutes, this is to be expected as the machine provisions itself. Please be patient and allow it to start. We want to make sure that it goes into an <strong>&quot;ACTIVE&quot;</strong> state.</p>
 </blockquote>
 
-<h3 id="toc_16"><strong>Creating and Assigning Floating IP&#39;s</strong></h3>
+<h3 id="toc_18"><strong>Creating and Assigning Floating IP&#39;s</strong></h3>
 
 <p>As highlighted above, our launched instance is only on the internal network and has no connectivity from the outside world. We&#39;ll request a floating IP for our instance on the external network:</p>
 
@@ -1136,7 +1171,7 @@ $ openstack image create rhel7 --public \
 
 <p>For those of you that may have already tried to ping or SSH into the node using this IP address may be confused as to why this is not working. By default, OpenStack&#39;s security group rules will prevent <strong>all</strong> inbound access, so we&#39;ll need to open these up before we confirm that our instance is working properly.</p>
 
-<h3 id="toc_17"><strong>OpenStack Security Groups</strong></h3>
+<h3 id="toc_19"><strong>OpenStack Security Groups</strong></h3>
 
 <p>By default, OpenStack Security Groups prevent any inbound access to instances, including ICMP/ping. Therefore, we have to edit the security group policy to ensure that the firewall is opened up for us.</p>
 
@@ -1241,7 +1276,7 @@ Password:
 Connection to 192.168.122.200 closed.
 $</code></pre></div>
 
-<h1 id="toc_18"><strong>Viewing Console Output (VNC)</strong></h1>
+<h1 id="toc_20"><strong>Viewing Console Output (VNC)</strong></h1>
 
 <p>It&#39;s critical to ensure that our virtual machine has started successfully. Nova provides us with two main ways of checking this without relying on networking being available - the console output, and the VNC console output. Using a web-browser, we can view the VNC console via an HTML5 viewer. We can get the URL via the following command:</p>
 
@@ -1262,9 +1297,9 @@ ERROR: Instance not yet ready (HTTP 409) (Request-ID: req-da372916-10ba-4158-91a
 
 <p><img src="images/vnc-console.png" style="width: 1000px;"/></p>
 
-<h1 id="toc_19"><strong>Connectivity in Browser</strong></h1>
+<h1 id="toc_21"><strong>Connectivity in Browser</strong></h1>
 
-<p>This section is not essential, but you may want to verify that you can access the Horizon dashboard for your environment; let&#39;s open up a web-browser and ensure that it shows all of our resources that we just built up. The URL for this can be found on the lab&#39;s landing page which can be found <a href="https://www.opentlc.com/guidgrabber/guidgrabber.cgi" target="_blank">here</a>, see the hyperlink in the middle that looks like this - <a href="http://horizon-REPL.rhpds.opentlc.com/dashboard" target="_blank">http://horizon-REPL.rhpds.opentlc.com/dashboard</a> (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:</p>
+<p>This section is not essential, but you may want to verify that you can access the Horizon dashboard for your environment; let&#39;s open up a web-browser and ensure that it shows all of our resources that we just built up. The URL for this can be found in the email that was sent to you by RHPDS, see the hyperlink in the middle that looks like this - <a href="http://horizon-REPL.rhpds.opentlc.com/dashboard" target="_blank">http://horizon-REPL.rhpds.opentlc.com/dashboard</a> (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:</p>
 
 <p><img src="images/horizon.png" style="width: 1000px;"/></p>
 
@@ -1279,7 +1314,7 @@ export OS_AUTH_TYPE=password</code></pre></div>
 
 <p><br /></p>
 
-<h2 id="toc_20">Exploring and Validating the OpenDaylight Connectivity</h2>
+<h2 id="toc_22">Exploring and Validating the OpenDaylight Connectivity</h2>
 
 <p>So far, all we&#39;ve tested is basic OpenStack functionality, albeit configuring some of the basic networking, so in theory OpenDaylight and its connectivity to Neutron is functioning as expected, but we haven&#39;t actually done anything OpenDaylight specific; we would have likely had the exact same functionality with any OpenStack Networking implementation.</p>
 
@@ -1512,7 +1547,7 @@ $ openstack network list -c ID -c Name
 
 <p>And then a third network called the &quot;<strong>Sync Canary Network</strong>&quot;. The canary network is a dummy network used as a placeholder, created by the ML2 OpenDaylight service as a mechanism to check whether we&#39;re in a consistent state between OpenDaylight and Neutron. More specifically, if this network has been removed, it&#39;s assumed that the OpenDaylight network database has been dropped, and it will trigger a full re-sync between Neutron and OpenDaylight to ensure consistency. The fact that these networks are known by OpenDaylight, aside from the fact that we&#39;ve validated that basic networking is working, prove that Neutron is able to successfully communicate with the OpenDayight SDN controller.</p>
 
-<h3 id="toc_21">OpenDaylight Under the Covers</h3>
+<h3 id="toc_23">OpenDaylight Under the Covers</h3>
 
 <p>In this section we&#39;re going to take a look at the OpenDaylight controller itself; where it runs, how you can connect into it, query it for information, and what functions are available. In our model the OpenDaylight controller runs on our dedicated networker machine, so let&#39;s hop over to it:</p>
 
@@ -1637,7 +1672,7 @@ Connection to 172.16.0.25 closed.</code></pre></div>
 
 <p>As you can see, there are a number of different ways of interacting with OpenDaylight; Neutron can provide a direct route to a lot of the data, but this gets translated into OpenDaylight specific constructs by the ML2 OpenDaylight implementation. It&#39;s then the responsibility of OpenDaylight to program the local Open vSwitch implementations at each node that requires it.</p>
 
-<h1 id="toc_22">Connecting to the OpenDaylight Container</h1>
+<h1 id="toc_24">Connecting to the OpenDaylight Container</h1>
 
 <p>Red Hat OpenStack Platform, as per the default configuration in OSP12 and beyond, utilises containers for the vast majority of the OpenStack services. OpenDaylight is no exception here, and as such, on our dedicated networker node the OpenDaylight SDN Controller runs within a docker container. If you ever need to access the container where OpenDaylight is running, e.g. if it&#39;s not running correctly and the API access is not sufficient, then there are a number of different ways you can interact with it.</p>
 
@@ -1699,7 +1734,7 @@ networker# exit
 Connection to 172.16.0.25 closed.
 undercloud$</code></pre></div>
 
-<h2 id="toc_23"><strong>Exploration of TripleO Requirements for OpenDaylight</strong></h2>
+<h2 id="toc_25"><strong>Exploration of TripleO Requirements for OpenDaylight</strong></h2>
 
 <p>In this section we&#39;re going to be looking at how we can utilise OSP director (through TripleO) to deploy an OpenStack overcloud with integrated OpenDaylight, and we&#39;ll look at the customisations available with the TripleO heat templates. We already have a pre-deployed environment available to us, but we&#39;ll remove this and go through all of the steps to configure and kick-off a new deployment. Unfortunately it&#39;s not likely that you&#39;ll see the deployment successfully complete given the time constraints of this lab, but at a very minimum you should be able to understand the flows and how the deployment is started.</p>
 
@@ -1730,7 +1765,7 @@ Support for the deployment and integration of OpenDaylight has been available wi
 
 <p>Much of the OpenDaylight requirements are very similar to a standard OpenStack networking experience, and therefore the implementations and configuration options do not differ too much between the two.</p>
 
-<h3 id="toc_24">Creating a Dedicated Networker Role</h3>
+<h3 id="toc_26">Creating a Dedicated Networker Role</h3>
 
 <p>Since OSP10 (based on OpenStack Newton), OSP director supports <strong>composable roles</strong> - this allows organisations to break down the legacy OpenStack roles, such as a controller, into individual services and build up custom roles to suit their requirements. This could be as simple as combining a compute and a storage role to create a hyperconverged configuration, or perhaps fragmenting the monolithic controller role to split out some of the services to enable a greater degree of scalability. Historically, all networking services were provided by the controllers; now we have a choice about where the networking services should operate. As part of this section we&#39;re going to demonstrate how we can utilise composable roles to choose how, and where, to deploy the OpenDaylight services.</p>
 
@@ -1820,7 +1855,7 @@ $ cp -rf ~/labs/odl/templates/* ~/templates/</code></pre></div>
 
 <p><br /></p>
 
-<h3 id="toc_25">Node to Role Tagging</h3>
+<h3 id="toc_27">Node to Role Tagging</h3>
 
 <p>OpenStack Nova uses two main metrics to determine whether an Ironic node is suitable for a given role (e.g. controller, compute node, networker), both of which are encapsulated into a flavor. The flavor defines the required size of the machine (e.g. number of CPU&#39;s, memory capacity, and available disk space) and also has a set of properties that a node must also satisfy. For example, a node may have the required physical capacity, but it may not satisfy additional properties, such as having SR/IOV capable network interfaces. In OSP director we use the additional properties to define what we call a <strong>profile</strong>, it&#39;s the profile that we assign to a given node so that Nova doesn&#39;t just have to rely on the minimum hardware specification, we can give it a hint to say these machines are definitely controllers, for example.</p>
 
@@ -1887,7 +1922,7 @@ $ openstack flavor show control
 <p><strong>NOTE</strong>: This command should produce no output unless there was an error.</p>
 </blockquote>
 
-<h2 id="toc_26">Physical Networking Topology</h2>
+<h2 id="toc_28">Physical Networking Topology</h2>
 
 <p>Each of our overcloud nodes has been configured with <strong>two</strong> &quot;physical&quot; (only quoted because they&#39;re virtualised baremetal machines) network interfaces:</p>
 
@@ -1906,7 +1941,7 @@ $ openstack flavor show control
 
 <p>Prior to this lab (and out of scope for the lab instructions) we defined the virtualised nodes within Ironic, and when they were registered we provided the MAC address of <strong>eth0</strong> for each node as the unique identifier, this ensures that when it does DHCP/PXE boot for deployment, Ironic knows exactly which machine it&#39;s dealing with. During the initial bootstrap of the image onto the booting nodes, this is the only interface we care about. However, once the machine reboots into the image for the next stage of deployment OSP director needs to configure all of the networking interfaces. To do this, OSP director relies on a set of templates known as &#39;<strong>nic-configs</strong>&#39; to set the configuration for each interface, including any additional VLANs, bonds, or bridges. The primary requirement in our lab environment is going to be defining what happens with <strong>eth1</strong> - how the necessary VLANs are defined on-top of this interface, and how OpenStack can be deployed to use them.</p>
 
-<h3 id="toc_27">Out of the Box Options</h3>
+<h3 id="toc_29">Out of the Box Options</h3>
 
 <p>TripleO and OSP director ship with a number of <strong>nic-config</strong> templates that can be used as examples to build specific templates for the given environment that they&#39;re being deployed into. Examples include (and can be found in this directory):</p>
 
@@ -1933,7 +1968,7 @@ total 68
 
 <p>Unfortunately, none of these out of the box templates suit our specific environment, i.e. multiple network interfaces but with a dedicated provisioning interface and a dedicated interface for everything else. These templates either assume that you have just a single network interface, or each network interface is for a different traffic type (common in Cisco UCS environments) or if you want all interfaces bonded together for resilience. Within our virtualised baremetal environment we&#39;ve gone for something slightly different - certainly not recommended for production, but makes it easier to explain how the templates work. As none of these out of the box templates work for us, we&#39;re going to have to use custom nic-config templates to suit our requirements.</p>
 
-<h3 id="toc_28">Pre-prepared nic-config Templates</h3>
+<h3 id="toc_30">Pre-prepared nic-config Templates</h3>
 
 <p>In the <strong>~/templates</strong> directory you&#39;ll find a subdirectory called <strong>&#39;nic-configs&#39;</strong>, in which we&#39;ve pre-prepared a set of templates for us to use, ones that match our expectations perfectly. Two network interfaces, first interface being for provisioning (via the OSP director control plane network) and a second interface for running all OpenStack traffic on, including for providing external networking access, i.e. floating IP access, and also OpenStack API access via a routable network from our workstation. Despite these being custom templates they&#39;re heavily built from the &quot;<strong>single-nic-vlans</strong>&quot; example.</p>
 
@@ -2041,7 +2076,7 @@ resource_registry:
 <p><strong>NOTE</strong>: To reiterate, if you omit to advise OSP director of your nic-configs, the default model is to assume that your systems only have a single network interface and that it should be used for provisioning, control plane functionality, and all OpenStack service traffic. This is not a likely deployment in production, but it can suffice for testing.</p>
 </blockquote>
 
-<h2 id="toc_29">Specifying the Network Details</h2>
+<h2 id="toc_31">Specifying the Network Details</h2>
 
 <p>We&#39;ve got the nic-config templates ready, but they don&#39;t actually specify what IP addresses, VLAN&#39;s, DNS servers, default routes, etc, to use for each of the interface, all it shows is a link to a parameter which we haven&#39;t yet specified. Where do we specify these? Well, just like some of the other parameters, we need to specify these in our environment file. We need to make sure that OSP director knows how to satisfy all of the different network traffic types being requested and therefore need to provide information for each subnet, i.e. which network address range to use, what the default route is (if applicable) and if you&#39;re using VLAN isolation, what VLAN ID it should use for each network. There are also a few additional parameters that are advisable to set during this process.</p>
 
@@ -2079,7 +2114,7 @@ resource_registry:
 
 <p>As an example, you can see that the external network has been configured such that the subnet specification is <strong>192.168.122.0/24</strong>, with IP&#39;s available between 192.168.122.100 and 192.168.122.129, and that the <strong>default route</strong> is 192.168.122.1. Note also that this doesn&#39;t have a VLAN associated with it as it&#39;s a flat network on the public cloud platform.</p>
 
-<h2 id="toc_30">OpenDaylight Specifics</h2>
+<h2 id="toc_32">OpenDaylight Specifics</h2>
 
 <p>So far, pretty much all of the TripleO configuration that we&#39;ve used is identical to that of a non-OpenDaylight environment, and would suffice for configuring a standard Neutron with the OVS/ML2 networking implementation. But the whole purpose of this lab is to get OpenDaylight integrated with our overcloud, so surely we have to configure that too, right?</p>
 
@@ -2156,17 +2191,17 @@ $ echo &quot;  OpenDaylightPassword: redhat&quot; &gt;&gt; ~/templates/config.ya
 
 <p>That&#39;s it! Our nodes are ready, our templates have been explored and customised to suit, and we understand the options that we could have chosen. Let&#39;s move onto the deployment itself.</p>
 
-<h2 id="toc_31">OpenStack Deployment with OpenDaylight</h2>
+<h2 id="toc_33">OpenStack Deployment with OpenDaylight</h2>
 
 <p>In this section we&#39;re going to be deploying our Red Hat OpenStack Platform overcloud with an integrated OpenDaylight SDN controller. In the previous step we explored the main physical characteristics of the environment that we&#39;re working with and then configured the vast majority of the templates that are required for deployment in such an environment. Before we go ahead with our deployment we need to wrap up a couple of last minute customisations.</p>
 
-<h3 id="toc_32">OpenStack Service Containerisation</h3>
+<h3 id="toc_34">OpenStack Service Containerisation</h3>
 
 <p>One of the biggest changes in OSP12 is the containerisation of OpenStack services, i.e. OpenStack services residing and operating within docker-based containers. This is a huge feature of OSP12, and a huge architectural change. Red Hat are embracing it for many reasons...</p>
 
 <p>Firstly, we get dependency isolation for each service - we can embed everything that we need for a given service into a single container image, without having to worry that we’ll break other service functionality, including required library versions, or anything that may be required. It makes updates and upgrades a lot easier to manage - a container can simply be replaced with a newer copy, containing the newer or patched code, and if that operation fails, it’s very simple to roll back to the previous version, without a panic about how to restore the environment. We get a higher degree of deployment flexibility, building on-top of the composable roles functionality we can distribute and rebalance services at will. Scalability is also much easier, we can throw more containers into the mix to accommodate demand when required, and scale back when not, efficiently using hardware. Because we’re using immutable infrastructure, i.e. when it’s running it doesn’t change you need to rip and replace to make a change, it means that the code and configuration is well understood, and it means that the complexity around configuration file management and day to day operations is minimised. Finally, we can also leverage a lot of the new container runtime management technology for better resource utilisation, and control over allocation of system resources. To sum things up, containers are bringing a huge benefit to our customers and Red Hat&#39;s ability to support and maintain OpenStack.</p>
 
-<h3 id="toc_33">What&#39;s required for Containerised Services?</h3>
+<h3 id="toc_35">What&#39;s required for Containerised Services?</h3>
 
 <p>By default in OSP12+, each OpenStack service has it&#39;s own self-contained Docker image, containing all required dependencies. Docker images are stored in repositories known as registries and need to be <strong>pulled</strong> before using them. All of the required images have been pulled for you, and reside in a local registry on the undercloud machine. Whilst it&#39;s possible to use a remote Docker registry during deployment, it&#39;s not very efficient given that the images can be quite large, and also the nodes may not have a network route to the registry. By using the undercloud server as a registry we gain performance and a guaranteed network route.</p>
 
@@ -2189,7 +2224,7 @@ $ echo &quot;  OpenDaylightPassword: redhat&quot; &gt;&gt; ~/templates/config.ya
 
 <p>Now we have four images listed, why four? Well, each service upon TripleO instantiation needs to do two things - firstly, it needs to configure itself, e.g. setting up configuration files via puppet and running bootstrap commands (e.g. Galera bootstrap, RabbitMQ configuration, etc), and secondly there has to be an image that is used to run the OpenStack service itself - one that contains the binaries. In the vast majority of cases, this image is the same across both the first phase configuration step, and the second phase actually running of the binaries/services.</p>
 
-<h3 id="toc_34">Let&#39;s do the deployment...</h3>
+<h3 id="toc_36">Let&#39;s do the deployment...</h3>
 
 <p>That&#39;s it, we&#39;ve identified all of the docker images that are required, we&#39;ve uploaded the images to the local docker registry, and we&#39;ve generated a TripleO environment file to point OSP director at those images for utilisation by the overcloud nodes. We can now start the deployment. Ensure that you&#39;re in the home directory of the stack user (to keep the ~/templates directory clean) and execute the deploy command:</p>
 
@@ -2280,7 +2315,7 @@ PING 192.168.122.203 (192.168.122.203) 56(84) bytes of data.
 64 bytes from 192.168.122.203: icmp_seq=2 ttl=64 time=0.834 ms
 (...)</code></pre></div>
 
-<h2 id="toc_35">Wrapping Up</h2>
+<h2 id="toc_37">Wrapping Up</h2>
 
 <p>That&#39;s it - we&#39;re done! We need to clean up the Heat stack, and we&#39;ll take care of the rest before some of the other labs can proceed later in the day...</p>
 

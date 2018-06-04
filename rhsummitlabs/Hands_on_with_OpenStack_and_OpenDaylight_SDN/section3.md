@@ -512,7 +512,7 @@ You should be able to open this URL directly from your workstation and view the 
 
 # **Connectivity in Browser**
 
-This section is not essential, but you may want to verify that you can access the Horizon dashboard for your environment; let's open up a web-browser and ensure that it shows all of our resources that we just built up. The URL for this can be found on the lab's landing page which can be found [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi), see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
+This section is not essential, but you may want to verify that you can access the Horizon dashboard for your environment; let's open up a web-browser and ensure that it shows all of our resources that we just built up. The URL for this can be found in the email that was sent to you by RHPDS, see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
 
 <img src="images/horizon.png" style="width: 1000px;"/>
 

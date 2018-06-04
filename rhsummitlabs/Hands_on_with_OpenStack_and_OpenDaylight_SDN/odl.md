@@ -1,5 +1,11 @@
 <img src="images/redhat.png" style="width: 200px;" border=0/>
 
+<font color="red">
+**Lab Update - 4th June 2018**
+
+**This lab has now been updated to run on the Red Hat Product Demo System (RHPDS) and so Summit instructions have been removed in favour of specific instructions for RHPDS. You can skip to the first lab section if you're following this post-Summit. If you have any questions or any problems accessing this content, please let us know.**
+</font>
+
 <h2>Red Hat Summit, San Francisco 2018</h2>
 **Title**: Hands on with OpenStack and OpenDaylight SDN (**L1059**)<br>
 **Date**: 8th May 2018<br>
@@ -160,27 +166,52 @@ Both the exact command to enter and the expected output will be shown (which may
 <br />
 # Connecting to your Environment
 
-As previously highlighted, the workstation you're sat at will be used by many different lab sessions, yet each of you will have been allocated a unique environment based within the public cloud for you to use to complete the lab steps associated with each session. On screen you should already have a tab open to the lab request form where we need to select the correct lab. If you don't have this in front of you, it's available [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi).
+# Lab Access
 
-What you should see is as follows, noting that I've already selected the correct lab (**'L1059 - Hands-on with OpenStack and OpenDaylight SDN'**) and have entered the activation key '**day**', which you will need to do too:
+We're using the Red Hat Product Demo Suite (RHPDS) for our labs, and therefore we need to request and get access to a unique environment based within the public cloud for you to use to complete the lab steps. If you're a Red Hat employee you'll need to follow these instructions to generate a session, othewise please get the connection details from your Red Hat representative and skip to the '**Connecting**' part below where we're connecting via secure-shell to the environment provided.
 
-<img src="images/lab-request1.png" style="width: 1000px;"/>
+> **NOTE**: Only proceed with the RHPDS creation instructions below if you're a Red Hat employee, or have been given access to RHPDS as a partner.
 
-This will allocate a pre-deployed session for your usage with **GUID** that's used to uniquely identify your session, and will provide you with instructions on how to connect to the **jumphost** that we discussed above. Here's an example below:
+First you'll need to request a session via RHPDS, the WebUI (and associated login page) can be found at [https://rhpds.redhat.com/](https://rhpds.redhat.com/). Once you've logged in, navigate to the service catalogue by selecting '**Services**' --> '**Catalogs**', and navigate to the correct lab that you want to access by clicking '**Order**' on the right hand side. This lab is '**Hands on with OpenStack and OpenDaylight**' and should look like the following:
 
-<img src="images/lab-request2.png" style="width: 1000px;"/>
+<img src="images/order-odl1.png" style="width: 1000px;"/>
 
-You'll see that my assigned lab GUID is '**f5cf**' and is used to uniquely identify my session, and is used as part of the connection address. Halfway down the page you'll see an ssh command that you'll need to use to connect to the environment. The environment takes around 20 minutes to power-up, and this should have already been done for you prior to the session starting, but don't be alarmed if you cannot connect in straight away, it may just require a few more minutes.
+Once you select 'Order' you'll be presented with the following page which you'll need to accept some terms about the order time and the expiry:
 
-Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I'm using my example but you'll need to **replace** this with your own:
+<img src="images/order-odl2.png" style="width: 1000px;"/>
 
-	$ ssh odl-f5cf.rhpds.opentlc.com
-	The authenticity of host 'odl-f5cf.rhpds.opentlc.com (129.146.91.32)' can't be established.
+Select **'Submit'** at the bottom of the page and it should generate the environment for you, and will show up in your requests:
+
+<img src="images/requests.png" style="width: 1000px;"/>
+
+> **NOTE**: This is a generic screenshot above, your output might look slightly different if you're using a different lab.
+
+The RHPDS system will now generate a unique environment for you to use and you will receive an email with some of the connection details. These details uniquely identify your session to ensure that you are connecting to your unique environment, see here for an example:
+
+<img src="images/email-odl.png" style="width: 1000px;"/>
+
+You'll notice that it contains some links, specifically the "**External Hostname**" for the **WORKSTATION** system - this is the **jumphost** that you'll be connecting to from the outside, and it has a unique hostname to connect to from the outside that's routable over the internet. Here, mine is **"odl-4f17.rhpds.opentlc.com"**. In addition, there are links to other areas such as the Horizon dashboard that you'll likely use later in the lab, as well as a link to these labs.
+
+# Connecting
+
+You'll see that my assigned lab UUID for my environment is '**4f17**' and is used to uniquely identify my session, and is used as part of the connection address. The environment takes around 20-30 minutes to power-up, and this should have already been done for you prior to the session starting, but don't be alarmed if you cannot connect in straight away, it may just require a few more minutes. Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I'm using my example but **you'll need to replace this with your own username and unique session**:
+
+	$ ssh odl-4f17.rhpds.opentlc.com -l (your RHPDS username)
+	The authenticity of host 'odl-4f17.rhpds.opentlc.com (129.146.91.32)' can't be established.
 	ECDSA key fingerprint is SHA256:SqbVF0TGdHuTsoDChp6/cw4jFHqwJlBWFOeqwd88Bi4.
 	Are you sure you want to continue connecting (yes/no)? yes
 	(...)
 
-> **NOTE**: If you lose your connection details you can return [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi) at any time.
+> **NOTE**: The above assumes that you've associated your public secure shell key with RHPDS - if you have not done so, please update it [here](https://account.opentlc.com/update/). If you have associated your key already then you're good to go and you shouldn't be required to use a password. **If you have been assigned a system from a Red Hat employee, ensure he/she provides you with a username and keypair to use**.
+
+<br />
+If successful, we can jump straight to our **undercloud** machine, as this is the one that we're going to be using for all of the lab sections, note that we're using sudo below as the root user on the jump host is the only one configured with the ssk-keys:
+
+	$ sudo ssh stack@undercloud
+
+**Only** if this is unsuccessful (e.g. for some reason that there's no entry in /etc/hosts), attempt the following:
+
+	$ sudo ssh stack@192.168.122.253
 
 <br />
 Next, we can jump straight to our **undercloud** machine, as this is the one that we're going to be using for all of the lab sections, note that we're using sudo below as the root user on the jump host is the only one configured with the ssk-keys:
@@ -873,7 +904,7 @@ You should be able to open this URL directly from your workstation and view the 
 
 # **Connectivity in Browser**
 
-This section is not essential, but you may want to verify that you can access the Horizon dashboard for your environment; let's open up a web-browser and ensure that it shows all of our resources that we just built up. The URL for this can be found on the lab's landing page which can be found [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi), see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
+This section is not essential, but you may want to verify that you can access the Horizon dashboard for your environment; let's open up a web-browser and ensure that it shows all of our resources that we just built up. The URL for this can be found in the email that was sent to you by RHPDS, see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
 
 <img src="images/horizon.png" style="width: 1000px;"/>
 

@@ -92,7 +92,7 @@ Now we can create our file:
 You can test the file by logging out of your ssh session to the OpenStack virtual machine, logging back in and trying the following-
 
 	$ logout
-	$ ssh stack@undercloud
+	$ sudo ssh stack@undercloud
 
 	$ openstack token issue
 	Missing value auth-url required for auth plugin password
