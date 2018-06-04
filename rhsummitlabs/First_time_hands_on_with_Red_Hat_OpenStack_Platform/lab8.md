@@ -354,7 +354,7 @@ Now we can test to see whether our load balancer is working as expected. Let's f
 
 The output of which shows that it's load balancing between both of the nodes at every connection attempt (it's doing this because we selected the **ROUND_ROBIN** allocation mechanism; other options would have likely confused us when it kept redirecting us to the **same** node.
 
-Let's make sure that from a client perspective we're not interrupted by the loss of a node. Let's shut down on of our nodes. Firstly, bring up your Horizon dashboard again, recalling that the URL for which can be found [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi). You may have to login again using your **user** credentials, or it may let you proceed based on the existing login if your session hasn't already timed out:
+Let's make sure that from a client perspective we're not interrupted by the loss of a node. Let's shut down on of our nodes. Firstly, bring up your Horizon dashboard again, you may have to login again using your **user** credentials, or it may let you proceed based on the existing login if your session hasn't already timed out:
 
 <img src="images/horizon.png" style="width: 1000px;"/>
 
