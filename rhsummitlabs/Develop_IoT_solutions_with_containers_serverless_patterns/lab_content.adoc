@@ -1,0 +1,38 @@
+
+= Serverless for IoT lab
+Andrew Block <ablock@redhat.com>, Ishu Verma <iverma@redhat.com>
+:homepage: https://github.com/sabre1041/iot-serverless
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+== Summary
+This lab provides step by step instructions on how to use Serverless architecture for IoT. The lab uses Red Hat OpenShift Container Platform and serverless architecture to execute on-demand functions in response to IoT events. Main components of the lab include setting up Apache OpenWhisk, building functions and deploying these functions to OpenWhisk.
+
+
+
+.Lab Contents
+****
+* link:tech_overview.html[*Technology Overview*]
+* link:iot_usecase.html[*Business Use Case : IoT*]
+* link:lab_0.html[*Lab 0: Lab Environment & Resources*]
+* link:lab_1.html[*Lab 1: Deploy OpenWhisk*]
+* link:lab_2.html[*Lab 2: Deploy MongoDB*]
+* link:lab_3.html[*Lab 3: Create OpenWhisk Entities*]
+  - link:lab_3.html#_actions[*Actions*]
+  - link:lab_3.html#_organizing_resources_as_packages[*Packages*]
+  - link:lab_3.html#_introduction_to_triggers[*Triggers*]
+  - link:lab_3.html#_connecting_triggers_to_actions_using_rules[*Rules*]
+  - link:lab_3.html#_creating_a_sequence_of_actions[*Sequences*]
+* link:lab_4.html[*Lab 4: Use Geofencing & Data Store*]
+* link:lab_5.html[*Lab 5: Deploy IoT Components*]
+* link:lab_6.html[*Lab 6: Connecting into OpenWhisk*]
+* link:lab_7.html[*Lab 7: Software Sensor Application*]
+* link:lab_8.html[*Lab 8: Validate The End to End Flow*]
+* link:lab_9.html[*Lab 9: Visualizing Data*]
+* link:conclusion.html[*Conclusion*]
+* link:advance_lab.html[*Extra Labs*]
+****
+
+[.text-center]
+image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=tech_overview.html]
