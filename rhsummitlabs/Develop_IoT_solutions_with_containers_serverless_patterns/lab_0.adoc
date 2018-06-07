@@ -1,5 +1,4 @@
-2983066
-:imagesdir: images
+
 :icons: font
 :source-highlighter: prettify
 
@@ -9,6 +8,7 @@ ifdef::env-github[]
 :important-caption: :heavy_exclamation_mark:
 :caution-caption: :fire:
 :warning-caption: :warning:
+:imagesdir: images
 endif::[]
 
 = Lab 0: Lab Environment & Resources
