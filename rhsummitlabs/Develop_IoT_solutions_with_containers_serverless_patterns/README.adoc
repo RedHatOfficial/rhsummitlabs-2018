@@ -32,7 +32,7 @@ This lab provides step by step instructions on how to use Serverless architectur
 * link:lab_2.adoc[*Lab 2: Deploy MongoDB*]
 * link:lab_3.adoc[*Lab 3: Create OpenWhisk Entities*]
   - link:lab_3.adoc#_actions[*Actions*]
-  - link:lab_3.adoc[*Packages*]
+  - link:lab_3.adoc[*Organizing Resources as Packages*]
   - link:lab_3.adoc[*Triggers*]
   - link:lab_3.adoc[*Rules*]
   - link:lab_3.adoc[*Sequences*]
