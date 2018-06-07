@@ -6,6 +6,14 @@ Andrew Block <ablock@redhat.com>, Ishu Verma <iverma@redhat.com>
 :icons: font
 :source-highlighter: prettify
 
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
 == Summary
 This lab provides step by step instructions on how to use Serverless architecture for IoT. The lab uses Red Hat OpenShift Container Platform and serverless architecture to execute on-demand functions in response to IoT events. Main components of the lab include setting up Apache OpenWhisk, building functions and deploying these functions to OpenWhisk.
 
@@ -18,20 +26,20 @@ This lab provides step by step instructions on how to use Serverless architectur
 * link:lab_0.adoc[*Lab 0: Lab Environment & Resources*]
 * link:lab_1.adoc[*Lab 1: Deploy OpenWhisk*]
 * link:lab_2.adoc[*Lab 2: Deploy MongoDB*]
-* link:lab_3.html[*Lab 3: Create OpenWhisk Entities*]
-  - link:lab_3.html#_actions[*Actions*]
-  - link:lab_3.html#_organizing_resources_as_packages[*Packages*]
+* link:lab_3.adoc[*Lab 3: Create OpenWhisk Entities*]
+  - link:lab_3.adoc#_actions[*Actions*]
+  - link:lab_3.adoc#_organizing_resources_as_packages[*Packages*]
   - link:lab_3.html#_introduction_to_triggers[*Triggers*]
   - link:lab_3.html#_connecting_triggers_to_actions_using_rules[*Rules*]
   - link:lab_3.html#_creating_a_sequence_of_actions[*Sequences*]
-* link:lab_4.html[*Lab 4: Use Geofencing & Data Store*]
-* link:lab_5.html[*Lab 5: Deploy IoT Components*]
-* link:lab_6.html[*Lab 6: Connecting into OpenWhisk*]
-* link:lab_7.html[*Lab 7: Software Sensor Application*]
-* link:lab_8.html[*Lab 8: Validate The End to End Flow*]
-* link:lab_9.html[*Lab 9: Visualizing Data*]
-* link:conclusion.html[*Conclusion*]
-* link:advance_lab.html[*Extra Labs*]
+* link:lab_4.adoc[*Lab 4: Use Geofencing & Data Store*]
+* link:lab_5.adoc[*Lab 5: Deploy IoT Components*]
+* link:lab_6.adoc[*Lab 6: Connecting into OpenWhisk*]
+* link:lab_7.adoc[*Lab 7: Software Sensor Application*]
+* link:lab_8.adoc[*Lab 8: Validate The End to End Flow*]
+* link:lab_9.adoc[*Lab 9: Visualizing Data*]
+* link:conclusion.adoc[*Conclusion*]
+* link:advance_lab.adoc[*Extra Labs*]
 ****
 
 [.text-center]

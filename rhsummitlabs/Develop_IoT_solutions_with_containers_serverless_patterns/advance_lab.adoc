@@ -1,0 +1,137 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Extra Labs (Optional)
+
+== Setting Default Parameters
+
+Starting in lab 3, we introduced how parameters can be utilized in actions as the primary method of data input. Aside from specifying parameters at invocation time, actions support the concept of utilizing a set of default parameters. Default parameters can be specified against an individual action or scoped to all actions that are part of a given package.
+
+To demonstrate how default parameters can be utilized, lets first create a new package called `iot-serverless-parameters`:
+
+[source,bash]
+----
+$ wsk -i package create --shared yes iot-serverless-parameters
+
+ok: created package iot-serverless-parameters
+----
+
+Throughout this lab, we have utilized several actions that made use of input parameters; one in particular was the _formatInput_ that was used at the beginning of the action sequence to format input parameters that were sent from IoT devices. As a reminder, the action took in two input parameters:
+
+* `topic` - Name of the topic the IoT was processed from
+* `data` - Latitude and longitude that are separated by a space
+
+Add the action to the _iot-serverless-parameters_
+
+[source,bash]
+----
+$ cd /home/lab-user/iot-serverless
+$ wsk -i action update iot-serverless-parameters/formatInput iot-serverless-openwhisk-functions/format/formatInput.js
+
+ok: updated action iot-serverless-parameters/formatInput
+----
+
+In previous invocations, we have already provided at least one or more parmeters. However, if no parameters are entered, none will be returned.
+
+Let's demonstrate invoking the _formatInput_ action without any parameters:
+
+[source,bash]
+----
+$ wsk -i action invoke iot-serverless-parameters/formatInput --result
+
+{}
+----
+
+As you can see, no results were retured as no parameters were provided.
+
+The Feed Provider is configured to provide the name of the topic that the IoT device utilized, but to provide default options in the event these values are not passed, we can configure a set of default parameters to protect ourselves.
+
+A default parameter can be added to an action by adding the `--param` flag during action creation or update.
+
+Add a default parameter to the _formatInput_ action with a topic name of `.sf.asset.component` in the format that would be presented from AMQ:
+
+[source,bash]
+----
+$ wsk -i action update iot-serverless-parameters/formatInput iot-serverless-openwhisk-functions/format/formatInput.js --param topic .sf.asset.component
+
+ok: updated action iot-serverless-parameters/formatInput
+----
+
+Invoke the action again without any parameters:
+
+[source,bash]
+----
+$ wsk -i action invoke iot-serverless-parameters/formatInput --result
+
+{
+    "topic": "/sf/asset/component"
+}
+----
+
+Notice how the _topic_ has been returned, but also how the logic of the _formatInput_ executed to replace the `.` with `/`.
+
+Default parameters can also be specified at a package level in a similar fashion as in an action using the `--param` parameter
+
+Update the `iot-serverless-parameters` package with a default _topic_ parameter of `.sf.asset.pacakgeComponent`
+
+[source,bash]
+----
+$ wsk -i action invoke iot-serverless-parameters/formatInput --result
+
+{
+    "topic": "/sf/asset/component"
+}
+----
+
+The topic value returned from the action continues to return `/sf/asset/component` even though a package parameter was specified. This is because default parameters have a precedence. Default parameters specified on an action have a higher precedence than one at a package.
+
+The  _formatInput_ action must be deleted and recreated to remove the default parameter:
+
+[source,bash]
+----
+$ wsk -i action delete iot-serverless-parameters/formatInput
+
+ok: deleted action iot-serverless-parameters/formatInput
+----
+
+Recreate the _formatInput_ action without utilizing default parameters:
+
+[source,bash]
+----
+$ wsk -i action update iot-serverless-parameters/formatInput iot-serverless-openwhisk-functions/format/formatInput.js
+
+ok: updated action iot-serverless-parameters/formatInput
+----
+
+Once again, invoke the action:
+
+[source,bash]
+----
+$ wsk -i action invoke iot-serverless-parameters/formatInput --result
+
+{
+    "topic": "/sf/asset/pacakgeComponent"
+}
+----
+
+The topic value returned now utilizes the default parameter that is defined on the package.
+
+== Customizing GUI
+
+The GUI for this lab uses link:https://www.patternfly.org/[PatternFly], an open source UI framework for enterprise web applications.
+The GUI design uses the sample code from link:http://www.patternfly.org/pattern-library/navigation/vertical-navigation/#overview[Vertical Navigation] template.
+
+You can install PatternFly on your local system and easily build amazing UIs. Visit link:https://github.com/patternfly/patternfly[PatternFly Github Repo] for details.
+
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=conclusion.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html]
