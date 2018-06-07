@@ -13,11 +13,11 @@ This lab provides step by step instructions on how to use Serverless architectur
 
 .Lab Contents
 ****
-* <<tech_overview.adoc,*Technology Overview*>>
+* link:tech_overview.adoc[*Technology Overview*]
 * link:iot_usecase.adoc[*Business Use Case : IoT*]
-* link:lab_0.html[*Lab 0: Lab Environment & Resources*]
-* link:lab_1.html[*Lab 1: Deploy OpenWhisk*]
-* link:lab_2.html[*Lab 2: Deploy MongoDB*]
+* link:lab_0.adoc[*Lab 0: Lab Environment & Resources*]
+* link:lab_1.adoc[*Lab 1: Deploy OpenWhisk*]
+* link:lab_2.adoc[*Lab 2: Deploy MongoDB*]
 * link:lab_3.html[*Lab 3: Create OpenWhisk Entities*]
   - link:lab_3.html#_actions[*Actions*]
   - link:lab_3.html#_organizing_resources_as_packages[*Packages*]

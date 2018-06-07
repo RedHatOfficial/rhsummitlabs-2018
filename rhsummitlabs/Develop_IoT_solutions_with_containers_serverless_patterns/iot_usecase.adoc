@@ -1,0 +1,23 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+= Business Use Case: IoT
+
+== IoT Overview
+
+IDC defines Internet of Things (IoT) as a network of uniquely identifiable end points (or ‘things’) that communicate bi-directionally without human interaction using IP connectivity. For consumers, this could mean ability to control the thermostat, doors, irrigation system from across the world but for businesses, IoT can create new opportunities to connect with customers and partners and achieve operational efficiencies. IoT has potential to transform entire industries from transportation, retail, oil & gas, utilities to stadiums.
+
+Vast numbers of endpoints (smart sensors, GPS devices, transponders, handheld devices), will generate massive volume of data. Once data from millions of devices is collected, it needs to be acted on immediately or transformed, summarized and stored to be acted on later.
+
+=== IoT Use Case
+
+This lab demonstrates how Serverless can be used for IoT use cases that require analytics of IoT device messages. In the use case for this lab, a factory wants to closely monitor critical assets through their lifecycle to improve operational efficiencies.  Each equipment is assigned to a specific area (geofence) in the factory. Equipments advertise their location coordinates (sent over mqtt protocol). This location data is transformed, enhanced and stored in a database for persistent storage using various functions. If an equipment moves outside its geofence, an alert is triggered using another function.
+
+Equipment location is visualized on a geographical map using Google map API. Google Geolocation API is used to show each equipment’s geofence. Map data is dynamically updated with different markers used to indicate if an equipment is within its geofence or not.
+
+
+image::IoT-serverless-workflow-2.png[Lab Workflow]
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=tech_overview.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_0.html]
