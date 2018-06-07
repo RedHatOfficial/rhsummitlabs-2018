@@ -1,0 +1,34 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Conclusion
+
+This lab provides hands-on experience with Serverless Architecture, FaaS, Apache OpenWhisk, OpenShift and how IoT use case like Smart Asset Management can use these technologies.
+Working through the various exercises in this lab, you learned about how to:
+
+* Deploy Apache OpenWhisk and learning how to interact with it using CLI
+* Deploy MongoDB and seeding it with documents
+* Creating OpenWhisk Actions in JavaScript and Node.js
+* Creating Trigger, Package and Rules
+* Chaining Actions into a Sequence
+* Working with Geofence
+* Deploying IoT Components
+* Working with Feeds and Providers
+* Deploying Software Sensor Application
+* Visualizing data through UI
+
+== Next Steps
+
+All the components that were built this lab can be automated using Ansible playbooks. The repo (https://github.com/sabre1041/iot-serverless) provides instructions on how to deploy this lab with a few easy steps.
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_8.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=advance_lab.html]

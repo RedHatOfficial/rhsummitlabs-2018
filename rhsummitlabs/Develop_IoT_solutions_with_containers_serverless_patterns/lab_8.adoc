@@ -1,0 +1,99 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Lab 8: Validate The End to End Flow
+
+== Tracing entire data flow
+
+This lab will go over results of actions from  the previous labs, validating messages from devices to broker and throughout the OpenWhisk ecosystem.
+
+=== Exploring the AMQ Console
+
+OpenShift supports accessing a user interface for the AMQ broker.
+
+Navigate to link:https://infranode-<GUID>.generic.opentlc.com:8443[https://infranode-<GUID>.generic.opentlc.com:8443]
+
+Select the _iot-serverless_ project on the righthand side.
+
+Click on the pod associated with the _broker-amq_ deployment:
+
+image::amq-openshift-overview.png[AMQ Pod]
+
+On the right side of the page under the _broker-amq_ container, select **Open Java Console**
+
+image::amq-broker-pod.png[Getting to AMQ Console]
+
+From the AMQ broker console, we can view a variety of metrics.
+
+image::amq-console-overview.png[AMQ Console Overview]
+
+First, expand **clientConnectors**. You will notice two child objects, _mqtt_ and _openwire_. The MQTT client is the simulated software that is transmitting IoT related telemetry. The OpenWire client is the OpenWhisk feed provider that is reading values from the broker and firing the trigger to execute the sequence action.
+
+image::amq-client-connectors.png[AMQ Console Overview]
+
+Next, expand **Topic**. Each IoT asset communicates on a topic starting with `.sf`. The JMS selector _.sf.>_ is also present and if you expand the folder, you will see the _mqtt-provider_ which confirms that the OpenWhisk feed was successfully registered to the broker through the feed provider.
+
+image::amq-topics.png[AMQ Console Overview]
+
+Now, select any one of the topics (starting with _sf._) on the left hand side underneath the _Topic_ dropdown. The various properties for the topic are displayed on the right side. Locate the _Enqueue Count_ and _Dequeue Count_. They each should have a value greater than 0 and their values should also match. This represents that the broker received a certain number of messages from the IoT asset (Enqueue) and that the feed provider consumed a certain number of messages (Dequeue).
+
+=== Verifying Messages Were Sent to OpenWhisk
+
+In the previous section, we confirmed that the Feed Provider consumed the messages off of the topics, however, we should also confirm that those messages were then sent to the _iotServerlessTrigger_.
+
+View the logs from the feed provider pod
+
+[source,bash]
+----
+ $ oc logs $(oc get pods -l=application=mqtt-provider -o 'jsonpath={.items[0].metadata.name}')
+
+2018-05-06 23:23:52.645  INFO 1 --- [enerContainer-1] com.redhat.iot.service.OpenWhiskService  : About to Invoke: http://nginx.openwhisk.svc.cluster.local/api/v1/namespaces/_/triggers/iotServerlessTrigger
+2018-05-06 23:23:52.656  INFO 1 --- [enerContainer-1] com.redhat.iot.service.OpenWhiskService  : Status: 202  Response body:{"activationId":"7912967ac688444192967ac688344197"}
+----
+
+A number of log messages similar to the output above should be seen (one for each message consumed off of the broker). As illustrated, the feed provider invoked an API endpoint in OpenWhisk for the trigger, and an HTTP 202 (Accepted) was returned. In addition, the _activationId_ was also returned in a similar fashion to when we fired the trigger using the `wsk` CLI.
+
+=== Viewing Results in the Database
+
+At this point, OpenWhisk has accepted the request that was sent from the feed provider to the _iotServerlessTrigger_. Given that we have validated the sequence action previously, we should be able to skip right to the database and verify results have been persisted.
+
+Obtain a shell session in the MongoDB pod by executing the following command:
+
+[source,bash]
+----
+$ oc rsh $(oc get pods -l=deploymentconfig=mongodb -o 'jsonpath={.items[0].metadata.name}') bash -c "mongo 127.0.0.1:27017/\${MONGODB_DATABASE} -u \${MONGODB_USER} -p \${MONGODB_PASSWORD}"
+
+MongoDB shell version: 3.2.10
+connecting to: 127.0.0.1:27017/iotserverless
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+>
+----
+
+Finally list the rows in the _results_ table
+
+[source,bash]
+----
+> db.results.find()
+----
+
+The entire end to end flow is validated if records are returned.
+
+Exit out of the MongoDB shell and pod.
+
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_7.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_9.html]
