@@ -6,3 +6,5 @@
 
 ## [Part 0: Pre-work, Getting an Azure Subscription](Part0.md)
 
+## [Continue to the main part at http://aka.ms/openshift-lab](http://aka.ms/openshift-lab)
+

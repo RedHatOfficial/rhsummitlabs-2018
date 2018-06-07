@@ -1,5 +1,11 @@
 <img src="images/redhat.png" style="width: 350px;" border=0/>
 
+<font color="red">
+**Lab Update - 4th June 2018**
+
+**This lab has now been updated to run on the Red Hat Product Demo System (RHPDS) and so Summit instructions have been removed in favour of specific instructions for RHPDS. You can skip to the first lab section if you're following this post-Summit. If you have any questions or any problems accessing this content, please let us know.**
+</font>
+
 <h2>Red Hat Summit, San Francisco 2018</h2>
 **Title**: First time hands-on with Red Hat OpenStack Platform (**L1009**)<br>
 **Date**: 9th May 2018<br>
@@ -55,30 +61,46 @@ In this lab, you **won't** be utilising the undercloud platform to deploy any ov
 
 Using a virtualised infrastructure inside of the public cloud allows us to have full control over all of the network and storage without impacting other lab users, and whilst we won't be running any intensive workloads, it allows us to build up and test OpenStack in a short amount of time and with great flexibility. To re-iterate, we'll first be connecting to the **jump host**, and then further connecting to our **undercloud** machine as the conduit into our overcloud OpenStack environment. The undercloud will be used for both executing commands on the overcloud, and also as a conduit for connecting to our overcloud nodes and any deployed resources when required to do so.
 
+# Lab Access
+
+We're using the Red Hat Product Demo Suite (RHPDS) for our labs, and therefore we need to request and get access to a unique environment based within the public cloud for you to use to complete the lab steps. If you're a Red Hat employee you'll need to follow these instructions to generate a session, othewise please get the connection details from your Red Hat representative and skip to the '**Connecting**' part below where we're connecting via secure-shell to the environment provided.
+
+> **NOTE**: Only proceed with the RHPDS creation instructions below if you're a Red Hat employee, or have been given access to RHPDS as a partner.
+
+First you'll need to request a session via RHPDS, the WebUI (and associated login page) can be found at [https://rhpds.redhat.com/](https://rhpds.redhat.com/). Once you've logged in, navigate to the service catalogue by selecting '**Services**' --> '**Catalogs**', and navigate to the correct lab that you want to access by clicking '**Order**' on the right hand side. This lab is '**Hands on with RH OSP**' and should look like the following:
+
+<img src="images/order-osp1.png" style="width: 1000px;"/>
+
+Once you select 'Order' you'll be presented with the following page which you'll need to accept some terms about the order time and the expiry:
+
+<img src="images/order-osp2.png" style="width: 1000px;"/>
+
+Select **'Submit'** at the bottom of the page and it should generate the environment for you, and will show up in your requests:
+
+<img src="images/requests.png" style="width: 1000px;"/>
+
+> **NOTE**: This is a generic screenshot above, your output might look slightly different if you're using a different lab.
+
+The RHPDS system will now generate a unique environment for you to use and you will receive an email with some of the connection details. These details uniquely identify your session to ensure that you are connecting to your unique environment, see here for an example:
+
+<img src="images/email-osp.png" style="width: 1000px;"/>
+
+You'll notice that it contains some links, specifically the "**External Hostname**" for the **WORKSTATION** system - this is the **jumphost** that you'll be connecting to from the outside, and it has a unique hostname to connect to from the outside that's routable over the internet. Here, mine is **"osp-88e0.rhpds.opentlc.com"**. In addition, there are links to other areas such as the Horizon dashboard that you'll likely use later in the lab, as well as a link to these labs.
+
 # Connecting
 
-As previously highlighted, the workstation you're sat at will be used by many different lab sessions, yet each of you will have been allocated a unique environment based within the public cloud for you to use to complete the lab steps associated with each session. On screen you should already have a tab open to the lab request form where we need to select the correct lab. If you don't have this in front of you, it's available [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi).
+You'll see that my assigned lab UUID for my environment is '**88e0**' and is used to uniquely identify my session, and is used as part of the connection address. The environment takes around 20-30 minutes to power-up, and this should have already been done for you prior to the session starting, but don't be alarmed if you cannot connect in straight away, it may just require a few more minutes. Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I'm using my example but **you'll need to replace this with your own username and unique session**:
 
-What you should see is as follows, noting that I've already selected the correct lab (**'L1009 - First time hands-on with Red Hat OpenStack Platform'**) and have entered the activation key '**openstack**', which you will need to do too:
-
-<img src="images/lab-request1.png" style="width: 1000px;"/>
-
-This will allocate a pre-deployed session for your usage with **GUID** that's used to uniquely identify your session, and will provide you with instructions on how to connect to the **jumphost** that we discussed above. Here's an example below:
-
-<img src="images/lab-request2.png" style="width: 1000px;"/>
-
-You'll see that my assigned lab GUID is '**faa6**' and is used to uniquely identify my session, and is used as part of the connection address. Halfway down the page you'll see an ssh command that you'll need to use to connect to the environment. The environment takes around 20 minutes to power-up, and this should have already been done for you prior to the session starting, but don't be alarmed if you cannot connect in straight away, it may just require a few more minutes. Use the exact connection address that it provides you on your screen by copying and pasting the text from the webpage into a terminal emulator, here I'm using my example but you'll need to **replace** this with your own:
-
-	$ ssh osp-faa6.rhpds.opentlc.com
-	The authenticity of host 'osp-faa6.rhpds.opentlc.com (129.146.91.32)' can't be established.
+	$ ssh osp-88e0.rhpds.opentlc.com -l (your RHPDS username)
+	The authenticity of host 'osp-88e0.rhpds.opentlc.com (129.146.91.32)' can't be established.
 	ECDSA key fingerprint is SHA256:SqbVF0TGdHuTsoDChp6/cw4jFHqwJlBWFOeqwd88Bi4.
 	Are you sure you want to continue connecting (yes/no)? yes
 	(...)
 
-> **NOTE**: If you lose your connection details you can return [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi) at any time.
+> **NOTE**: The above assumes that you've associated your public secure shell key with RHPDS - if you have not done so, please update it [here](https://account.opentlc.com/update/). If you have associated your key already then you're good to go and you shouldn't be required to use a password. **If you have been assigned a system from a Red Hat employee, ensure he/she provides you with a username and keypair to use**.
 
 <br />
-Next, we can jump straight to our **undercloud** machine, as this is the one that we're going to be using for all of the lab sections, note that we're using sudo below as the root user on the jump host is the only one configured with the ssk-keys:
+If successful, we can jump straight to our **undercloud** machine, as this is the one that we're going to be using for all of the lab sections, note that we're using sudo below as the root user on the jump host is the only one configured with the ssk-keys:
 
 	$ sudo ssh stack@undercloud
 
@@ -184,7 +206,7 @@ Now we can create our file:
 You can test the file by logging out of your ssh session to the OpenStack virtual machine, logging back in and trying the following-
 
 	$ logout
-	$ ssh stack@undercloud
+	$ sudo ssh stack@undercloud
 
 	$ openstack token issue
 	Missing value auth-url required for auth plugin password
@@ -759,7 +781,7 @@ So, let's look at enabling ICMP for *every* node within the default group, using
 	| f991d44fac91419c8e6016184381871a | demo    |          <--- this is the project we're concerned with
 	+----------------------------------+---------+
 
-If we take the the project ID of our demo project (**9eb95e04cff34482b44b8672b65caac9**) we can see that it maps to security group ID **13f8b461-0a66-4c1d-ba81-9bd53b16c31a** from the output of 'openstack security group list' as shown above. We can now create the rules in the correct group, for convenience we'll ensure we grab the correct one:
+If we take the the project ID of our demo project (**f991d44fac91419c8e6016184381871a**), noting that your UUID will be different here, we can see that it maps to security group ID **69f49751-975f-412b-a21f-765b6e7715a4** from the output of 'openstack security group list' as shown above. We can now create the rules in the correct group, for convenience we'll ensure we grab the correct one:
 
 	$ export MY_PROJECT=$(openstack project list | awk '$4 == "demo" {print $2};')
 	$ export SEC_GROUP_ID=$(openstack security group list | grep $MY_PROJECT | awk '{print $2;}')
@@ -955,7 +977,7 @@ Each virtual router runs within its own network namespace on the host in which i
 	| f8d34761-f57b-4697-8e37-741f274c4ff4 | demo_router | ACTIVE | UP    | False       | False | f991d44fac91419c8e6016184381871a |
 	+--------------------------------------+-------------+--------+-------+-------------+-------+----------------------------------+
 	
-	$ ssh root@summit-network ip netns list | grep router
+	$ ssh root@summit-networker ip netns list | grep router
 	qrouter-808f8855-0e10-4749-ba2f-bff9ebacb102
 
 > **NOTE:** In the above output, note that the qrouter namespace matches to the router ID
@@ -995,7 +1017,7 @@ The vast majority of this lab guide focusses on the command line, but many tasks
 
 1. Firstly, open up a web-browser and navigate to the Horizon dashboard. 
 
-	The URL for this can be found on the lab's landing page which can be found [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi), see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
+	The URL for this can be found in the email that you received from RHPDS, see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
 
 	<img src="images/horizon.png" style="width: 1000px;"/>
 

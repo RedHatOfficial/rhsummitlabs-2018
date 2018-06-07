@@ -51,21 +51,22 @@ Requests marked $PROCESS_INSTANCE_ID and $TASK_ID should also be updated with th
 JBoss BPM Suite has separated its Design time and Runtime operations into 2 distinct binaries; Business Central for Design Time and the Intelligent Process Server (KIE Server) for Runtime. +
 In this lab we will be focusing on the Runtime elements of BPM.
 
-=== GUI vs Non-GUI REST API Calls
-This lab provides 2 options for executing the lab REST commands. All commands are defined as cURL commands to be executed on the command line/terminal assuming the cURL utility is installed.
-If you prefer a GUI assisted method of executing the Labs REST commands then below is a quick setup guide with the necessary import Environment and API Collection files. +
-
 To monitor your progress visually, we have created a basic GUI : {HOST}/kie-management +
- - Its a Angular2 based app that integrates with the BPMS API to demonstrate a visual representation of the API calls below.
+ - This is an Angular2 app that integrates with the BPMS API to allow you to monitor the KIE Container you will create.
 
-If using cURL please skip ahead to <<Step 1: Deploy a new BPM Container>>
+The REST calls in the lab can be executed in one of two ways:
+* All REST commands can be completed as cURL commands for command line execution from a terminal session. These cURL commands have been provided as part of the lab exercise.
+* If you would prefer to use a GUI tool for the REST calls, Postman can be downloaded an configured for use with the lab.
+
+If you are happy using cURL please skip ahead to <<Step 1: Deploy a new BPM Container>>.
+
+Otherwise, to configure Postman, please use the instructions below.
 
 ==== Postman Setup
 
-Postman can be installed and configured as either:
+Postman is an HTTP client for web service testing. You can download it from:
 
-- Standalone App: https://www.getpostman.com/apps
-- Google Chrome Extension: https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en
+https://www.getpostman.com/apps
 
 Once installed, please download the following files:
 
@@ -120,7 +121,7 @@ NOTE: Authorisation should already be setup on the postman collection therefore 
 
 == Step 1: Deploy a new BPM Container
 
-A BPM/KIE Container is deployed KJar. A KJar is a simple maven built JAR file containing some additional XML files for runtime configuration. +
+A BPM/KIE Container is a deployed KJar. A KJar is a simple maven built JAR file containing some additional XML files for runtime configuration. +
 Our Project is a multi-module maven project containing the various project artefacts, however it is the bpm-mobile-workflows project that will be compiled
 into a 'KJar' and deployed as a KIE-Container. +
 
@@ -129,7 +130,7 @@ The additional XML Configuration files: +
 - bpm-mobile-workflows/src/main/resources/kmodule.xml +
 - bpm-mobile-workflows/src/main/resources/kie-deployment-descriptor.xml
 
-- Firstly we can check to see if our KIE Server is alive and available:
+- First, we can check to see if our IPS/KIE Server is alive and available:
 
 REQUEST (root) - GET KIE Server Details:
 [source,sh, subs="attributes"]
@@ -729,3 +730,17 @@ This concludes the BPM Container Labs exercise. Feel free to complete all the ta
 ----
 curl -X DELETE --user {USERNAME}:'{PASSWORD}' "{HOST}/kie-server/services/rest/server/containers/{CONTAINER_PLACEHOLDER}/processes/instances/{PROCESS_PLACEHOLDER}"
 ----
+
+== Summary
+
+In this lab we have called REST services to:
+
+* Deploy a unique KIE Container to the Intelligent Process Server.
+- This KIE Container is an instance of a KJar that includes our process application.
+* Start an instance of the process defined in the application.
+* Retrieve a image of the current state of the process.
+* Manipulate the task instances that are created by the process instance.
+
+If you have any questions regarding this exercise and what has been achieved, please ask one of the Red Hat lab staff. Otherwise please continue to the next module.
+
+Otherwise, please return to the link:../Unleash_the_Power_of_BPM_With_Mobile_and_APIs/[Lab Home Page] and continue with Lab 2a and Lab 2b.

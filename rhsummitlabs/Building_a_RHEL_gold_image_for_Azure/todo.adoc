@@ -1,0 +1,20 @@
+=== FIXME Using the WALA agent for running scripts
+
+=== FIXME Configuring logs for OMS
+
+=== FIXME: Custom .bashrc
+
+=== FIXME: Storage, disk
+
+=== FIXME: Automating the build
+
+=== Any more best practices. hmm?
+
+=== FIXME Extended work
+
+Encryption on the OS disk
+
+Azure tools
+
+Console not avail
+
