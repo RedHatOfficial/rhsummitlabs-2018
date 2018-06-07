@@ -1,0 +1,38 @@
+// Thank you: https://github.com/delsner/asciidoctor-scroll-highlighting
+
+++++
+<style>
+.active {
+    font-weight:bold;
+    color: #7a2518;
+}
+</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+window.onscroll = function() {adjustTOC()};
+window.onclick = function() {adjustTOC()};
+
+$(function() {
+    adjustTOC();
+});
+
+function adjustTOC () {
+      var highestIndex = 0;
+      $('#content a.anchor').each(function(index) {
+        var text = $(this)[0].parentNode.innerText;
+        var count = (text.match(/\./g) || []).length;
+        if (count > 0 && count < 3) {
+          highestIndex = $(this)[0].offsetTop < document.body.scrollTop ? index : highestIndex;
+        }
+      });
+
+      $('#toc a').each(function(index) {
+         if($(this).attr("href") == $('#content a.anchor').get(highestIndex).getAttribute("href")) {
+           $(this).addClass("active");
+         } else {
+           $(this).removeClass("active");
+         }
+      })
+}
+</script>
+++++

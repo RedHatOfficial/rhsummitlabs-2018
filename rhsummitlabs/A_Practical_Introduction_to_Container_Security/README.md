@@ -1,3 +1,5 @@
 # A PRACTICAL INTRODUCTION TO CONTAINER SECURITY
 
-The [lab guide](http://presto.eadgbe.net:9000) is currently a work in progress.
+Once your RHPDS application has been provisioned, the lab guide may be accessed at http://bastion-GUID.rhpds.opentlc.com:8080
+
+You can also access the [lab guide](http://triad.eadgbe.net:9000) on triad.

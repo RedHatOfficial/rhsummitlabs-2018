@@ -196,7 +196,7 @@ So, let's look at enabling ICMP for *every* node within the default group, using
 	| f991d44fac91419c8e6016184381871a | demo    |          <--- this is the project we're concerned with
 	+----------------------------------+---------+
 
-If we take the the project ID of our demo project (**9eb95e04cff34482b44b8672b65caac9**) we can see that it maps to security group ID **13f8b461-0a66-4c1d-ba81-9bd53b16c31a** from the output of 'openstack security group list' as shown above. We can now create the rules in the correct group, for convenience we'll ensure we grab the correct one:
+If we take the the project ID of our demo project (**f991d44fac91419c8e6016184381871a**), noting that your UUID will be different here, we can see that it maps to security group ID **69f49751-975f-412b-a21f-765b6e7715a4** from the output of 'openstack security group list' as shown above. We can now create the rules in the correct group, for convenience we'll ensure we grab the correct one:
 
 	$ export MY_PROJECT=$(openstack project list | awk '$4 == "demo" {print $2};')
 	$ export SEC_GROUP_ID=$(openstack security group list | grep $MY_PROJECT | awk '{print $2;}')
@@ -392,7 +392,7 @@ Each virtual router runs within its own network namespace on the host in which i
 	| f8d34761-f57b-4697-8e37-741f274c4ff4 | demo_router | ACTIVE | UP    | False       | False | f991d44fac91419c8e6016184381871a |
 	+--------------------------------------+-------------+--------+-------+-------------+-------+----------------------------------+
 	
-	$ ssh root@summit-network ip netns list | grep router
+	$ ssh root@summit-networker ip netns list | grep router
 	qrouter-808f8855-0e10-4749-ba2f-bff9ebacb102
 
 > **NOTE:** In the above output, note that the qrouter namespace matches to the router ID
@@ -432,7 +432,7 @@ The vast majority of this lab guide focusses on the command line, but many tasks
 
 1. Firstly, open up a web-browser and navigate to the Horizon dashboard. 
 
-	The URL for this can be found on the lab's landing page which can be found [here](https://www.opentlc.com/guidgrabber/guidgrabber.cgi), see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
+	The URL for this can be found in the email that you received from RHPDS, see the hyperlink in the middle that looks like this - [http://horizon-REPL.rhpds.opentlc.com/dashboard](http://horizon-REPL.rhpds.opentlc.com/dashboard) (where REPL is your GUID that was allocated to you when we started), once opened you should see the following:
 
 	<img src="images/horizon.png" style="width: 1000px;"/>
 
