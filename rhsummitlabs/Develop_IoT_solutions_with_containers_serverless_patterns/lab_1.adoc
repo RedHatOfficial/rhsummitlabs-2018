@@ -118,7 +118,7 @@ ok: whisk auth set. Run 'wsk property get --auth' to see the new value.
 ok: whisk API host set to openwhisk-openwhisk.apps-<GUID>.generic.opentlc.com
 ----
 
-IMPORTANT: Use the `-i` option with wsk to avoid the validation error triggered by the self-signed cert in the nginx service.
+CAUTION: Use the `-i` option with wsk to avoid the validation error triggered by the self-signed cert in the nginx service.
 
 === Validate OpenWhisk CLI configuration
 
