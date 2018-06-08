@@ -31,4 +31,4 @@ Working through the various exercises in this lab, you learned about how to:
 All the components that were built this lab can be automated using Ansible playbooks. The repo (https://github.com/sabre1041/iot-serverless) provides instructions on how to deploy this lab with a few easy steps.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_8.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=advance_lab.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_9.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=advance_lab.adoc]

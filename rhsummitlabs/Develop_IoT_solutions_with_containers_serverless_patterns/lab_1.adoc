@@ -132,4 +132,4 @@ $ wsk -i list
 A list of entities in the _default_ namespace will be displayed.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_0.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_2.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_0.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_2.adoc]

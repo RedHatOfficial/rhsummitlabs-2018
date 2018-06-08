@@ -69,4 +69,4 @@ Select the _iot-serverless_ project on the righthand side and confirm both the _
 image::amq-deployment.png[]
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_4.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_6.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6.adoc]

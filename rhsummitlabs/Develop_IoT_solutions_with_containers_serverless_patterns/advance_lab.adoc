@@ -134,4 +134,4 @@ You can install PatternFly on your local system and easily build amazing UIs. Vi
 
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=conclusion.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html]
+image:icons/icon-previous.png[align=left, width=128, link=conclusion.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc]
