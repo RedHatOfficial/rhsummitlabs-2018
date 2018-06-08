@@ -1,4 +1,4 @@
-:imagesdir: images
+  :imagesdir: images
 :icons: font
 :source-highlighter: prettify
 :sectlinks:
@@ -440,4 +440,4 @@ Notice how latitude and longitude have been split out into separate fields as pe
 In addition, there is a field called _logs_ containing two values. Those are the activation ID’s from the execution of each action in the sequence action. Feel free to view the execution of those actions as well.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_2.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_4.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_2.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_4.adoc]

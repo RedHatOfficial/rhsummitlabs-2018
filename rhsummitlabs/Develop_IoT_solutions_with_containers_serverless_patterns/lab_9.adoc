@@ -118,4 +118,4 @@ image::ui-asset-details.png[Asset Info]
 Feel free to select each of the assets to learn more about the IoT devices that are being utilized in this lab.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_7.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=conclusion.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_7.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=conclusion.adoc]

@@ -47,4 +47,4 @@ Reference:
 link:https://github.com/cncf/wg-serverless/tree/master/whitepaper[https://github.com/cncf/wg-serverless/tree/master/whitepaper]
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_content.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=iot_usecase.html]
+image:icons/icon-previous.png[align=left, width=128, link=README.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=iot_usecase.adoc]

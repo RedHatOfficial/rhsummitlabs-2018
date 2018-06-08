@@ -96,4 +96,4 @@ Exit out of the MongoDB shell and pod.
 
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_7.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_9.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_7.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_9.adoc]

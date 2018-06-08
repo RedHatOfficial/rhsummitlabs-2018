@@ -111,4 +111,4 @@ With the application running, access the software-sensor logs to confirm that it
 If no errors are observed, the deployment of the software sensor was successful and the IoT assets are transmitting values to the AMQ broker.
 
 [.text-center]
-image:icons/icon-previous.png[align=left, width=128, link=lab_6.html] image:icons/icon-home.png[align="center",width=128, link=lab_content.html] image:icons/icon-next.png[align="right"width=128, link=lab_8.html]
+image:icons/icon-previous.png[align=left, width=128, link=lab_6.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_8.adoc]
