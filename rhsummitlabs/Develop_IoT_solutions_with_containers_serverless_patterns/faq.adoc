@@ -1,0 +1,36 @@
+= Troubleshooting
+
+== OpenWhisk Deployment
+
+===
+
+=== Couchdb fails to deploy
+Couchdb needs persistent volumes with sufficient capacities. Check the setup in Lab0 to make sure the persistent volumes are setup correctly with appropriate permissions setup for the user.
+
+=== wsk command errors
+
+$ wsk -i <command>
+error: Unable to obtain the list of entities for namespace 'default': The connection failed, or timed out. (HTTP status code 401)
+
+Check and update the route
+
+$ oc edit route
+
+Set host value as:
+openwhisk-openwhisk.apps-<GUID>.generic.opentlc.com
+
+Use the following commands to configure wsk:
+
+$ AUTH_SECRET=$(oc get secret whisk.auth -o yaml | grep "system:" | awk '{print $2}' | base64 --decode)
+$ wsk property set --auth $AUTH_SECRET --apihost $(oc get route/openwhisk --template="{{.spec.host}}")
+
+=== Project is not visbible in OpenShift web Console
+Make sure the user is assigned privileges
+
+$ oc adm policy add-cluster-role-to-user admin <user>
+
+
+=== Not able to view A-MQ java console
+Make sure the user is assigned admin privileges
+
+$ oc adm policy add-cluster-role-to-user admin <user>

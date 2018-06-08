@@ -1,0 +1,72 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Lab 5: Deploy IoT Components
+
+== IoT Data Transports
+
+Due to its unique requirements (less compute capable devices, low power use, small message payload and large number of devices), IoT data transport protocols needs are different than other use cases, say, mobile, client/server or embedded. Some of the commonly used data transport protocols for IoT are MQTT, CoAP, LWM2M and AMQP. For this lab, MQTT is being used as the data transport for assets sending location data to message broker.
+
+=== Deploying AMQ
+
+link:https://www.redhat.com/en/technologies/jboss-middleware/amq[Red Hat JBoss AMQ] provides fast, lightweight, and secure messaging  and supports AMQP, MQTT, STOMP, and WebSocket protocols. For this lab, a containerized xPaaS image of AMQ, designed for use with OpenShift, is being used. A series of templates are also available to streamline the deployment of AMQ onto OpenShift.
+
+Deploy the AMQ image to OpenShift by executing the following command which will instantiate the template that is already provided by the platform:
+
+[source,bash]
+----
+$ oc process -p MQ_USERNAME=iot-serverless -p MQ_PASSWORD=iot-serverless -p MQ_PROTOCOL=openwire,mqtt -p AMQ_MESH_DISCOVERY_TYPE=dns openshift//amq63-persistent | oc apply -f-
+
+service "broker-amq-amqp" created
+service "broker-amq-mqtt" created
+service "broker-amq-stomp" created
+service "broker-amq-tcp" created
+service "broker-amq-mesh" created
+deploymentconfig "broker-amq" created
+deploymentconfig "broker-drainer" created
+persistentvolumeclaim "broker-amq-claim" created
+----
+
+An AMQ broker with persistent storage will be created to support accepting MQTT messages from the IoT device along with the default Openwire protocol.
+
+A DeploymentConfig which dictates how an application will be deployed in OpenShift called _broker-amq_ was created to manage the deployment of the Broker. To illustrate the configuration of the AMQ broker, describe the contents of the _broker-amq_ DeploymentConfig:
+
+[source,bash]
+----
+$ oc describe dc broker-amq
+----
+
+NOTE: Key items to note within the podTemplate is a container called broker-amq and the exposure of port 1883, which is the default port for the MQTT protocol along with an environment variable called AMQ_TRANSPORTS which enables both the OpenWire and MQTT protocols on the broker.
+
+Confirm the broker and its supporting pod for managing persistent storage is running by verifying the status using the following command:
+
+[source,bash]
+----
+$ oc get pods -l application=broker
+
+NAME                     READY     STATUS    RESTARTS   AGE
+broker-amq-1-22dq4       1/1       Running   0          3m
+broker-drainer-1-z2wf5   1/1       Running   0          3m
+----
+
+A READY column indicating 1/1 denotes the service is ready and available
+
+The state can also be confirmed in the OpenShift web console.
+
+Navigate to link:https://infranode-<GUID>.generic.opentlc.com:8443[https://infranode-<GUID>.generic.opentlc.com:8443]
+
+Select the _iot-serverless_ project on the righthand side and confirm both the _broker-amq_ and _broker-drainer_ pods are running as seen below:
+
+image::amq-deployment.png[]
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_4.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_6.adoc]

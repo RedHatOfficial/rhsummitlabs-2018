@@ -1,0 +1,168 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Lab 2: Deploy MongoDB
+
+== Preparing the Lab Environment
+
+Now that the OpenShift and OpenWhisk tooling have been set up, let’s start to build the solution!
+
+First, create a new project in OpenShift that will be the workspace for the resources being deployed in this lab.
+
+[source,bash]
+----
+$ oc new-project iot-serverless --display-name="IoT Serverless" --description="Serverless technologies to manage and process Internet of Things (IoT) assets"
+
+Now using project "iot-serverless" on server "https://infranode-<GUID>.generic.opentlc.com:8443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
+----
+
+The iot-serverless project has been created and will be used for the remainder of the lab.
+
+[NOTE]
+====
+In the lab environment, OpenShift's link:https://docs.openshift.com/container-platform/3.9/architecture/networking/sdn.html[Software Defined Network] is configured using `ovs-subnet` which means from a networking perspective, traffic can communicate between projects freely. As the lab progresses, there will need to be communication between the _iot-serverless_ and _openwhisk_ projects.
+
+In other OpenShift environments using an alternate SDN, such as the `ovs-multitenant` plugin, the networks will need to be joined in order for proper communication to occur.
+
+Execute the following command to join the two networks:
+
+[source,bash]
+----
+$ oc adm pod-network join-projects --to=openwhisk iot-serverless
+----
+====
+
+=== Deploying and Populating MongoDB
+
+link:https://www.mongodb.com/[MongoDB] is a popular non relational database (NoSQL). As asset readings are received, their values are stored for for retrieval afterward.
+
+OpenShift provides support for MongoDB and includes templates to streamline the deployment.
+
+Execute the following command to instantiate the template which will create a new user and set the password to _iot-serverless_ along with a database also called _iotserverless_.
+
+[source,bash]
+----
+$ oc process -p MONGODB_USER=iot-serverless -p MONGODB_PASSWORD=iot-serverless MONGODB_DATABASE=iotserverless openshift//mongodb-persistent | oc apply -f-
+
+secret "mongodb" created
+service "mongodb" created
+persistentvolumeclaim "mongodb" created
+deploymentconfig "mongodb" created
+----
+
+In a few moments, the MongoDB database will be running. +
+
+Confirm that it is running by viewing the list of running pods using the following commands:
+
+[source,bash]
+----
+$ oc get pods
+
+NAME              READY     STATUS    RESTARTS   AGE
+mongodb-1-x75j8   1/1       Running   0          3m
+----
+
+A READY column indicating 1/1 denotes the service is ready and available
+
+To provide additional information about each of the assets along with supporting later portions of the lab, a MongoDB link:https://docs.mongodb.com/manual/core/databases-and-collections/#collections[collection] needs to be populated containing these resources. To properly seed the database, an link:https://docs.openshift.com/container-platform/latest/dev_guide/jobs.html[OpenShift job] can be used. A job is an OpenShift pod that runs to completion, unlike a ReplicationController which will ensure a set number of replicas are constantly running.
+
+A template is available to seed the database and contains the following resources:
+
+* A ConfigMap containing the values to be added to a newly created collection
+* A job that will execute the link:mongoinport[https://docs.mongodb.com/manual/reference/program/mongoimport/] command to import the values contained in the ConfigMap
+
+From the root of the project, execute the following command:
+
+[source,bash]
+----
+$ oc process -f applier/templates/mongodb-database-seed.yml | oc apply -f-
+
+configmap "mongodb-seed" created
+job "mongodb-database-seed-stt8a" created
+----
+
+The ConfigMap and Job will be created.
+
+Use the following command to track the state of the job.
+
+[source,bash]
+----
+$ watch oc get pods
+----
+
+When the pod with the name beginning with “mongodb-database-seed” has a status of “Completed”, hit CTRL+C to exit the “watch” command.
+
+[source,bash]
+----
+NAME                                READY     STATUS      RESTARTS   AGE
+mongodb-1-x75j8                     1/1       Running     0          2h
+mongodb-database-seed-l8lcb-vqc65   0/1       Completed   0          29s
+----
+
+Let’s view the data that was added to the database by accessing a remote shell into the mongodb pod using the `oc rsh` command.
+
+Execute the following command which will obtain the name of the running mongodb pod and start a remote shell session.
+
+[source,bash]
+----
+$ oc rsh $(oc get pods -l=deploymentconfig=mongodb -o 'jsonpath={.items[0].metadata.name}')
+----
+
+The DeploymentConfig defining the MongoDB application injects a series of environment variables containing the username, password and name of the primary database. +
+
+Use these environment variables to connect to MongoDB.
+
+[source,bash]
+----
+$ mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p $MONGODB_PASSWORD
+MongoDB shell version: 3.2.10
+connecting to: 127.0.0.1:27017/iotserverless
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+>
+----
+
+The mongoimport command created a new collection called _assets_. +
+
+Verify the contents of the collection by executing the following command:
+
+[source,bash]
+----
+> db.assets.find()
+
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3271"), "name" : "Chemical Pump LX-222", "location" : "Boiler room", "topic" : "/sf/boiler/pump-lx222", "center_latitude" : "37.784202", "center_longitude" : "-122.401858", "geofence_radius" : "3.0", "picture" : "Chemical-Pump.jpg" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3272"), "name" : "Blow down separator valve VL-1", "location" : "Boiler room", "topic" : "/sf/boiler/separator-vl-1", "center_latitude" : "37.784215", "center_longitude" : "-122.401632", "geofence_radius" : "1.0", "picture" : "Blowdown-Valve.jpg" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3273"), "name" : "Surface blow down controller", "location" : "Boiler room", "topic" : "/sf/boiler/controller", "center_latitude" : "37.784237", "center_longitude" : "-122.401410", "geofence_radius" : "1.0", "picture" : "Blowdown-Controller.jpg" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3274"), "name" : "Condensate duplex pump", "location" : "Boiler room", "topic" : "/sf/boiler/cond-pump", "center_latitude" : "37.784269", "center_longitude" : "-122.401302", "geofence_radius" : "3.0", "picture" : "Condensate-Pump.jpg" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3275"), "name" : "Robotic arm joint RT-011", "location" : "Assembly section", "topic" : "/sf/assembly/robotic-joint", "center_latitude" : "37.784115", "center_longitude" : "-122.401380", "geofence_radius" : "1.0", "picture" : "Robotic-Arm.jpg" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3276"), "name" : "Teledyne DALSA Camera", "location" : "Assembly section", "topic" : "/sf/assembly/camera", "center_latitude" : "37.784312", "center_longitude" : "-122.401241", "geofence_radius" : "1.0", "picture" : "Teledyne-Dalsa.jpg" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3277"), "name" : "Lighting control unit RT-SD-1000", "location" : "Warehouse", "topic" : "/sf/warehouse/lighting-control", "center_latitude" : "37.784335", "center_longitude" : "-122.401159", "geofence_radius" : "4.0", "picture" : "Lighting-Control.JPG" }
+{ "_id" : ObjectId("5aee8bc9e0e39839766c3278"), "name" : "DIN Rail power supply 240-24", "location" : "Warehouse", "topic" : "/sf/warehouse/power-supply", "center_latitude" : "37.784393", "center_longitude" : "-122.401399", "geofence_radius" : "1.0", "picture" : "DIN-Rail.jpg" }
+
+----
+
+If results were returned, Mongodb has been setup and configured successfully.
+
+Type `exit` to exit out of the mongodb shell.
+
+Type `exit` again to return out of the pod shell.
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_1.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_3.adoc]

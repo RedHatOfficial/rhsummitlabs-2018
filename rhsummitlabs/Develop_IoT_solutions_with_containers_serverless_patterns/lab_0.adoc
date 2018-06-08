@@ -1,0 +1,176 @@
+
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:imagesdir: images
+endif::[]
+
+= Lab 0: Lab Environment & Resources
+
+== Lab Environment
+This lab utilizes Red Hat Product Demo System (RHPDS) to provision the lab environment.
+RHPDS  uses Red Hat CloudForms to deploy infrastructure needed for our lab. +
+
+The infrastructure consists of 5 VMs as well as the overall network configuration. Red Hat OpenShift Container Platform 3.9 has already been deployed for this lab.
+
+OpenShift environment for this lab consists of the following systems:
+
+[cols="3",options="header"]
+|=======
+|Hostname              |Internal IP    |Description
+|`bastion.example.com` |`192.168.0.5`  | Bastion host
+|`master.example.com`  |`192.168.0.10` | Master
+|`node01.example.com`  |`192.168.0.11` | Node 01
+|`node02.example.com`  |`192.168.0.12` | Node 02
+|`node03.example.com`  |`192.168.0.13` | Node 03
+|=======
+
+=== Access Your Lab Environment
+
+*Request an OPENTLC Account* +
+Get access to filling the form at: https://account.opentlc.com/account/requestAccessForm.php
+
+*Set Password* +
+After you have been notified by email that your account has been created, set your password using the temporary password provided in the email at: https://account.opentlc.com/account/setPasswordForm.php
+
+IMPORTANT: Your username will be your Red Hat email address with "@" replaced by "-"
+(E.g if your Red Hat email address is jdoe@redhat.com, your login will be jdoe-redhat.com)
+
+=== Provision Your Demo Environment
+
+Log in to the link:https://rhpds.redhat.com/[Red Hat Product Demo System] with your provided credentials.
+
+image::RHPDS-Login.png[RHPDS Login]
+
+WARNING: If you have problems with access to the lab environment, send an email to internal-enablement@redhat.com.
+
+Go to Services → Catalogs
+
+image::RHPDS-ChooseCatalog.png[Choose Catalog]
+
+Under Service Catalog → Red Hat Summit 2018, select IoT Solutions with Serverless arch.
+
+On the right pane, click Order.
+
+image::RHPDS-OrderLab.png[Order Lab]
+
+Review the information about lifecycle of the lab environment and how to extend it. Check box to confirm, click Submit
+
+image::RHPDS-StartLab.png[Start Lab]
+
+NOTE: It takes ~30 minutes for lab to be provisioned and become accessible. You can get real-time status of the lab environment at https://www.opentlc.com/rhpds-status
+
+You will be getting an email with information about how to access the lab environment.
+
+The email will also provide the unique GUID needed to access the lab environment.
+
+== Access Lab environment
+
+Interaction with the environment will be facilitated using several mechanisms listed below:
+
+=== SSH
+
+The primary method is using SSH to a workstation (bastion) host.
+
+Upload your SSH key to www.opentlc.com/update to login and get into bastion.
+
+[source,bash]
+----
+$ ssh -i <your-private-key> lab-user@workstation-<GUID>.rhpds.opentlc.com
+----
+
+Change user to cloud-user
+
+[source,bash]
+----
+$ sudo -i -u cloud-user
+----
+
+=== OpenShift CLI
+
+OpenShift features a Command Line Interface for interacting with the Platform. The executable has been already installed and is available from the bastion host.
+
+Login to OpenShift with the following credentials
+
+User: *admin* +
+Password: *r3dh4t1!*
+
+[source,bash]
+----
+oc login infranode-<GUID>.generic.opentlc.com:8443 +
+----
+
+You will see a warning related to insecure certificates. Given that this is a lab environment, it is OK to safely ignore these warnings. Type **Y** and hit Enter.
+
+If successful, you will see the following output:
+
+[source,bash]
+----
+Login successful.
+
+You don't have any projects. You can try to create a new project, by running
+
+    oc new-project <projectname>
+
+Welcome! See 'oc help' to get started.
+----
+
+The OpenShift CLI has been successfully configured and ready for use in the lab!
+
+=== OpenShift Web Console
+
+OpenShift features a rich user interface for managing resources on the platform.
+
+Open a web browser and navigate to the following location
+
+link:https://infranode-<GUID>.generic.opentlc.com:8443[https://infranode-<GUID>.generic.opentlc.com:8443]
+
+Similar to the CLI, a warning will appear stating that insecure certificates are being utilized. Ignore the certificate warning and continue on to the login page.
+
+Once again, use the following credentials at the login page
+
+User: *admin* +
+Password: *r3dh4t1!*
+
+The OpenShift catalog should be shown upon successful authentication
+
+image::ocp-catalog.png[OpenShift Catalog]
+
+== Lab Resources
+
+The primary source of content for this lab is the IoT Serverless project repository.
+
+*Project location:* link:https://github.com/sabre1041/iot-serverless[https://github.com/sabre1041/iot-serverless]
+
+Navigate to the `/home/lab-user` folder and clone the lab repository. Once cloned navigate into the `iot-serverless` directory:
+
+[source,bash]
+----
+$ cd /home/lab-user
+$ git clone https://github.com/sabre1041/iot-serverless
+Cloning into 'iot-serverless'...
+remote: Counting objects: 597, done.
+remote: Compressing objects: 100% (86/86), done.
+remote: Total 597 (delta 32), reused 126 (delta 27), pack-reused 457
+Receiving objects: 100% (597/597), 8.95 MiB | 3.74 MiB/s, done.
+Resolving deltas: 100% (162/162), done.
+
+$ cd iot-serverless
+----
+
+The repository contains the following resources:
+
+* *Functions* (`iot-serverless-openwhisk-functions`): OpenWhisk actions to support values transmitted by IoT assets
+* *Applier* (`applier`): Declarative set of OpenShift resources. Components organized for automated application using the link:https://github.com/redhat-cop/openshift-applier[openshift-applier] framework.
+* *Software Sensor* (`iot-serverless-software-sensor`): Simulated software sensor representing IoT assets
+* *Feeds* (`iot-serverless-mqtt-feed`): OpenWhisk feed action and provider
+* *Data Visualization* (`iot-serverless-ui`): UI application to display values transmitted by IoT assets
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=iot_usecase.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_1.adoc]
