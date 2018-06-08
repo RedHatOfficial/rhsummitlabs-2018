@@ -1,0 +1,114 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Lab 7: Software Sensor Application
+
+With the connectivity and integration between the AMQ broker and OpenWhisk now complete, the next step is to integrate IoT data using a simulated software sensor.
+
+== Software Sensor
+
+The software sensor is a Spring Boot based application that simulates GPS sensor data for the assets in the factory. It periodically sends location coordinates for each asset similar to how a real GPS sensor works.
+
+Software sensor application is driven by a configuration file located at `iot-serverless-software-sensor/src/main/resources/application.yml`. The configuration file provides current location parameters for each asset.
+
+=== Deploy the Software Sensor
+
+Templates have been created to support the building of a custom image containing the application along with the deployment to OpenShift.
+
+First, instantiate the template to build the image from the root of the project:
+
+[source,bash]
+----
+ $ cd /home/lab-user/iot-serverless/
+ $ oc process -f applier/templates/software-sensor-build.yml | oc apply -f-
+
+ imagestream "software-sensor" created
+ buildconfig "software-sensor" created
+----
+
+A new BuildConfig and ImageStream will be created along with the triggering of the link:https://docs.openshift.com/container-platform/latest/using_images/s2i_images/index.html[Source-to-Image] based build in OpenShift.
+
+A new build should be automatically triggered. Verify the build has started by running the following command:
+
+[source,bash]
+----
+ $  oc get builds -l application=software-sensor
+
+ NAME                TYPE      FROM          STATUS    STARTED              DURATION
+software-sensor-1   Source    Git@5896653   Running   About a minute ago
+----
+
+When a build is present and running, the logs from the build execution can be seen using the following command:
+
+[source,bash]
+----
+ $ oc logs -f builds/<build_name>
+----
+
+When the image has been built successfully, another template can be instantiated to create the associated DeploymentConfig and Service. A set of parameters must be provided when processing the template including the credentials for access the MQTT broker and the location of the broker within the _iot-serverless_ project.
+
+Execute the following command to instantiate the software sensor deployment template.
+
+[source,bash]
+----
+ $ oc -p MQTT_USERNAME=iot-serverless -p MQTT_PASSWORD=iot-serverless -p MQTT_APPLICATION_SERVICE=broker-amq-mqtt -p MQTT_TOPIC=proxsensor01 process -f applier/templates/software-sensor-deployment.yml | oc apply -f-
+
+ service "software-sensor" created
+ deploymentconfig "software-sensor" created
+----
+
+==== Scale up software sensor
+
+By default, the software sensor is configured to have no running pods (specified by a replica count of 0). Execute the following command to enable the software sensor by changing the replica count to 1:
+
+[source,bash]
+----
+ $ oc scale dc/software-sensor --replicas=1
+
+ deploymentconfig "software-sensor" scaled
+----
+
+Verify the software sensor is active by verifying the status using the following command:
+
+[source,bash]
+----
+$ oc get pods -l application=software-sensor
+
+NAME                    READY     STATUS    RESTARTS   AGE
+software-sensor-1-jg74d   1/1       Running   0          1m
+----
+
+A READY column indicating 1/1 denotes the service is ready and available
+
+This application makes use of link:https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html#container-health-checks-using-probes[OpenShift Health Check] to verify the connectivity of the MongoDB database. Before marking the pod active and healthy, HTTP requests are made on an endpoint exposed on the application supported by link:https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html[Spring Boot Endpoints]. The source code for this health check can be found at `iot-serverless-software-sensor/src/main/java/com/redhat/iot/MqttHealthIndicator.java`
+
+With the application running, access the software-sensor logs to confirm that it is transmitting data:
+
+[source,bash]
+----
+ $ oc logs $(oc get pods -l=application=software-sensor -o 'jsonpath={.items[0].metadata.name}')
+
+ $ 2018-05-04 05:26:27.352  INFO 1 --- [    scheduler-3] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Chemical Pump LX-222 - Iteration: 2 - Latitude: 37.784218 - Longitude: -122.401858
+ 2018-05-04 05:26:27.353  INFO 1 --- [    scheduler-4] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Condensate duplex pump - Iteration: 2 - Latitude: 37.784269 - Longitude: -122.401312
+ 2018-05-04 05:26:27.362  INFO 1 --- [    scheduler-5] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Lighting control unit RT-SD-1000 - Iteration: 2 - Latitude: 37.7843430 - Longitude: -122.401159
+ 2018-05-04 05:26:32.352  INFO 1 --- [    scheduler-9] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Chemical Pump LX-222 - Iteration: 3 - Latitude: 37.784234 - Longitude: -122.401858
+ 2018-05-04 05:26:32.353  INFO 1 --- [    scheduler-1] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Condensate duplex pump - Iteration: 3 - Latitude: 37.784269 - Longitude: -122.401322
+ 2018-05-04 05:26:32.364  INFO 1 --- [   scheduler-10] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Lighting control unit RT-SD-1000 - Iteration: 3 - Latitude: 37.7843510 - Longitude: -122.401159
+ 2018-05-04 05:26:34.351  INFO 1 --- [    scheduler-7] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Robotic arm joint RT-011 - Iteration: 1 - Latitude: 37.784115 - Longitude: -122.40138
+ 2018-05-04 05:26:35.351  INFO 1 --- [   scheduler-11] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Teledyne DALSA Camera - Iteration: 1 - Latitude: 37.784312 - Longitude: -122.401241
+ 2018-05-04 05:26:37.352  INFO 1 --- [    scheduler-8] com.redhat.iot.AssetRunner               : Running Scheduled Task for Asset: Chemical Pump LX-222 - Iteration: 4 - Latitude: 37.784250 - Longitude: -122.401858
+----
+
+If no errors are observed, the deployment of the software sensor was successful and the IoT assets are transmitting values to the AMQ broker.
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_6.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_8.adoc]

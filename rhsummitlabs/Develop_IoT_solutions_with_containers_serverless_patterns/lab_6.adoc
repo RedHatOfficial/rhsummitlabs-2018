@@ -1,0 +1,226 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Lab 6: Connecting into OpenWhisk
+
+== Trigger Limitations
+Now that the AMQ broker is up and running within OpenShift and able to accept traffic sent by IoT assets using the MQTT protocol, how these messages are consumed by OpenWhisk so that they can be used by the actions previously becomes the next area of concern.
+
+So far, our primary entrypoint for firing actions has been through a Trigger. However, since the MQTT transport is an eventing based protocol where messages are streamed, the use of triggers can be a limiting factor. OpenWhisk provides an alternative option that builds on top of the concept of triggers and supports streaming events onto the platform called Feeds.
+
+== Feeds
+
+**link:https://github.com/apache/incubator-openwhisk/blob/master/docs/feeds.md[Feeds]** are an advanced concept in OpenWhisk where users can expose an event producer service within a package. A feed is controlled by a **Feed Action** which handles deleting, pausing and resuming the streaming of events. Feeds can be implemented in one of three architectural patterns:
+
+* Hooks
+* Polling
+* Persistent Connections
+
+In our use case for accepting messages from the AMQ broker, the Persistent Connection feed option is the most applicable.
+
+A full overview of feeds and the architecture can be found in the link:https://github.com/apache/incubator-openwhisk/blob/master/docs/feeds.md[OpenWhisk project documentation].
+
+=== Feed Action
+
+To manage the registration of MQTT topics for which messages should be sent into the OpenWhisk platform, a feed action has been provided at in the repository at `iot-serverless-mqtt-feed/action/feedAction.js`
+
+Feel free to browse the content of the action.
+
+Add the feed action to the _iot-serverless_ package called _mqttFeed_ using the following command executed from the root of the repository:
+
+[source,bash]
+----
+ $ cd /home/lab-user/iot-serverless/
+ $ wsk -i action update -a feed true iot-serverless/mqttFeed iot-serverless-mqtt-feed/action/feedAction.js
+
+ ok: updated action iot-serverless/mqttFeed
+----
+
+TIP: The `-a` flag is designates that an annotation should be placed on the associated action. An annotation is a piece of metadata that can be applied to an action to provide additional information without disrupting the underlying schema. When creating a feed action, an annotation called feed with a value of true is specified so that the platform will recognize and manage the asset appropriately.
+
+Display the contents of the iot-serverless package to confirm the feed has been registered
+
+[source,bash]
+----
+ $ wsk -i package get iot-serverless --summary
+
+ package /whisk.system/iot-serverless
+   (parameters: none defined)
+ action /whisk.system/iot-serverless/iotServerlessSequence
+   (parameters: none defined)
+ action /whisk.system/iot-serverless/dbInsert
+   (parameters: none defined)
+ action /whisk.system/iot-serverless/geofence
+   (parameters: none defined)
+ action /whisk.system/iot-serverless/enricher
+   (parameters: none defined)
+ action /whisk.system/iot-serverless/formatInput
+   (parameters: none defined)
+ feed   /whisk.system/iot-serverless/mqttFeed
+   (parameters: none defined)
+----
+
+=== Feed Provider
+
+Recall the three types of feeds that can be implemented: hooks, polling and connections. We stated that we would be utilizing the connection type of feed as it will provide a persistent connection to the AMQ broker. Since actions are short lived, another component must be added to the environment to maintain the long lived connection to AMQ. This service is known as a Feed Provider.
+
+To conform with the feed architecture within OpenWhisk, the provider will need to expose a REST API that manages the control of the feed as well as act as a proxy between AMQ and OpenWhisk.
+
+A Feed Provider implementation has been provided in the `iot-serverless-mqtt-feed/provider/` folder and is a Spring Boot based application.
+
+Templates have been created to support the building of a custom image containing the application along with the deployment to OpenShift.
+
+First, instantiate the template from the root of the project to build the image:
+
+[source,bash]
+----
+ $ cd /home/lab-user/iot-serverless/
+ $ oc process -f applier/templates/mqtt-provider-build.yml | oc apply -f-
+
+ imagestream "mqtt-provider" created
+ buildconfig "mqtt-provider" created
+----
+
+A new BuildConfig and ImageStream will be created along with the triggering of the link:https://docs.openshift.com/container-platform/latest/using_images/s2i_images/index.html[Source-to-Image] based build in OpenShift.
+
+A new build should be automatically triggered. Verify the build has started by running the following command:
+
+[source,bash]
+----
+ $  oc get builds -l application=mqtt-provider
+
+ NAME              TYPE      FROM          STATUS    STARTED          DURATION
+mqtt-provider-1   Source    Git@fa9f79c   Running   26 seconds ago
+
+----
+
+When a build is present and running, the logs from the build execution can be seen using the following command:
+
+[source,bash]
+----
+ $ oc logs -f builds/<build_name>
+----
+
+When the image has been built successfully, another template can be instantiated to create the associated DeploymentConfig and Service. A set of parameters must be provided when processing the template including the credentials for access the MQTT broker and the location of the broker within the iot-serverless project.
+
+Execute the following command to instantiate the mqtt provider deployment template.
+
+[source,bash]
+----
+ $ oc -p MQ_USERNAME=iot-serverless -p MQ_PASSWORD=iot-serverless -p MQ_APPLICATION_SERVICE=broker-amq-tcp process -p MONGODB_SERVICE=mongodb -f applier/templates/mqtt-provider-deployment.yml | oc apply -f-
+
+ service "mqtt-provider" created
+ deploymentconfig "mqtt-provider" created
+----
+
+Verify the mqtt-provider is active by verifying the status using the following command:
+
+[source,bash]
+----
+$ oc get pods -l application=mqtt-provider
+
+NAME                    READY     STATUS    RESTARTS   AGE
+mqtt-provider-1-nh5sl   1/1       Running   0          1m
+----
+
+A READY column indicating 1/1 denotes the service is ready and available
+
+Finally, with the Feed action and provider deployed, the final step is to update the existing _iotServerlessTrigger_ to make use of the feed action. The feed action takes in one parameter called “topic” which is the link:http://activemq.apache.org/selectors.html[selector pattern] that the provider should consider when registering itself with the broker. Triggers utilizing feeds also need to have the `--feed` flag specified. Unfortunately, this flag is only available when creating new triggers.
+
+Delete the existing iotServerlessTrigger trigger:
+
+[source,bash]
+----
+ $ wsk -i trigger delete iotServerlessTrigger
+
+ ok: deleted trigger iotServerlessTrigger
+----
+
+Now recreate the trigger to also denote the feed that should be used as the event source and the parameter with the topic pattern:
+
+[source,bash]
+----
+ $ wsk -i trigger create iotServerlessTrigger --feed iot-serverless/mqttFeed -p topic ".sf.>"
+
+ok: invoked /_/iot-serverless/mqttFeed with id b7f43c780eca4686b43c780eca1686ec
+{
+    "activationId": "b7f43c780eca4686b43c780eca1686ec",
+    "annotations": [
+        {
+            "key": "path",
+            "value": "whisk.system/iot-serverless/mqttFeed"
+        },
+        {
+            "key": "waitTime",
+            "value": 45
+        },
+        {
+            "key": "kind",
+            "value": "nodejs:6"
+        },
+        {
+            "key": "limits",
+            "value": {
+                "logs": 10,
+                "memory": 256,
+                "timeout": 60000
+            }
+        },
+        {
+            "key": "initTime",
+            "value": 334
+        }
+    ],
+    "duration": 556,
+    "end": 1525646148778,
+    "logs": [],
+    "name": "mqttFeed",
+    "namespace": "whisk.system",
+    "publish": false,
+    "response": {
+        "result": {
+            "done": true
+        },
+        "status": "success",
+        "success": true
+    },
+    "start": 1525646148222,
+    "subject": "whisk.system",
+    "version": "0.0.1"
+}
+----
+
+A response with `"success": true` indicates the trigger was successfully registered with the provider. This can also be confirmed by viewing the logs for the _mqtt-provider_ pod by executing the following command:
+
+[source,bash]
+----
+ $ oc logs $(oc get pods -l=application=mqtt-provider -o 'jsonpath={.items[0].metadata.name}')
+
+ 2018-05-05 18:22:29.057  INFO 1 --- [nio-8080-exec-7] c.r.i.controller.FeedProviderController  : Trigger Name: /_/iotServerlessTrigger
+ 2018-05-05 18:22:29.242  INFO 1 --- [nio-8080-exec-7] c.redhat.iot.service.TriggerDataService  : Saving Trigger
+----
+
+=== Reenable the Rule
+
+A consequence of deleting the _iotServerlessTrigger_ trigger in the previous section resulted in the `iotServerlessRule` becoming disabled. This occurred because the reference to the trigger was removed. Even though the trigger was recreated using a feed, the rule continues to remain disabled.
+
+Reenable the rule by executing the following command:
+
+[source,bash]
+----
+ $ wsk -i rule enable iotServerlessRule
+
+ ok: enabled rule iotServerlessRule
+----
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_5.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_7.adoc]

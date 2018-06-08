@@ -1,0 +1,442 @@
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+:sectlinks:
+endif::[]
+
+= Lab 3: Create OpenWhisk Entities
+
+== Actions
+
+link:https://github.com/apache/incubator-openwhisk/blob/master/docs/actions.md[Actions] are stateless functions that encapsulate code to be run on the OpenWhisk platform. An action can be written as a JavaScript, Swift, Python or PHP function, a Java method, any binary-compatible executable including Go programs and custom executables packaged as Docker containers.
+
+Actions can be explicitly invoked, or run in response to an event. Each run of an action results in an activation record that is identified by a unique activation ID. The input to an action and the result of an action are a dictionary of key-value pairs, where the key is a string and the value a valid JSON value. Actions can also be composed of calls to other actions or a defined sequence of actions.
+Developing A Simple JavaScript Action
+
+To hold the custom assets that we will create during this lab, create a folder called `workspace` within the project folder and change into this directory.
+
+[source,bash]
+----
+$ mkdir -p /home/lab-user/iot-serverless/workspace
+$ cd /home/lab-user/iot-serverless/workspace
+----
+
+First, a simple JavaScript function will be used to illustrate how to create an invoke actions. When invoked, the action will return a “Hello World” style response.
+
+Create a file called `hello_openwhisk.js` in the workspace folder with the following content.
+
+.hello_openwhisk.js
+[source,javascript]
+----
+function main() {
+    return {payload: "Welcome to IoT Serverless Lab!"};
+}
+----
+
+With the content of the function created, use the wsk tool to create an action called _hello_openwhisk_
+
+[source,bash]
+----
+$ wsk -i action update hello_openwhisk hello_openwhisk.js
+
+ok: updated action hello_openwhisk
+----
+
+NOTE: The update subcommand of action performs an upsert. If an action does not exist, one will be created. If an action does exist, it will be updated.
+
+Finally, invoke the action using the following command:
+
+[source,bash]
+----
+$ wsk -i action invoke hello_openwhisk --result
+
+{
+    "payload": "Welcome to IoT Serverless Lab!"
+}
+----
+
+NOTE: Using the `--result` flag will cause the command to wait until the function completes and print the result
+
+=== Working With Action Parameters
+
+Actions can also accept input parameters that can be used to drive the execution. To illustrate this use case, create a new file called `topicReplace.js` that will contain an action that will replace any periods in a parameter called topic with forward slashes.
+
+[source,JavaScript]
+----
+function main(params) {
+
+    if(params.topic) {
+      params.topic = params.topic.replace(/[.]/g,'/');
+    }
+
+    return params;
+  }
+----
+
+NOTE: Notice how the main method now contains a function parameter which will include any input parameters to the function.
+
+Now, create an action called _topicReplace_ using the following command:
+
+[source,bash]
+----
+$ wsk -i action update topicReplace topicReplace.js
+
+ok: updated action topicReplace
+----
+
+Parameters can be passed to actions using the `--param` flag. Verify the action executes correctly by providing a parameter called topic with the content containing periods. The response returned should replace periods with slashes:
+
+[source,bash]
+----
+$ wsk -i action invoke topicReplace --result --param topic "1.2 of 8 is 4"
+
+{
+    "topic": "1/2 of 8 is 4"
+}
+----
+
+Feel free to try different permutations of the parameters and their values. Note the parameters is only modified if the topic parameter is used and contains a period.
+
+== Organizing Resources as Packages
+
+Multiple related actions can be organized together into **link:https://github.com/apache/incubator-openwhisk/blob/master/docs/packages.md[Packages]**. Packages allow for common sets of resources, such as parameters, to be applied to multiple actions. A package can be used to centralize many of the components that will be used throughout the rest of the lab.
+
+Create a package called _iot-serverless_:
+
+[source,bash]
+----
+$ wsk -i package create --shared yes iot-serverless
+
+ok: created package iot-serverless
+----
+
+NOTE: The shared flag allows the package to be visible globally
+
+Use the `package list` command to view the newly created package as well as the other packages included by default with the platform
+
+[source,bash]
+----
+$ wsk -i package list
+----
+
+=== Adding an Action to the Package
+
+Previously, we created a few actions. One of which was called _topicReplace_. By default, actions are created in the default whisk.system package. The action was fairly simple and replaced the values of the topic parameter containing periods to slashes.
+
+* Since a new package _iot-serverless_ was created, delete the existing _topicReplace_ action so that we can organize resources more effectively
+
+[source,bash]
+----
+$ wsk -i action delete topicReplace
+
+ok: deleted action topicReplace
+----
+
+Aside from the topic name, another key component of input that we are concerned about is the the current location of an asset. The IoT data in this lab provides the latitude and longitude as a single value called data separated by a space. To format both, the topic name as demonstrated earlier, and latitude and longitude values, a JavaScript function is available in a file called `iot-serverless-openwhisk-functions/format/formatInput.js`
+
+From the root of the project, create an improved action using the aforementioned JavaScript file using the following command:
+
+[source,bash]
+----
+$ cd /home/lab-user/iot-serverless
+$ wsk -i action update iot-serverless/formatInput iot-serverless-openwhisk-functions/format/formatInput.js
+
+ok: updated action iot-serverless/formatInput
+----
+
+Now, display the contents of the package which will show the action which was just created
+
+[source,bash]
+----
+$ wsk -i package get iot-serverless --summary
+
+package /whisk.system/iot-serverless
+   (parameters: none defined)
+ action /whisk.system/iot-serverless/formatInput
+   (parameters: none defined)
+----
+
+== Introduction to Triggers
+
+Thus far, we have explicitly invoked actions containing our business logic. In a microservices world, architectures have adopted the use of eventing or link:https://www.reactivemanifesto.org/[reactive] patterns to invoke business logic instead of proactive based approaches.
+
+In OpenWhisk, to support this architectural approach, **link:https://github.com/apache/incubator-openwhisk/blob/master/docs/triggers_rules.md[Triggers]** represent a class of events emitted by event source e.g. location coordinates from factory assets. Triggers can be fired manually or in response to certain events.
+
+To demonstrate how triggers can be utilized, let’s go ahead and create a trigger called _iotServerlessTrigger_
+
+[source,bash]
+----
+$ wsk -i trigger create iotServerlessTrigger
+
+ok: created trigger iotServerlessTrigger
+----
+
+Confirm the trigger has been created by listing the defined triggers
+
+[source,bash]
+----
+$ wsk -i trigger list
+
+triggers
+/whisk.system/iotServerlessTrigger                                     private
+----
+
+== Connecting Triggers to Actions Using Rules
+
+While triggers maintain sourcing events within OpenWhisk, they have no effective use until they are connected with an action. This is where **link:https://github.com/apache/incubator-openwhisk/blob/master/docs/triggers_rules.md[Rules]** comes into play. Rules associate a single trigger with a single action. When a trigger is fired, a rule will pass the invocation to the action.
+
+image::trigger-rule-action.png[]
+
+To demonstrate how Rules are utilized in OpenWhisk, create a new rule that associates the _iotServerlessTrigger_ trigger to the _formatInput_ action within the _iot-serverless_ package called _iotServerlessRule_:
+
+[source,bash]
+----
+$ wsk -i rule update iotServerlessRule iotServerlessTrigger iot-serverless/formatInput
+
+ok: updated rule iotServerlessRule
+----
+N
+ow that the trigger has been connected to action by way of the rule, we can demonstrate how OpenWhisk utilizes this pattern by “firing” the trigger. Recall, the formatInput action requires two parameters be specified: topic and data.
+
+Invoke the trigger as shown below:
+
+[source,bash]
+----
+$ wsk -i trigger fire iotServerlessTrigger --param topic /sf/boiler/controller --param data "37.784237 -122.401410"
+
+ok: triggered /_/iotServerlessTrigger with id 2f195129de6e410f995129de6e210f88
+----
+
+=== Activation Record
+
+When the trigger was invoked, the referenced _id_ refers to an **link:https://github.com/apache/incubator-openwhisk/blob/master/docs/reference.md[Activation Record]** which confirms the request was accepted by OpenWhisk. When we invoked the action previously, we also passed in the `--result` flag which tells OpenWhisk to monitor the action and wait for a response to be produced. Since triggers do not produce a result as it is the Rule that performs the work of invoking the action,  we will have to investigate the activation chain to discover the result of the action.
+
+The details of the activation can be found by using the following command replacing the id from the prior command:
+
+[source,bash]
+----
+$ wsk -i activation get <ID>
+----
+
+Inside the activation response, you will notice in the _logs_ property a JSON payload that illustrates the response that was returned from the invocation of the action. Inside this payload includes the _activationId_ that can be used to obtain the result from the _formatInput_ action as shown below.
+
+[source,bash]
+----
+...
+    "logs": [
+        "{\"statusCode\":0,\"success\":true,\"activationId\":\"26fef4e532f34a41bef4e532f39a41b9\",\"rule\":\"whisk.system/iotServerlessRule\",\"action\":\"whisk.system/iot-serverless/formatInput\"}"
+    ],
+...
+----
+
+Once again, query the activation, but this time using the activationId that is present in the logs field from the prior invocation:
+
+[source,bash]
+----
+$ wsk -i activation get <ID>
+----
+
+Inside the response field will be the result of the formatInput action similar to the following
+
+[source,bash]
+----
+    "response": {
+        "status": "success",
+        "statusCode": 0,
+        "success": true,
+        "result": {
+            "data": "37.784237 -122.401410",
+            "latitude": "37.784237",
+            "longitude": "-122.401410",
+            "topic": "/sf/boiler/controller"
+        }
+    },
+----
+
+As displayed, the parameters that were provided to the trigger were sent to the _formatInput_ action by way of the rule that we defined and the latitude and longitude fields were split out as expected based on the values provided in the data field.
+
+=== Developing a Node.js Action to Enrich Input
+
+In a prior lab, we introduced how to create simple OpenWhisk actions using JavaScript. While standalone JavaScript actions are very lightweight, they do have limitations in the functionality that they are able to provide, especially when additional libraries or dependencies are required. A popular pattern for transmitting data is to pass along a key and perform a lookup in a database to enrich content. In this section, you will configure a link:https://nodejs.org/en/[Node.js] based action to lookup content in the the MongoDB database that was previously seeded with values based on an input parameter. The values contained within the link:https://docs.mongodb.com/manual/core/document/[document] from MongoDB will be appended to the input parameters and returned as output.
+
+First, from the root of the project folder, navigate to the folder containing the source for the Node.js based action:
+
+[source,bash]
+----
+$ cd iot-serverless-openwhisk-functions/enricher
+----
+
+Within this folder, you will notice three files:
+
+* `package.json` - link:https://docs.npmjs.com/files/package.json[npm manifest file]
+* `enricher.js` - OpenWhisk action
+* `example.env`` - Sample file that will be used as a base for providing environment variables for the function
+
+Take a moment to explore each of these files and their contents
+One of the principles of reusable software is to externalize configurations outside of the source code. To connect to MongoDB from the function, the properties related to the location of the database and credentials must be provided. Node.js offers the functionality to externalize these values in a file called _.env_ alongside the application. At runtime, the values provided will be available as environment variables for the application to leverage.
+
+A file called `example.env` has been provided with the keys that require configuration.
+
+Edit the _example.env_ file to update the values based on the configuration of MongoDB
+
+[source,bash]
+----
+MONGODB_HOST=mongodb.iot-serverless.svc
+MONGODB_USER=iot-serverless
+MONGODB_PASSWORD=iot-serverless
+MONGODB_DATABASE=iotserverless
+----
+
+Rename the `example.env` file to `.env` so that the values will be available to the function
+
+[source,bash]
+----
+$ mv example.env .env
+----
+
+Using `npm`, install all of the dependencies that are defined in the _package.json_ file
+
+[source,bash]
+----
+$ npm install
+----
+
+Now, package up the Node.js application
+
+[source,bash]
+----
+$ npm run package
+----
+
+NOTE: The `npm run` allows for arbitrary commands or scripts to be executed to simplify user interaction. To view the command that is being executed, check out the _scripts_ property within the _package.json_ file
+
+As a result of the execution new file called _enricher.zip_ will be created in the _dist_ folder. This will be the file that will be uploaded to OpenWhisk as the content used by the action.
+
+Create a new action called _enricher_ by executing the following command:
+
+[source,bash]
+----
+$ npm run deploy
+
+> iot-serverless-openwhisk-functions-enricher@1.0.0 deploy /home/lab-user/iot-serverless/iot-serverless-openwhisk-functions/enricher
+> wsk -i action update iot-serverless/enricher dist/enricher.zip --kind nodejs:8
+
+ok: updated action iot-serverless/enricher
+----
+
+As observed in the output from the above command, `wsk -i action update iot-serverless/enricher dist/enricher.zip --kind nodejs:8` was executed. The `--kind` flag informs OpenWhisk the framework to utilize.
+
+With the action created, let’s test it out.
+
+The MongoDB has a _collection_ called _assets_ which was populated with data in an earlier lab. Inside this collection, a column called _topic_ specifies the name of the topic associated with the particular asset (more on that later). The enricher function will accept a parameter called _topic_ and perform a lookup on the collection for any document matching the value and return the contents of the document.
+
+Once again, view the contents of the assets table by executing the following command:
+
+[source,bash]
+----
+$ oc rsh $(oc get pods -l=deploymentconfig=mongodb -o 'jsonpath={.items[0].metadata.name}') bash -c "mongo 127.0.0.1:27017/\${MONGODB_DATABASE} -u \${MONGODB_USER} -p \${MONGODB_PASSWORD} --eval='db.assets.find()'"
+
+MongoDB shell version: 3.2.10
+connecting to: 127.0.0.1:27017/iotserverless
+{ "_id" : ObjectId("5aef3736e91e408be1f42bac"), "name" : "Chemical Pump LX-222", "location" : "Boiler room", "topic" : "/sf/boiler/pump-lx222", "center_latitude" : "37.784202", "center_longitude" : "-122.401858", "geofence_radius" : "3.0", "picture" : "Chemical-Pump.jpg" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42bad"), "name" : "Blow down separator valve VL-1", "location" : "Boiler room", "topic" : "/sf/boiler/separator-vl-1", "center_latitude" : "37.784215", "center_longitude" : "-122.401632", "geofence_radius" : "1.0", "picture" : "Blowdown-Valve.jpg" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42bae"), "name" : "Surface blow down controller", "location" : "Boiler room", "topic" : "/sf/boiler/controller", "center_latitude" : "37.784237", "center_longitude" : "-122.401410", "geofence_radius" : "1.0", "picture" : "Blowdown-Controller.jpg" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42baf"), "name" : "Condensate duplex pump", "location" : "Boiler room", "topic" : "/sf/boiler/cond-pump", "center_latitude" : "37.784269", "center_longitude" : "-122.401302", "geofence_radius" : "3.0", "picture" : "Condensate-Pump.jpg" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42bb0"), "name" : "Robotic arm joint RT-011", "location" : "Assembly section", "topic" : "/sf/assembly/robotic-joint", "center_latitude" : "37.784115", "center_longitude" : "-122.401380", "geofence_radius" : "1.0", "picture" : "Robotic-Arm.jpg" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42bb1"), "name" : "Teledyne DALSA Camera", "location" : "Assembly section", "topic" : "/sf/assembly/camera", "center_latitude" : "37.784312", "center_longitude" : "-122.401241", "geofence_radius" : "1.0", "picture" : "Teledyne-Dalsa.jpg" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42bb2"), "name" : "Lighting control unit RT-SD-1000", "location" : "Warehouse", "topic" : "/sf/warehouse/lighting-control", "center_latitude" : "37.784335", "center_longitude" : "-122.401159", "geofence_radius" : "4.0", "picture" : "Lighting-Control.JPG" }
+{ "_id" : ObjectId("5aef3736e91e408be1f42bb3"), "name" : "DIN Rail power supply 240-24", "location" : "Warehouse", "topic" : "/sf/warehouse/power-supply", "center_latitude" : "37.784393", "center_longitude" : "-122.401399", "geofence_radius" : "1.0", "picture" : "DIN-Rail.jpg" }
+
+----
+
+NOTE: The prior command utilized several OpenShift features to reduce the number of steps needed to returned the desired results. In particular, OpenShift label filtering was used to limit the results along with output parsing using link:https://kubernetes.io/docs/reference/kubectl/jsonpath/[jsonpath] to extract the name of the pod returned from the filtered list
+
+
+Select one of the topic values returned and invoke the enricher function (for example, ‘/sf/boiler/pump-lx222’)
+
+[source,bash]
+----
+$ wsk -i action invoke iot-serverless/enricher --param topic /sf/boiler/pump-lx222 --result
+
+{
+    "center_latitude": "37.784202",
+    "center_longitude": "-122.401858",
+    "geofence_radius": "3.0",
+    "location": "Boiler room",
+    "name": "Chemical Pump LX-222",
+    "picture": "Chemical-Pump.jpg",
+    "topic": "/sf/boiler/pump-lx222"
+}
+----
+
+Notice how the content of the document has been returned. Feel free to use another topic name from the database results to fully test out the functionality of the action. Be sure to also use a topic value that is not in the collection as only the input value will be returned.
+
+== Creating a Sequence of Actions
+
+Thus far, we have created two functions, one that will perform input formatting, and another that will execute a lookup from the database based on provided values. Whether you have noticed or not, several of the parameter names have been identical (such as _topic_). This is no coincidence. OpenWhisk provides the capability chaining multiple actions together where the output from one action is the input for another action. This functionality is known as a **Sequence**. Sequences are entirely separate actions and define the order in which actions are executed.
+
+Create a new sequence action called _iotServerlessSequence_ in the _iot-serverless_ package that will first call _formatInput_ action first and then use the output as the input parameters for the _enricher_ action.
+
+[source,bash]
+----
+$ wsk -i action update iot-serverless/iotServerlessSequence --sequence iot-serverless/formatInput,iot-serverless/enricher
+
+ok: updated action iot-serverless/iotServerlessSequence
+----
+
+With a new method for initiating the action to format the input using a sequence, update the _iotServerlessRule_ to invoke the _iotServerlessSequence_ sequence action instead of directly calling the _formatInput_ action:
+
+[source,bash]
+----
+$ wsk -i rule update iotServerlessRule iotServerlessTrigger iot-serverless/iotServerlessSequence
+
+ok: updated rule iotServerlessRule
+----
+
+Fire the trigger using the same parameters as before
+
+[source,bash]
+----
+$ wsk -i trigger fire iotServerlessTrigger --param topic /sf/boiler/controller --param data "37.784237 -122.401410"
+
+ok: triggered /_/iotServerlessTrigger with id 33d809d6923c456a9809d6923c156ad5
+----
+
+Once again the id of the activation of the trigger will be returned. Using the steps from the Activations section, locate the activationId within the trigger activation to determine the output from the execution of the sequence action. A value similar to the following indicates the sequence action processed successfully.
+
+[source,bash]
+----
+    "response": {
+        "status": "success",
+        "statusCode": 0,
+        "success": true,
+        "result": {
+            "center_latitude": "37.784237",
+            "center_longitude": "-122.401410",
+            "data": "37.784237 -122.401410",
+            "geofence_radius": "1.0",
+            "latitude": "37.784237",
+            "location": "Boiler room",
+            "longitude": "-122.401410",
+            "name": "Surface blow down controller",
+            "picture": "Blowdown-Controller.jpg",
+            "topic": "/sf/boiler/controller"
+        }
+    },
+    "logs": [
+        "05233e250a0d4276a33e250a0db27622",
+        "85f6c5a268cf45dcb6c5a268cf35dc2c"
+    ],
+----
+
+Notice how latitude and longitude have been split out into separate fields as per the logic of the _formatInput_ action along with values returned from MongoDB as provided by _enricher_ action.
+In addition, there is a field called _logs_ containing two values. Those are the activation ID’s from the execution of each action in the sequence action. Feel free to view the execution of those actions as well.
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_2.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_4.adoc]

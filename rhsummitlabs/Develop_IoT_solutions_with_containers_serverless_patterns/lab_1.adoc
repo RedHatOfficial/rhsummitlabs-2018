@@ -1,0 +1,135 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Lab 1: Deploy OpenWhisk
+
+OpenWhisk can be deployed using the template provided by OpenWhisk on OpenShift project.
+Each component of OpenWhisk will be running in its own container.
+
+* Create a new project in OpenShift called _openwhisk_:
+
+[source,bash]
+----
+$ oc new-project openwhisk --display-name="OpenWhisk"
+Now using project "openwhisk" on server "https://infranode-<GUID>.generic.opentlc.com:8443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+   oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
+
+to build a new example application in Ruby.
+----
+
+* Deploy OpenWhisk by instantiating the template
+
+[source,bash]
+----
+$ oc process -f https://raw.githubusercontent.com/projectodd/openwhisk-openshift/master/persistent-template.yml | oc create -f -
+----
+
+NOTE: A large number of resources will be created. It will take a few minutes to each of the resources to fully deploy to the OpenWhisk project.
+
+* Use watch command to monitor the progress:
+
+[source,bash]
+----
+$ watch oc get pods
+----
+
+Once all pods are in the “Running” or “Completed state”, hit CTRL+C to break the “watch” command. +
+
+NOTE: Pods may initially report in Error status. This condition should resolve itself in a few moments.
+
+* Check the status of deployment:
+
+[source,bash]
+----
+$ oc get pods
+
+NAME                                          READY     STATUS      RESTARTS   AGE
+alarmprovider-76d5655b8-vpp7s                 1/1       Running     0          1d
+controller-0                                  1/1       Running     2          1d
+couchdb-0                                     1/1       Running     0          1d
+install-catalog-hx8pc                         0/1       Completed   0          1d
+invoker-0                                     1/1       Running     0          1d
+nginx-c6f755db5-q627l                         1/1       Running     0          1d
+preload-openwhisk-runtimes-kfxcj              0/1       Completed   0          1d
+prune-activations-1525060800-n4drp            0/1       Completed   0          19h
+refresh-activations-1525132200-lt4h2          0/1       Completed   0          1m
+strimzi-cluster-controller-69dccbcc97-724ht   1/1       Running     0          1d
+strimzi-openwhisk-kafka-0                     1/1       Running     0          1d
+strimzi-openwhisk-zookeeper-0                 1/1       Running     0          1d
+wskinvoker-00-5-prewarm-nodejs6               1/1       Running     0          18h
+wskinvoker-00-6-prewarm-nodejs6               1/1       Running     0          18h
+----
+
+
+* Verify that system is ready by checking if controller recognizes the invoker as healthy:
+
+[source,bash]
+----
+$ oc logs -f controller-0 | grep "invoker status changed"
+
+[INFO] [#sid_121] [InvokerPool] invoker status changed to 0 -> UnHealthy
+[INFO] [#sid_121] [InvokerPool] invoker status changed to 0 -> Healthy
+----
+
+OpenWhisk has been successfully deployed when `0 -> Healthy` appears in the log above
+
+
+== Verify OpenWhisk Deployment using OpenShift web console
+
+* Navigate to the following url in the browser:
+
+link:https://infranode-<GUID>.generic.opentlc.com:8443[https://infranode-<GUID>.generic.opentlc.com:8443]
+
+TIP: OpenShift web UI access url is provided in the screen splash when you ssh into the system
+
+* Click on the project name (OpenWhisk) in the upper right corner. A successful deployment will look like the following:
+
+image::openwhisk-deployment-ui.png[]
+
+== Configure the OpenWhisk CLI
+
+`wsk` is the CLI to interact with OpenWhisk services which has already been downloaded on this system.  The `wsk` CLI needs to be to be configured to be able to interact with OpenWhisk deployment.
+
+* Use the following commands to configure wsk:
+
+[source,bash]
+----
+$ AUTH_SECRET=$(oc get secret whisk.auth -o yaml | grep "system:" | awk '{print $2}' | base64 --decode)
+$ wsk property set --auth $AUTH_SECRET --apihost $(oc get route/openwhisk --template="{{.spec.host}}")
+----
+
+Successful configuration of wsk will show following output:
+
+[source,bash]
+----
+ok: whisk auth set. Run 'wsk property get --auth' to see the new value.
+ok: whisk API host set to openwhisk-openwhisk.apps-<GUID>.generic.opentlc.com
+----
+
+CAUTION: Use the `-i` option with wsk to avoid the validation error triggered by the self-signed cert in the nginx service.
+
+=== Validate OpenWhisk CLI configuration
+
+* Use the following command validate the `wsk` CLI is operational:
+
+[source,bash]
+----
+$ wsk -i list
+----
+
+A list of entities in the _default_ namespace will be displayed.
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=lab_0.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=lab_2.adoc]

@@ -1,0 +1,50 @@
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Technology Overview
+
+== Serverless
+Serverless refers to the concept of building and running applications that do not require server management. Serverless allows for a finer-grained deployment model where applications, bundled as one or more functions, are uploaded to a platform and then executed, scaled, and billed in response to the exact demand needed at that moment. Developers using serverless no longer need to spend time and resources on server provisioning, maintenance, updates, scaling, and capacity planning.
+
+NOTE: Servers are still required to run a serverless platform. The provider will need to manage servers (or virtual machines or containers) and deploy the serverless platform for an external or internal customers.
+
+== Serverless use cases
+Serverless approach is a good choice when the workload is:
+
+* Asynchronous, concurrent, easy to parallelize into independent units of work
+* Infrequent or has sporadic demand, with large, unpredictable variance in scaling requirements
+* Stateless, ephemeral, without a major need for instantaneous cold start time
+* Highly dynamic in terms of changing business requirements that drive a need for accelerated developer velocity
+
+== Function as a Service (FaaS)
+FaaS is a type of serverless computing that typically provides event-driven computing. Developers run and manage application code with functions that are triggered by events. Developers deploy small units of code to the FaaS, which are executed as needed as discrete actions, scaling without the need to manage servers or any other underlying infrastructure.
+
+Popularized by AWS Lambda, there are several other FaaS offerings in the market Azure Functions, IBM Cloud Functions, Google Cloud Functions etc.
+
+Apache OpenWhisk is a serverless, open source cloud platform that executes functions in response to events. OpenWhisk can be deployed on public cloud, premises or a combination of both (hybrid).
+
+== Using serverless for IoT
+Internet of Things (IoT) is expected to generate a massive and diverse range of data types presenting a unique challenges for back end services.  The back end services must be able to quickly respond and scale in response to sudden influx of messages. Serverless functions can efficiently manage and filter messages from IoT devices. They can both scale elastically and shield other services downstream from the load. Some of the examples of using serverless for IoT include:
+
+* Executing logic in response to device data values
+* Performing analytics on IoT sensor messages
+* Handling stream processing
+* Serving machine learning and AI models
+
+== Deploying your own serverless solution
+In this lab, an IoT solution will be built with Red Hat OpenShift Container Platform and serverless architecture to execute on-demand functions in response to IoT events. Main components of the lab include setting up Apache OpenWhisk, building functions and deploying these functions to OpenWhisk.
+
+Reference:
+link:https://github.com/cncf/wg-serverless/tree/master/whitepaper[https://github.com/cncf/wg-serverless/tree/master/whitepaper]
+
+[.text-center]
+image:icons/icon-previous.png[align=left, width=128, link=README.adoc] image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=iot_usecase.adoc]

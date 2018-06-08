@@ -1,0 +1,50 @@
+
+= Serverless for IoT lab
+Andrew Block <ablock@redhat.com>, Ishu Verma <iverma@redhat.com>
+:homepage: https://github.com/sabre1041/iot-serverless
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:homepage: https://github.com/sabre1041/iot-serverless
+:imagesdir: images
+:icons: font
+:source-highlighter: prettify
+endif::[]
+
+== Summary
+This lab provides step by step instructions on how to use Serverless architecture for IoT. The lab uses Red Hat OpenShift Container Platform and serverless architecture to execute on-demand functions in response to IoT events. Main components of the lab include setting up Apache OpenWhisk, building functions and deploying these functions to OpenWhisk.
+
+
+
+.Lab Contents
+****
+* link:tech_overview.adoc[*Technology Overview*]
+* link:iot_usecase.adoc[*Business Use Case : IoT*]
+* link:lab_0.adoc[*Lab 0: Lab Environment & Resources*]
+* link:lab_1.adoc[*Lab 1: Deploy OpenWhisk*]
+* link:lab_2.adoc[*Lab 2: Deploy MongoDB*]
+* link:lab_3.adoc[*Lab 3: Create OpenWhisk Entities*]
+  - link:lab_3.adoc#_actions[*Actions*]
+  - link:lab_3.adoc#organizing-resources-as-packages[*Packages*]
+  - link:lab_3.adoc#introduction-to-triggers[*Triggers*]
+  - link:lab_3.adoc#connecting-triggers-to-actions-using-rules[*Rules*]
+  - link:lab_3.adoc#creating-a-sequence-of-actions[*Sequences*]
+* link:lab_4.adoc[*Lab 4: Use Geofencing & Data Store*]
+* link:lab_5.adoc[*Lab 5: Deploy IoT Components*]
+* link:lab_6.adoc[*Lab 6: Connecting into OpenWhisk*]
+* link:lab_7.adoc[*Lab 7: Software Sensor Application*]
+* link:lab_8.adoc[*Lab 8: Validate The End to End Flow*]
+* link:lab_9.adoc[*Lab 9: Visualizing Data*]
+* link:conclusion.adoc[*Conclusion*]
+* link:advance_lab.adoc[*Extra Labs*]
+****
+
+[.text-center]
+image:icons/icon-home.png[align="center",width=128, link=README.adoc] image:icons/icon-next.png[align="right"width=128, link=tech_overview.adoc]
