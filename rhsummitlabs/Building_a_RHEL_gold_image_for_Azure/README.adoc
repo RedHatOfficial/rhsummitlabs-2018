@@ -9,9 +9,6 @@
 
 // include::sidebarhighlight.adoc[]
 
-NOTE: There is a HTML rendered version of this document that **is much nicer
-nicer to read than on GitHub, available here: http://40.112.68.75/guide/ **.
-
 == Introduction and Lab Outline
 
 This lab walks you through the process of building a RHEL "gold image" that can be used in a Microsoft Azure cloud environment. 
@@ -216,11 +213,17 @@ lab we just will create one virtual machine.
 
 === Configure Yum server
 
+[WARNING]
+The commands for yum.repos.d are *no longer required* after Red Hat Summit, if you are 
+provisioning this demo from the product demo system. If you are building this 
+demo yourself, then you need to find another way to get access to repositories.
+
+
 This lab environment has stored updates and essential packages on a utility
 server. You need to configure your workstation to get packages from this server
 
     root@goldimageworkstation-GUID: cd /etc/yum.repos.d/
-    root@goldimageworkstation-GUID: wget http://40.112.68.75/lab.repo
+    root@goldimageworkstation-GUID: wget http://repos.example.com/lab.repo
 
 It's always a good idea to clean the yum cache after repos change;
 
@@ -751,12 +754,17 @@ In a production environment, it's necessary to register RHEL instances using `su
 
 === Install the Windows Azure Linux Agent (WALinuxAgent/WALA).
 
+[WARNING]
+The commands for yum.repos.d are *no longer required* after Red Hat Summit, if you are 
+provisioning this demo from the product demo system. If you are building this 
+demo yourself, then you need to find another way to get access to repositories.
+
 The goldimage virtual machine does not have any repositories configured because
 it is not subscribed to **subscription-manager**. Again, lets download the lab
 repo in our gold image;
 
     [root@localhost ~]# cd /etc/yum.repos.d/
-    [root@localhost ~]# curl -O http://40.112.68.75/lab.repo
+    [root@localhost ~]# curl -O http://repos.example.com/lab.repo
 
 It's always a good idea to clean the yum cache after repos change;
 
