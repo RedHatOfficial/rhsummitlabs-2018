@@ -1,1 +1,1 @@
-link:https://github.com/RedHatDemos/SecurityDemos/blob/master/ProactiveSecurityCompliance/documentation/README.adoc[Implementing Proactive Security and Compliance Automation]
+link:https://github.com/RedHatDemos/SecurityDemos/blob/master/2018Labs/ProactiveSecurityCompliance/documentation/README.adoc[Implementing Proactive Security and Compliance Automation]
