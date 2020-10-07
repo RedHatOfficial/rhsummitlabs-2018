@@ -9,7 +9,7 @@
   <description>Spring Boot example running a Camel route defined in XML</description>
   <properties>
     <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
-    <jkube.version>1.0.0-rc-1</jkube.version>
+    <jkube.version>1.0.1</jkube.version>
     <jkube.openshift.enrichAllWithImageChangeTrigger>true</jkube.openshift.enrichAllWithImageChangeTrigger>
     <fabric8.version>2.3.7.fuse-000036-redhat-2</fabric8.version>
     <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
